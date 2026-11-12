@@ -25,20 +25,32 @@ try {
   const html = await (await fetch(origin + base)).text();
   const entryUrls = [...html.matchAll(/(?:src|href)="([^"]+\/assets\/[^"]+)"/g)].map(m => m[1]);
 
-  // Manifest-driven resource discovery across Chapters 01-40
-  const metaFiles = walk(resolve(root, 'content')).filter(f => f.endsWith('metadata.json'));
+  // Manifest-driven resource discovery across Chapters 01-40 and 5 Specialization Tracks
+  const metaFiles = walk(resolve(root, 'content')).filter(f => !f.replaceAll('\\', '/').includes('/tracks/') && f.endsWith('metadata.json'));
   const gsModules = JSON.parse(readFileSync(resolve(root, 'content/getting-started/modules.json'), 'utf8'));
+  const tracksList = JSON.parse(readFileSync(resolve(root, 'content/specializations/tracks.json'), 'utf8'));
 
   const staticResources = [
     base + '404.html',
     base + 'LICENSE.upstream',
     base + 'docs/ADDING_CHAPTER.md',
+    base + 'docs/CONTENT_MAINTENANCE_GUIDE.md',
+    base + 'docs/THEME_AND_ACCESSIBILITY_GUIDE.md',
     base + 'content/templates/slides.json',
     base + 'content/levels.json',
     base + 'content/specializations/tracks.json',
     base + 'content/getting-started/modules.json',
     ...gsModules.map(m => base + 'content/getting-started/' + m.file),
   ];
+
+  const trackMetaUrls = [];
+  const trackResourceUrls = [];
+  for (const t of tracksList) {
+    trackMetaUrls.push({ id: t.id, url: base + `content/tracks/${t.id}/metadata.json` });
+    for (const md of ['overview.md', 'practice.md', 'capstone.md']) {
+      trackResourceUrls.push(base + `content/tracks/${t.id}/${md}`);
+    }
+  }
 
   const chapterMetaUrls = [];
   const chapterResourceUrls = [];
@@ -79,7 +91,7 @@ try {
     }
   }
 
-  const allUrls = [...new Set([...entryUrls, ...staticResources, ...chapterMetaUrls.map(x => x.url), ...chapterResourceUrls])];
+  const allUrls = [...new Set([...entryUrls, ...staticResources, ...trackMetaUrls.map(x => x.url), ...trackResourceUrls, ...chapterMetaUrls.map(x => x.url), ...chapterResourceUrls])];
 
   for (const url of allUrls) {
     const res = await fetch(origin + url);
@@ -98,10 +110,19 @@ try {
     publishedCount++;
   }
 
+  // Verify all 5 Specialization Track manifests report status === 'published' over HTTP
+  assert.equal(trackMetaUrls.length, 5, 'Expected exactly 5 track manifests');
+  for (const item of trackMetaUrls) {
+    const tm = await (await fetch(origin + item.url)).json();
+    assert.equal(tm.id, item.id);
+    assert.equal(tm.status, 'published', `Track ${item.id} must be published`);
+  }
+
   console.log(
     `PASS: HTTP ${entryUrls.length} entry assets, ${staticResources.length} platform/docs/getting-started assets, ` +
+    `${trackMetaUrls.length}/5 published tracks (${trackResourceUrls.length} md files), ` +
     `${chapterMetaUrls.length} chapter manifests (${publishedCount}/40 published), and ${chapterResourceUrls.length} ` +
-    `chapter module/slide/practice/notebook/data/experiment resources (${allUrls.length} unique URLs verified).`
+    `chapter resources (${allUrls.length} unique URLs verified).`
   );
 } finally {
   child.kill();

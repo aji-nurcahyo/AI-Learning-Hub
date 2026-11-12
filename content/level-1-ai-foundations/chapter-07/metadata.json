@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "Python Ecosystem for AI",
   "status": "published",
-  "description": "Ekosistem komputasi kecerdasan buatan Python modern: komputasi numerik NumPy, manipulasi data tabular Pandas, visualisasi Matplotlib, Estimator API Scikit-learn, dan alur kerja yang dapat direproduksi.",
+  "description": "Siapkan alur kerja rekayasa AI menggunakan ekosistem Python ilmiah standar industri. Anda akan mempraktikkan komputasi vektorisasi NumPy, manipulasi tabular Pandas, visualisasi Matplotlib, Scikit-learn Estimator API, dan praktik kode reproduktif.",
   "objectives": [
     "Menjelaskan komponen arsitektur utama ekosistem Python untuk kecerdasan buatan.",
     "Menyiapkan lingkungan virtual mandiri dan mengelola dependensi proyek menggunakan pip serta requirements.txt.",
@@ -74,5 +74,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Pengelolaan virtual environment dan struktur proyek AI yang bersih.",
+    "Komputasi array multidimensi, broadcasting, dan masking dengan NumPy.",
+    "Manipulasi Series dan DataFrame Pandas beserta imputasi dasar.",
+    "Pembuatan grafik eksploratif terstruktur menggunakan Matplotlib.",
+    "Alur Estimator API Scikit-learn bebas kebocoran data dan kontrol seed."
+  ]
 }

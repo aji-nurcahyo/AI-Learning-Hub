@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Support Vector Machines & k-Nearest Neighbors",
   "status": "published",
-  "description": "Modul mendalam Support Vector Machines (SVM) dan k-Nearest Neighbors (KNN): prinsip Maximum Margin Hyperplane, formulasi Hard-Margin dan Soft-Margin dengan variabel slack dan penalti regularisasi C, trik kernel non-linier (Linear, Polynomial, RBF) dengan tuning parameter gamma, algoritma instance-based KNN dengan metrik jarak Euclidean/Manhattan, analisis nilai k dan skema pembobotan suara, pembuktian kebutuhan mutlak penskalaan fitur (StandardScaler), serta bahaya kutukan dimensi (curse of dimensionality).",
+  "description": "Pahami klasifikasi berbasis margin optimal melalui Support Vector Machines (SVM) dan pendekatan non-parametrik k-Nearest Neighbors (KNN). Anda akan mempelajari peran regularisasi C, Kernel Trick untuk batas non-linear, serta kepekaan KNN terhadap skala fitur.",
   "objectives": [
     "Menjelaskan konsep Support Vector Machines dan prinsip Maximum-Margin Classification.",
     "Mengidentifikasi hiperbidang pemisah, margin geometris, dan sampel vektor pendukung (support vectors).",
@@ -83,5 +83,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Konsep Maximum Margin Hyperplane dan identifikasi Support Vectors.",
+    "Formulasi Hard-Margin vs Soft-Margin SVM dengan parameter regularisasi C.",
+    "Kernel Trick (Linear, Polynomial, RBF) untuk pemisahan non-linear.",
+    "Algoritma k-Nearest Neighbors (KNN) dan pilihan metrik jarak.",
+    "Pengaruh pemilihan nilai k, bobot jarak, serta wajibnya feature scaling."
+  ]
 }

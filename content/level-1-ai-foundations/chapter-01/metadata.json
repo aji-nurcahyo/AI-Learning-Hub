@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "Introduction to Artificial Intelligence",
   "status": "published",
-  "description": "Pengantar fundamental AI: perbedaan Rule-Based System, Machine Learning, Deep Learning, Generative AI, anatomi sistem cerdas, serta etika Responsible AI.",
+  "description": "Pelajari fondasi Artificial Intelligence mulai dari perbedaan Rule-Based System, Machine Learning, Deep Learning, dan Generative AI. Chapter ini memetakan anatomi sistem cerdas dari input hingga evaluasi serta etika penerapannya secara bertanggung jawab.",
   "objectives": [
     "Menjelaskan Artificial Intelligence melalui tujuan, kemampuan, dan keterbatasannya.",
     "Membedakan Rule-Based System, Machine Learning, Deep Learning, dan Generative AI melalui contoh.",
@@ -61,5 +61,11 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Membedakan Rule-Based System, Machine Learning, Deep Learning, dan Generative AI.",
+    "Memahami anatomi sistem AI: input, proses, output, dan metrik evaluasi.",
+    "Menentukan kapan masalah cukup diselesaikan secara deterministik atau butuh AI.",
+    "Mengenali batasan teknis serta risiko etika penerapan AI."
+  ]
 }

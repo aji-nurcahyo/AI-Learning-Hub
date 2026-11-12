@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Retrieval-Augmented Generation",
   "status": "published",
-  "description": "Arsitektur lengkap Retrieval-Augmented Generation (RAG): document ingestion, chunking, hybrid retrieval (BM25 + Dense RRF), reranking, context construction, grounded generation, citation validation, dan mitigasi indirect prompt injection.",
+  "description": "Atasi keterbatasan pengetahuan statis LLM dengan membangun pipeline Retrieval-Augmented Generation (RAG) yang terverifikasi. Pembahasan mencakup chunking ber-overlap, Hybrid Search (BM25 + Dense Vector via RRF), reranking, konstruksi konteks beranggaran token, atribusi sitasi, dan pertahanan prompt injection.",
   "objectives": [
     "Menjelaskan konsep Retrieval-Augmented Generation (RAG) untuk mengatasi keterbatasan pengetahuan parametrik model bahasa.",
     "Membedakan RAG dan Fine-Tuning secara arsitektural, biaya operasional, dan kepatuhan audit sumber.",
@@ -75,5 +75,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan arsitektural, biaya, dan audit sumber antara RAG vs Fine-Tuning.",
+    "Document ingestion, metadata provenance, dan strategi text chunking dengan overlap.",
+    "Hybrid Retrieval memadukan BM25 dan Dense Search lewat Reciprocal Rank Fusion.",
+    "Grounded answer synthesis disertai validasi sitasi dan mekanisme abstention.",
+    "Kontrol keamanan akses dokumen (ACL) dan isolasi indirect prompt injection."
+  ]
 }

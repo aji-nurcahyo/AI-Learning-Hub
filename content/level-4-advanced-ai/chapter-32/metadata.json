@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Embeddings & Vector Search",
   "status": "published",
-  "description": "Modul komprehensif implementasi Embeddings & Vector Search pada Level 4 Applied & Advanced AI Systems: konsep dasar representasi vektor padat (Dense Embeddings) versus representasi jarang (Sparse One-Hot, Bag-of-Words, TF-IDF), aljabar kesamaan vektor mencakup Dot Product, Euclidean Distance (L2), Cosine Similarity, dan Cosine Distance, pembuktian matematis teorema normalisasi L2 (kesetaraan Dot Product dengan Cosine Similarity pada vektor satuan), penanganan kestabilan numerik dan vektor nol, algoritma pencarian tetangga terdekat eksak (Exact Brute-Force Search O(N*d)), optimalisasi perankingan tervektorisasi menggunakan np.argpartition O(N), konsep Approximate Nearest Neighbor (ANN) dengan Inverted File Index (IVF) partisi sel Voronoi dan navigasi graf HNSW, pengenalan arsitektur indeks FAISS (IndexFlatL2, IndexFlatIP, IndexIVFFlat) dan pemisahan penyimpanan metadata dokumen, perancangan pipa pencarian semantik end-to-end atas korpus dokumen akademik, evaluasi sistem temu kembali kuantitatif (Precision@k, Recall@k, Hit Rate@k, dan Mean Reciprocal Rank/MRR), analisis komparasi empiris Sparse vs Dense Retrieval, audit risiko keamanan dan privasi representasi embeddings (Embedding Inversion Attack dan mitigasi sanitasi data PII), serta panduan proyek mini pencarian semantik dan rubrik 100 poin.",
+  "description": "Pelajari fondasi pencarian semantik berkecepatan tinggi melalui representasi Dense Embeddings dan Vector Search. Chapter ini membedah bukti aljabar kesamaan kosinus pada hipersfer L2, perbandingan pencarian leksikal vs semantik, algoritma Exact & Approximate Nearest Neighbor (ANN/HNSW/IVF).",
   "objectives": [
     "Menjelaskan konsep dasar Embeddings dan perbedaan representasi sparse versus dense.",
     "Membedakan metrik kesamaan Dot Product, Euclidean Distance, dan Cosine Similarity secara geometris.",
@@ -95,5 +95,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbandingan representasi vektor sparse (BoW/TF-IDF) vs dense embeddings.",
+    "Kesetaraan matematis Dot Product pada vektor ternormalisasi L2 dan Cosine Similarity.",
+    "Pencarian Exact Top-k cepat berbasis aljabar matriks dan np.argpartition.",
+    "Konsep Approximate Nearest Neighbor (HNSW, IVF, Product Quantization).",
+    "Evaluasi mutu penelusuran informasi memakai Recall@k, Precision@k, dan MRR."
+  ]
 }

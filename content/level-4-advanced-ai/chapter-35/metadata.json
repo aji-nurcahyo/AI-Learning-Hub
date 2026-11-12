@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Reinforcement Learning Fundamentals",
   "status": "published",
-  "description": "Fondasi Reinforcement Learning berbasis interaksi: Markov Decision Process (MDP), Return terdiskonto, Value Functions, Persamaan Bellman, Dynamic Programming (Value & Policy Iteration), Monte Carlo, TD(0), Q-Learning, Epsilon-Greedy, dasar Policy Gradient REINFORCE, serta desain simulator GridWorld.",
+  "description": "Kuasai paradigma Reinforcement Learning di mana agen belajar mengambil keputusan berurutan optimal melalui sinyal imbalan dari lingkungan. Chapter ini memformulasikan Markov Decision Process, Persamaan Bellman, Value/Policy Iteration, Q-Learning, jadwal eksplorasi, serta pengantar Policy Gradient REINFORCE.",
   "objectives": [
     "Menjelaskan konsep Reinforcement Learning sebagai paradigma pengambilan keputusan berurutan berbasis interaksi.",
     "Membedakan Supervised Learning, Unsupervised Learning, dan Reinforcement Learning serta membedakan RL Agent dari LLM Agent.",
@@ -79,5 +79,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Formulasi Markov Decision Process (S, A, P, R, gamma) dan discounted return.",
+    "Persamaan Bellman Expectation dan Optimality untuk fungsi nilai V* dan Q*.",
+    "Dynamic Programming (Value/Policy Iteration) serta estimasi bebas model Monte Carlo & TD(0).",
+    "Algoritma kontrol Q-Learning dan keseimbangan eksplorasi-eksploitasi epsilon-greedy.",
+    "Implementasi Policy Gradient REINFORCE di PyTorch beserta risiko Reward Hacking."
+  ]
 }

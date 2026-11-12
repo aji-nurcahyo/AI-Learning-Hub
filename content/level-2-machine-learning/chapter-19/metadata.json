@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Model Evaluation, Tuning & Explainability",
   "status": "published",
-  "description": "Modul komprehensif Evaluasi Model, Penyetelan Hyperparameter & Keterpahaman (Explainability): fondasi generalisasi dan pembagian data 3-way bebas kebocoran, benchmark model baseline, metrik evaluasi regresi (MAE, MSE, RMSE, R2, MAPE) dan klasifikasi (Confusion Matrix, Precision, Recall, F1-Score, Specificity, Balanced Accuracy, ROC-AUC vs PR-AUC), analisis biaya asimetris dan kalibrasi ambang keputusan, strategi validasi silang khusus (Stratified K-Fold, Group K-Fold, Time Series Split, Nested Cross-Validation), penelusuran hyperparameter sistematis (GridSearchCV vs RandomizedSearchCV), diagnostik kurva pembelajaran (Learning Curves) dan kurva validasi (Validation Curves), kalibrasi probabilitas (Brier Score, Platt Scaling, Isotonic Regression), model explainability post-hoc (Permutation Feature Importance, Partial Dependence Plots, ICE, ikhtisar SHAP & LIME), analisis kegagalan sistematis (error analysis & false negatives), serta audit disparitas subgrup dan pergeseran data (dataset shift).",
+  "description": "Bangun protokol evaluasi model yang jujur secara ilmiah serta pahami keputusan model kotak hitam. Pembahasan mencakup strategi Cross-Validation, Nested CV, penyetelan hyperparameter, deteksi data leakage, hingga interpretasi fitur global dan lokal (Permutation & SHAP/LIME).",
   "objectives": [
     "Menjelaskan tujuan evaluasi model, generalisasi, dan bahaya optimisme semu overfitting.",
     "Memilih metrik evaluasi regresi dan klasifikasi berdasarkan struktur biaya kesalahan asimetris.",
@@ -93,5 +93,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Strategi Stratified, Group, dan Time-Series Cross-Validation bebas optimisme semu.",
+    "Pemisahan ketat model selection pada validation set dari held-out test set.",
+    "Nested Cross-Validation serta penyetelan GridSearch dan RandomizedSearch.",
+    "Diagnosis overfitting/underfitting memakai Learning Curves.",
+    "Explainability global dan lokal menggunakan Permutation Importance & konsep SHAP/LIME."
+  ]
 }

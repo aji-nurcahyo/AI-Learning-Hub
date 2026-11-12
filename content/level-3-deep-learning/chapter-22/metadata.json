@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Backpropagation & Optimization",
   "status": "published",
-  "description": "Modul komprehensif algoritma propagasi balik dan optimasi jaringan saraf tiruan (Backpropagation & Optimization): perumusan matematis optimasi fungsi rugi multivariat, aturan rantai kalkulus (chain rule) dan topologi computational graph (graf komputasi DAG), perbandingan tiga paradigma diferensiasi komputasi (finite difference, diferensiasi simbolik, dan automatic differentiation), analisis galat orde O(e^2) beda terpusat vs pembatalan katastrofik presisi mesin, studi kasus worked numerical example propagasi balik manual langkah demi langkah terverifikasi (arsitektur 2-2-1) yang membuktikan penurunan nilai rugi MSE seketika, protokol verifikasi gradient checking dengan batas presisi relative error < 1e-7, taksonomi komparatif varian Gradient Descent (Batch GD, Stochastic GD, Mini-Batch GD), matematika algoritma optimasi tingkat lanjut (Momentum dengan inersia gerak, RMSprop dengan rata-rata bergerak kuadratik gradien, dan Adam Optimizer dengan koreksi bias pada iterasi awal), dinamika pelatihan jaringan dalam beserta fenomena vanishing gradients dan exploding gradients, strategi inisialisasi bobot parameter (Zero Initialization, Standard Normal, Xavier/Glorot untuk Tanh/Sigmoid, dan He/Kaiming untuk ReLU) guna menjaga variansi propagasi sinyal forward dan backward, teknik penstabilan gradient clipping (clipping by value vs clipping by global norm dengan preservasi arah gradien 100%), eksperimen stabilitas laju pembelajaran (learning rate) dan batas Lipschitz, implementasi penuh sistem pelatihan Multilayer Perceptron dari awal (scratch) menggunakan NumPy murni pada dataset non-linier konsentris, serta analisis konsumsi daya komputasi dan tata kelola Responsible AI.",
+  "description": "Buka kotak hitam pelatihan Neural Network dengan memahami mekanisme Backpropagation dan algoritma optimasi modern. Anda akan menurunkan aturan rantai pada graf komputasi, memverifikasi gradien secara numerik, serta membandingkan SGD, Momentum, RMSProp, dan Adam.",
   "objectives": [
     "Menjelaskan konsep propagasi balik (backpropagation) dan peran pentingnya dalam pelatihan jaringan saraf tiruan.",
     "Menurunkan turunan parsial fungsi rugi terhadap parameter menggunakan aturan rantai multivariat (multivariate chain rule).",
@@ -91,5 +91,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Representasi ekspresi jaringan saraf sebagai Computational Graph terarah.",
+    "Penurunan aturan rantai multivariat langkah demi langkah pada jaringan 2-2-1.",
+    "Implementasi Gradient Checking memvalidasi analitik vs finite difference.",
+    "Diagnosis masalah vanishing/exploding gradients dan mitigasi inisialisasi bobot.",
+    "Dinamika optimasi SGD, Momentum, RMSProp, Adam, dan Learning Rate Scheduling."
+  ]
 }

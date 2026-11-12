@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { validateChapter, validateAll } from './validate.mjs';
+import { validateChapter, validateTrack, validateAll } from './validate.mjs';
 import { parseRoute } from '../src/routes.ts';
 import { parseMarkdownBlocks, parseInlineTokens } from '../src/components/markdownParser.ts';
 
@@ -576,5 +576,33 @@ P(A|B) = \\frac{P(B|A)P(A)}{P(B)}
   assert.ok(blocks.some(b => b.type === 'heading' && b.level === 5));
   assert.ok(blocks.some(b => b.type === 'math'));
   assert.equal(toc.some(t => t.text === 'Sub-heading level 5' && t.level === 5), true);
+});
+
+test('track routes and sub-views resolve cleanly and reject invalid sub-views', () => {
+  for (const id of ['computer-vision', 'nlp-llm', 'aiot-edge', 'telecommunications', 'robotics']) {
+    assert.deepEqual(parseRoute(`#track/${id}`), { type: 'track', id, view: undefined });
+    assert.deepEqual(parseRoute(`#track/${id}/practice`), { type: 'track', id, view: 'practice' });
+    assert.deepEqual(parseRoute(`#track/${id}/capstone`), { type: 'track', id, view: 'capstone' });
+  }
+  assert.equal(parseRoute('#track/robotics/invalid').type, 'missing');
+});
+
+test('all five specialization tracks are published and pass full roadmap & lab validation', () => {
+  const tracksList = JSON.parse(readFileSync(new URL('../content/specializations/tracks.json', import.meta.url), 'utf8'));
+  assert.equal(tracksList.length, 5);
+  const chapters = [];
+  for (let i = 1; i <= 40; i++) {
+    const lvl = i <= 10 ? 'level-1-ai-foundations' : i <= 20 ? 'level-2-machine-learning' : i <= 30 ? 'level-3-deep-learning' : 'level-4-advanced-ai';
+    chapters.push({ data: JSON.parse(readFileSync(new URL(`../content/${lvl}/chapter-${String(i).padStart(2, '0')}/metadata.json`, import.meta.url), 'utf8')) });
+  }
+  for (const t of tracksList) {
+    assert.equal(t.status, 'published', `Track ${t.id} should be published`);
+    assert.deepEqual(validateTrack(t, chapters), []);
+  }
+});
+
+test('no user-facing Reveal.js label exists in frontend presentation cards', () => {
+  const mainTsx = readFileSync(new URL('../src/main.tsx', import.meta.url), 'utf8');
+  assert.equal(/Reveal\.js/i.test(mainTsx), false);
 });
 

@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Regression Algorithms",
   "status": "published",
-  "description": "Modul komprehensif algoritma regresi: Ordinary Least Squares (OLS), regresi berganda multivariat, Polynomial Regression, regularisasi L2 (Ridge), L1 (Lasso), ElasticNet, evaluasi metrik MAE/MSE/RMSE/R², serta analisis diagnostik residual.",
+  "description": "Pahami algoritma Supervised Learning untuk memprediksi nilai numerik kontinu melalui pendekatan regresi. Pembahasan mencakup Ordinary Least Squares, regresi multivariat & polinomial, regularisasi Ridge/Lasso/ElasticNet, serta interpretasi residual dan metrik MAE/RMSE/R².",
   "objectives": [
     "Menjelaskan konsep Regression dalam Supervised Learning.",
     "Membedakan simple dan multiple Linear Regression.",
@@ -76,5 +76,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Pemodelan Simple dan Multiple Linear Regression dengan Ordinary Least Squares.",
+    "Interpretasi koefisien bobot, intersep, serta diagnostik pola residual.",
+    "Penangkapan pola non-linear menggunakan Polynomial Regression.",
+    "Pengendalian kompleksitas lewat regularisasi Ridge (L2), Lasso (L1), dan ElasticNet.",
+    "Evaluasi komparatif menggunakan MAE, MSE, RMSE, dan koefisien determinasi R²."
+  ]
 }

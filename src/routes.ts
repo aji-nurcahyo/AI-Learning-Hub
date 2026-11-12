@@ -2,7 +2,7 @@ export type Route =
   | { type: 'home' | 'about' | 'missing' }
   | { type: 'getting-started'; module?: string }
   | { type: 'level' | 'chapter'; id: number; view?: string }
-  | { type: 'track'; id: string };
+  | { type: 'track'; id: string; view?: 'practice' | 'capstone' };
 
 export function parseRoute(hash: string): Route {
   const route = hash.replace(/^#\/?/, '');
@@ -19,6 +19,8 @@ export function parseRoute(hash: string): Route {
       return { type: match[1] as 'level' | 'chapter', id, view: match[3] };
     }
   }
-  const track = /^track\/([a-z-]+)$/.exec(route);
-  return track ? { type: 'track', id: track[1] } : { type: 'missing' };
+  const track = /^track\/([a-z-]+)(?:\/(practice|capstone))?$/.exec(route);
+  return track
+    ? { type: 'track', id: track[1], view: track[2] as 'practice' | 'capstone' | undefined }
+    : { type: 'missing' };
 }

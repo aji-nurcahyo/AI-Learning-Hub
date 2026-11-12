@@ -6,7 +6,7 @@
   "title": "Knowledge Representation & Reasoning",
   "subtitle": "Logika Proposisional, First-Order Logic, Mesin Inferensi (Forward & Backward Chaining), dan Sistem Pakar",
   "status": "published",
-  "description": "Mempelajari formalisasi representasi pengetahuan dalam kecerdasan buatan: logika proposisional, tabel kebenaran, entailment, aturan inferensi (Modus Ponens), pengantar First-Order Logic, mesin inferensi Forward dan Backward Chaining, serta arsitektur sistem pakar berbasis kaidah.",
+  "description": "Bangun sistem penalaran logis melalui formalisasi Knowledge Representation dan mesin inferensi terstruktur. Chapter ini menghubungkan logika proposisional, First-Order Logic, aturan Modus Ponens, serta mekanisme Forward dan Backward Chaining.",
   "objectives": [
     "Menjelaskan peran Knowledge Representation dalam Artificial Intelligence.",
     "Membedakan facts, rules, knowledge base, dan inference.",
@@ -64,5 +64,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan facts, rules, knowledge base, dan mekanisme inferensi.",
+    "Representasi pengetahuan formal memakai Propositional dan First-Order Logic.",
+    "Penerapan tabel kebenaran, entailment, dan aturan inferensi Modus Ponens.",
+    "Perbandingan strategi inferensi Forward Chaining dan Backward Chaining.",
+    "Implementasi mesin pakar sederhana berbasis aturan di Python."
+  ]
 }

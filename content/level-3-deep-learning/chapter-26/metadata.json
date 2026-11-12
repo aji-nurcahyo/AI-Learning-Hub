@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Computer Vision Applications",
   "status": "published",
-  "description": "Modul komprehensif implementasi Computer Vision Applications: taksonomi spektrum visi komputer dari klasifikasi, deteksi objek, segmentasi semantik/instans, hingga pelacakan spasio-temporal dan analitik video, struktur representasi citra digital dalam memori matriks piksel uint8, komparasi standar memori kanal OpenCV BGR versus display RGB, formulasi bobot fisiologis luminansi Grayscale ITU-R BT.601, isolasi fitur warna pada ruang warna HSV dan LAB dengan fungsi inRange, dasar konvolusi spasial 2D, komparasi kinerja filter reduksi derau spasial (Box, Gaussian, Median untuk derau impulsif Salt-and-Pepper, dan Bilateral filter pengawet tepi) dengan evaluasi metrik objektif Peak Signal-to-Noise Ratio (PSNR), analisis diskontinuitas dan operator gradien parsial Sobel, arsitektur multi-tahap detektor tepi Canny (penghalusan Gaussian, gradien Sobel, penekanan non-maksimum, dan histeresis ganda), teori morfologi matematika citra biner mencakup operasi erosi, dilasi, opening untuk eliminasi derau luar, closing untuk penutupan lubang internal, dan ekstraksi batas morfologis terverifikasi idempoten, segmentasi ambang batas otomatis metode Otsu yang memaksimalkan variansi antar-kelas serta adaptive thresholding, ekstraksi properti geometri komponen terhubung (luas area, bounding box, dan centroid) via connectedComponentsWithStats, evaluasi kuantitatif segmentasi biner mencakup Mask IoU (Jaccard Index), Dice Similarity Coefficient (F1-Score), Pixel Accuracy, dan pembuktian relasi matematis analitis Dice terhadap IoU, arsitektur pelacakan objek multi-frame (Multi-Object Tracking) berbasis Tracking-by-Detection menggunakan algoritma Centroid Tracking dengan metrik jarak spasial Euclidean dan manajemen siklus hidup status trek (registration, update, disappeared, deregistration), pemrosesan deret frame video digital serta pembedaan kritis antara Input Video FPS versus Processing FPS, analitik video penghitungan objek melintasi garis maya (virtual tripwire line crossing) dengan deteksi vektor arah dan mitigasi penghitungan ganda (double-counting prevention), rekayasa arsitektur pipeline modular end-to-end terintegrasi (Preprocessor, Detector, Tracker, Visualizer) teroptimasi CPU dengan profiling distribusi latensi per frame, serta pertimbangan etika kecerdasan visual, pengaburan wajah/plat nomor, privasi visual (Responsible AI), dan analisis batas ketahanan sistem.",
+  "description": "Eksplorasi beragam penerapan nyata Computer Vision di luar klasifikasi gambar statis. Chapter ini mencakup ruang warna RGB/HSV/LAB, filter spasial peredam derau, deteksi tepi Canny, pengantar segmentasi citra, pelacakan objek spasio-temporal, hingga etika privasi penglihatan komputer.",
   "objectives": [
     "Membedakan spektrum tugas Computer Vision: klasifikasi, deteksi objek, segmentasi semantik, segmentasi instans, dan pelacakan video.",
     "Merepresentasikan struktur citra digital dalam memori matriks piksel dan membedakan format BGR terhadap RGB.",
@@ -101,5 +101,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Spektrum tugas visi komputer: klasifikasi, deteksi, segmentasi, dan tracking.",
+    "Konversi ruang warna RGB/Grayscale ITU-R BT.601, HSV, dan segmentasi berbasis warna.",
+    "Filter spasial Gaussian vs Median untuk reduksi noise serta evaluasi PSNR.",
+    "Operator deteksi tepi Sobel dan algoritma multi-tahap Canny.",
+    "Prinsip Semantic/Instance Segmentation dan pelacakan objek IoU antar frame."
+  ]
 }

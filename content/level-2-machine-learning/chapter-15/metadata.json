@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Decision Trees & Ensemble Learning",
   "status": "published",
-  "description": "Modul komprehensif pohon keputusan dan pembelajaran ansambel: pemartisian rekursif, formulasi Shannon Entropy & Gini Impurity, Information Gain, CART, pemangkasan pohon (pre-pruning & cost-complexity post-pruning ccp_alpha), Bagging, Random Forest dengan feature subsampling dan evaluasi Out-of-Bag (OOB), serta boosting sekuensial (AdaBoost & Gradient Boosting).",
+  "description": "Pelajari kekuatan Decision Tree serta metode Ensemble Learning modern untuk data tabular. Anda akan menurunkan Gini Impurity dan Entropy, mencegah overfitting via pruning, hingga membangun Random Forest dan Gradient Boosting (GBM/XGBoost-style).",
   "objectives": [
     "Menjelaskan konsep Decision Tree untuk Classification dan Regression.",
     "Menginterpretasikan root node, decision nodes, branches, dan leaf nodes.",
@@ -81,5 +81,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Pemartisian rekursif Decision Tree memakai Shannon Entropy dan Gini Impurity.",
+    "Pengendalian kompleksitas melalui pre-pruning dan cost-complexity pruning.",
+    "Prinsip Bagging & Random Forest untuk mereduksi varians model.",
+    "Mekanisme Boosting sekuensial (AdaBoost dan Gradient Boosting).",
+    "Evaluasi trade-off interpretabilitas pohon tunggal vs akurasi ensemble."
+  ]
 }

@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "Data Preparation & Exploratory Analysis",
   "status": "published",
-  "description": "Metodologi penyiapan data dan analisis eksploratif: pembersihan inkonsistensi string, imputasi missing values terkelompok, deteksi pencilan Tukey IQR vs domain context, transformasi fitur numerik dan kategorikal, visualisasi korelasi, serta pencegahan kebocoran data.",
+  "description": "Pelajari metodologi Data-Centric AI untuk membersihkan dan memahami dataset mentah sebelum pelatihan model. Topik meliputi diagnosis kekosongan data, imputasi terkelompok, deteksi pencilan dengan konteks domain, serta rekayasa visualisasi eksploratif.",
   "objectives": [
     "Menjelaskan filosofi Data-Centric AI dan dampak kualitas data mentah terhadap keandalan model cerdas.",
     "Mengidentifikasi tipe-tipe anomali data tabular, ketidakkonsistenan penulisan string, dan duplikasi observasi.",
@@ -75,5 +75,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Prinsip Data-Centric AI dan identifikasi anomali dataset tabular.",
+    "Penanganan mekanisme kekosongan data MCAR, MAR, dan MNAR.",
+    "Imputasi terkelompok menjaga konsistensi fisik fitur lintas zona.",
+    "Deteksi outlier dengan Tukey IQR dan Z-Score berbasis konteks domain.",
+    "Transformasi fitur numerik/kategorikal dan ringkasan EDA informatif."
+  ]
 }

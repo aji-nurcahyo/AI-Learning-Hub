@@ -63,7 +63,11 @@ export function DeckShell({
     return () => {
       deck.current = null;
       delete (window as unknown as { Reveal?: RevealApi }).Reveal;
-      void api.destroy();
+      try {
+        Promise.resolve((api as unknown as { destroy?: () => unknown }).destroy?.()).catch(() => {});
+      } catch {
+        /* Safe cleanup when unmounting before async init completes. */
+      }
     };
   }, []);
 

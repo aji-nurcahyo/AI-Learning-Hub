@@ -6,7 +6,7 @@
   "title": "Search Algorithms: Uninformed & Informed Search",
   "subtitle": "Eksplorasi Ruang Keadaan, Algoritma Pencarian Klasik (BFS, DFS, DLS, IDDFS, UCS), Heuristik, Greedy Best-First, dan Optimasi A*",
   "status": "published",
-  "description": "Mempelajari algoritma pencarian kecerdasan buatan dari prinsip pohon/graf pencarian, strategi pencarian tanpa informasi (BFS, DFS, DLS, IDDFS, UCS), hingga pencarian terinformasi heuristik (Greedy Best-First dan A*), dilengkapi analisis kelengkapan, optimalitas, dan kompleksitas komputasi.",
+  "description": "Pelajari bagaimana sistem AI menemukan solusi secara sistematis melalui algoritma pencarian pada pohon dan graf. Pembahasan mencakup strategi Uninformed Search (BFS, DFS, UCS) hingga Informed Search berbantuan heuristik seperti A*.",
   "objectives": [
     "Menjelaskan komponen dan mekanisme Search Algorithms.",
     "Membedakan Search Tree dan Search Graph.",
@@ -66,5 +66,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Representasi ruang masalah dalam bentuk Search Tree dan Search Graph.",
+    "Strategi Uninformed Search: BFS, DFS, DLS, IDDFS, dan Uniform Cost Search.",
+    "Strategi Informed Search: Greedy Best-First Search dan A* Search.",
+    "Konsep fungsi heuristik, admissibility, serta consistency dalam optimalitas.",
+    "Implementasi Python dan evaluasi efisiensi waktu serta memori algoritma search."
+  ]
 }

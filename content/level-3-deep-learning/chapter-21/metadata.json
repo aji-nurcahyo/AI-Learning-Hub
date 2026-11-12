@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Neural Network Fundamentals",
   "status": "published",
-  "description": "Modul fundamental arsitektur Jaringan Saraf Tiruan (Neural Network Fundamentals): transisi paradigma dari feature engineering klasik ke representation learning, model matematis neuron buatan McCulloch-Pitts, kombinasi linier terbobot (weighted sum) dan peran parameter bias, Rosenblatt Perceptron dan gerbang logika biner linier, bukti kontradiksi matematis ketidakmampuan Perceptron pada masalah non-linier XOR (Minsky & Papert 1969) serta solusi dekomposisi 2-layer, pembuktian keruntuhan linier (linear collapse) tanpa aktivasi non-linier, taksonomi dan penurunan matematis fungsi aktivasi (Sigmoid, Tanh, ReLU, Leaky ReLU, Softmax), fenomena saturasi gradien dan Dead ReLU, trik stabilitas numerik Softmax subtract-max, topologi Multilayer Perceptron (MLP) dan penghitungan parameter terbobot, Teorema Aproksimasi Universal (Cybenko 1989 & Hornik 1991), alur komputasi propagasi maju (forward propagation) langkah demi langkah terverifikasi (arsitektur 2-3-1), vektorisasi pemrosesan batch dan validasi dimensi tensor, pemilihan lapisan luaran dan fungsi rugi (Mean Squared Error, Binary Cross-Entropy, Categorical Cross-Entropy) dengan stabilisasi pemotongan epsilon, serta batasan jaringan saraf tiruan dan prinsip kecerdasan buatan bertanggung jawab (Responsible AI).",
+  "description": "Jembatani Machine Learning klasik dengan arsitektur Artificial Neural Networks untuk representation learning. Chapter ini membedah model matematis McCulloch-Pitts, keterbatasan Perceptron pada masalah XOR, fungsi aktivasi non-linear, dan mekanisme Forward Propagation pada Multilayer Perceptron.",
   "objectives": [
     "Menjelaskan konsep Artificial Neural Networks dan perbandingannya dengan neuron biologis.",
     "Mengidentifikasi hubungan neuron buatan dengan model matematika kombinasi linier terbobot.",
@@ -93,5 +93,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Anatomi neuron buatan: kombinasi linear terbobot, parameter bias, dan aktivasi.",
+    "Keterbatasan Rosenblatt Perceptron dalam menyelesaikan masalah non-linear XOR.",
+    "Perbandingan fungsi aktivasi Sigmoid, Tanh, ReLU, Leaky ReLU, dan Softmax.",
+    "Peran lapisan tersembunyi pada Multilayer Perceptron (MLP).",
+    "Implementasi Forward Propagation dan batas keputusan non-linear di NumPy."
+  ]
 }

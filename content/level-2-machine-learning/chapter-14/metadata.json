@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Classification Algorithms",
   "status": "published",
-  "description": "Modul mendalam algoritma klasifikasi: Logistic Regression, Sigmoid, Decision Boundary, Multiclass (OvR/Multinomial Softmax), Teorema Bayes & Naive Bayes (Gaussian, Multinomial, Bernoulli), matriks konfusi (Accuracy, Precision, Recall, Specificity, F1), kalibrasi threshold, analisis ROC-AUC & PR-AUC, serta mitigasi class imbalance.",
+  "description": "Kuasai pemodelan masalah klasifikasi kategori dari prediksi biner hingga multikelas. Chapter ini membedah Logistic Regression dengan fungsi sigmoid, batas keputusan linear, Naive Bayes berbasis Teorema Bayes, serta audit matriks kebingungan dan kurva ROC-AUC.",
   "objectives": [
     "Menjelaskan konsep Classification dalam Supervised Learning.",
     "Membedakan binary, multiclass, dan multilabel classification.",
@@ -82,5 +82,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Klasifikasi biner, multikelas (OvR/Softmax), dan multilabel.",
+    "Mekanisme Logistic Regression, probabilitas sigmoid, dan odds ratio.",
+    "Varian Naive Bayes: Gaussian, Multinomial, dan Bernoulli.",
+    "Pembacaan Confusion Matrix: Precision, Recall, Specificity, dan F1-Score.",
+    "Analisis ambang keputusan menggunakan kurva ROC-AUC dan Precision-Recall."
+  ]
 }

@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Large Language Models & Generative AI",
   "status": "published",
-  "description": "Modul komprehensif implementasi Large Language Models & Generative AI: ruang lingkup pemodelan generatif versus diskriminatif, taksonomi keluarga model generatif (Autoregressive Transformers, Diffusion Models, VAE, GAN), tokenisasi subword BPE, manajemen kosakata, Token ID, dan pembatasan jendela konteks (Context Window), formulasi probabilistik pemodelan bahasa dan prediksi token berikutnya (Next-Token Prediction) berbasis aturan perkalian rantai probabilitas, fungsi rugi Cross-Entropy Loss, Negative Log-Likelihood (NLL), dan metrik evaluasi Perplexity (PPL), arsitektur Decoder-Only Transformer dan mekanisme autoregresif rekursif, tiga tahapan siklus hidup pelatihan LLM modern (Pre-training mandiri skala masif, Supervised Fine-Tuning/Instruction Tuning dengan chat templates, dan Alignment kepatuhan etika 3H via RLHF dan DPO), adaptasi efisien parameter (PEFT) dan dekomposisi matriks rank rendah LoRA (W_0 + alpha/r * B*A) dengan pembuktian penghematan memori >90%, perbandingan strategi decoding (Greedy deterministik dan jebakan pengulangan kata, Temperature scaling kendali entropi probabilitas, Top-k filtering pemotongan ekor distribusi panjang, dan Nucleus Top-p sampling adaptif dinamis), In-Context Learning tanpa pembaruan bobot (pola Zero-Shot, Few-Shot, dan ekstraksi skema JSON terstruktur), prinsip Retrieval-Augmented Generation (RAG) untuk grounding fakta eksternal, taksonomi dan evaluasi kuantitatif halusinasi (Groundedness Score dan Hallucination Rate), sistem pertahanan Guardrails masukan (pencegahan Prompt Injection) dan keluaran (redaksi otomatis data pribadi PII), tantangan evaluasi model bahasa (BLEU, ROUGE, Exact Match, LLM-as-a-judge), implementasi model TinyGPT Decoder-Only mandiri pada CPU, serta kerangka kerja Responsible Generative AI (NIST AI RMF).",
+  "description": "Selami cara kerja Large Language Models (LLM) serta paradigma Generative AI secara teknis dan realistis. Pembahasan meliputi tokenisasi subword, next-token prediction, strategi decoding (temperature, top-k, top-p), Instruction Tuning & Alignment, Prompt Engineering, serta batasan halusinasi.",
   "objectives": [
     "Menjelaskan konsep dasar Generative AI dan perbedaan pemodelan generatif versus diskriminatif.",
     "Menggunakan teknik tokenisasi subword dan pemetaan Token ID untuk pengelolaan jendela konteks.",
@@ -107,5 +107,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan pemodelan generatif (Autoregressive/Diffusion/VAE) vs diskriminatif.",
+    "Tokenisasi subword BPE/WordPiece dan siklus generasi autoregresif bertahap.",
+    "Strategi sampling: Greedy Decoding, Temperature, Top-k, dan Nucleus Top-p.",
+    "Tahapan pasca-pelatihan: Pre-training, Supervised Fine-Tuning, dan RLHF/DPO.",
+    "Teknik Prompt Engineering efektif serta mitigasi keterbatasan halusinasi faktual."
+  ]
 }

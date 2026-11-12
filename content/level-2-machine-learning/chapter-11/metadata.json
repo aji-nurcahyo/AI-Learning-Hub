@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Introduction to Machine Learning",
   "status": "published",
-  "description": "Pengantar fundamental Machine Learning: pergeseran paradigma dari sistem berbasis aturan, taksonomi Supervised, Unsupervised, dan Reinforcement Learning, struktur fitur dan label, siklus pelatihan, validasi, pengujian, generalisasi, Bias–Variance Trade-off, peran krusial baseline model, pencegahan data leakage, serta etika Responsible ML.",
+  "description": "Masuki paradigma Machine Learning di mana model belajar pola langsung dari data alih-alih aturan manual. Chapter ini memperkenalkan taksonomi Supervised, Unsupervised, dan Reinforcement Learning beserta siklus training, validasi, testing, dan pencegahan overfitting.",
   "objectives": [
     "Menjelaskan konsep Machine Learning dan perbedaannya dengan Rule-Based Systems.",
     "Mengidentifikasi Supervised, Unsupervised, dan Reinforcement Learning.",
@@ -77,5 +77,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan fundamental Rule-Based Systems dan pembelajaran dari data.",
+    "Taksonomi Supervised, Unsupervised, serta Reinforcement Learning.",
+    "Pemisahan tegas Training, Validation, Testing, dan Inference.",
+    "Konsep generalisasi, bias-variance trade-off, overfitting, dan underfitting.",
+    "Penetapan model baseline sederhana sebagai jangkar evaluasi objektif."
+  ]
 }

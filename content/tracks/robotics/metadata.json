@@ -1,0 +1,112 @@
+{
+  "id": "robotics",
+  "code": "E",
+  "slug": "robotics",
+  "title": "Robotics & Intelligent Systems",
+  "status": "published",
+  "focus": "Intelligent agents, autonomous decision-making, search algorithms, perception, state estimation, dan Reinforcement Learning.",
+  "shortDescription": "Jalur spesialisasi robotika cerdas dan sistem otonom: pemodelan agen rasional, pencarian jalur A*, persepsi visi komputer, fusi multi-sensor, dan pengambilan keputusan Reinforcement Learning.",
+  "topics": [
+    "Search-Based Path Planning",
+    "A* Navigation & State Space",
+    "GridWorld & Q-Learning",
+    "Policy Evaluation",
+    "Visual Perception & Fusion",
+    "Autonomous Safety Controls"
+  ],
+  "learningOutcomes": [
+    "Memformulasi ruang keadaan agen otonom melalui PEAS serta algoritma pencarian BFS dan A*.",
+    "Mengenalkan konsep State Estimation domain-spesifik sebagai perluasan estimasi posisi dari observasi bising.",
+    "Mengimplementasikan simulasi GridWorld dan algoritma kontrol Q-Learning beserta evaluasi kebijakan.",
+    "Menggabungkan persepsi visual CNN/OpenCV dengan sinyal sensor melalui mekanisme fusi multimodal.",
+    "Menerapkan batas keselamatan, validasi aksi agen, dan Human Approval Gate."
+  ],
+  "prerequisites": [3, 4, 5, 6],
+  "roadmap": {
+    "foundation": [3, 4, 5, 6],
+    "core": [11, 21, 23, 24, 26, 35],
+    "advanced": [34, 37, 38, 39]
+  },
+  "labs": [
+    {
+      "title": "Search-Based Path Planning (BFS/DFS)",
+      "chapterId": 4,
+      "scriptPaths": [
+        "content/level-1-ai-foundations/chapter-04/code/bfs_search.py"
+      ]
+    },
+    {
+      "title": "A* Heuristic Navigation",
+      "chapterId": 4,
+      "scriptPaths": [
+        "content/level-1-ai-foundations/chapter-04/code/astar_search.py",
+        "content/tracks/robotics/labs/robotics_navigation_lab.py"
+      ]
+    },
+    {
+      "title": "Grid State Representation",
+      "chapterId": 3,
+      "scriptPaths": [
+        "content/level-1-ai-foundations/chapter-03/code/04_grid_state_space.py"
+      ]
+    },
+    {
+      "title": "GridWorld Environment Simulation",
+      "chapterId": 35,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-35/code/gridworld_environment.py"
+      ]
+    },
+    {
+      "title": "Q-Learning Navigation Policy",
+      "chapterId": 35,
+      "scriptPaths": [
+        "content/tracks/robotics/labs/robotics_navigation_lab.py",
+        "content/level-4-advanced-ai/chapter-35/code/q_learning.py"
+      ]
+    },
+    {
+      "title": "Iterative Policy Evaluation",
+      "chapterId": 35,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-35/code/policy_evaluation.py"
+      ]
+    },
+    {
+      "title": "Computer Vision Perception Pipeline",
+      "chapterId": 26,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-26/code/computer_vision_pipeline.py"
+      ]
+    },
+    {
+      "title": "Multi-Sensor Fusion Decision Making",
+      "chapterId": 38,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-38/code/cross_attention_fusion.py"
+      ]
+    }
+  ],
+  "capstone": {
+    "title": "Autonomous GridWorld Navigation with Intelligent Perception",
+    "summary": "Merancang navigasi agen otonom terintegrasi persepsi pada simulator GridWorld dengan pembandingan baseline pencarian A*, kebijakan RL, serta kendala keselamatan (tanpa mewajibkan robot fisik).",
+    "rubricTotal": 100
+  },
+  "references": [
+    {
+      "title": "Russell & Norvig (2020), Artificial Intelligence: A Modern Approach (4th ed.)",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Sutton & Barto (2018), Reinforcement Learning: An Introduction (2nd ed.)",
+      "url": "https://mitpress.mit.edu/9780262039246/reinforcement-learning/",
+      "status": "verified"
+    },
+    {
+      "title": "Thrun, Burgard & Fox (2005), Probabilistic Robotics",
+      "url": "https://mitpress.mit.edu/9780262201629/probabilistic-robotics/",
+      "status": "verified"
+    }
+  ]
+}

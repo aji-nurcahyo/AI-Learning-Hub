@@ -8,7 +8,7 @@ const errors = [];
 const warnings = [];
 
 // Audit all published chapters
-const metadataFiles = walk(resolve(root, 'content')).filter(f => f.endsWith('metadata.json'));
+const metadataFiles = walk(resolve(root, 'content')).filter(f => !f.replaceAll('\\', '/').includes('/tracks/') && f.endsWith('metadata.json'));
 
 for (const metaFile of metadataFiles) {
   const dir = dirname(metaFile);

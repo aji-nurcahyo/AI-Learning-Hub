@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "AI Foundations Capstone",
   "status": "published",
-  "description": "Proyek integrasi puncak Level 1 (AI Foundations): perumusan masalah nyata, pemilihan solusi AI vs deterministik, desain input-processing-output, implementasi prototype Python Smart Sensor Data Quality Monitor, pengujian terukur, serta audit Responsible AI.",
+  "description": "Rangkum seluruh fondasi Level 1 melalui proyek integrasi pembuatan prototipe Smart Sensor Data Quality Monitor. Anda akan membandingkan solusi deterministik vs AI, menguji pipeline data end-to-end, dan menuliskan dokumentasi evaluatif jujur.",
   "objectives": [
     "Mengidentifikasi dan merumuskan masalah nyata yang sesuai untuk penyelesaian berbasis AI atau pendekatan deterministik.",
     "Memilih pendekatan AI yang sesuai dengan karakteristik masalah.",
@@ -79,5 +79,11 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perumusan masalah rekayasa serta pemilihan pendekatan AI vs deterministik.",
+    "Integrasi validasi masukan, statistik dasar, dan penyiapan data sensor.",
+    "Pengembangan prototipe terstruktur berbasis Python di CPU lokal.",
+    "Evaluasi kesalahan sistematis, batasan skop, dan asesmen risiko awal."
+  ]
 }

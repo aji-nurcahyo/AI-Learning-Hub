@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Edge AI & Model Optimization",
   "status": "published",
-  "description": "Optimasi model jaringan saraf dan Edge AI: profiling parameter dan latensi CPU, matematika kuantisasi FP32-ke-INT8, Post-Training Dynamic & Static Quantization, Quantization-Aware Training (QAT), Unstructured vs Structured Pruning, Knowledge Distillation Teacher-Student, serta keterbatasan SRAM/Flash mikrokontroler.",
+  "description": "Pelajari teknik mengompresi dan mempercepat model Deep Learning agar layak dijalankan pada perangkat Edge dengan keterbatasan SRAM, Flash, dan daya. Pembahasan mencakup profiling CPU, kuantisasi FP32-ke-INT8 (Dynamic & Static), Unstructured vs Structured Pruning, serta Knowledge Distillation Teacher-Student.",
   "objectives": [
     "Menjelaskan konsep Edge AI dan manfaat pemrosesan on-device terhadap latensi real-time, privasi data, serta ketangguhan offline.",
     "Membedakan karakteristik operasional cloud inference dibandingkan on-device edge inference.",
@@ -80,5 +80,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Karakteristik on-device Edge AI vs Cloud Inference beserta anggaran SRAM/Flash MCU.",
+    "Profiling parameter, ukuran .pt di disk, dan latensi CPU hangat (Mean/P50/P95).",
+    "Matematika kuantisasi Symmetric/Asymmetric Affine serta praktik Dynamic & Static INT8.",
+    "Perbandingan fisik Unstructured Magnitude Pruning vs Structured Channel Pruning.",
+    "Knowledge Distillation Teacher beku ke Student ramping dan batas simulasi CPU."
+  ]
 }

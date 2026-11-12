@@ -6,7 +6,7 @@
   "title": "Intelligent Agents & AI Problem Solving",
   "subtitle": "Arsitektur Agen Cerdas, Lingkungan Tugas PEAS, dan Formulasi Masalah Ruang Keadaan",
   "status": "published",
-  "description": "Mempelajari prinsip agen rasional, deskripsi lingkungan tugas PEAS, taksonomi lingkungan, hierarki 5 arsitektur agen (Simple Reflex, Model-Based, Goal-Based, Utility-Based, Learning Agent), serta formulasi matematis masalah ruang keadaan.",
+  "description": "Pahami prinsip kerja Intelligent Agent dalam berinteraksi dengan lingkungannya secara rasional. Anda akan memformulasikan tugas melalui kerangka PEAS serta merancang arsitektur agen mulai dari Simple Reflex hingga Learning Agent.",
   "objectives": [
     "Menjelaskan konsep Intelligent Agent dan interaksi agent dengan environment.",
     "Mengidentifikasi sensors, actuators, percepts, actions, dan performance measures.",
@@ -62,5 +62,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Konsep rasionalitas agen melalui sensor, aktuator, dan performance measure.",
+    "Perumusan lingkungan tugas menggunakan kerangka PEAS.",
+    "Klasifikasi karakteristik lingkungan: observable, deterministic, dan episodic.",
+    "Lima arsitektur agen: Simple Reflex hingga Utility-Based dan Learning Agent.",
+    "Formulasi masalah pencarian melalui state, actions, dan goal test."
+  ]
 }

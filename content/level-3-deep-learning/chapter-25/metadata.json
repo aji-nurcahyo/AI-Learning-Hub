@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Object Detection & YOLO",
   "status": "published",
-  "description": "Modul komprehensif implementasi Object Detection dan arsitektur YOLO (You Only Look Once): transisi dari klasifikasi citra global ke pemahaman spasial multi-objek simultan, representasi geometris bounding box 2D dan perumusan analitis konversi format PASCAL VOC (xyxy) ke format pusat YOLO (xywh) serta normalisasi koordinat [0.0, 1.0], formulasi matematis luas irisan (intersection), luas gabungan (union), dan rasio Intersection over Union (IoU) terverifikasi analitis (1/7), algoritma Non-Maximum Suppression (NMS) berbasis perangkingan skor keyakinan dan penapisan IoU untuk eliminasi prediksi duplikat redundan dengan perbandingan NMS Class-Aware vs Class-Agnostic, protokol evaluasi standar COCO dan PASCAL VOC mencakup pencocokan greedy predictions terhadap ground truth, True Positive, False Positive, False Negative, kurva Precision-Recall terinterpolasi, Average Precision (AP), komparasi kritis mAP@0.5 terhadap mAP@0.5:0.95, evolusi dan anatomi arsitektur one-stage YOLO (Backbone CSP/C2f, Neck PANet, Decoupled Detection Head, dan deteksi multi-skala P3/P4/P5), transisi anchor-based ke anchor-free, tata kelola dataset anotasi format YOLO (.txt) dan audit pencegahan kebocoran data (zero data leakage), pipeline inferensi model terlatih YOLOv8n teroptimasi CPU dengan latensi terukur, eksperimen trade-off ambang batas keyakinan (Confidence Threshold) terhadap precision dan recall, visualisasi diagnostik kode warna TP/FP/FN, serta pertimbangan etis Responsible Computer Vision dan privasi visual.",
+  "description": "Perluas kemampuan klasifikasi citra ke lokalisasi dan deteksi banyak objek sekaligus menggunakan paradigma YOLO. Anda akan menguasai format koordinat Bounding Box, metrik Intersection over Union (IoU), algoritma Non-Maximum Suppression (NMS), dan evaluasi mAP.",
   "objectives": [
     "Membedakan karakteristik Image Classification, Object Localization, dan Object Detection.",
     "Merepresentasikan koordinat Bounding Box dalam format PASCAL VOC (xyxy), format pusat YOLO (xywh), dan koordinat ternormalisasi.",
@@ -91,5 +91,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan Image Classification, Object Localization, dan Object Detection.",
+    "Konversi koordinat Bounding Box format PASCAL VOC (xyxy) dan YOLO (xywh).",
+    "Perhitungan analitis dan kode Python untuk Intersection over Union (IoU).",
+    "Penapisan deteksi duplikat dengan Non-Maximum Suppression (Class-Aware & Agnostic).",
+    "Konsep deteksi satu-tahap (single-stage grid YOLO) serta evaluasi Precision-Recall & mAP."
+  ]
 }

@@ -1,0 +1,113 @@
+{
+  "id": "telecommunications",
+  "code": "D",
+  "slug": "telecommunications",
+  "title": "AI for Telecommunications",
+  "status": "published",
+  "focus": "Intelligent wireless systems, network analytics, signal classification, network quality prediction, dan AI-assisted telecommunications operations.",
+  "shortDescription": "Jalur spesialisasi analitik jaringan nirkabel, klasifikasi kualitas sinyal radio (RSRP, RSRQ, SINR vs SNR), deteksi anomali trafik, dan alokasi sumber daya berbantuan AI.",
+  "topics": [
+    "Wireless Network Analytics",
+    "RSRP / RSRQ / SINR vs SNR",
+    "Network Quality Prediction",
+    "Anomaly & Fault Detection",
+    "RL Resource Allocation",
+    "Monitoring & Explainability"
+  ],
+  "learningOutcomes": [
+    "Menganalisis dataset telemetri jaringan nirkabel dan membedakan secara teknis metrik SNR vs SINR, RSRP, RSRQ, Latency, Throughput, dan Packet Loss.",
+    "Membangun model klasifikasi kualitas sinyal dan prediksi throughput/latensi jaringan bebas kebocoran data.",
+    "Mendeteksi anomali trafik dan klaster gangguan sel menggunakan clustering dan ensemble learning.",
+    "Menyimulasikan alokasi sumber daya nirkabel berbasis Reinforcement Learning tanpa mengendalikan jaringan produksi.",
+    "Mengaudit explainability model jaringan dan memantau pergeseran distribusi trafik (drift)."
+  ],
+  "prerequisites": [6, 7, 8],
+  "roadmap": {
+    "foundation": [6, 7, 8],
+    "core": [11, 12, 13, 14, 15, 16, 17, 18, 19],
+    "advanced": [27, 35, 36, 37, 39]
+  },
+  "labs": [
+    {
+      "title": "Wireless Network Dataset Analysis",
+      "chapterId": 8,
+      "scriptPaths": [
+        "content/tracks/telecommunications/labs/wireless_quality_lab.py",
+        "content/level-1-ai-foundations/chapter-08/code/exploratory_analysis.py"
+      ]
+    },
+    {
+      "title": "Signal Quality Classification (SINR vs SNR)",
+      "chapterId": 14,
+      "scriptPaths": [
+        "content/tracks/telecommunications/labs/wireless_quality_lab.py"
+      ]
+    },
+    {
+      "title": "Network Performance Prediction (Regression)",
+      "chapterId": 13,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-13/code/regression_metrics.py"
+      ]
+    },
+    {
+      "title": "Network Anomaly Clustering",
+      "chapterId": 17,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-17/code/dbscan_clustering.py"
+      ]
+    },
+    {
+      "title": "Network Fault Classification",
+      "chapterId": 15,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-15/code/random_forest_classifier.py"
+      ]
+    },
+    {
+      "title": "Time-Series Network Drift Monitoring",
+      "chapterId": 36,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-36/code/concept_drift_simulation.py"
+      ]
+    },
+    {
+      "title": "RL Resource Allocation Simulation",
+      "chapterId": 35,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-35/code/mdp_transitions.py"
+      ]
+    },
+    {
+      "title": "Network Model Evaluation & Explainability",
+      "chapterId": 19,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-19/code/permutation_importance.py",
+        "content/level-4-advanced-ai/chapter-36/code/data_drift_detection.py"
+      ]
+    }
+  ],
+  "capstone": {
+    "title": "Intelligent Wireless Network Quality Monitoring",
+    "summary": "Merancang model prediksi atau klasifikasi kualitas jaringan nirkabel (RSRP, RSRQ, SINR, SNR, Latency, Throughput, Packet Loss) beserta explainability dan drift monitoring di dataset sintetis/berlisensi.",
+    "rubricTotal": 100
+  },
+  "references": [
+    {
+      "title": "O'Shea & Hoydis (2017), An Introduction to Deep Learning for the Physical Layer",
+      "url": "https://arxiv.org/abs/1702.00832",
+      "status": "verified"
+    },
+    {
+      "title": "3GPP TS 38.215, NR Physical Layer Measurements (RSRP, RSRQ, SINR Definitions)",
+      "url": "https://www.3gpp.org/specifications-technologies",
+      "status": "verified"
+    },
+    {
+      "title": "Luong et al. (2019), Applications of Deep Reinforcement Learning in Communications and Networking",
+      "url": "https://arxiv.org/abs/1810.07862",
+      "status": "verified"
+    }
+  ]
+}
+

@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "AI Ethics, Bias & Responsible AI",
   "status": "published",
-  "description": "Prinsip etika kecerdasan buatan, taksonomi bias, metrik keadilan kelompok formal, Teorema Ketidakmungkinan Kleinberg, transparansi keterjelaskan, privasi data UU PDP No. 27/2022 & GDPR, akuntabilitas Human-in-the-Loop, serta penilaian risiko NIST AI RMF.",
+  "description": "Analisis dampak etika, bias historis, dan kerangka keadilan matematis dalam pengembangan kecerdasan buatan. Anda akan menguji trade-off keadilan kelompok (Teorema Kleinberg), kepatuhan privasi UU PDP & GDPR, serta tata kelola Human-in-the-Loop.",
   "objectives": [
     "Menjelaskan prinsip-prinsip etika kecerdasan buatan serta tanggung jawab moral seorang insinyur sistem cerdas.",
     "Mengidentifikasi taksonomi bias dalam siklus hidup AI (bias historis, representasi, pengukuran, dan algoritmik).",
@@ -78,5 +78,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Taksonomi sumber bias: historis, representasi, pengukuran, dan algoritmik.",
+    "Metrik keadilan kelompok: Demographic Parity, Equal Opportunity, Equalized Odds.",
+    "Pemahaman Teorema Ketidakmungkinan Kleinberg dalam optimasi keadilan.",
+    "Interpretability kotak putih vs Explainability model kotak hitam.",
+    "Prinsip pelindungan data pribadi berdasarkan UU PDP No. 27/2022 dan GDPR."
+  ]
 }

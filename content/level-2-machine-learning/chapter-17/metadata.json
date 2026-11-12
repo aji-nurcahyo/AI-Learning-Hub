@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Unsupervised Learning & Clustering",
   "status": "published",
-  "description": "Modul komprehensif Unsupervised Learning dan Algoritma Clustering: fondasi penemuan pola laten tanpa label terarah, geometri ruang fitur dan metrik jarak (Euclidean, Manhattan, Minkowski), pembuktian kebutuhan mutlak penskalaan fitur, algoritma K-Means dari dasar (Lloyd's algorithm) dan inisialisasi probabilistik K-Means++, penentuan jumlah klaster optimal via Elbow Method dan Silhouette Analysis, keterbatasan asumsi klaster konveks, Density-Based Spatial Clustering (DBSCAN) dengan penanganan titik Core, Border, dan Noise, Hierarchical Agglomerative Clustering dengan perbandingan kriteria keterkaitan (Ward, Complete, Average, Single Linkage) serta visualisasi dendrogram, dan evaluasi klaster tanpa ground truth (Silhouette Score, Davies-Bouldin Index, Calinski-Harabasz Index).",
+  "description": "Temukan struktur tersembunyi pada data tanpa label melalui Unsupervised Learning dan Clustering. Chapter ini mencakup implementasi K-Means dari awal, optimasi titik awal K-Means++, pemilihan jumlah klaster (Elbow & Silhouette), DBSCAN, serta Hierarchical Clustering.",
   "objectives": [
     "Membedakan paradigma Supervised vs Unsupervised Learning secara matematis dan konseptual.",
     "Menjelaskan geometri ruang metrik dan menghitung jarak Euclidean, Manhattan, dan Minkowski.",
@@ -90,5 +90,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan geometris metrik jarak Euclidean, Manhattan, dan Minkowski.",
+    "Pembuktian empiris mengapa penskalaan fitur wajib dalam clustering.",
+    "Implementasi K-Means & K-Means++ hingga klasterisasi berbasis kepadatan DBSCAN.",
+    "Hierarchical Agglomerative Clustering beserta pembacaan dendrogram.",
+    "Evaluasi klaster tanpa label melalui Elbow Method dan Silhouette Score."
+  ]
 }

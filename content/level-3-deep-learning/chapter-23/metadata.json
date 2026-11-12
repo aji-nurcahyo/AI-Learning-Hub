@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Deep Learning with PyTorch",
   "status": "published",
-  "description": "Modul komprehensif implementasi Deep Learning modern berbasis framework PyTorch (Deep Learning with PyTorch): transisi dari aljabar NumPy manual ke komputasi tensor terakselerasi dan mesin autograd dinamis, representasi tensor, dimensi (shape), tipe data (dtype), dan manajemen alokasi perangkat (CPU vs CUDA), manipulasi bentuk tensor (view, reshape, squeeze, unsqueeze, permute, flatten) serta aturan penyiaran dimensi (broadcasting), jembatan zero-copy dua arah dengan array NumPy, mekanisme graf komputasi (DAG) autograd dan bahaya akumulasi gradien bawaan tanpa zero_grad(), penghematan memori evaluasi dengan torch.no_grad() dan detach(), perancangan arsitektur jaringan saraf berorientasi objek menggunakan torch.nn.Module, integrasi lapisan linear dan aktivasi non-linier, klarifikasi krusial mengapa model menghasilkan logits mentah tanpa Softmax untuk nn.CrossEntropyLoss, abstraksi aliran data modular melalui subclassing torch.utils.data.Dataset dan DataLoader dengan konfigurasi batching serta shuffling terstandar, protokol partisi data 3-way (Train 70%, Validation 15%, Test 15%) dan isolasi statistik normalisasi demi pencegahan kebocoran data (zero data leakage), siklus pelatihan lima langkah terstandar industri (model.train, zero_grad, forward, loss, backward, step), siklus validasi terisolasi (model.eval dan torch.no_grad), eksperimen komparasi objektif TabularMLP non-linier terhadap SimpleBaseline linier dengan evaluasi matriks konfusi, tata kelola penyimpanan dan pemuatan parameter aman menggunakan state_dict dengan weights_only=True, batas reproduksibilitas floating-point pada perangkat keras heterogen, serta checklist penanganan tujuh kesalahan umum (debugging) pemula.",
+  "description": "Transisikan komputasi NumPy manual menuju framework PyTorch untuk membangun Neural Network modular yang bersih. Anda akan menguasai manipulasi tensor, mesin diferensiasi otomatis Autograd, siklus Training Loop yang tepat, serta manajemen state eval dan checkpoint model.",
   "objectives": [
     "Menjelaskan peran framework deep learning dan perbandingannya dengan komputasi aljabar linier manual.",
     "Mengidentifikasi karakteristik tensor PyTorch mencakup shape, ndim, dtype, dan alokasi perangkat eksekusi (device).",
@@ -87,5 +87,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Operasi tensor PyTorch: shape, dtype, view, reshape, dan broadcasting.",
+    "Mekanisme grafik komputasi dinamis Autograd dan pemanggilan .backward().",
+    "Perancangan arsitektur modular memanfaatkan torch.nn.Module dan DataLoader.",
+    "Pola training loop aman: zero_grad(), loss.backward(), step(), dan torch.no_grad().",
+    "Perbedaan mode model.train() vs model.eval() serta penyimpanan state_dict."
+  ]
 }

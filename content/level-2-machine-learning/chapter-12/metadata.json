@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "ML Workflow, Dataset & Feature Engineering",
   "status": "published",
-  "description": "Modul komprehensif alur kerja Machine Learning end-to-end, pemisahan dataset bebas kebocoran (leak-free), pra-pemrosesan data heterogen, rekayasa fitur domain, mitigasi ketidakseimbangan kelas, validasi silang, dan Scikit-learn Pipeline.",
+  "description": "Rancang pipeline Machine Learning end-to-end yang tangguh dan bebas dari jebakan data leakage. Mahasiswa mempelajari strategi split berstrata/deret waktu, encoding fitur kategorikal, penanganan kelas tak seimbang, dan validasi silang dengan Scikit-learn Pipeline.",
   "objectives": [
     "Memahami tahapan end-to-end Machine Learning workflow dari perumusan masalah bisnis hingga monitoring model di produksi.",
     "Membagi dataset menjadi train, validation, dan test set dengan proporsi dan strategi yang tepat (random, stratified, group, time-series).",
@@ -76,5 +76,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Pemisahan Train/Val/Test berstrata, berkelompok, maupun berbasis waktu.",
+    "Pencegahan data leakage saat scaling, encoding, dan seleksi fitur.",
+    "Pipeline transformasi fitur numerik dan kategorikal heterogen.",
+    "Rekayasa fitur domain, interaksi polinomial, dan penanganan kelas timpang.",
+    "Otomatisasi alur eksperimen menggunakan ColumnTransformer dan Pipeline."
+  ]
 }

@@ -1,0 +1,27 @@
+name: Validate AI Learning Hub
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check:content
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run test:http
+      # Note: Local Headless Edge/Chrome visual contrast regression (`npm run test:theme`)
+      # is executed locally prior to merge when Edge/Chrome is not pre-provisioned on CI runners.

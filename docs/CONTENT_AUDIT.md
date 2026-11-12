@@ -1,6 +1,6 @@
 # Audit Konten dan Validasi Sistem
 
-Tanggal Audit Terakhir: 11 November 2026 (Final Master Curriculum Completion — 40 Chapters).
+Tanggal Audit Terakhir: 12 November 2026 (Phase 23 — Global Light/Dark Theme Refinement, WCAG 2.2 AA Contrast & Automated Theme QA).
 
 ## 1. Arsitektur Tiga Pilar & Penyederhanaan UI
 - **Penyederhanaan Halaman Chapter**:
@@ -201,21 +201,31 @@ Tanggal Audit Terakhir: 11 November 2026 (Final Master Curriculum Completion —
   - Slide: 32 slide Reveal.js interaktif terstruktur (`slides/deck.json`), format JSON valid, blok kode $\le 18$ baris, KaTeX, dan speaker notes substantif.
   - Praktik: 11 skrip Python proyek referensi modular (`config.py`, `dataset_generator.py`, `preprocessing.py`, `baseline_model.py`, `candidate_models.py`, `evaluation_and_error_analysis.py`, `local_inference.py`, `monitoring_and_drift.py`, `responsible_ai_assessment.py`, `run_capstone_pipeline.py`, `test_capstone_suite.py` dengan **4/4 `unittest` PASS**), kamus data (`data/sensor_data_dictionary.json`), grafik (`capstone_evaluation_chart.png`, `capstone_drift_monitoring.png`), model card (`capstone_model_card.json`), laporan metrik (`capstone_report_metrics.json`, `1.67s` pipeline / `23.61s` suite penuh), companion notebook v4 (`chapter_40_companion.ipynb`, 11 sel), `code/README.md`, dan `practice.md`.
 - **MASTER CURRICULUM COMPLETION STATUS**: **40/40 Chapters `published`** (Chapter 01–40 sesuai Master Curriculum; 0 duplikat; 0 judul menyimpang; 0 siklus prasyarat).
-- **Lima Track Spesialisasi**: Overview kurikulum terpetakan (`content/specializations/tracks.json`).
+- **Lima Track Spesialisasi (`published` / 5 dari 5 Aktif)**:
+  - **Track A (`computer-vision`)**: Foundation `[6, 7, 8]`, Core `[21–26]`, Advanced `[31, 37, 38, 39]`, 6 Applied Labs (`cv_track_pipeline_demo.py` teruji 100% pada data sintetis, `0.1463 ms`), 2 studi kasus, Capstone *Intelligent Visual Monitoring Using Computer Vision*, rubrik 100 poin, & 3 referensi HTTPS.
+  - **Track B (`nlp-llm`)**: Foundation `[7, 11, 14]`, Core `[27, 28, 29]`, Advanced `[31, 32, 33, 34, 39]`, 8 Applied Labs (`nlp_grounded_qa_lab.py` extractive baseline dengan abstention & injection isolation), 2 studi kasus, Capstone *Grounded Academic AI Assistant*, rubrik 100 poin, & 3 referensi HTTPS.
+  - **Track C (`aiot-edge`)**: Foundation `[6, 7, 8]`, Core `[11–14, 17, 18]`, Advanced `[23, 31, 36–39]`, 8 Applied Labs (`aiot_sensor_edge_lab.py` FP32 `13.27 KB` -> INT8 `7.50 KB`, `96.00%` Acc, `0.3005 ms`, penafian non-ESP32 fisik), 2 studi kasus, Capstone *Intelligent Sensor Monitoring with Edge AI*, rubrik 100 poin, & 3 referensi HTTPS.
+  - **Track D (`telecommunications`)**: Foundation `[6, 7, 8]`, Core `[11–19]`, Advanced `[27, 35, 36, 37, 39]`, 8 Applied Labs (`wireless_quality_lab.py` membedakan tegas `SNR=15.79 dB` vs `SINR=10.55 dB` di antara RSRP/RSRQ/Latency/Throughput/Packet Loss; `RF 98.50%`), 2 studi kasus, Capstone *Intelligent Wireless Network Quality Monitoring*, rubrik 100 poin, & 3 referensi HTTPS.
+  - **Track E (`robotics`)**: Foundation `[3–6]`, Core `[11, 21, 23, 24, 26, 35]`, Advanced `[34, 37, 38, 39]`, 8 Applied Labs (`robotics_navigation_lab.py` A* vs Q-Learning `8 steps` mencapai target), perluasan konsep *State Estimation*, 2 studi kasus, Capstone *Autonomous GridWorld Navigation with Intelligent Perception*, rubrik 100 poin, & 3 referensi HTTPS.
+- **Refinement Platform & Maintenance (Phase 22)**:
+  - Seluruh 40 chapter memiliki `description` ringkas (`19–42` kata, `<= 65` kata) dan `4–6` `highlights` (*"Yang akan dipelajari"*), tautan unduh `.ipynb` dinamis per chapter, pembersihan label publik **Reveal.js** menjadi **Slide Perkuliahan**, panduan [`CONTENT_MAINTENANCE_GUIDE.md`](./CONTENT_MAINTENANCE_GUIDE.md), dan CI non-deploying `.github/workflows/ci.yml`.
+- **Audit Tema Global Light/Dark & Aksesibilitas WCAG 2.2 AA (Phase 23)**:
+  - Penyatuan definisi *semantic design tokens* Light, Dark, dan Auto pada [`src/theme/styles.css`](../src/theme/styles.css), penghapusan `:root` override pada `ai.css`, perbaikan `.brand-hub-logo` (`1.05:1` -> `10.64:1` Light / `5.47:1` Dark), perbaikan `.slide-number` (`2.96:1` -> `16.3:1` Light / `13.74:1` Dark), penyesuaian `--shiki-token-comment` (`#475569`, AA >= 4.5:1), perbaikan overflow tablet `768x1024` pada `.reading-grid`, dukungan `--chart-bg` untuk grafik PNG statis, serta penyusunan [`THEME_AND_ACCESSIBILITY_GUIDE.md`](./THEME_AND_ACCESSIBILITY_GUIDE.md) dan skrip audit otomatis [`scripts/test-theme.mjs`](../scripts/test-theme.mjs).
 
 ## 3. Hasil Pengujian Menyeluruh & Audit Matriks Chapter 01–40
 
 | Perintah Pengujian / Audit | Status | Catatan Verifikasi Aktual |
 |---|---|---|
-| `npm run check:content` | **PASS** | Validasi 40 chapter metadata (`40/40 published`), 4 level, 5 track, 191 referensi `https://`, balanced fences, clean headings, & seluruh `1,194` slide. |
-| `npm test` | **PASS** | **53/53 uji unit lulus** (Router, AST Markdown, ToC parser, placeholder/security guard, serta validasi publikasi eksplisit Chapters 01–40). |
+| `npm run check:content` | **PASS** | Validasi 40 chapter (`40/40 published`, `description <= 65 kata`, `4–6 highlights`), 4 level, **5/5 active tracks**, 191 referensi `https://` chapter + 15 referensi track, balanced fences, clean headings, & seluruh `1,194` slide. |
+| `npm test` | **PASS** | **56/56 uji unit lulus** (Router, track sub-views `#track/:id/{practice,capstone}`, validasi track roadmap & lab paths, penghilangan label publik `Reveal.js`, serta audit publikasi Chapters 01–40). |
 | `npm run typecheck` | **PASS** | TypeScript compiler 0 errors (`tsc --noEmit`). |
 | `npm run lint` | **PASS** | ESLint 0 errors, 0 warnings pada seluruh berkas `src/`. |
-| `npm run build` | **PASS** | Vite production bundle terkompilasi ke `dist/` + `check-build.mjs` PASS (catatan: warning standar Vite untuk chunk JS > 500 kB). |
-| `npm run test:http` | **PASS** | HTTP preview server memverifikasi manifest dinamis: **5 entry assets, 15 platform/docs/getting-started assets, 40/40 chapter manifests (`published`), dan 279 chapter module/slide/practice/notebook/data/experiment assets (332 URL unik HTTP 200)**. |
-| `Python Execution (Ch 39–40)` | **PASS** | Ch 39 (`15/15` skrip PASS, `9.47s`), Ch 40 (`11/11` skrip PASS termasuk `4/4 unittest`, `23.61s`) pada Python 3.12.10 CPU. |
-| `Catalog Python & Notebook (Ch 01–40)` | **PARTIAL NOTE** | Total `442` skrip Python & `39` companion notebooks `nbformat v4` (Ch 02 konseptual tanpa praktik/notebook; **36/39** notebook berisikan output sel tereksekusi, sementara **3 notebook lama (`chapter_03`, `chapter_04`, `chapter_05`) berformat v4 valid namun belum menyimpan *stored cell outputs***). |
-| `Browser QA (Headless Edge CDP)` | **PASS** | Terverifikasi pada Windows Microsoft Edge headless (`1440x900` desktop & `390x844` mobile) melintasi `#/curriculum`, `#chapter/39/*`, `#chapter/40/*`, `#chapter/01/read`, `#chapter/28/slides`, `#chapter/35/slides`, `#chapter/38/read`: `0` console error, `0` horizontal overflow, KaTeX `.katex` & Reveal.js `.reveal .slides section` + `aside.notes` ter-render rapi, Search filter `"Capstone Project"` cocok, & toggle tema Light/Dark tervalidasi. |
+| `npm run build` | **PASS** | Vite production bundle terkompilasi ke `dist/` + `check-build.mjs` PASS. |
+| `npm run test:http` | **PASS** | HTTP preview server memverifikasi seluruh entri statis, dokumentasi (termasuk `THEME_AND_ACCESSIBILITY_GUIDE.md`), 5/5 active tracks, dan 40/40 published chapters (HTTP 200). |
+| `npm run test:theme` | **PASS** | Headless Edge CDP melintasi **66 kombinasi matrix** (`2` tema x `3` viewport `1440x900`/`768x1024`/`390x844`) + **sweep 40 chapter** + audit `35` slide Ch 28: **`0` confirmed contrast failures** (turun dari `40`), **`0` potential failures**, **`0` overflow** (turun dari `2`), **`0` KaTeX errors**, **`0` JS errors**, persistensi tema `localStorage` & pencarian terverifikasi. |
+| `Python Execution (Ch 39–40 & Tracks A–E)` | **PASS** | Ch 39 (`15/15`, `9.47s`), Ch 40 (`11/11` termasuk `4/4 unittest`, `23.61s`), dan 5/5 Track domain lab scripts (`cv_track_pipeline_demo.py`, `nlp_grounded_qa_lab.py`, `aiot_sensor_edge_lab.py`, `wireless_quality_lab.py`, `robotics_navigation_lab.py`) **PASS**. |
+| `Catalog Python & Notebook (Ch 01–40)` | **PARTIAL NOTE** | Total `442` skrip Python chapter (+ 5 track lab scripts = `447` skrip) & `39` companion notebooks `nbformat v4` (**36/39** memiliki stored outputs; `chapter_03`–`05` v4 valid tanpa stored cell outputs). |
+| `Browser QA (Headless Edge CDP)` | **PASS** | Terverifikasi pada desktop `1440x900`, tablet `768x1024`, dan mobile `390x844` melintasi Homepage, Chapter 01/27/28/35/37/38/39/40 Overviews/Read/Slides/Practice, & seluruh 5 Track A–E (`/overview`, `/practice`, `/capstone`): **`0` browser errors**. |
 
 ## 4. Academic Readiness, Caveats & Deployment Readiness (Tanpa Deployment)
 

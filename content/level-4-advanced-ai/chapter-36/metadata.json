@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "MLOps, Model Deployment & Monitoring",
   "status": "published",
-  "description": "Siklus hidup rekayasa MLOps: pipeline pelatihan reproduktif bebas kebocoran data, experiment tracking, semantic versioning, local model registry berbasis SQLite, validasi keamanan checksum SHA-256, REST API lokal (127.0.0.1), benchmark latensi, deteksi Data Drift vs Concept Drift, serta rollback terkendali.",
+  "description": "Jembatani kode eksperimen menjadi sistem AI terkelola yang andal melalui praktik MLOps. Anda akan membangun pelacakan eksperimen & Model Registry berbasis SQLite, verifikasi checksum SHA-256, REST API lokal (127.0.0.1), serta pemantauan Covariate dan Concept Drift menggunakan PSI dan KS Test.",
   "objectives": [
     "Menjelaskan siklus hidup MLOps secara menyeluruh beserta hubungan antara Machine Learning, Software Engineering, dan Operations.",
     "Membedakan eksperimen notebook pengembangan dari alur kerja produksi terkelola dan memahami batas kesiapan produksi.",
@@ -80,5 +80,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Siklus hidup MLOps dan pemisahan tegas pipeline training vs inferensi produksi.",
+    "Experiment Tracking, Semantic Versioning, dan Model Registry aman berbasis SQLite.",
+    "Verifikasi integritas kriptografis checksum SHA-256 sebelum deserialisasi artefak.",
+    "Layanan inferensi lokal tervalidasi skema beserta benchmark latensi P50/P95.",
+    "Deteksi Data Drift vs Concept Drift memakai PSI & Kolmogorov-Smirnov beserta rollback."
+  ]
 }

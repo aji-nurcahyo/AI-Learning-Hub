@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Convolutional Neural Networks",
   "status": "published",
-  "description": "Modul komprehensif implementasi Convolutional Neural Networks (CNN) berbasis PyTorch dan torchvision: keterbatasan arsitektur Multilayer Perceptron (MLP) pada pemrosesan citra digital 2D (kehancuran topologi spasial, ledakan jumlah parameter, dan ketiadaan invariansi translasi), anatomi komputasi korelasi silang 2D (cross-correlation) dan verifikasi numerik dari scratch terhadap PyTorch F.conv2d, perumusan analitis output spasial (H_out, W_out) di bawah konfigurasi Valid Padding, Same Padding, Strided Convolution, dan Dilated Convolution, rumus penghitungan parameter bobot konvolusi independen dari ukuran resolusi spasial, peran fungsional lapisan Max Pooling dan Average Pooling dalam downsampling dan perluasan Receptive Field tanpa parameter belajar, dua pilar keunggulan representasi CNN yaitu Local Receptive Field dan Weight Sharing (penghematan 99.84% bobot pada lapisan pertama), stabilisasi distribusi aktivasi citra melalui Spatial Batch Normalization (nn.BatchNorm2d), hierarki representasi visual dari fitur tingkat rendah (tepi dan tekstur) hingga semantik tingkat tinggi (siluet objek), rancang bangun pipeline aliran data torchvision dengan normalisasi empiris resmi Fashion-MNIST (mean=0.2860, std=0.3530) dan isolasi partisi 3-way, implementasi modular FashionCNN berbanding FlattenMLPBaseline dengan kapasitas komputasi terkontrol pada CPU, pembuktian empiris keunggulan masif CNN pada kategori pakaian bertekstur kompleks (kelas Shirt 75.63% vs 54.31%), diagnosis kesalahan klasifikasi (error analysis) pada pasangan kelas tertukar (T-shirt vs Shirt, Pullover vs Coat), serta ekstraksi dan visualisasi feature maps lapisan pertama.",
+  "description": "Pahami bagaimana Convolutional Neural Networks (CNN) mengekstrak fitur spasial visual secara efisien tanpa ledakan parameter MLP. Chapter ini membahas operasi konvolusi 2D, perhitungan dimensi fitur dengan padding dan stride, lapisan Pooling, hingga arsitektur CNN lengkap di PyTorch.",
   "objectives": [
     "Menjelaskan keterbatasan arsitektur MLP pada pemrosesan citra digital dua dimensi dan motivasi kehadiran CNN.",
     "Menjelaskan mekanisme korelasi silang 2D (cross-correlation) dan perbedaannya dengan konvolusi matematis murni.",
@@ -88,5 +88,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Kelemahan arsitektur MLP terhadap hilangnya topologi spasial gambar 2D.",
+    "Implementasi korelasi silang 2D dan paritasnya dengan torch.nn.functional.conv2d.",
+    "Perhitungan analitis dimensi keluaran fitur (padding, stride) dan jumlah parameter.",
+    "Peran Max Pooling dan Average Pooling dalam invariansi translasi lokal.",
+    "Pelatihan arsitektur CNN dengan BatchNorm dan Dropout untuk klasifikasi citra."
+  ]
 }

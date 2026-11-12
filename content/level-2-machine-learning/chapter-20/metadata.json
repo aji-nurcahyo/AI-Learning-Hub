@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Machine Learning Capstone",
   "status": "published",
-  "description": "Proyek akhir terintegrasi Level 2 Machine Learning (Machine Learning Capstone): integrasi menyeluruh siklus hidup rekayasa pembelajaran mesin mulai dari formulasi masalah bisnis dan fungsi biaya finansial, penetapan baseline acuan (Dummy & Simple Logistic Regression), isolasi data uji (untouched test set) tanpa kebocoran informasi (zero data leakage), rekayasa fitur domain fisik kompresor industri berbasis rasio termal-tekanan dan indeks energi getaran, perbandingan 4 keluarga model kandidat Level 2 (Logistic Regression, Support Vector Machine RBF, Random Forest, Gradient Boosting) via 5-Fold Stratified Cross-Validation, optimasi hyperparameter sistematis (GridSearchCV), evaluasi menyeluruh pada data uji terisolasi (Akurasi 93.33%, Recall 95.77%, F1 0.9444, ROC-AUC 0.9859), analisis galat (error analysis) dan simulasi penyesuaian ambang batas (cost-sensitive threshold tuning) yang menghemat risiko kerugian sebesar 61.25%, transparansi penalaran model (Permutation Feature Importance & Partial Dependence Plots), serta audit keadilan armada mesin (subgroup fairness) dan penyusunan Model Card standar tata kelola Responsible AI.",
+  "description": "Integrasikan seluruh kompetensi Machine Learning Level 2 ke dalam proyek akhir berorientasi keputusan bisnis dan fungsi biaya nyata. Anda membangun Scikit-learn Pipeline lengkap mulai dari baseline, penyetelan hyperparameter ansambel, kalibrasi ambang, hingga analisis error.",
   "objectives": [
     "Merumuskan masalah bisnis dan batas operasional ke dalam spesifikasi teknis pembelajaran mesin yang terukur.",
     "Membangun pipeline prapemrosesan bebas kebocoran data terintegrasi Scikit-Learn Pipeline.",
@@ -90,5 +90,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perumusan objektif ML selaras dengan metrik risiko dan fungsi biaya asimetris.",
+    "Pipeline prapemrosesan terenkapsulasi yang bebas kebocoran data.",
+    "Benchmark sistematis dari baseline sederhana ke kernel dan ansambel pohon.",
+    "Optimasi ambang keputusan berbasis evaluasi validation dan test set terisolasi.",
+    "Audit error cases, Permutation Explainability, dan penulisan batasan model."
+  ]
 }

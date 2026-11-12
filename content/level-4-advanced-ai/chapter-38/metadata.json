@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Multimodal AI Systems",
   "status": "published",
-  "description": "Sistem AI Multimodal: fondasi sinergi lintas modalitas, representasi citra-teks terpadu, perbandingan Early Fusion vs Late Fusion vs Cross-Attention, ketahanan terhadap missing modality, pelatihan kontrastif Symmetric InfoNCE (CLIP-style Dual Encoder), serta evaluasi bidirectional cross-modal retrieval di CPU.",
+  "description": "Pelajari bagaimana AI memadukan penglihatan dan bahasa dalam sistem Multimodal AI yang saling melengkapi. Anda membandingkan arsitektur Early Fusion, Late Fusion, dan Cross-Attention, menguji ketahanan saat satu modalitas hilang, serta melatih Dual Encoder bergaya CLIP dengan Symmetric InfoNCE Loss.",
   "objectives": [
     "Menjelaskan konsep Multimodal AI dan alasan mengapa model unimodal terpisah gagal menangkap interaksi sinergis lintas modalitas.",
     "Mengimplementasikan generator pasangan citra-teks sintetis terkendali dengan pemisahan ketat data latih dan uji.",
@@ -79,5 +79,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Alasan sinergi multimodal dan arsitektur Dual Encoder citra-teks ringan.",
+    "Perbandingan Early Fusion, Late Fusion, dan Cross-Attention saat modalitas hilang.",
+    "Verifikasi aljabar Scaled Dot-Product Cross-Attention antara query teks dan patch citra.",
+    "Matematika Symmetric InfoNCE Loss serta penghindaran false negatives di mini-batch.",
+    "Evaluasi Bidirectional Cross-Modal Retrieval menggunakan Recall@k, Precision@k, dan Median Rank."
+  ]
 }

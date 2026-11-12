@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Transfer Learning & Fine-Tuning",
   "status": "published",
-  "description": "Modul komprehensif implementasi Transfer Learning & Fine-Tuning pada Level 4 Applied & Advanced AI Systems: perbedaan fundamental pelatihan dari awal (training from scratch) versus pemanfaatan bobot pra-terlatih (pretrained models), perumusan Source Task, Target Task, Source Domain, dan Target Domain, mekanisme ekstraksi fitur (Feature Extraction) dan Linear Probing dengan pembekuan parameter (param.requires_grad = False), analisis kritis mode runtime model.train() versus model.eval() pada lapisan Dropout dan BatchNorm, spektrum strategi adaptasi mencakup Partial Fine-Tuning dengan progressive unfreezing dan differential learning rates (optimizer parameter groups) hingga Full Fine-Tuning, analisis risiko catastrophic forgetting dan mitigasinya via laju pembelajaran konservatif serta regularisasi weight decay, pergeseran domain (Domain Shift, Covariate Shift, Label Distribution Shift), identifikasi dan pencegahan transfer negatif (Negative Transfer), konsep dan urgensi Parameter-Efficient Fine-Tuning (PEFT), landasan matematis Low-Rank Adaptation (LoRA: W' = W_0 + alpha/r * B*A) dengan inisialisasi asimetris A Gaussian dan B nol mutlak, faktor penskalaan alpha/r, pembuktian efisiensi parameter >95% dan penghematan memori optimizer, perancangan modul kustom LoRALinear di PyTorch pada CPU, penggabungan bobot (zero-latency weight merging) untuk deployment produksi, komparasi empiris terstandarisasi 5 paradigma adaptasi model, serta panduan proyek mini dan rubrik 100 poin.",
+  "description": "Manfaatkan pengetahuan model pra-terlatih untuk beradaptasi cepat pada tugas baru berdata terbatas melalui Transfer Learning dan Fine-Tuning. Anda akan membandingkan Feature Extraction, Partial Unfreezing, differential learning rates, serta teknik adaptasi efisien parameter seperti LoRA.",
   "objectives": [
     "Menjelaskan konsep dasar Transfer Learning dan keuntungan pemanfaatan model pra-terlatih.",
     "Membedakan paradigma pelatihan dari awal (training from scratch) versus adaptasi model pra-terlatih.",
@@ -90,5 +90,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perbedaan pelatihan dari awal (from scratch) vs adaptasi bobot pra-terlatih.",
+    "Teknik Feature Extraction (Linear Probing) dengan membekukan lapisan backbone.",
+    "Partial Fine-Tuning memakai progressive unfreezing dan differential learning rates.",
+    "Penanganan mode BatchNorm dan pencegahan Catastrophic Forgetting.",
+    "Konsep Parameter-Efficient Fine-Tuning (PEFT) dan mekanisme matriks rendah LoRA."
+  ]
 }

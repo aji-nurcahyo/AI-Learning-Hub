@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Attention & Transformer Architecture",
   "status": "published",
-  "description": "Modul komprehensif implementasi Attention & Transformer Architecture: pergeseran paradigma dari sekuensial rekuren ke atensi paralel, batasan bottleneck representasi statis dan peluruhan gradien pada model rekuren, evolusi historis dari Additive Attention Bahdanau menuju Self-Attention Vaswani et al., formulasi aljabar linier Query (Q), Key (K), dan Value (V) melalui transformasi linier terpelajari, formulasi dan pembuktian variansi Scaled Dot-Product Attention serta rasionalisasi pembagian faktor akar dimensi sqrt(d_k) guna mencegah kepunahan gradien pada fungsi Softmax, stabilitas numerik floating-point dan mitigasi overflow melalui shift-max trick, distingsi mekanisme Self-Attention intra-sekuens simetris versus Cross-Attention asimetris memori Encoder-Decoder, perancangan masker atensi komposit mencakup Padding Mask untuk mengabaikan token pelengkap dan Causal Mask segitiga bawah untuk pemodelan bahasa autoregresif tanpa kebocoran label masa depan, arsitektur Multi-Head Attention (MHA) dari dasar NumPy dan spesialisasi representasi multi-subspace paralel, pembedahan modul PyTorch nn.MultiheadAttention mencakup efisiensi matriks in_proj_weight dan verifikasi analitis parameter 4*d^2 + 4*d, pembuktian kelemahan sifat invarian permutasi dari Self-Attention dan solusi Positional Encoding sinusoidal (Vaswani et al. 2017) berbasis kombinasi frekuensi trigonometri geometris serta pembuktian relasi pergeseran linier, rancang bangun blok pembangun terintegrasi Transformer Encoder (MHA, Add & LayerNorm, FFN, Pre-LN vs Post-LN) dan Transformer Decoder (Masked MHA, Cross-Attention, Add & LayerNorm, FFN), orkestrasi arsitektur Sequence-to-Sequence (Seq2Seq) Mini Transformer terpadu dan pengukuran profil latensi inferensi CPU, taksonomi tiga keluarga besar Transformer modern (Encoder-Only seperti BERT, Decoder-Only seperti GPT, dan Encoder-Decoder seperti T5), analisis komparasi kompleksitas komputasi dan memori O(T^2) vs O(T) serta inovasi kontemporer FlashAttention dan Linear Attention, audit verifikasi kesetaraan numerik deterministik ketat NumPy versus PyTorch (deviasi < 1e-6), serta pertimbangan etika kecerdasan buatan, efisiensi energi komputasi hijau, privasi data pada model bahasa, dan kerangka kerja Responsible AI.",
+  "description": "Kuasai arsitektur Transformer yang merevolusi pemodelan sekuens paralel dalam AI modern. Anda akan menurunkan Scaled Dot-Product Attention (Query, Key, Value), Multi-Head Attention, Positional Encoding, serta perbedaan blok Encoder, Decoder, dan arsitektur Encoder-Decoder.",
   "objectives": [
     "Menjelaskan keterbatasan fundamental komputasi serial rekuren dan motivasi paradigma all-to-all attention.",
     "Merumuskan konsep aljabar linier Query, Key, dan Value sebagai sistem temu-kembali informasi representasi.",
@@ -95,5 +95,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Keterbatasan komputasi sekuensial RNN dibandingkan atensi paralel menyeluruh.",
+    "Formulasi Query, Key, Value dan penskalaan 1/sqrt(d_k) pada Scaled Dot-Product Attention.",
+    "Implementasi Causal Masking dan Multi-Head Self-Attention di NumPy/PyTorch.",
+    "Sinusoidal Positional Encoding serta fungsi stabilitas LayerNorm dan Residual Connection.",
+    "Perbedaan blok arsitektur Encoder-only, Decoder-only, dan Encoder-Decoder."
+  ]
 }

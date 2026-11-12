@@ -6,7 +6,7 @@
   "title": "History, Evolution & AI Paradigms",
   "subtitle": "Dari Dartmouth Workshop hingga Era Foundation Models dan Neuro-Symbolic AI",
   "status": "published",
-  "description": "Melacak sejarah kecerdasan buatan dari Dartmouth Workshop 1956, Symbolic AI dan sistem pakar, AI Winter, kebangkitan Statistical Machine Learning dan Deep Learning, hingga era Generative AI dan pendekatan neuro-symbolic.",
+  "description": "Telusuri perjalanan historis kecerdasan buatan sejak Dartmouth Workshop 1956, era Symbolic AI, AI Winter, hingga kebangkitan Deep Learning dan Generative AI. Mahasiswa diajak membandingkan kekuatan serta keterbatasan tiap paradigma AI secara kritis.",
   "objectives": [
     "Menjelaskan perkembangan Artificial Intelligence berdasarkan peristiwa dan perubahan pendekatan penting.",
     "Mengidentifikasi karakteristik Symbolic AI, Statistical AI, Machine Learning, dan pendekatan modern.",
@@ -66,5 +66,11 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Evolusi AI dari Dartmouth Workshop 1956 hingga era Foundation Models.",
+    "Karakteristik Symbolic AI, Statistical Machine Learning, dan Neural Networks.",
+    "Pemicu munculnya AI Winter dan kebangkitan riset AI modern.",
+    "Keterkaitan perkembangan algoritma, ketersediaan data, dan daya komputasi."
+  ]
 }

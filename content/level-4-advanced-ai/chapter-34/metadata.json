@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "AI Agents & Tool Integration",
   "status": "published",
-  "description": "Arsitektur lengkap AI Agents: dekomposisi tujuan, siklus ReAct, skema alat JSON Schema, validasi masukan, tata kelola persetujuan manusia, Model Context Protocol (MCP), dan jejak audit kriptografis.",
+  "description": "Rancang AI Agents yang dapat merencanakan langkah, memanggil alat eksternal (tool calling), dan mengelola status tugas secara aman. Anda akan mempelajari siklus ReAct, validasi JSON Schema, standar Model Context Protocol (MCP), Human Approval Gate, RBAC, dan audit log kriptografis.",
   "objectives": [
     "Menjelaskan spektrum perbedaan konseptual antara Chatbot pasif, Workflow deterministik, dan Autonomous AI Agent.",
     "Memahami arsitektur modular agen cerdas yang memisahkan model penalaran dari pengendali eksekusi alat.",
@@ -76,5 +76,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Spektrum arsitektur Chatbot pasif, alur deterministik, dan Autonomous AI Agent.",
+    "Siklus penalaran dan eksekusi ReAct dengan batas anggaran langkah serta FSM.",
+    "Deklarasi skema alat (JSON Schema) dan konsep Model Context Protocol (MCP).",
+    "Penegakan izin least-privilege (RBAC) dan pemblokiran Excessive Agency.",
+    "Human-in-the-Loop Approval Gate untuk aksi berisiko dan log audit SHA-256."
+  ]
 }

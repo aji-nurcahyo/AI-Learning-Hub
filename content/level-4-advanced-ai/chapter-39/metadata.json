@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "AI Safety, Security & Governance",
   "status": "published",
-  "description": "Keselamatan, Keamanan, dan Tata Kelola AI: pembedaan Safety/Security/Governance, manajemen risiko NIST AI RMF 1.0 & Risk Register, audit bias dan trade-off keadilan algoritmis, privasi & UU PDP/GDPR, Threat Modeling, pertahanan Prompt Injection & Human Approval Gate, Model Card, serta kerangka standar internasional.",
+  "description": "Pastikan sistem kecerdasan buatan aman, terlindungi dari penyalahgunaan, adil, dan patuh tata kelola melalui kajian AI Safety, Security & Governance. Anda menyusun Risk Register berbasis NIST AI RMF 1.0, menghitung trade-off keadilan, memodelkan pertahanan Prompt Injection, serta menerbitkan Model Card.",
   "objectives": [
     "Menjelaskan konsep AI Safety, AI Security, dan AI Governance serta membedakan cakupan ketiganya secara tegas.",
     "Mengidentifikasi risiko teknis maupun sosial pada sistem AI berdasarkan pilar Trustworthy AI.",
@@ -81,5 +81,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Pembedaan tegas AI Safety (keselamatan), AI Security (keamanan), dan AI Governance.",
+    "Manajemen risiko NIST AI RMF 1.0 (Govern, Map, Measure, Manage) & Risk Register.",
+    "Audit bias data sintetis dan pembuktian trade-off matematis antar metrik fairness.",
+    "Prinsip Data Minimization, risiko re-identifikasi privasi, GDPR, dan UU PDP No. 27/2022.",
+    "Kontrol keamanan defensif: validasi input, isolasi RAG, RBAC/Approval Gate, dan Model Card."
+  ]
 }

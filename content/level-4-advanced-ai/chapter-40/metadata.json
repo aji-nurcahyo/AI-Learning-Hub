@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Advanced AI Capstone Project",
   "status": "published",
-  "description": "Proyek Penutup Master Curriculum 40 Chapter: perumusan masalah AI lanjutan, arsitektur sistem modular, pencegahan data leakage, perbandingan baseline vs kandidat & profil latensi CPU, error analysis, explainability, validasi keamanan inferensi, pemantauan PSI/KS drift, Risk Register, Model Card, dan pertanggungjawaban akademik.",
+  "description": "Tutup perjalanan Master Curriculum 40 Chapter dengan merancang dan menguji proyek akhir rekayasa AI end-to-end berstandar ilmiah. Anda mempraktikkan proyek referensi CPU lengkap mulai perumusan masalah, pencegahan data leakage, pembandingan baseline, analisis error, pemantauan drift, hingga Risk Register dan Model Card.",
   "objectives": [
     "Merumuskan advanced AI problem lengkap dengan latar belakang, intended use, prohibited use, dan kriteria sukses kuantitatif.",
     "Mengidentifikasi kebutuhan fungsional dan nonfungsional sistem AI yang dapat dijalankan pada CPU lokal secara reprodusibel.",
@@ -74,5 +74,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perumusan masalah AI tingkat lanjut lengkap dengan intended use dan sukses terukur.",
+    "Pilihan delapan tema lintas domain beserta 14 persyaratan ilmiah wajib.",
+    "Implementasi referensi terpadu di CPU: zero-leakage split, baseline, & SHA-256 artifact.",
+    "Evaluasi held-out, Permutation Explainability, analisis kegagalan, dan simulasi drift PSI/KS.",
+    "Dokumentasi Risk Register, Model Card, serta rubrik penilaian 100 poin yang adil."
+  ]
 }

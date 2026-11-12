@@ -1,0 +1,116 @@
+{
+  "id": "nlp-llm",
+  "code": "B",
+  "slug": "nlp-llm",
+  "title": "NLP, LLM & Generative AI",
+  "status": "published",
+  "focus": "Text processing, language understanding, Transformer, LLM, semantic retrieval, dan grounded AI applications.",
+  "shortDescription": "Jalur spesialisasi pemrosesan bahasa alami dari TF-IDF dan sequence modeling menuju Transformer, pencarian semantik, Retrieval-Augmented Generation, dan keamanan Agent.",
+  "topics": [
+    "Text Preprocessing & TF-IDF",
+    "Embeddings & Cosine Search",
+    "Transformer & Attention",
+    "RAG Pipeline & Citations",
+    "Safe Tool Calling",
+    "Responsible NLP"
+  ],
+  "learningOutcomes": [
+    "Menerapkan pra-pemrosesan teks adaptif, tokenisasi, dan klasifikasi berbasis TF-IDF maupun neural sequence models.",
+    "Menghitung mekanisme Scaled Dot-Product Self-Attention dan arsitektur blok Transformer.",
+    "Membangun indeks pencarian semantik berbasis Dense Embeddings dan Cosine Similarity.",
+    "Mengimplementasikan pipeline RAG dengan sitasi sumber serta penolakan jawaban tak berbukti.",
+    "Menerapkan kontrol keamanan isolasi Prompt Injection dan validasi izin alat AI Agent."
+  ],
+  "prerequisites": [7, 11, 14],
+  "roadmap": {
+    "foundation": [7, 11, 14],
+    "core": [27, 28, 29],
+    "advanced": [31, 32, 33, 34, 39]
+  },
+  "labs": [
+    {
+      "title": "Text Preprocessing & N-Gram Features",
+      "chapterId": 27,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-27/code/bag_of_words.py",
+        "content/level-3-deep-learning/chapter-27/code/ngram_features.py"
+      ]
+    },
+    {
+      "title": "TF-IDF & Sequence Classification",
+      "chapterId": 27,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-27/code/text_classification.py",
+        "content/level-3-deep-learning/chapter-27/code/rnn_lstm_gru_comparison.py"
+      ]
+    },
+    {
+      "title": "Embedding Similarity Metrics",
+      "chapterId": 32,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-32/code/cosine_similarity.py"
+      ]
+    },
+    {
+      "title": "Transformer Attention Mechanism",
+      "chapterId": 28,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-28/code/scaled_dot_product_attention.py",
+        "content/level-3-deep-learning/chapter-28/code/multi_head_attention_torch.py"
+      ]
+    },
+    {
+      "title": "Semantic Vector Search",
+      "chapterId": 32,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-32/code/semantic_search.py"
+      ]
+    },
+    {
+      "title": "RAG Hybrid Retrieval Pipeline",
+      "chapterId": 33,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-33/code/hybrid_retrieval.py"
+      ]
+    },
+    {
+      "title": "Grounded Answer & Citation Validation",
+      "chapterId": 33,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-33/code/citation_validation.py",
+        "content/tracks/nlp-llm/labs/nlp_grounded_qa_lab.py"
+      ]
+    },
+    {
+      "title": "Safe Tool Calling & Prompt Boundaries",
+      "chapterId": 34,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-34/code/human_approval_gate.py",
+        "content/level-4-advanced-ai/chapter-39/code/prompt_injection_defense_demo.py"
+      ]
+    }
+  ],
+  "capstone": {
+    "title": "Grounded Academic AI Assistant",
+    "summary": "Membangun asisten tanya-jawab korpus akademik berbasis penelusuran tergrounding, sitasi sumber, deteksi abstention, dan pertahanan Prompt Injection di CPU.",
+    "rubricTotal": 100
+  },
+  "references": [
+    {
+      "title": "Vaswani et al. (2017), Attention Is All You Need",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "status": "verified"
+    },
+    {
+      "title": "Lewis et al. (2020), Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "status": "verified"
+    },
+    {
+      "title": "OWASP Foundation (2024), OWASP Top 10 for Large Language Model Applications",
+      "url": "https://owasp.org/www-project-top-10-for-large-language-model-applications/",
+      "status": "verified"
+    }
+  ]
+}
+

@@ -4,7 +4,7 @@
   "levelId": 1,
   "title": "Probability, Statistics & Linear Algebra for AI",
   "status": "published",
-  "description": "Fondasi kuantitatif kecerdasan buatan: statistik deskriptif, teori probabilitas, Teorema Bayes, aljabar vektor dan matriks, serta kalkulus diferensial dan optimasi Gradient Descent.",
+  "description": "Kuasai pilar matematika inti yang menopang seluruh algoritma kecerdasan buatan modern. Pembahasan mencakup statistik deskriptif, probabilitas & Teorema Bayes, aljabar linear matriks-vektor, hingga kalkulus diferensial untuk Gradient Descent.",
   "objectives": [
     "Menjelaskan peran fundamental Probability, Statistics, Linear Algebra, dan Calculus dalam arsitektur AI.",
     "Menghitung ukuran statistik pemusatan, varians sampel dengan koreksi Bessel, standar deviasi, dan mendeteksi pencilan.",
@@ -73,5 +73,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Statistik deskriptif: mean, median, varians Bessel, dan deteksi outlier IQR.",
+    "Probabilitas bersyarat, Teorema Bayes, dan analisis Base Rate Fallacy.",
+    "Operasi vektor, norma L1/L2, dot product, dan Cosine Similarity.",
+    "Perkalian matriks formal vs element-wise Hadamard dan transformasi linear.",
+    "Turunan parsial, vektor gradien, dan simulasi optimasi Gradient Descent."
+  ]
 }

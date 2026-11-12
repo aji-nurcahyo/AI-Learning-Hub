@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Dimensionality Reduction",
   "status": "published",
-  "description": "Modul mendalam Reduksi Dimensi (Dimensionality Reduction): fenomena kutukan dimensi (Curse of Dimensionality), konsentrasi jarak geometris di ruang berdimensi tinggi, penurunan matematis Principal Component Analysis (PCA) berbasis maksimisasi varians dan minimisasi galat rekonstruksi kuadratik, pemusatan data (centering) dan dekomposisi matriks kovarians, evaluasi Scree Plot dan kriteria pemilihan komponen (Kaiser-Guttman, ambang batas varians kumulatif 95%), rekonstruksi data lossy dan galat norma Frobenius, Singular Value Decomposition (SVD) dan Teorema Eckart-Young-Mirsky, TruncatedSVD untuk matriks jarang (sparse NLP), integrasi pipeline Scikit-Learn bebas kebocoran data (zero data leakage), serta algoritma manifold learning non-linier t-SNE (probabilitas t-Student dan crowding problem) dan UMAP (fuzzy simplicial sets).",
+  "description": "Atasi fenomena kutukan dimensi (Curse of Dimensionality) menggunakan teknik reduksi dimensi. Mahasiswa menurunkan Principal Component Analysis (PCA) dari dekomposisi nilai eigen kovarians, menafsirkan Scree Plot, serta membandingkannya dengan proyeksi non-linear t-SNE dan UMAP.",
   "objectives": [
     "Menjelaskan fenomena kutukan dimensi (Curse of Dimensionality) dan konsentrasi jarak pada ruang berdimensi tinggi.",
     "Menurunkan formulasi matematis Principal Component Analysis (PCA) menggunakan Pengali Lagrange.",
@@ -91,5 +91,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Dampak kutukan dimensi terhadap konsentrasi jarak dan efisiensi model.",
+    "Penurunan matematis PCA melalui maksimisasi varians dan nilai eigen.",
+    "Interpretasi Scree Plot dan rasio varians kumulatif untuk memilih k komponen.",
+    "Perbandingan PCA linear terhadap t-SNE dan UMAP untuk visualisasi manifold.",
+    "Dampak reduksi dimensi terhadap kecepatan pelatihan dan risiko kehilangan sinyal."
+  ]
 }

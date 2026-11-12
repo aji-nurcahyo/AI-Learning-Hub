@@ -1,0 +1,101 @@
+{
+  "id": "computer-vision",
+  "code": "A",
+  "slug": "computer-vision",
+  "title": "Computer Vision",
+  "status": "published",
+  "focus": "Image processing, CNN, object detection, image understanding, dan intelligent visual applications.",
+  "shortDescription": "Jalur spesialisasi penerapan AI pada pemrosesan citra, Convolutional Neural Networks, deteksi objek YOLO, segmentasi, pelacakan visual, dan inferensi ringan.",
+  "topics": [
+    "Image Preprocessing",
+    "CNN Classification",
+    "Object Detection & YOLO",
+    "Segmentation Overview",
+    "Object Tracking",
+    "Lightweight Visual Inference"
+  ],
+  "learningOutcomes": [
+    "Menerapkan pra-pemrosesan citra (konversi ruang warna, filtering spasial, deteksi tepi).",
+    "Membangun dan melatih Convolutional Neural Networks (CNN) di PyTorch untuk klasifikasi visual.",
+    "Mengimplementasikan formulasi Bounding Box, IoU, Non-Maximum Suppression, dan konsep YOLO.",
+    "Mengintegrasikan teknik segmentasi dasar dan pelacakan objek spasio-temporal.",
+    "Mengompresi dan meninjau keandalan model visi komputer pada inferensi CPU lokal."
+  ],
+  "prerequisites": [6, 7, 8],
+  "roadmap": {
+    "foundation": [6, 7, 8],
+    "core": [21, 22, 23, 24, 25, 26],
+    "advanced": [31, 37, 38, 39]
+  },
+  "labs": [
+    {
+      "title": "Image Preprocessing & Color Spaces",
+      "chapterId": 26,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-26/code/color_space_conversion.py",
+        "content/level-3-deep-learning/chapter-26/code/image_filtering.py"
+      ]
+    },
+    {
+      "title": "CNN Visual Classification",
+      "chapterId": 24,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-24/code/train_cnn_vs_baseline.py",
+        "content/tracks/computer-vision/labs/cv_track_pipeline_demo.py"
+      ]
+    },
+    {
+      "title": "Object Detection Metrics & NMS",
+      "chapterId": 25,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-25/code/iou_calculation.py",
+        "content/level-3-deep-learning/chapter-25/code/non_maximum_suppression.py"
+      ]
+    },
+    {
+      "title": "Segmentation Overview & Morphology",
+      "chapterId": 26,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-26/code/morphological_operations.py"
+      ]
+    },
+    {
+      "title": "Object Tracking Spasio-Temporal",
+      "chapterId": 26,
+      "scriptPaths": [
+        "content/level-3-deep-learning/chapter-26/code/centroid_tracking.py"
+      ]
+    },
+    {
+      "title": "Lightweight Visual Inference",
+      "chapterId": 37,
+      "scriptPaths": [
+        "content/tracks/computer-vision/labs/cv_track_pipeline_demo.py",
+        "content/level-4-advanced-ai/chapter-37/code/dynamic_quantization.py"
+      ]
+    }
+  ],
+  "capstone": {
+    "title": "Intelligent Visual Monitoring Using Computer Vision",
+    "summary": "Membangun prototipe pemantauan visual cerdas lengkap dengan evaluasi akurasi/deteksi, analisis kegagalan, profil latensi CPU, dan dokumentasi Responsible AI.",
+    "rubricTotal": 100
+  },
+  "references": [
+    {
+      "title": "LeCun et al. (1998), Gradient-Based Learning Applied to Document Recognition",
+      "url": "https://doi.org/10.1109/5.726791",
+      "status": "verified"
+    },
+    {
+      "title": "Redmon et al. (2016), You Only Look Once: Unified, Real-Time Object Detection",
+      "url": "https://arxiv.org/abs/1506.02640",
+      "status": "verified"
+    },
+    {
+      "title": "PyTorch Team (2024), Torchvision Models & Transforms Documentation",
+      "url": "https://pytorch.org/vision/stable/index.html",
+      "status": "verified"
+    }
+  ]
+}
+

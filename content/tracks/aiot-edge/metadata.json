@@ -1,0 +1,112 @@
+{
+  "id": "aiot-edge",
+  "code": "C",
+  "slug": "aiot-edge",
+  "title": "AIoT & Edge AI",
+  "status": "published",
+  "focus": "Sensor analytics, IoT telemetry, intelligent edge inference, dan efficient AI systems.",
+  "shortDescription": "Jalur spesialisasi analitik data sensor IoT, klasifikasi anomali, pemantauan drift telemetri, serta kompresi model Edge AI (quantization, pruning, distillation) untuk perangkat terbatas sumber daya.",
+  "topics": [
+    "Sensor Telemetry Analysis",
+    "Feature Engineering IoT",
+    "Fault Classification & Clustering",
+    "Quantization & Pruning",
+    "CPU Inference Benchmarking",
+    "Drift Monitoring"
+  ],
+  "learningOutcomes": [
+    "Membersihkan, menganalisis, dan merekayasa fitur dari sinyal telemetri sensor IoT multi-kanal.",
+    "Membangun model klasifikasi kegagalan dan klasterisasi pola anomali sensor yang bebas kebocoran data.",
+    "Menerapkan teknik kompresi model (Dynamic/Static Quantization, Pruning, Distillation) di PyTorch CPU.",
+    "Mengukur anggaran memori model, ukuran artefak disk, dan latensi CPU berulang (Mean/P50/P95).",
+    "Merancang pemantauan pergeseran distribusi sensor (PSI/KS) serta asesmen risiko simulasi vs hardware nyata."
+  ],
+  "prerequisites": [6, 7, 8],
+  "roadmap": {
+    "foundation": [6, 7, 8],
+    "core": [11, 12, 13, 14, 17, 18],
+    "advanced": [23, 31, 36, 37, 38, 39]
+  },
+  "labs": [
+    {
+      "title": "Sensor Telemetry Exploratory Analysis",
+      "chapterId": 8,
+      "scriptPaths": [
+        "content/level-1-ai-foundations/chapter-08/code/exploratory_analysis.py"
+      ]
+    },
+    {
+      "title": "Time & Sensor Feature Engineering",
+      "chapterId": 12,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-12/code/feature_engineering.py"
+      ]
+    },
+    {
+      "title": "Sensor Fault Classification",
+      "chapterId": 14,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-14/code/classification_model_comparison.py"
+      ]
+    },
+    {
+      "title": "Anomaly & Pattern Clustering",
+      "chapterId": 17,
+      "scriptPaths": [
+        "content/level-2-machine-learning/chapter-17/code/clustering_comparison.py"
+      ]
+    },
+    {
+      "title": "Model Compression (Structured Pruning)",
+      "chapterId": 37,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-37/code/structured_pruning_demo.py"
+      ]
+    },
+    {
+      "title": "FP32-to-INT8 Quantization",
+      "chapterId": 37,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-37/code/dynamic_quantization.py",
+        "content/tracks/aiot-edge/labs/aiot_sensor_edge_lab.py"
+      ]
+    },
+    {
+      "title": "CPU Inference Latency Benchmarking",
+      "chapterId": 37,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-37/code/inference_latency_benchmark.py"
+      ]
+    },
+    {
+      "title": "Post-Deployment Drift Monitoring",
+      "chapterId": 36,
+      "scriptPaths": [
+        "content/level-4-advanced-ai/chapter-36/code/data_drift_detection.py"
+      ]
+    }
+  ],
+  "capstone": {
+    "title": "Intelligent Sensor Monitoring with Edge AI",
+    "summary": "Merancang sistem pemantauan sensor cerdas terkompresi beserta pengukuran latensi, estimasi memori SRAM/Flash simulasi, deteksi drift, dan analisis risiko.",
+    "rubricTotal": 100
+  },
+  "references": [
+    {
+      "title": "Warden & Situnayake (2019), TinyML: Machine Learning with TensorFlow Lite on Arduino and Ultra-Low-Power Microcontrollers",
+      "url": "https://www.oreilly.com/library/view/tinyml/9781492052036/",
+      "status": "verified"
+    },
+    {
+      "title": "Jacob et al. (2018), Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference",
+      "url": "https://doi.org/10.1109/CVPR.2018.00286",
+      "status": "verified"
+    },
+    {
+      "title": "Gama et al. (2014), A Survey on Concept Drift Adaptation",
+      "url": "https://dl.acm.org/doi/10.1145/2523813",
+      "status": "verified"
+    }
+  ]
+}
+

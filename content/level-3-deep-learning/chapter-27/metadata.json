@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Natural Language Processing Fundamentals",
   "status": "published",
-  "description": "Modul komprehensif implementasi Natural Language Processing Fundamentals: ruang lingkup bahasa dan komputasi, hierarki data teks dari korpus hingga token, Unicode UTF-8 encoding, pipeline pra-pemrosesan teks adaptif (case folding, pembersihan regex, normalisasi slang/singkatan, pelestarian kata negasi kritis, stemming vs lemmatization), tokenisasi regex dan subword, manajemen kosakata dan token-token khusus (<pad>, <unk>, <bos>, <eos>), padding dan truncation, representasi statistik Bag-of-Words (BoW) dan analisis sparsity, pembobotan analitis TF-IDF dengan formula smoothed Scikit-learn serta normalisasi L2 terverifikasi analitis (deviasi 0.00e+00), penangkapan konteks lokal fitur N-gram dan analisis ledakan kosakata, pipeline klasifikasi teks Scikit-learn (Naive Bayes dan Logistic Regression) pada partisi 3-way bebas kebocoran data (zero data leakage), representasi vektor padat terdistribusi (Word Embeddings), hipotesis distribusi Harris-Firth, matriks tabel embedding dan operasi lookup memori terverifikasi ekuivalen terhadap PyTorch nn.Embedding, geometri ruang semantik dan Cosine Similarity, pemodelan sekuensial temporal dan keterbatasan representasi statis, arsitektur komputasi rekuren Simple RNN (Elman) forward pass terverifikasi ekuivalen numerik (< 1e-6) terhadap PyTorch nn.RNN, algoritma Backpropagation Through Time (BPTT) dan analisis matematis vanishing/exploding gradients, arsitektur gerbang Long Short-Term Memory (LSTM) dengan jalur bebas hambatan Cell State dan 3 gerbang (forget, input, output), arsitektur efisien Gated Recurrent Unit (GRU) dengan Update and Reset gates serta pembuktian penghematan 25% parameter, benchmarking empiris komparasi terstandar Simple RNN vs LSTM vs GRU pada CPU dengan perekaman log JSON, keterbatasan arsitektur rekuren (ketiadaan paralelisasi dan bottleneck konteks statis sebagai jembatan menuju Attention & Transformer Bab 28), serta etika representasi, bias gender/sosial, privasi teks, dan kerangka kerja Responsible NLP.",
+  "description": "Pelajari bagaimana komputer memproses dan menganalisis bahasa manusia menggunakan text preprocessing, tokenization, TF-IDF, word embeddings, dan sequence models. Chapter ini menghubungkan traditional NLP dengan Neural Networks sebagai fondasi pengembangan Transformer dan Large Language Models.",
   "objectives": [
     "Menjelaskan tujuan dan ruang lingkup Natural Language Processing dalam kecerdasan buatan.",
     "Mengidentifikasi tahapan alur kerja standar NLP dari pra-pemrosesan hingga pemodelan.",
@@ -97,5 +97,13 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Text preprocessing adaptif, UTF-8, dan manajemen tokenisasi kosakata.",
+    "Representasi teks jarang: Bag-of-Words dan pembobotan analitis TF-IDF.",
+    "Text Classification menggunakan pendekatan klasik maupun jaringan saraf.",
+    "Word Embeddings padat serta geometri makna Cosine Similarity.",
+    "Sequence Modeling menggunakan RNN, LSTM, dan mekanisme gerbang GRU.",
+    "Metrik evaluasi NLP serta kesadaran bias bahasa dalam aplikasi nyata."
+  ]
 }

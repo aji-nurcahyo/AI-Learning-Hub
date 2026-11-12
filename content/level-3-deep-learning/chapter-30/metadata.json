@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Deep Learning Capstone",
   "status": "published",
-  "description": "Puncak integrasi siklus hidup rekayasa Deep Learning & Generative AI: perumusan hipotesis ilmiah dan metrik keberhasilan kuantitatif, kurasi dataset dan partisi bertingkat 3-way (Train/Val/Test) bebas kebocoran (zero data leakage), pembentukan model acuan pembanding (baseline) transparan, perancangan arsitektur deep learning modular berbasis PyTorch dengan koneksi lewatan residual, LayerNorm, dan Dropout, pengembangan mesin pelatihan profesional dengan optimasi AdamW, pemotongan gradien (gradient clipping), dan penghentian dini (early stopping), evaluasi diagnostik independen pada data uji terisolasi multi-metrik (Accuracy, Macro F1, Recall) serta diseksi galat kualitatif (error analysis), manajemen persistensi model checkpoint PyTorch (.pt) dengan pembuktian paritas numerik bitwise deterministik (< 1e-7), audit etika Responsible AI mencakup disparitas keadilan subgrup mesin dan uji ketahanan derau sensor Gauss, implementasi acuan Deep Predictive Maintenance Net end-to-end runnable pada CPU, penyusunan Model Card, serta panduan pengerjaan 6 pilihan lintasan proyek mandiri dan rubrik komprehensif 100 poin.",
+  "description": "Integrasikan pencapaian Level 3 Deep Learning & Generative AI dalam satu proyek arsitektur modular terpadu di PyTorch. Anda akan merumuskan hipotesis kuantitatif, membangun blok Residual/LayerNorm tangguh dengan AdamW dan Early Stopping, serta mengaudit generalisasi dan biaya komputasi.",
   "objectives": [
     "Merumuskan masalah rekayasa kecerdasan buatan, hipotesis ilmiah terukur, dan kriteria sukses kuantitatif.",
     "Menyiapkan himpunan data telemetri dengan partisi bertingkat 3-way (Train/Val/Test) bebas kebocoran data.",
@@ -92,5 +92,12 @@
   "validation": {
     "reviewed": true,
     "executionVerified": true
-  }
+  },
+  "highlights": [
+    "Perumusan hipotesis eksperimental serta penetapan baseline linier pembanding.",
+    "Desain jaringan modular PyTorch dengan blok Residual, LayerNorm, dan Dropout.",
+    "Pelatihan stabil menggunakan optimizer AdamW, gradient clipping, dan Early Stopping.",
+    "Evaluasi held-out lengkap: Macro F1, Confusion Matrix, dan Error Analysis.",
+    "Pelaporan jujur profil parameter, waktu inferensi CPU, dan batas aplikasi."
+  ]
 }
