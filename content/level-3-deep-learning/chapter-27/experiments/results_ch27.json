@@ -1,0 +1,92 @@
+{
+  "RNN": {
+    "model_type": "RNN",
+    "parameter_count": 1698,
+    "training_time_ms": 324.66,
+    "val_accuracy": 70.0,
+    "final_loss": 0.1084,
+    "avg_grad_norm": 0.5204,
+    "history": {
+      "train_loss": [
+        0.6415,
+        0.4693,
+        0.4004,
+        0.335,
+        0.2814,
+        0.2228,
+        0.1652,
+        0.1084
+      ],
+      "grad_norm": [
+        0.7051,
+        0.4366,
+        0.4575,
+        0.5094,
+        0.5373,
+        0.56,
+        0.5553,
+        0.4023
+      ]
+    }
+  },
+  "LSTM": {
+    "model_type": "LSTM",
+    "parameter_count": 4722,
+    "training_time_ms": 250.35,
+    "val_accuracy": 80.0,
+    "final_loss": 0.2881,
+    "avg_grad_norm": 0.3015,
+    "history": {
+      "train_loss": [
+        0.6426,
+        0.5139,
+        0.488,
+        0.4489,
+        0.4333,
+        0.4059,
+        0.3597,
+        0.2881
+      ],
+      "grad_norm": [
+        0.4507,
+        0.273,
+        0.3836,
+        0.1757,
+        0.1962,
+        0.2889,
+        0.3537,
+        0.2899
+      ]
+    }
+  },
+  "GRU": {
+    "model_type": "GRU",
+    "parameter_count": 3714,
+    "training_time_ms": 259.7,
+    "val_accuracy": 67.5,
+    "final_loss": 0.1746,
+    "avg_grad_norm": 0.3445,
+    "history": {
+      "train_loss": [
+        0.6037,
+        0.4782,
+        0.4445,
+        0.4058,
+        0.3649,
+        0.3147,
+        0.247,
+        0.1746
+      ],
+      "grad_norm": [
+        0.5337,
+        0.3365,
+        0.3169,
+        0.3189,
+        0.3022,
+        0.3268,
+        0.3164,
+        0.3043
+      ]
+    }
+  }
+}

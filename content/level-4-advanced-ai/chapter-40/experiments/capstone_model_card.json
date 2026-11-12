@@ -1,0 +1,38 @@
+{
+  "schema_version": "capstone-model-card-v1",
+  "date": "2026-11-11",
+  "model_name": "LogisticRegression",
+  "project": "Intelligent Sensor Monitoring (CPU Reference)",
+  "intended_use": "Educational reference capstone demonstrating end-to-end sensor anomaly classification on CPU.",
+  "prohibited_use": [
+    "Autonomous physical equipment shutdown without certified hardware safety interlocks.",
+    "Deployment on uncalibrated industrial motors without domain validation."
+  ],
+  "evaluation_metrics": {
+    "accuracy": 0.96,
+    "precision": 0.9474,
+    "recall": 0.9,
+    "f1": 0.9231,
+    "roc_auc": 0.9937
+  },
+  "confusion_matrix": [
+    [
+      216,
+      4
+    ],
+    [
+      8,
+      72
+    ]
+  ],
+  "feature_importance": {
+    "temperature_c": 0.0824,
+    "vibration_rms": 0.1298,
+    "current_amp": 0.0,
+    "acoustic_db": 0.0769,
+    "rpm_deviation": -0.0004,
+    "voltage_ripple_v": 0.0071
+  },
+  "risk_register_count": 4,
+  "certification_disclaimer": "Academic reference artifact ONLY; NOT regulatory compliance or industrial safety certification."
+}

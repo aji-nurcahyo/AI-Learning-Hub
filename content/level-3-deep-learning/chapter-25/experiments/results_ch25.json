@@ -1,0 +1,41 @@
+{
+  "chapter": 25,
+  "title": "Object Detection & YOLO",
+  "iou_verification": {
+    "box_a": [100.0, 100.0, 300.0, 300.0],
+    "box_b": [200.0, 200.0, 400.0, 400.0],
+    "intersection_area": 10000.0,
+    "union_area": 70000.0,
+    "iou": 0.142857,
+    "theoretical_ratio": "1/7",
+    "deviation": 0.0
+  },
+  "nms_verification": {
+    "raw_candidate_boxes": 6,
+    "iou_threshold": 0.5,
+    "score_threshold": 0.25,
+    "surviving_boxes": 2,
+    "retained_indices": [0, 3],
+    "opencv_nms_match": true
+  },
+  "detection_metrics": {
+    "num_ground_truth": 3,
+    "num_predictions": 4,
+    "true_positives": 2,
+    "false_positives": 2,
+    "false_negatives": 1,
+    "ap_all_points": 0.6667,
+    "ap_11_points": 0.6667,
+    "mAP@0.5": 0.6667,
+    "mAP@0.5:0.95": 0.4000
+  },
+  "confidence_threshold_tradeoff": [
+    {"threshold": 0.10, "retained": 8, "tp": 5, "fp": 3, "fn": 0, "precision": 0.6250, "recall": 1.0000, "f1": 0.7692},
+    {"threshold": 0.25, "retained": 6, "tp": 5, "fp": 1, "fn": 0, "precision": 0.8333, "recall": 1.0000, "f1": 0.9091},
+    {"threshold": 0.50, "retained": 4, "tp": 4, "fp": 0, "fn": 1, "precision": 1.0000, "recall": 0.8000, "f1": 0.8889},
+    {"threshold": 0.75, "retained": 2, "tp": 2, "fp": 0, "fn": 3, "precision": 1.0000, "recall": 0.4000, "f1": 0.5714},
+    {"threshold": 0.90, "retained": 1, "tp": 1, "fp": 0, "fn": 4, "precision": 1.0000, "recall": 0.2000, "f1": 0.3333}
+  ],
+  "yolo_cpu_latency_ms": 15.0
+}
+

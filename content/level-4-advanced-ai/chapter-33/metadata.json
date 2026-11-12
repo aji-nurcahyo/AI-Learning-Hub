@@ -1,0 +1,79 @@
+{
+  "id": 33,
+  "slug": "chapter-33",
+  "levelId": 4,
+  "title": "Retrieval-Augmented Generation",
+  "status": "published",
+  "description": "Arsitektur lengkap Retrieval-Augmented Generation (RAG): document ingestion, chunking, hybrid retrieval (BM25 + Dense RRF), reranking, context construction, grounded generation, citation validation, dan mitigasi indirect prompt injection.",
+  "objectives": [
+    "Menjelaskan konsep Retrieval-Augmented Generation (RAG) untuk mengatasi keterbatasan pengetahuan parametrik model bahasa.",
+    "Membedakan RAG dan Fine-Tuning secara arsitektural, biaya operasional, dan kepatuhan audit sumber.",
+    "Menjelaskan tahapan document ingestion, pembersihan teks UTF-8, dan pencatatan source provenance.",
+    "Menggunakan strategi text chunking (fixed-size dan recursive) dengan rasio overlap optimal.",
+    "Membangun retrieval index dalam memori yang menggabungkan pencarian leksikal BM25 dan indeks vektor padat.",
+    "Menghubungkan query pengguna dengan konteks dokumen relevan melalui Reciprocal Rank Fusion (RRF).",
+    "Menjelaskan peran neural cross-scoring reranker dalam meningkatkan presisi kandidat retrieval teratas.",
+    "Mengembangkan grounded answers berbasis bukti tekstual dengan rujukan sitasi eksplisit [Doc: ID].",
+    "Mengelola source attribution dan memvalidasi keabsahan sitasi dokumen secara otomatis.",
+    "Mengidentifikasi ragam kegagalan RAG (retrieval failure, lost in the middle, extraction failure, hallucination drift).",
+    "Mengevaluasi performa retrieval (Precision@k, Recall@k, MRR) dan generasi (Groundedness, Faithfulness) secara terpisah.",
+    "Membangun purwarupa sistem RAG modular yang dapat direproduksi secara mandiri dan offline pada CPU.",
+    "Menjelaskan risiko keamanan indirect prompt injection dan menegakkan Access Control Lists (ACL) level dokumen."
+  ],
+  "prerequisites": [
+    32
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Retrieval-Augmented Generation",
+    "Hybrid Retrieval",
+    "BM25",
+    "Prompt Grounding",
+    "Vector Search"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Lewis et al. (2020), Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "url": "https://proceedings.neurips.cc/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html",
+      "status": "verified"
+    },
+    {
+      "title": "Robertson & Zaragoza (2009), The Probabilistic Relevance Framework: BM25 and Beyond",
+      "url": "https://doi.org/10.1561/1500000019",
+      "status": "verified"
+    },
+    {
+      "title": "Cormack, Clarke & Buettcher (2009), Reciprocal Rank Fusion Outperforms Condorcet and Individual Rank Learning Methods",
+      "url": "https://doi.org/10.1145/1571941.1572114",
+      "status": "verified"
+    },
+    {
+      "title": "Gao et al. (2023), Retrieval-Augmented Generation for Large Language Models: A Survey",
+      "url": "https://arxiv.org/abs/2312.10997",
+      "status": "verified"
+    },
+    {
+      "title": "NIST (2023), Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

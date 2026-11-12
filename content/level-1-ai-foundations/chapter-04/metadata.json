@@ -1,0 +1,70 @@
+{
+  "id": 4,
+  "slug": "chapter-04",
+  "levelId": 1,
+  "track": "core",
+  "title": "Search Algorithms: Uninformed & Informed Search",
+  "subtitle": "Eksplorasi Ruang Keadaan, Algoritma Pencarian Klasik (BFS, DFS, DLS, IDDFS, UCS), Heuristik, Greedy Best-First, dan Optimasi A*",
+  "status": "published",
+  "description": "Mempelajari algoritma pencarian kecerdasan buatan dari prinsip pohon/graf pencarian, strategi pencarian tanpa informasi (BFS, DFS, DLS, IDDFS, UCS), hingga pencarian terinformasi heuristik (Greedy Best-First dan A*), dilengkapi analisis kelengkapan, optimalitas, dan kompleksitas komputasi.",
+  "objectives": [
+    "Menjelaskan komponen dan mekanisme Search Algorithms.",
+    "Membedakan Search Tree dan Search Graph.",
+    "Menjelaskan Uninformed Search dan Informed Search.",
+    "Mengimplementasikan BFS, DFS, DLS, IDDFS, dan UCS.",
+    "Mengimplementasikan Greedy Best-First Search dan A* Search.",
+    "Menjelaskan heuristic, admissibility, dan consistency.",
+    "Menganalisis completeness, optimality, time complexity, dan space complexity berdasarkan asumsi yang jelas.",
+    "Membandingkan algoritma berdasarkan path cost, expanded nodes, dan memory usage.",
+    "Memilih algoritma yang sesuai dengan karakteristik masalah."
+  ],
+  "prerequisites": [
+    3
+  ],
+  "tags": [
+    "AI Foundations",
+    "Search Algorithms",
+    "Uninformed Search",
+    "Informed Search",
+    "BFS",
+    "DFS",
+    "UCS",
+    "A*",
+    "Heuristics"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson. Bab 3: Solving Problems by Searching.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Hart, P. E., Nilsson, N. J., & Raphael, B. (1968). A Formal Basis for the Heuristic Determination of Minimum Cost Paths. IEEE Transactions on Systems Science and Cybernetics, 4(2), 100-107.",
+      "url": "https://doi.org/10.1109/TSSC.1968.300136",
+      "status": "verified"
+    },
+    {
+      "title": "ACM/IEEE-CS/AAAI (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

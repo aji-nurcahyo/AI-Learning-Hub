@@ -1,0 +1,168 @@
+[
+  {
+    "kind": "cover",
+    "title": "AI Ethics, Bias & Responsible AI",
+    "body": "### Keadilan Algoritmik, Privasi Data, Akuntabilitas & Tata Kelola Sistem Cerdas\n\n**Level 1 — AI Foundations | Chapter 09**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di Chapter 09: AI Ethics, Bias & Responsible AI. Ini adalah bab penutup Level 1 yang mentransformasi mahasiswa dari sekadar pembuat kode teknis menjadi insinyur AI yang memiliki kesadaran moral, tanggung jawab sosial, dan kepatuhan hukum."
+  },
+  {
+    "kind": "content",
+    "title": "Mitos Netralitas Algoritma",
+    "body": "Banyak yang percaya bahwa keputusan AI pasti objektif karena bebas dari emosi manusia:\n\n- **Kenyataan Pahit**: Model machine learning tidak menghasilkan kebijaksanaan baru; model mempelajari pola dari data masa lalu.\n- **Amplifikasi Ketimpangan**: Jika sejarah manusia dipenuhi ketimpangan sosial dan prasangka, model AI akan mereplikasi dan memperkuat diskriminasi tersebut secara otomatis.\n- **Skala Dampak Tanpa Batas**: Keputusan manual manusia terbatas pada puluhan orang, namun sistem AI yang bias dapat menolak puluhan ribu pelamar beasiswa atau kredit dalam hitungan detik.",
+    "notes": "Tekankan bahaya ilusi objektivitas (myth of machine objectivity) di masyarakat awam."
+  },
+  {
+    "kind": "content",
+    "title": "Capaian Pembelajaran (Learning Objectives)",
+    "body": "Setelah menyelesaikan bab ini secara mendalam, pembelajar diharapkan mampu:\n\n- **Mengidentifikasi** taksonomi bias sistem AI (historis, representasi, pengukuran, algoritmik).\n- **Merumuskan** metrik keadilan kelompok formal (Demographic Parity & Equal Opportunity).\n- **Menganalisis** Teorema Ketidakmungkinan Keadilan (Kleinberg et al., 2016).\n- **Mengevaluasi** kepatuhan hukum privasi data di bawah UU PDP No. 27/2022 dan GDPR.\n- **Membuktikan** kerentanan serangan tautan quasi-identifier pada data terpseudonimisasi.\n- **Menerapkan** mekanisme pengawasan manusia (Human-in-the-Loop) pada AI berisiko tinggi.\n- **Menyusun** matriks penilaian risiko dampak etis AI berdasarkan NIST AI RMF 1.0.",
+    "notes": "Tunjukkan bahwa bab ini mengombinasikan aspek matematika, kode implementasi, hukum positif, dan etika profesional."
+  },
+  {
+    "kind": "split",
+    "title": "Empat Pilar Responsible AI",
+    "body": "Prinsip holistik pembangunan kecerdasan buatan terpercaya:\n\n### Keadilan & Transparansi\n- **Fairness**: Mencegah diskriminasi sistemik terhadap kelompok terlindungi.\n- **Explainability**: Model kotak hitam wajib dapat dijelaskan logikanya kepada pihak terdampak.\n\n### Privasi & Akuntabilitas\n- **Privacy Preservation**: Menghormati hak subjek data sesuai UU PDP No. 27/2022.\n- **Accountability**: Kehadiran pengawasan manusia (*Human-in-the-Loop*) pada keputusan kritis.",
+    "notes": "Jelaskan bahwa keempat pilar ini saling melengkapi dan tidak dapat dipisahkan dalam arsitektur AI modern."
+  },
+  {
+    "kind": "content",
+    "title": "Taksonomi Bias dalam Siklus Hidup AI",
+    "body": "Bias menyusup ke dalam sistem AI melalui berbagai tahapan:\n\n- **Historical Bias**: Data historis mencerminkan diskriminasi sosial masa lalu.\n- **Representation Bias**: Populasi sampel pelatihan mengabaikan kelompok minoritas.\n- **Measurement Bias**: Proksi fitur yang dipilih tidak mencerminkan esensi sebenarnya.\n- **Aggregation Bias**: Satu model seragam dipaksakan untuk populasi yang sangat heterogen.\n- **Algorithmic Bias**: Fungsi objektif optimasi mengorbankan akurasi minoritas demi meminimalkan total error global.",
+    "notes": "Jelaskan alur taksonomi Suresh & Guttag (2021) untuk melacak titik kemunculan bias."
+  },
+  {
+    "kind": "split",
+    "title": "Bias Historis vs Bias Representasi",
+    "body": "Dua sumber bias paling dominan pada fase pengumpulan data:\n\n### Bias Historis\n- Data dikumpulkan dengan benar, tetapi dunia masa lalu memang tidak adil.\n- *Contoh*: Rekam jejak promosi jabatan masa lalu yang didominasi satu kelompok gender tertentu.\n\n### Bias Representasi\n- Data latih tidak memiliki sampel yang cukup untuk kelompok minoritas.\n- *Contoh*: Dataset pengenalan wajah yang $85\\%$ berisi wajah berkulit terang, memicu tingkat kegagalan tinggi pada subjek berkulit gelap.",
+    "notes": "Beri contoh nyata agar mahasiswa dapat membedakan dengan tegas antara bias data masa lalu dan bias kesalahan sampling."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus Riil: Amazon & Gender Shades",
+    "body": "Dua kegagalan etika AI paling terkenal dalam sejarah industri teknologi:\n\n- **Algoritma Rekrutmen Amazon (2018)**:\n  Model AI menyortir resume pelamar insinyur software. Model mendegradasi resume yang memuat kata *\"women's\"* (misal: *women's chess club captain*) karena dilatih pada resume 10 tahun sebelumnya yang didominasi pria. Proyek akhirnya dibatalkan!\n- **Gender Shades (Buolamwini & Gebru, 2018)**:\n  Audit sistem klasifikasi gender komersial membuktikan tingkat error hanya $0.8\\%$ pada pria kulit terang, namun melonjak drastis hingga $34.7\\%$ pada wanita berkulit gelap.",
+    "notes": "Kasus-kasus ini membuktikan bahwa perusahaan teknologi raksasa sekalipun dapat melahirkan sistem yang bias jika tidak menerapkan audit etika ketat."
+  },
+  {
+    "kind": "content",
+    "title": "Formulasi Keadilan: Demographic Parity",
+    "body": "Menuntut bahwa tingkat penerimaan hasil positif harus setara antar kelompok:\n\n- **Definisi Matematika**:\n  $$\\mathbb{P}(\\hat{Y} = 1 \\mid A = a) = \\mathbb{P}(\\hat{Y} = 1 \\mid A = b)$$\n  Di mana $A$ adalah atribut terlindungi dan $\\hat{Y}$ adalah keputusan model.\n- **Kaidah Empat-Perlima (EEOC 80% Rule)**:\n  $$\\text{Disparate Impact Ratio} = \\frac{\\mathbb{P}(\\hat{Y} = 1 \\mid A = \\text{Minoritas})}{\\mathbb{P}(\\hat{Y} = 1 \\mid A = \\text{Mayoritas})} \\ge 0.80$$\n  Rasio di bawah $0.80$ secara hukum mengindikasikan diskriminasi dampak tidak langsung.",
+    "notes": "Jelaskan bahwa Demographic Parity fokus pada kesetaraan luaran tanpa mempertimbangkan kualifikasi riil kandidat."
+  },
+  {
+    "kind": "content",
+    "title": "Formulasi Keadilan: Equal Opportunity",
+    "body": "Hardt, Price, dan Srebro (2016) mengusulkan kesetaraan peluang bagi yang berkualifikasi:\n\n- **Definisi Matematika**:\n  $$\\mathbb{P}(\\hat{Y} = 1 \\mid Y = 1, A = a) = \\mathbb{P}(\\hat{Y} = 1 \\mid Y = 1, A = b)$$\n  Di mana $Y = 1$ mewakili kandidat yang benar-benar berkualifikasi tinggi (*ground truth*).\n- **Kesetaraan True Positive Rate (TPR / Recall)**:\n  $$\\text{TPR}_a = \\text{TPR}_b \\iff \\Delta EO = |\\text{TPR}_a - \\text{TPR}_b| < 0.10$$\n- Kandidat yang berkemampuan sama wajib memiliki peluang yang sama untuk diterima, apa pun latar belakang kelompoknya.",
+    "notes": "Equal Opportunity dianggap lebih adil secara meritokratis dibanding Demographic Parity murni."
+  },
+  {
+    "kind": "code",
+    "title": "Komputasi Metrik Keadilan Kelompok",
+    "body": "Menghitung tingkat seleksi dan TPR per kelompok menggunakan Python:",
+    "code": "# Evaluasi keadilan pada data uji\nidx_A = (test_groups == 'Kelompok A')\nidx_B = (test_groups == 'Kelompok B')\n\n# Selection Rate (Demographic Parity)\nsr_A = np.mean(y_pred[idx_A])\nsr_B = np.mean(y_pred[idx_B])\ndelta_dp = abs(sr_A - sr_B)\n\n# True Positive Rate (Equal Opportunity)\ntpr_A = np.sum((y_pred[idx_A]==1)&(y_true[idx_A]==1)) / np.sum(y_true[idx_A]==1)\ntpr_B = np.sum((y_pred[idx_B]==1)&(y_true[idx_B]==1)) / np.sum(y_true[idx_B]==1)\ndelta_eo = abs(tpr_A - tpr_B)\n\nprint(f\"Delta DP: {delta_dp:.4f} | Delta EO: {delta_eo:.4f}\")",
+    "notes": "Tunjukkan implementasi langsung rumus probabilitas bersyarat ke dalam ekspresi boolean array NumPy."
+  },
+  {
+    "kind": "content",
+    "title": "Teorema Ketidakmungkinan Keadilan",
+    "body": "Pencapaian fundamental oleh Kleinberg, Mullainathan, & Raghavan (2016):\n\n- **Teorema Ketidakmungkinan (*Impossibility Theorem*)**:\n  Kecuali akurasi model bernilai $100\\%$ sempurna atau prevalensi dasar (*base rate*) kedua kelompok tepat identik, **adalah mustahil secara matematis untuk memenuhi Demographic Parity, Equal Opportunity (TPR), dan Predictive Parity (Precision) secara simultan!**\n- **Konsekuensi Etis Nyata**:\n  Tidak ada solusi matematika ajaib. Insinyur dan pembuat kebijakan wajib berdiskusi untuk menentukan definisi keadilan mana yang menjadi prioritas moral sistem.",
+    "notes": "Ini adalah konsep kunci: mahasiswa harus mengerti bahwa etika memerlukan keputusan nilai (value judgment), bukan sekadar optimasi kode."
+  },
+  {
+    "kind": "split",
+    "title": "Fairness-Utility Trade-off",
+    "body": "Menavigasi pertukaran antara akurasi global dan keadilan kelompok:\n\n### Model Tanpa Kendala (Baseline)\n- Memaksimalkan akurasi agregat ($79.67\\%$).\n- Mengorbankan kandidat minoritas berpotensi tinggi: TPR Kelompok B hanya $29.55\\%$ vs $78.26\\%$ pada Kelompok A (Kesenjangan $\\Delta EO = 0.4872$).\n\n### Model Pasca-Mitigasi\n- Menyesuaikan ambang batas kelompok B (dari $0.50$ ke $0.10$).\n- TPR Kelompok B melonjak ke $40.91\\%$, menekan $\\Delta EO$ ke $0.3735$.\n- Akurasi global tetap terjaga sangat tinggi ($81.00\\%$).",
+    "notes": "Buktikan bahwa peningkatan keadilan tidak harus menghancurkan kegunaan sistem secara keseluruhan."
+  },
+  {
+    "kind": "code",
+    "title": "Mitigasi Pasca-Pemrosesan Threshold",
+    "body": "Penerapan ambang batas keputusan terpisah demi keadilan peluang:",
+    "code": "# Ambang batas terpisah untuk kelompok berbeda\ntau_A = 0.50\ntau_B = 0.10\n\ny_mitigated = np.zeros_like(y_pred)\ny_mitigated[idx_A] = (probs[idx_A] >= tau_A).astype(int)\ny_mitigated[idx_B] = (probs[idx_B] >= tau_B).astype(int)\n\n# Evaluasi ulang TPR pasca mitigasi\ntpr_B_mit = np.sum((y_mitigated[idx_B]==1)&(y_true[idx_B]==1)) / np.sum(y_true[idx_B]==1)\nprint(f\"TPR Kelompok B Naik Menjadi: {tpr_B_mit*100:.2f}%\")",
+    "notes": "Post-processing threshold tuning adalah teknik mitigasi yang sangat praktis karena tidak memerlukan pelatihan ulang model dari nol."
+  },
+  {
+    "kind": "content",
+    "title": "Transparansi: White-Box vs Black-Box",
+    "body": "Spektrum keterpahaman model kecerdasan buatan:\n\n- **Interpretable Models (Kotak Putih)**:\n  - Cara kerja internal dapat dipahami langsung oleh nalar manusia.\n  - *Contoh*: Regresi Linier, Decision Tree dangkal, Sistem Berbasis Aturan.\n  - Sangat cocok untuk domain berisiko tinggi seperti hukum dan kelayakan kredit.\n- **Explainable Models (Kotak Hitam)**:\n  - Hubungan non-linier rumit dengan jutaan parameter matematis.\n  - *Contoh*: Deep Neural Networks, Transformers, XGBoost.\n  - Memerlukan teknik penjelasan pasca-pelatihan (*post-hoc explainability*) seperti SHAP dan LIME.",
+    "notes": "Jelaskan trade-off antara kapasitas prediktif model hitam vs keterpahaman model putih."
+  },
+  {
+    "kind": "content",
+    "title": "Hak Subjek atas Penjelasan",
+    "body": "Hak asasi digital individu dalam era keputusan algoritmik otomatis:\n\n- **Pasal 22 GDPR & UU PDP No. 27/2022**:\n  Setiap warga negara memiliki hak hukum untuk tidak semata-mata tunduk pada keputusan otomatis yang menimbulkan dampak hukum signifikan.\n- **Hak atas Penjelasan (*Right to Explanation*)**:\n  Pengembang sistem wajib mampu memberikan alasan rasional mengenai faktor utama penentu keputusan (misal: *\"Pengajuan beasiswa ditolak karena jam keterlibatan sosial kurang dari ambang batas 50 jam\"*).\n- **Hak Sanggahan (*Human Contestability*)**: Wajib menyediakan saluran bagi warga untuk mengajukan banding kepada peninjau manusia.",
+    "notes": "Tekankan bahwa penolakan sepihak tanpa penjelasan ('komputer bilang tidak') adalah pelanggaran hak subjek data."
+  },
+  {
+    "kind": "content",
+    "title": "Tata Kelola Privasi Data: UU PDP No. 27/2022",
+    "body": "Landasan regulasi perlindungan data pribadi tertinggi di Indonesia:\n\n- **Definisi Data Pribadi (Pasal 1 angka 1)**:\n  Data orang perseorangan yang teridentifikasi atau dapat diidentifikasi secara tersendiri **maupun dikombinasikan dengan informasi lainnya**.\n- **Data Pribadi Spesifik (Pasal 4 ayat 2)**:\n  Informasi kesehatan, data biometrik, data genetika, catatan kejahatan, data anak, dan data keuangan. Memerlukan enkripsi dan pengamanan tingkat tinggi.\n- **Persetujuan Sah (Pasal 20)**: Wajib mengantongi persetujuan eksplisit (*explicit consent*) dari pemilik data untuk tujuan pelatihan AI tertentu.",
+    "notes": "Jelaskan konsekuensi sanksi denda administratif hingga miliaran rupiah dan pidana kurungan bagi pelanggar UU PDP."
+  },
+  {
+    "kind": "split",
+    "title": "Pseudonimisasi vs Anonimisasi Sejati",
+    "body": "Membedakan dua status hukum kerahasiaan data:\n\n### Pseudonimisasi (Pasal 35 UU PDP)\n- Data pribadi diganti dengan token atau hash (misal NIK diganti hash SHA-256).\n- Masih dapat ditautkan kembali menggunakan informasi tambahan.\n- **Status Hukum**: Tetap berstatus Data Pribadi yang dilindungi penuh!\n\n### Anonimisasi Sejati (Recital 26 GDPR)\n- Data diproses secara permanen dan ireversibel sehingga subjek tidak dapat diidentifikasi kembali dengan cara apa pun.\n- Tidak lagi tunduk pada UU PDP.",
+    "notes": "Ingatkan mahasiswa agar tidak tertipu mengira data sudah anonim hanya karena kolom nama dihapus."
+  },
+  {
+    "kind": "case",
+    "title": "Serangan Tautan Quasi-ID (Latanya Sweeney)",
+    "body": "Eksperimen legendaris Dr. Latanya Sweeney (Carnegie Mellon, 2000):\n\n- **Fakta Demografi**: $87\\%$ penduduk AS dapat diidentifikasi secara unik hanya melalui kombinasi tiga atribut umum: **Kode Pos (5 digit), Jenis Kelamin, dan Tanggal Lahir**!\n- **Studi Kasus Gubernur William Weld**:\n  Komisi Asuransi Massachusetts merilis data rekam medis rumah sakit yang telah dihapus namanya (*de-identified*). Sweeney membeli data pemilih tetap Cambridge seharga \\$20, melakukan *join* pada 3 quasi-identifier tersebut, dan berhasil menemukan diagnosis medis rahasia Gubernur Weld!\n- **Pelajaran**: Penyamaran identitas langsung (*direct identifier*) sangat rapuh!",
+    "notes": "Gunakan studi kasus ini untuk membuka mata mahasiswa betapa mudahnya data di-reidentifikasi melalui basis data eksternal."
+  },
+  {
+    "kind": "code",
+    "title": "Demonstrasi Linkage Attack dengan Pandas",
+    "body": "Menggabungkan data ter-pseudonimisasi dengan data publik terbuka:",
+    "code": "# Tautan rekam medis yang di-masking dengan Daftar Pemilih Tetap\nre_identified = pd.merge(\n    df_pseudonymized,\n    public_voter_registry,\n    on=['usia', 'kelamin', 'kode_pos'],\n    how='inner'\n)\n\n# Berhasil mengungkap identitas pasien dan diagnosis rahasia!\nfor _, r in re_identified.iterrows():\n    print(f\"Target Terungkap : {r['nama_asli']}\")\n    print(f\"Diagnosis Rahasia: {r['diagnosis']}\")",
+    "notes": "Perhatikan bahwa operasi inner join sederhana sudah cukup untuk meruntuhkan klaim privasi palsu."
+  },
+  {
+    "kind": "content",
+    "title": "Akuntabilitas: No Automation Without Accountability",
+    "body": "Prinsip dasar tata kelola sistem otonom cerdas:\n\n- **Mesin Bukan Subjek Hukum**: Algoritma AI tidak memiliki kepribadian hukum, tidak dapat dipenjara, dan tidak dapat membayar ganti rugi perdata.\n- **Tanggung Jawab Manusia**: Tanggung jawab etis dan hukum selalu berada pada pundak pengembang (*developers*), pemilik sistem (*deployers*), dan institusi yang mengoperasikannya.\n- **Auditabilitas Penuh**: Sistem AI wajib mencatat log keputusan (*audit trails*), versi model, dan bobot fitur untuk keperluan penelusuran forensik jika terjadi insiden diskriminasi.",
+    "notes": "Tanamkan prinsip profesionalisme: insinyur tidak boleh bersembunyi di balik dalih 'komputer yang memutuskan'."
+  },
+  {
+    "kind": "split",
+    "title": "Human-in-the-Loop vs Human-on-the-Loop",
+    "body": "Tingkatan pengawasan manusia dalam sistem AI:\n\n### Human-in-the-Loop (HITL)\n- AI hanya memberikan rekomendasi skor.\n- Keputusan final wajib diverifikasi dan disetujui oleh manusia.\n- *Wajib untuk*: Diagnosis medis kritis, putusan vonis pengadilan, seleksi beasiswa.\n\n### Human-on-the-Loop (HOTL)\n- AI mengeksekusi tindakan secara semi-otonom.\n- Operator manusia memantau dan memiliki tombol pembatal darurat (*kill switch*).\n- *Contoh*: Sistem auto-trading saham, armada drone otonom.",
+    "notes": "Bahas kapan sistem boleh menggunakan HOTL dan kapan mutlak harus menggunakan HITL."
+  },
+  {
+    "kind": "content",
+    "title": "Risiko AI Generatif & Model Fondasi",
+    "body": "Tantangan etis baru pada era Large Language Models dan difusi generatif:\n\n- **Halusinasi Faktual**: Menghasilkan informasi fiktif yang terdengar sangat meyakinkan dan meyakinkan pembaca awam.\n- **Deepfake & Penipuan Identitas**: Sintesis video dan kloning suara untuk rekayasa sosial (*social engineering*) dan disinformasi politik.\n- **Pelanggaran Hak Cipta**: Pelatihan model fondasi pada miliaran karya seni dan literatur tanpa izin pencipta aslinya.\n- **Jejak Karbon & Lingkungan**: Konsumsi listrik megawatt dan pendinginan air masif di pusat data global.",
+    "notes": "Kaitkan dengan perkembangan terkini GenAI dan perlunya pedoman penggunaan bertanggung jawab di kampus."
+  },
+  {
+    "kind": "content",
+    "title": "Kerangka Kerja Global: NIST AI RMF 1.0",
+    "body": "Standar manajemen risiko kecerdasan buatan dari NIST (SP 1270, 2023):\n\n- **GOVERN (Tata Kelola)**: Menetapkan kebijakan internal organisasi, toleransi risiko, dan penanggung jawab etika AI.\n- **MAP (Pemetaan)**: Memetakan konteks operasional sistem, potensi bahaya diskriminasi, dan pihak terdampak.\n- **MEASURE (Pengukuran)**: Mengaudit metrik keadilan secara kuantitatif ($\\Delta DP, \\Delta EO$), ketahanan model, dan kebocoran privasi.\n- **MANAGE (Pengendalian)**: Mengalokasikan sumber daya mitigasi bias, rencana pemulihan insiden, dan audit berkala.",
+    "notes": "NIST AI RMF adalah kerangka kerja tata kelola yang paling banyak diadopsi perusahaan teknologi global saat ini."
+  },
+  {
+    "kind": "content",
+    "title": "Matriks Penilaian Risiko Etis AI",
+    "body": "Metodologi kuantitatif evaluasi dampak sistem sebelum penerapan:\n\n- **Rumus Skor Risiko**:\n  $$\\text{Skor Risiko} = \\text{Kemungkinan (Likelihood: 1–5)} \\times \\text{Dampak (Impact: 1–5)}$$\n- **Klasifikasi Tingkat Risiko**:\n  - **TINGGI (Skor 15–25)**: Sistem DILARANG beroperasi secara mandiri; wajib pengawasan Human-in-the-Loop ketat dan audit independen.\n  - **SEDANG (Skor 8–12)**: Beroperasi dengan kontrol mitigasi dan pemantauan log berkala.\n  - **RENDAH (Skor 1–6)**: Risiko dapat diterima dengan pengawasan standar.",
+    "notes": "Jelaskan skala 1-5 untuk Likelihood dan Impact serta contoh penerapannya pada berbagai domain industri."
+  },
+  {
+    "kind": "code",
+    "title": "Evaluasi Registri Risiko Etis AI",
+    "body": "Skrip Python mengevaluasi dan mengekspor registri risiko ke format CSV:",
+    "code": "# Hitung skor keparahan risiko sistem AI\ndf_risks['risk_score'] = df_risks['likelihood'] * df_risks['impact']\n\ndef classify_level(score):\n    if score >= 15: return 'TINGGI (Kritis)'\n    if score >= 8: return 'SEDANG (Perlu Mitigasi)'\n    return 'RENDAH (Dapat Diterima)'\n\ndf_risks['risk_level'] = df_risks['risk_score'].apply(classify_level)\nprint(df_risks[['system_domain', 'risk_score', 'risk_level']])",
+    "notes": "Registri risiko CSV memungkinkan pelaporan terstruktur kepada dewan direksi atau komite etik institusi."
+  },
+  {
+    "kind": "summary",
+    "title": "Pedoman Etika Praktis bagi Pengembang AI",
+    "body": "Lima disiplin wajib setiap insinyur kecerdasan buatan:\n\n1. **Audit Data Sejak Hari Pertama**: Jangan berasumsi data bersih; periksa disparitas historis dan representasi kelompok.\n2. **Ukur Keadilan Formal**: Jangan hanya melaporkan akurasi global; evaluasi Demographic Parity dan Equal Opportunity.\n3. **Hormati Kerahasiaan Subjek**: Terapkan enkripsi dan $k$-anonymity; patuhi UU PDP No. 27/2022.\n4. **Pertahankan Human-in-the-Loop**: Jangan biarkan algoritma memutuskan nasib seseorang tanpa pengawasan manusia.\n5. **Transparan & Akuntabel**: Berikan hak penjelasan kepada pihak yang terdampak keputusan AI.",
+    "notes": "Ringkas lima prinsip ini sebagai pedoman karir masa depan mahasiswa di bidang kecerdasan buatan."
+  },
+  {
+    "kind": "summary",
+    "title": "Roadmap Menuju AI Foundations Capstone",
+    "body": "Fondasi teori, matematika, pemrograman, dan etika telah lengkap:\n\n- **Chapter 01–05**: Sejarah AI, Agen Cerdas, Algoritma Pencarian, dan Representasi Pengetahuan.\n- **Chapter 06–07**: Fondasi Matematika (Aljabar Linear, Probabilitas, Optimasi) & Ekosistem Python AI.\n- **Chapter 08–09**: Penyiapan Data Industri, EDA Bebas Kebocoran, dan Etika AI Bertanggung Jawab.\n- **Selanjutnya — Chapter 10**: *AI Foundations Capstone*. Proyek puncak Level 1 yang mengintegrasikan perumusan masalah AI, perancangan agen cerdas, algoritma pencarian, representasi pengetahuan, analisis data, dan audit etika tanpa model Machine Learning!",
+    "notes": "Arahkan mahasiswa untuk bersiap menghadapi proyek puncak Level 1 di Chapter 10 sebelum melangkah ke Level 2 (Machine Learning)."
+  }
+]

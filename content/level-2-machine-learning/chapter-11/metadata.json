@@ -1,0 +1,81 @@
+{
+  "id": 11,
+  "slug": "chapter-11",
+  "levelId": 2,
+  "title": "Introduction to Machine Learning",
+  "status": "published",
+  "description": "Pengantar fundamental Machine Learning: pergeseran paradigma dari sistem berbasis aturan, taksonomi Supervised, Unsupervised, dan Reinforcement Learning, struktur fitur dan label, siklus pelatihan, validasi, pengujian, generalisasi, Bias–Variance Trade-off, peran krusial baseline model, pencegahan data leakage, serta etika Responsible ML.",
+  "objectives": [
+    "Menjelaskan konsep Machine Learning dan perbedaannya dengan Rule-Based Systems.",
+    "Mengidentifikasi Supervised, Unsupervised, dan Reinforcement Learning.",
+    "Menjelaskan features, labels, samples, models, dan predictions.",
+    "Menjelaskan Training, Validation, Testing, dan Inference.",
+    "Memahami generalization, overfitting, dan underfitting.",
+    "Menjelaskan peran baseline dalam evaluasi model.",
+    "Mengenali data leakage dan konsekuensinya.",
+    "Menginterpretasikan hasil model sederhana tanpa membuat klaim berlebihan."
+  ],
+  "prerequisites": [
+    10
+  ],
+  "tags": [
+    "Machine Learning",
+    "Introduction to Machine Learning",
+    "Supervised Learning",
+    "Unsupervised Learning",
+    "Reinforcement Learning",
+    "Features and Labels",
+    "Generalization",
+    "Overfitting",
+    "Underfitting",
+    "Bias-Variance Trade-off",
+    "Baseline Model",
+    "Data Leakage",
+    "Responsible ML"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Mitchell, T. M. (1997). Machine Learning. McGraw-Hill.",
+      "url": "https://www.cs.cmu.edu/~tom/mlbook.html",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.). Springer.",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press.",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "ACM / IEEE-CS / AAAI. (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

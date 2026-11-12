@@ -1,0 +1,70 @@
+{
+  "id": 2,
+  "slug": "chapter-02",
+  "levelId": 1,
+  "track": "core",
+  "title": "History, Evolution & AI Paradigms",
+  "subtitle": "Dari Dartmouth Workshop hingga Era Foundation Models dan Neuro-Symbolic AI",
+  "status": "published",
+  "description": "Melacak sejarah kecerdasan buatan dari Dartmouth Workshop 1956, Symbolic AI dan sistem pakar, AI Winter, kebangkitan Statistical Machine Learning dan Deep Learning, hingga era Generative AI dan pendekatan neuro-symbolic.",
+  "objectives": [
+    "Menjelaskan perkembangan Artificial Intelligence berdasarkan peristiwa dan perubahan pendekatan penting.",
+    "Mengidentifikasi karakteristik Symbolic AI, Statistical AI, Machine Learning, dan pendekatan modern.",
+    "Menjelaskan penyebab perubahan arah penelitian AI.",
+    "Membandingkan kekuatan dan keterbatasan beberapa paradigma AI.",
+    "Menganalisis hubungan antara perkembangan algoritma, data, hardware, dan kebutuhan aplikasi."
+  ],
+  "prerequisites": [
+    1
+  ],
+  "tags": [
+    "AI Foundations",
+    "History",
+    "Evolution",
+    "AI Paradigms",
+    "Symbolic AI",
+    "Statistical AI",
+    "Deep Learning",
+    "Generative AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "unavailable",
+      "path": null
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Turing, A. M. (1950). Computing Machinery and Intelligence. Mind, 59(236), 433-460.",
+      "url": "https://doi.org/10.1093/mind/LIX.236.433",
+      "status": "verified"
+    },
+    {
+      "title": "McCarthy, J., Minsky, M. L., Rochester, N., & Shannon, C. E. (1955). A Proposal for the Dartmouth Summer Research Project on Artificial Intelligence.",
+      "url": "https://ojs.aaai.org/index.php/aimagazine/article/view/1904",
+      "status": "verified"
+    },
+    {
+      "title": "ACM/IEEE-CS/AAAI (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

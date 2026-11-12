@@ -1,0 +1,135 @@
+{
+  "chapter": 32,
+  "title": "Embeddings & Vector Search",
+  "total_scripts": 14,
+  "all_passed": true,
+  "total_runtime_seconds": 11.2516,
+  "scripts": {
+    "embedding_basics.py": {
+      "status": "passed",
+      "duration_seconds": 0.3918,
+      "stdout_snippet": [
+        "",
+        "Kesimpulan: Dense embeddings mengompresi informasi ke dalam ruang kontinu berdimensi tetap,",
+        "memungkinkan kalkulasi kemiripan semantik melalui operasi aljabar vektor sederhana."
+      ]
+    },
+    "vector_similarity.py": {
+      "status": "passed",
+      "duration_seconds": 0.3899,
+      "stdout_snippet": [
+        "2. Dot Product sangat sensitif terhadap magnitudo: 26.00 pada kolinear panjang, meskipun orientasi sama.",
+        "3. Pada vektor ortogonal, Dot Product = 0.00 dan Cosine Similarity = 0.00.",
+        "4. Pada vektor berlawanan arah, Cosine Similarity bernilai minimum -1.0000."
+      ]
+    },
+    "cosine_similarity.py": {
+      "status": "passed",
+      "duration_seconds": 0.4023,
+      "stdout_snippet": [
+        "   - Gunakan `Cosine Similarity` dengan pengurutan menurun (DESCENDING: nilai tertinggi di posisi atas).",
+        "   - Gunakan `Cosine Distance` dengan pengurutan menaik (ASCENDING: nilai terendah di posisi atas).",
+        "2. Dokumen atau kueri kosong wajib ditangani dengan skor netral (0.0) agar tidak merusak kalkulasi matriks."
+      ]
+    },
+    "vector_normalization.py": {
+      "status": "passed",
+      "duration_seconds": 0.3849,
+      "stdout_snippet": [
+        "- Menghitung Cosine Similarity secara naif membutuhkan operasi akar dan pembagian berulang.",
+        "- Dengan pra-normalisasi seluruh dokumen dan kueri (L2 norm), pencarian kesamaan kosinus",
+        "  disederhanakan menjadi operasi matriks perkalian (BLAS GEMM) tercepat: IndexFlatIP."
+      ]
+    },
+    "text_tfidf_baseline.py": {
+      "status": "passed",
+      "duration_seconds": 3.1221,
+      "stdout_snippet": [
+        "Kelemahan Pencarian Leksikal (Vocabulary Mismatch):",
+        "Jika kueri menggunakan sinonim atau parafrasa yang kata persisnya tidak muncul di dokumen,",
+        "skor TF-IDF akan bernilai 0.0000 meskipun secara makna semantik dokumen tersebut sangat relevan."
+      ]
+    },
+    "sentence_embedding_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.4568,
+      "stdout_snippet": [
+        "3. Kalimat 1 vs Kalimat 5 (Deep Learning vs Nirkabel): Cosine Sim = 0.3081 (Korelasi Lemah)",
+        "",
+        "Keuntungan: Representasi dense menangkap relasi topik tanpa mewajibkan kata yang identik."
+      ]
+    },
+    "exact_vector_search.py": {
+      "status": "passed",
+      "duration_seconds": 0.3903,
+      "stdout_snippet": [
+        "- Operasi floating-point per kueri : 4,800 FLOPs.",
+        "- Pada skala jutaan vektor (N = 10^7), pencarian brute-force menjadi penghambat latensi (bottleneck).",
+        "- Inilah alasan mengapa teknik Approximate Nearest Neighbor (ANN) diperlukan di lingkungan produksi."
+      ]
+    },
+    "nearest_neighbor_numpy.py": {
+      "status": "passed",
+      "duration_seconds": 0.4411,
+      "stdout_snippet": [
+        "Efisiensi Rekayasa:",
+        "`np.argpartition` memangkas kompleksitas dari O(N log N) menjadi O(N),",
+        "sangat krusial untuk mempertahankan latensi rendah saat ukuran basis data membesar."
+      ]
+    },
+    "faiss_flat_index.py": {
+      "status": "passed",
+      "duration_seconds": 0.3995,
+      "stdout_snippet": [
+        "1. FAISS secara default hanya menyimpan koordinat vektor `xb` dan ID baris `0 s/d N-1`.",
+        "2. Teks asli, judul, dan data atribut lainnya wajib disimpan pada database terpisah (Metadata Store),",
+        "   lalu digabungkan kembali (*hydration*) berdasarkan ID hasil pencarian FAISS."
+      ]
+    },
+    "faiss_ann_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.5673,
+      "stdout_snippet": [
+        "   dokumen yang relevan (Recall tinggi), memangkas waktu komputasi secara signifikan.",
+        "2. Pemilihan `nprobe` adalah keputusan arsitektural: semakin besar nprobe, semakin tinggi",
+        "   recall, namun waktu inferensi mendekati pencarian eksak."
+      ]
+    },
+    "semantic_search.py": {
+      "status": "passed",
+      "duration_seconds": 0.4042,
+      "stdout_snippet": [
+        "================================================================================",
+        "Kesimpulan: Pencarian semantik berhasil mengidentifikasi dokumen yang relevan",
+        "berdasarkan kesamaan makna konseptual di ruang laten vektor."
+      ]
+    },
+    "retrieval_metrics.py": {
+      "status": "passed",
+      "duration_seconds": 0.3438,
+      "stdout_snippet": [
+        "Rata-rata Recall@5           : 0.8333 (83.3%)",
+        "Rata-rata Hit Rate@5         : 1.0000 (100.0%)",
+        "-----------------------------------------------------------------"
+      ]
+    },
+    "sparse_dense_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 3.0885,
+      "stdout_snippet": [
+        "1. Dense Retrieval lebih unggul saat menangani kueri konseptual atau kueri dengan sinonim.",
+        "2. Sparse Retrieval (TF-IDF) unggul pada kueri spesifik yang mencocokkan akronim persis (e.g., 'MQTT', '5G', 'YOLO').",
+        "3. Praktik industri modern umumnya menerapkan 'Hybrid Retrieval' yang menggabungkan skor sparse dan dense."
+      ]
+    },
+    "vector_search_benchmark.py": {
+      "status": "passed",
+      "duration_seconds": 0.4681,
+      "stdout_snippet": [
+        "   dalam waktu sub-milidetik (< 0.5 ms per kueri), sangat memadai untuk aplikasi skala kecil-menengah.",
+        "2. Pertumbuhan waktu komputasi bersifat linier murni O(N), membuktikan efisiensi aljabar BLAS.",
+        "3. Indeks Approximate Nearest Neighbor (ANN) baru mutlak diperlukan ketika N > 100.000 vektor."
+      ]
+    }
+  }
+}

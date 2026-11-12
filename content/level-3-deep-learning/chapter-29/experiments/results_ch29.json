@@ -1,0 +1,76 @@
+{
+  "chapter": 29,
+  "timestamp": "2026-11-08",
+  "results": {
+    "tokenization_demo.py": {
+      "status": "PASS",
+      "execution_time_sec": 0.1743,
+      "stdout_snippet": "====================================================================== CHAPTER 29: TOKENIZATION FUNDAMENTALS & SUBWORD BPE CONCEPT ====================================================================="
+    },
+    "next_token_prediction.py": {
+      "status": "PASS",
+      "execution_time_sec": 5.0219,
+      "stdout_snippet": "====================================================================== CHAPTER 29: NEXT-TOKEN PREDICTION & CONDITIONAL PROBABILITY ====================================================================="
+    },
+    "language_model_loss.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.3271,
+      "stdout_snippet": "====================================================================== CHAPTER 29: LANGUAGE MODEL TRAINING OBJECTIVE & PERPLEXITY ======================================================================"
+    },
+    "autoregressive_generation.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.456,
+      "stdout_snippet": "====================================================================== CHAPTER 29: AUTOREGRESSIVE GENERATION MECHANICS ======================================================================  [MEMULAI "
+    },
+    "greedy_decoding.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.8963,
+      "stdout_snippet": "====================================================================== CHAPTER 29: GREEDY DECODING & DEGENERATE REPETITION ====================================================================== Prompt"
+    },
+    "temperature_sampling.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.4435,
+      "stdout_snippet": "====================================================================== CHAPTER 29: TEMPERATURE SAMPLING & PROBABILITY SHAPING ====================================================================== Kos"
+    },
+    "top_k_sampling.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.2054,
+      "stdout_snippet": "====================================================================== CHAPTER 29: TOP-K SAMPLING STRATEGY ====================================================================== Kosakata Uji (8 kata):"
+    },
+    "top_p_sampling.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.1662,
+      "stdout_snippet": "====================================================================== CHAPTER 29: TOP-P (NUCLEUS) SAMPLING & DYNAMIC POOL SIZE ======================================================================  "
+    },
+    "lora_matrix_demo.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.5964,
+      "stdout_snippet": "====================================================================== CHAPTER 29: LOW-RANK ADAPTATION (LoRA) MECHANICS & VERIFICATION ================================================================="
+    },
+    "prompting_examples.py": {
+      "status": "PASS",
+      "execution_time_sec": 0.1751,
+      "stdout_snippet": "====================================================================== CHAPTER 29: IN-CONTEXT LEARNING (ZERO-SHOT, FEW-SHOT & STRUCTURED PROMPTS) ======================================================"
+    },
+    "toy_retrieval_grounding.py": {
+      "status": "PASS",
+      "execution_time_sec": 3.6678,
+      "stdout_snippet": "====================================================================== CHAPTER 29: RETRIEVAL-AUGMENTED GENERATION (RAG) & GROUNDING ===================================================================="
+    },
+    "hallucination_evaluation.py": {
+      "status": "PASS",
+      "execution_time_sec": 0.1809,
+      "stdout_snippet": "====================================================================== CHAPTER 29: HALLUCINATION EVALUATION & FACTUALITY AUDIT ====================================================================== Ko"
+    },
+    "output_validation.py": {
+      "status": "PASS",
+      "execution_time_sec": 0.1799,
+      "stdout_snippet": "====================================================================== CHAPTER 29: GUARDRAILS ARCHITECTURE & INPUT/OUTPUT VALIDATION ==================================================================="
+    },
+    "tiny_transformer_generation.py": {
+      "status": "PASS",
+      "execution_time_sec": 8.2089,
+      "stdout_snippet": "====================================================================== CHAPTER 29: TINY TRANSFORMER GENERATION (DECODER-ONLY) ====================================================================== Jum"
+    }
+  }
+}

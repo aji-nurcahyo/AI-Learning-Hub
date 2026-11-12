@@ -1,0 +1,13 @@
+{
+  "status": "PASSED",
+  "d_model": 16,
+  "num_heads": 4,
+  "batch_size": 2,
+  "seq_len": 5,
+  "unmasked_output_max_deviation": 7.82310962677002e-08,
+  "unmasked_weights_max_deviation": 1.1920928955078125e-07,
+  "causal_output_max_deviation": 7.601659587908038e-08,
+  "causal_weights_max_deviation": 6.39525873369351e-08,
+  "tolerance": 1e-06,
+  "conclusion": "Perhitungan Multi-Head Attention NumPy murni terbukti identik sempurna secara numerik terhadap PyTorch nn.MultiheadAttention."
+}

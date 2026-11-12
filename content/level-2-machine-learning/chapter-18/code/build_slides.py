@@ -1,0 +1,199 @@
+"""Pembangkit Berkas Slide Reveal.js (deck.json) untuk Chapter 18:
+Dimensionality Reduction (31 Slide Terstruktur)
+"""
+
+import json
+import pathlib
+
+slides = [
+    {
+        "kind": "cover",
+        "title": "Dimensionality Reduction",
+        "body": "### Kutukan Dimensi, Kompresi Sumbu, Dekomposisi Spektral, SVD & Manifold Learning Non-Linier\n\n**Level 2 — Machine Learning | Chapter 18**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+        "notes": "Selamat datang di perkuliahan Chapter 18. Hari ini kita membahas reduksi dimensi: teknik esensial untuk mengatasi kutukan dimensi, mengompresi data, dan memvisualisasikan ruang berdimensi jamak."
+    },
+    {
+        "kind": "content",
+        "title": "Why Dimensionality Reduction?",
+        "body": "Mengapa kita perlu memangkas dimensi data?\n\n- **Kutukan Dimensi (*Curse of Dimensionality*)**: Ruang berdimensi tinggi sangat renggang (*sparse*), membutuhkan eksponensial sampel untuk generalisasi yang baik.\n- **Kompresi Memori & Efisiensi Komputasi**: Mempercepat waktu pelatihan model hilir tanpa mengorbankan performa prediktif.\n- **Eliminasi Multikolinearitas & Derau**: Menghilangkan korelasi redundan dan sinyal derau acak.\n- **Visualisasi Data**: Memproyeksikan fitur berdimensi $D > 3$ ke ruang 2D atau 3D yang dapat dianalisis manusia.",
+        "notes": "Jelaskan bahwa lebih banyak fitur tidak selalu berarti performa lebih baik (Hughes Phenomenon)."
+    },
+    {
+        "kind": "content",
+        "title": "Learning Objectives",
+        "body": "Setelah menyelesaikan perkuliahan ini, mahasiswa diharapkan mampu:\n\n- **Menjelaskan** fenomena kutukan dimensi dan konsentrasi jarak geometris.\n- **Menurunkan** formulasi matematis PCA berbasis maksimisasi varians dan minimisasi galat rekonstruksi.\n- **Mengimplementasikan** PCA dari dasar menggunakan operasi matriks kovarians dan dekomposisi eigen.\n- **Menganalisis** kurva Scree Plot, kriteria Kaiser, dan ambang batas varians kumulatif.\n- **Menerapkan** dekomposisi Singular Value Decomposition (SVD) dan membuktikan Teorema Eckart-Young-Mirsky.\n- **Mengintegrasikan** PCA ke dalam Pipeline Scikit-Learn bebas kebocoran data (*zero data leakage*).\n- **Menjelaskan** prinsip Manifold Learning non-linier menggunakan t-SNE dan UMAP.\n- **Membandingkan** kelebihan, kelemahan, dan trade-off komputasi seluruh metode reduksi dimensi.",
+        "notes": "Paparkan tujuan kognitif berstandar taksonomi Bloom untuk bab ini."
+    },
+    {
+        "kind": "split",
+        "title": "The Curse of Dimensionality",
+        "body": "Apa yang terjadi saat dimensi fitur membengkak?\n\n### Volume Hiperkubus Renggang\n- Volume hiperkubus bersisi unit adalah $1^D = 1$.\n- Volume bola hipersferik di dalamnya mendekati $0$ saat $D \\to \\infty$.\n- Nyaris **seluruh massa data terkonsentrasi di sudut-sudut terluar** ruang fitur!\n\n### Eksponensial Data yang Dibutuhkan\n- Jika 1 dimensi butuh 10 sampel grid, 2 dimensi butuh $10^2 = 100$.\n- Untuk 50 dimensi, kita membutuhkan $10^{50}$ sampel data (mustahil dicapai).",
+        "notes": "Richard Bellman mencetuskan istilah 'Curse of Dimensionality' pada tahun 1957 dalam konteks kendali optimal."
+    },
+    {
+        "kind": "content",
+        "title": "Distance Concentration",
+        "body": "Hilangnya ketajaman metrik jarak di ruang berdimensi tinggi:\n\n- **Fenomena**: Rasio selisih jarak terjauh dan terdekat terhadap jarak terdekat mendekati nol:\n  $$\\lim_{D \\to \\infty} \\frac{d_{\\max} - d_{\\min}}{d_{\\min}} = 0$$\n- **Dampak Kritis**: Semua titik data menjadi tampak berjarak sama satu sama lain!\n- **Akibat pada Algoritma**: Algoritma berbasis jarak seperti KNN, K-Means, dan DBSCAN kehilangan kemampuan diskriminatif spasialnya secara dramatis.",
+        "notes": "Hasil eksperimen numerik kita membuktikan rasio d_min/d_max melompat dari 0.0021 pada 2D menjadi 0.8682 pada 1000D."
+    },
+    {
+        "kind": "split",
+        "title": "PCA Philosophy & Goals",
+        "body": "Principal Component Analysis (Karl Pearson, 1901; Harold Hotelling, 1933):\n\n### Pendekatan Ortogonal Linier\n- Menemukan himpunan sumbu koordinat baru yang saling tegak lurus (*ortogonal*).\n- Memutar sistem koordinat sedemikian rupa sehingga sumbu pertama (PC1) menangkap **varians terbesar** dari data.\n\n### Dua Perspektif Ekuivalen\n1. **Maksimisasi Varians**: Memproyeksikan data ke arah yang memiliki dispersi informasi maksimum.\n2. **Minimisasi Galat Kuadrat**: Menemukan subruang berdimensi rendah yang meminimalkan jarak proyeksi ortogonal.",
+        "notes": "Tekankan bahwa dua sudut pandang ini terbukti secara matematis menghasilkan solusi yang identik."
+    },
+    {
+        "kind": "split",
+        "title": "Variance Maximization Derivation",
+        "body": "Penurunan matematis komponen utama pertama $\\mathbf{w}_1$:\n\n### Formulasi Optimasi\nMaksimalkan varians proyeksi $\\mathbf{w}_1^T \\mathbf{\\Sigma} \\mathbf{w}_1$ dengan batasan vektor satuan $\\mathbf{w}_1^T \\mathbf{w}_1 = 1$:\n$$\\max_{\\mathbf{w}_1} \\mathbf{w}_1^T \\mathbf{\\Sigma} \\mathbf{w}_1 \\quad \\text{dengan syarat} \\quad \\mathbf{w}_1^T \\mathbf{w}_1 = 1$$\n\n### Pengali Lagrange\n$$\\mathcal{L}(\\mathbf{w}_1, \\lambda_1) = \\mathbf{w}_1^T \\mathbf{\\Sigma} \\mathbf{w}_1 - \\lambda_1 (\\mathbf{w}_1^T \\mathbf{w}_1 - 1)$$\n$$\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{w}_1} = 2 \\mathbf{\\Sigma} \\mathbf{w}_1 - 2 \\lambda_1 \\mathbf{w}_1 = 0 \\implies \\mathbf{\\Sigma} \\mathbf{w}_1 = \\lambda_1 \\mathbf{w}_1$$\n- $\\mathbf{w}_1$ adalah **vektor eigen** dari $\\mathbf{\\Sigma}$ dengan **nilai eigen terbesar** $\\lambda_1$!",
+        "notes": "Tunjukkan bahwa persamaan nilai eigen Sigma w = lambda w muncul secara elegan dari pengali Lagrange."
+    },
+    {
+        "kind": "content",
+        "title": "Data Centering & Covariance Matrix",
+        "body": "Mengapa pemusatan data (*mean centering*) adalah syarat mutlak PCA?\n\n1. **Pemusatan Rerata Empiris**:\n   $$\\mathbf{x}_i^{\\text{centered}} = \\mathbf{x}_i - \\bar{\\mathbf{x}}$$\n   Jika data tidak dipusatkan ke titik asal (origin), komponen utama pertama hanya akan mengarah ke posisi pusat massa data, bukan ke arah varians maksimal!\n2. **Matriks Kovarians Sampel**:\n   $$\\mathbf{\\Sigma} = \\frac{1}{N - 1} \\mathbf{X}_{\\text{centered}}^T \\mathbf{X}_{\\text{centered}}$$\n   Matriks bujur sangkar $D \\times D$ yang simetris dan semidefinit positif.",
+        "notes": "Ingatkan bahwa Scikit-learn PCA selalu otomatis memusatkan data di belakang layar."
+    },
+    {
+        "kind": "split",
+        "title": "Eigendecomposition & Spectral Theorem",
+        "body": "Dekomposisi spektral matriks kovarians simetris $\\mathbf{\\Sigma}$:\n\n### Teorema Spektral\n$$\\mathbf{\\Sigma} = \\mathbf{V} \\mathbf{\\Lambda} \\mathbf{V}^T$$\n- $\\mathbf{V} = [\\mathbf{v}_1, \\mathbf{v}_2, \\dots, \\mathbf{v}_D]$ adalah matriks ortogonal vektor eigen (vektor pemuatan komponen).\n- $\\mathbf{\\Lambda} = \\text{diag}(\\lambda_1, \\lambda_2, \\dots, \\lambda_D)$ adalah matriks diagonal nilai eigen terurut turun ($\\lambda_1 \\ge \\lambda_2 \\ge \\dots \\ge \\lambda_D \\ge 0$).\n\n### Proyeksi Subruang Berdimensi k\n$$\\mathbf{Z} = \\mathbf{X}_{\\text{centered}} \\mathbf{W}_k, \\quad \\mathbf{W}_k = [\\mathbf{v}_1, \\dots, \\mathbf{v}_k]$$",
+        "notes": "Z adalah skor komponen utama dalam ruang tereduksi."
+    },
+    {
+        "kind": "content",
+        "title": "Loadings & Physical Interpretation",
+        "body": "Bagaimana membaca arti fisis dari komponen utama?\n\n- **Factor Loadings (Bobot Pemuatan)**: Korelasi antara variabel asli dengan komponen utama:\n  $$L_{jd} = v_{jd} \\sqrt{\\lambda_d}$$\n- **Studi Kasus Sensor Telemetri**:\n  - **PC1 (80.51% Varians)**: Memiliki bobot pemuatan positif tinggi pada packet loss, latency, suhu, dan arus listrik; serta negatif kuat pada daya sinyal. $\\implies$ **Indeks Degradasi & Beban Sistem Global**.\n  - **PC2 (6.95% Varians)**: Mengisolasi variasi sinyal termal dan tegangan sisa.",
+        "notes": "Bantu mahasiswa menghubungkan aljabar linear murni dengan makna fisis rekayasa perangkat keras."
+    },
+    {
+        "kind": "split",
+        "title": "Explained Variance & Scree Plot",
+        "body": "Mengukur proporsi informasi yang dirangkum tiap komponen:\n\n### Rasio Varians Terjelaskan\n$$\\text{EVR}_j = \\frac{\\lambda_j}{\\sum_{d=1}^D \\lambda_d}$$\n\n### Analisis Scree Plot (Grafik Siku Varians)\n- Sumbu horizontal: nomor komponen utama $j = 1, \\dots, D$.\n- Sumbu vertikal: nilai eigen $\\lambda_j$ atau rasio varians.\n- **Kriteria Siku (*Elbow Rule*)**: Memilih titik di mana lereng penurunan varians melandai secara tajam.",
+        "notes": "Scree plot dinamai oleh Cattell (1966) dari analogi serpihan batu di kaki bukit (scree)."
+    },
+    {
+        "kind": "content",
+        "title": "Choosing k: Practical Rules",
+        "body": "Tiga aturan standar industri dalam menentukan jumlah komponen $k$:\n\n1. **Ambang Batas Kumulatif (*Cumulative Variance Threshold*)**:\n   Pilih $k$ terkecil yang mempertahankan $\\ge 90\\%$ atau $\\ge 95\\%$ dari total varians data.\n   - Kasus sensor kita: $k=2$ mencapai $87.45\\%$, $k=4$ mencapai $95.24\\%$.\n2. **Kriteria Kaiser (*Kaiser-Guttman Rule*)**:\n   Pada data terstandarisasi ($Z$-score), hanya pertahankan komponen dengan nilai eigen $\\lambda_j \\ge 1.0$ (karena varians fitur asli adalah 1.0).\n3. **Kebutuhan Visualisasi**: Tetapkan $k=2$ atau $k=3$ untuk eksplorasi visual grafik sebaran manusia.",
+        "notes": "Diskusikan trade-off antara kompresi ekstrim (k=2) vs preservasi presisi (k=4)."
+    },
+    {
+        "kind": "split",
+        "title": "Data Reconstruction & Lossy Compression",
+        "body": "Membalikkan proyeksi berdimensi rendah kembali ke ruang asli:\n\n### Transformasi Balik (*Inverse Transform*)\n$$\\hat{\\mathbf{X}} = \\mathbf{Z} \\mathbf{W}_k^T + \\bar{\\mathbf{X}}$$\n- Karena $k < D$, informasi pada komponen ke-$(k+1)$ hingga $D$ telah dibuang secara sengaja.\n\n### Galat Rekonstruksi (*Reconstruction Error*)\n$$\\text{Galat} = \\|\\mathbf{X} - \\hat{\\mathbf{X}}\\|_F^2 = \\sum_{j=k+1}^D \\lambda_j$$\n- Galat kuadrat rekonstruksi persis sama dengan jumlah nilai eigen komponen yang dibuang!",
+        "notes": "Ini membuktikan mengapa PCA meminimalkan galat rekonstruksi kuadratik secara global."
+    },
+    {
+        "kind": "content",
+        "title": "Singular Value Decomposition (SVD)",
+        "body": "Teorema fundamental dekomposisi matriks persegi panjang sembarang:\n\n- **Formulasi Umum**: Setiap matriks riil $\\mathbf{X} \\in \\mathbb{R}^{N \\times D}$ dapat didekomposisi menjadi:\n  $$\\mathbf{X} = \\mathbf{U} \\mathbf{\\Sigma}_{\\text{svd}} \\mathbf{V}^T$$\n- **Komponen SVD**:\n  - $\\mathbf{U} \\in \\mathbb{R}^{N \\times N}$: Matriks ortogonal vektor singular kiri (basis baris sampel).\n  - $\\mathbf{\\Sigma}_{\\text{svd}} \\in \\mathbb{R}^{N \\times D}$: Matriks diagonal nilai singular $s_1 \\ge s_2 \\ge \\dots \\ge s_D \\ge 0$.\n  - $\\mathbf{V} \\in \\mathbb{R}^{D \\times D}$: Matriks ortogonal vektor singular kanan (basis kolom fitur).",
+        "notes": "SVD adalah pilar komputasi modern yang mendasari kompresi, NLP, dan mesin rekomendasi."
+    },
+    {
+        "kind": "split",
+        "title": "Relationship: SVD and PCA",
+        "body": "Kesetaraan aljabar langsung antara SVD dan PCA:\n\n### Jika Data $\\mathbf{X}$ Telah Terpusat\n$$\\mathbf{X}^T \\mathbf{X} = (\\mathbf{U} \\mathbf{\\Sigma} \\mathbf{V}^T)^T (\\mathbf{U} \\mathbf{\\Sigma} \\mathbf{V}^T) = \\mathbf{V} \\mathbf{\\Sigma}^2 \\mathbf{V}^T$$\nBandingkan dengan dekomposisi kovarians:\n$$(N-1) \\mathbf{\\Sigma}_{\\text{cov}} = \\mathbf{V} \\mathbf{\\Lambda} \\mathbf{V}^T$$\n\n### Hubungan Parameter\n1. Vektor singular kanan $\\mathbf{V}$ **identik** dengan vektor eigen PCA!\n2. Nilai eigen $\\lambda_j$ bersesuaian dengan kuadrat nilai singular:\n   $$\\lambda_j = \\frac{s_j^2}{N - 1}$$\n3. Skor proyeksi PCA dapat dihitung langsung: $\\mathbf{Z} = \\mathbf{U}_k \\mathbf{\\Sigma}_k$.",
+        "notes": "Pustaka modern Scikit-Learn menggunakan SVD untuk komputasi PCA karena stabilitas numerik yang jauh lebih unggul."
+    },
+    {
+        "kind": "content",
+        "title": "The Eckart-Young-Mirsky Theorem",
+        "body": "Fondasi teoretis aproksimasi matriks rank rendah (*Low-Rank Approximation*):\n\n- **Pernyataan Teorema**: Diberikan matriks $\\mathbf{X}$, aproksimasi rank-$k$ terbaik $\\mathbf{X}_k$ yang meminimalkan norma Frobenius galat $\\|\\mathbf{X} - \\mathbf{X}_k\\|_F$ adalah penjumlahan terpotong $k$ suku SVD:\n  $$\\mathbf{X}_k = \\sum_{i=1}^k s_i \\mathbf{u}_i \\mathbf{v}_i^T = \\mathbf{U}_k \\mathbf{\\Sigma}_k \\mathbf{V}_k^T$$\n- **Batas Galat Minimum**:\n  $$\\min_{\\text{rank}(\\mathbf{A}) \\le k} \\|\\mathbf{X} - \\mathbf{A}\\|_F = \\sqrt{\\sum_{j=k+1}^D s_j^2}$$\n- Tidak ada matriks rank-$k$ lain di alam semesta yang memiliki galat lebih kecil dari $\\mathbf{X}_k$!",
+        "notes": "Eksperimen numerik kita membuktikan galat empiris persis menyentuh batas teoretis ini hingga 10^-15."
+    },
+    {
+        "kind": "split",
+        "title": "TruncatedSVD for Sparse Data",
+        "body": "Mengapa TruncatedSVD esensial untuk data berskala raksasa?\n\n### Masalah Matriks Jarang (*Sparse*)\n- Pada pemrosesan teks (TF-IDF ribuan kata), 99% entri matriks bernilai $0$.\n- Pemusatan data ($x_{ij} - \\mu_j$) mengubah semua angka $0$ menjadi angka non-nol!\n- Matriks jarang berubah menjadi matriks padat (*dense*), menyebabkan kegagalan memori (*Out-of-Memory*).\n\n### Karakteristik TruncatedSVD\n- Menghitung SVD langsung **tanpa memusatkan data** terlebih dahulu.\n- Mempertahankan kejarangan representasi memori `scipy.sparse`.\n- Jika data sengaja dipusatkan, hasil TruncatedSVD identik dengan PCA.",
+        "notes": "Gunakan TruncatedSVD untuk Latent Semantic Analysis (LSA) pada pemrosesan teks."
+    },
+    {
+        "kind": "content",
+        "title": "PCA in ML Pipeline: Zero Leakage",
+        "body": "Bagaimana menerapkan reduksi dimensi dalam arsitektur machine learning industri?\n\n- **Bahaya Kebocoran Data (*Data Leakage*)**:\n  Menjalankan `StandardScaler` atau `PCA` pada seluruh dataset sebelum train-test split akan membocorkan informasi rata-rata dan varians data uji ke dalam model latih!\n- **Arsitektur Pipeline Bebas Bocor**:\n  ```python\n  pipeline = Pipeline([\n      ('scaler', StandardScaler()),\n      ('pca', PCA(n_components=2)),\n      ('classifier', LogisticRegression())\n  ])\n  pipeline.fit(X_train, y_train)\n  pipeline.predict(X_test)\n  ```\n- Hanya memanggil `.fit()` pada data latih; data uji hanya melalui `.transform()`.",
+        "notes": "Tekankan pentingnya disiplin metodologi pipeline bebas kebocoran data."
+    },
+    {
+        "kind": "split",
+        "title": "Limitations of Linear Reductions",
+        "body": "Asumsi yang membatasi kemampuan PCA dan SVD:\n\n### Hanya Menangkap Sumbu Linier\n- PCA hanya mampu memproyeksikan data ke hiperbidang linier datar.\n- Jika data berada pada manifold berputar (*Swiss Roll*) atau kurva berbentuk huruf S, proyeksi linier PCA akan menumpuk lapisan-lapisan yang berbeda menjadi satu!\n\n### Mengabaikan Struktur Geometri Lokal\n- PCA berfokus memaksimalkan varians global.\n- Titik-titik tetangga dekat sering kali terdistorsi saat diproyeksikan ke subruang datar.",
+        "notes": "Keterbatasan PCA memicu lahirnya teknik Manifold Learning non-linier."
+    },
+    {
+        "kind": "content",
+        "title": "Non-linear Manifold Learning",
+        "body": "Filosofi pembelajaran manifold non-linier (*Non-linear Dimensionality Reduction*):\n\n- **Hipotesis Manifold**: Data berdimensi tinggi dunia nyata sebenarnya terkonsentrasi di dekat sub-ruang non-linier berdimensi jauh lebih rendah (*low-dimensional manifold*).\n- **Tujuan Utama**: 'Membuka lipatan' (*unroll*) manifold melengkung tersebut tanpa merusak hubungan ketetanggaan topologis.\n- **Dua Algoritma Terkemuka**:\n  1. **t-SNE** (*t-Distributed Stochastic Neighbor Embedding*).\n  2. **UMAP** (*Uniform Manifold Approximation and Projection*).",
+        "notes": "Manifold learning adalah terobosan penting untuk eksplorasi dataset kompleks seperti genomik dan pengenalan citra."
+    },
+    {
+        "kind": "split",
+        "title": "t-SNE Fundamentals",
+        "body": "Mekanisme probabilistik t-SNE (van der Maaten & Hinton, 2008):\n\n### Ruang Dimensi Tinggi: Distribusi Gaussian\nProbabilitas kondisional bahwa titik $\\mathbf{x}_j$ adalah tetangga dari $\\mathbf{x}_i$:\n$$p_{j|i} = \\frac{\\exp(-\\|\\mathbf{x}_i - \\mathbf{x}_j\\|^2 / 2\\sigma_i^2)}{\\sum_{k \\neq i} \\exp(-\\|\\mathbf{x}_i - \\mathbf{x}_k\\|^2 / 2\\sigma_i^2)}$$\n\n### Ruang Proyeksi Rendah: Distribusi t-Student\nProbabilitas ketetanggaan titik proyeksi $\\mathbf{y}_i$ dan $\\mathbf{y}_j$ (1 derajat kebebasan):\n$$q_{ij} = \\frac{(1 + \\|\\mathbf{y}_i - \\mathbf{y}_j\\|^2)^{-1}}{\\sum_k \\sum_{l \\neq k} (1 + \\|\\mathbf{y}_k - \\mathbf{y}_l\\|^2)^{-1}}$$",
+        "notes": "T-Student memiliki ekor lebih tebal (heavy-tailed) yang menjadi kunci mengatasi crowding problem."
+    },
+    {
+        "kind": "content",
+        "title": "The Crowding Problem & t-Student",
+        "body": "Mengapa t-SNE menggunakan distribusi t-Student pada ruang berdimensi rendah?\n\n- **Masalah Penumpukan (*Crowding Problem*)**: Volume bola berdimensi 2D jauh lebih kecil daripada bola berdimensi 10D. Jika kita memproyeksikan tetangga berdimensi tinggi dengan kurva Gaussian, semua titik akan terdorong menumpuk rapat di tengah grafik.\n- **Solusi Ekor Tebal (*Heavy-Tailed Property*)**:\n  Distribusi t-Student dengan 1 derajat kebebasan (Cauchy distribution) meluruh secara proporsional terhadap $1/r^2$, bukan $e^{-r^2}$.\n- **Hasil Visual**: Mengizinkan kelompok-kelompok klaster terpisah saling menjauh secara leluasa tanpa memadati ruang tengah.",
+        "notes": "Inilah inovasi kunci yang membuat t-SNE melesat menjadi standar visualisasi modern."
+    },
+    {
+        "kind": "split",
+        "title": "Tuning Perplexity in t-SNE",
+        "body": "Parameter paling penting pengendali resolusi t-SNE:\n\n### Definisi Matematis\n$$\\text{Perp}(P_i) = 2^{H(P_i)}, \\quad H(P_i) = -\\sum_j p_{j|i} \\log_2 p_{j|i}$$\n- Secara intuitif, perplexity merepresentasikan perkiraan **jumlah tetangga terdekat** efektif yang dipertimbangkan oleh setiap sampel.\n\n### Pedoman Pemilihan Nilai\n- Nilai standar: rentang antara $5$ hingga $50$.\n- **Perplexity terlalu kecil (< 5)**: Memecah kelompok alami menjadi serpihan-serpihan kecil (*over-clustering*).\n- **Perplexity terlalu besar (> 50)**: Mengaburkan struktur lokal menjadi satu gumpalan seragam.",
+        "notes": "Ingatkan mahasiswa untuk mencoba beberapa nilai perplexity sebelum menarik kesimpulan visual."
+    },
+    {
+        "kind": "content",
+        "title": "Limitations of t-SNE",
+        "body": "Batasan kritis yang harus dipahami oleh setiap praktisi:\n\n- **Sifat Stokastik & Non-Konveks**: Minimisasi divergensi Kullback-Leibler ($KL(P || Q)$) menggunakan Gradient Descent bergantung pada inisialisasi awal acak.\n- **Jarak Global Tak Bermakna**: Jarak antar-klaster yang berjauhan pada visualisasi t-SNE **tidak mencerminkan jarak sebenarnya** di ruang dimensi tinggi.\n- **Hanya Model Transduktif**: t-SNE **tidak memiliki fungsi pemetaan matematis tetap** (tidak ada `.transform()` untuk data baru). Jika ada sampel baru, seluruh algoritma harus dijalankan ulang dari awal!\n- **Kompleksitas Komputasi**: $\\mathcal{O}(N^2)$ pada implementasi standar (atau $\\mathcal{O}(N \\log N)$ dengan Barnes-Hut).",
+        "notes": "Tekankan bahwa t-SNE adalah alat visualisasi kualitatif, bukan ekstraktor fitur inferensi."
+    },
+    {
+        "kind": "split",
+        "title": "UMAP Fundamentals",
+        "body": "Uniform Manifold Approximation and Projection (McInnes, Healy, Melville, 2018):\n\n### Landasan Teori Topologi\n- Berakar pada geometri Riemannian dan topologi aljabar (*Fuzzy Simplicial Sets*).\n- Mengasumsikan data tersebar merata (*uniformly distributed*) pada suatu manifold lokal Riemannian.\n\n### Keunggulan atas t-SNE\n1. **Preservasi Ganda**: Mampu menjaga struktur lokal sekaligus hubungan topologi global antar-klaster.\n2. **Skalabilitas Super Cepat**: Kompleksitas $\\mathcal{O}(N^{1.14})$, mampu memproses jutaan sampel data.\n3. **Dukungan Induktif**: Memiliki fungsi `.transform(X_new)` untuk memproyeksikan data baru!",
+        "notes": "UMAP kini menjadi alternatif terkuat pengganti t-SNE di industri data science."
+    },
+    {
+        "kind": "split",
+        "title": "Dimensionality Comparison Matrix",
+        "body": "Matriks perbandingan komparatif seluruh algoritma reduksi dimensi:\n\n| Fitur Evaluasi | PCA | TruncatedSVD | t-SNE | UMAP |\n|---|---|---|---|---|\n| **Tipe Hubungan** | Linier | Linier | Non-Linier | Non-Linier |\n| **Preservasi** | Varians Global | Varians Global | Lingkungan Lokal | Lokal & Global |\n| **Kompleksitas** | $\\mathcal{O}(D^3 + N D^2)$ | $\\mathcal{O}(N \\cdot k \\cdot \\text{nnz})$ | $\\mathcal{O}(N^2)$ | $\\mathcal{O}(N^{1.14})$ |\n| **Invertible?** | Ya (Lossy) | Ya (Lossy) | Tidak | Ya (Aproksimasi) |\n| **Data Baru?** | Ya (`.transform`) | Ya (`.transform`) | Tidak | Ya (`.transform`) |\n| **Tujuan Utama** | Kompresi & Preprocessing | Data Sparse (NLP) | Visualisasi 2D/3D | Visualisasi & Embedding |",
+        "notes": "Gunakan tabel ini sebagai acuan arsitektur rekayasa perangkat lunak data cerdas."
+    },
+    {
+        "kind": "content",
+        "title": "Algorithm Selection Guide",
+        "body": "Pedoman memilih metode reduksi dimensi di industri:\n\n- **Pilih PCA ketika**:\n  - Anda membutuhkan reduksi dimensi cepat untuk pipeline klasifikasi/regresi.\n  - Menghilangkan multikolinearitas antar-variabel prediktor kontinu.\n  - Memerlukan kemampuan rekonstruksi balik (*inverse transform*).\n- **Pilih TruncatedSVD ketika**:\n  - Data berdimensi sangat tinggi dan memiliki matriks jarang (misal TF-IDF teks, graf).\n- **Pilih t-SNE ketika**:\n  - Fokus utama adalah visualisasi 2D kualitas tinggi untuk eksplorasi klaster lokal.\n- **Pilih UMAP ketika**:\n  - Dataset sangat besar ($N > 100.000$) dan membutuhkan preservasi jarak global.",
+        "notes": "Pandu mahasiswa dalam mengambil keputusan praktis di dunia kerja."
+    },
+    {
+        "kind": "content",
+        "title": "Case Study: Sensor Telemetry",
+        "body": "Hasil reduksi dimensi telemetri 360 node sensor nirkabel (6 dimensi):\n\n- **PCA (k=2)**: Berhasil merangkum **$87.45\\%$ varians total**.\n  - PC1 menangkap 80.51% (beban sistem & degradasi global).\n  - PC2 menangkap 6.95% (fluktuasi suhu & voltase).\n- **Rekonstruksi Data**: Galat norma Frobenius hanya $16.46$ pada $k=2$, dan persis $0.00$ pada $k=6$.\n- **Pipeline ML**: Reduksi dari 6 fitur ke 2 komponen utama meningkatkan akurasi klasifikasi dari $94.44\\%$ menjadi **$96.67\\%$** sekaligus memotong latensi latih sebesar $50\\%$!\n- **t-SNE (Perplexity=30)**: Memisahkan 3 profil operasional menjadi pulau-pulau 2D yang sangat bersih.",
+        "notes": "Tunjukkan bahwa reduksi dimensi dapat meningkatkan akurasi model hilir dengan mengeliminasi derau."
+    },
+    {
+        "kind": "split",
+        "title": "Common Pitfalls & Best Practices",
+        "body": "Kesalahan umum yang wajib dihindari praktisi:\n\n### Melewatkan Feature Scaling pada PCA\n- Variabel dengan skala angka terbesar akan mendominasi seluruh komponen utama pertama secara palsu.\n\n### Menafsirkan Jarak Global pada t-SNE\n- Dua klaster yang tampak berjauhan di t-SNE tidak selalu berarti berjauhan di ruang dimensi tinggi asli.\n\n### Kebocoran Data Train-Test\n- Menjalankan fit PCA sebelum train-test split melanggar integritas validasi machine learning.\n\n### Memilih Komponen Terlalu Sedikit\n- Memangkas dimensi tanpa memeriksa kurva varians kumulatif dapat membuang sinyal esensial.",
+        "notes": "Ingatkan bahaya kebocoran data dan interpretasi naif pada t-SNE."
+    },
+    {
+        "kind": "content",
+        "title": "Summary & Key Takeaways",
+        "body": "Rangkuman poin-poin inti perkuliahan Chapter 18:\n\n- **Kutukan Dimensi** menyebabkan konsentrasi jarak dan ruang hiperkubus yang sangat renggang.\n- **PCA** memproyeksikan data ke arah varians maksimal linier melalui dekomposisi matriks kovarians atau SVD.\n- **Teorema Eckart-Young-Mirsky** menjamin bahwa pemotongan suku SVD menghasilkan aproksimasi rank rendah terbaik secara matematis.\n- **TruncatedSVD** menjaga sifat efisiensi memori matriks jarang (sparse) tanpa operasi pemusatan data.\n- **Pipeline Bebas Kebocoran** menjamin penskalaan dan proyeksi PCA hanya dipelajari dari data latih.\n- **t-SNE & UMAP** unggul merekonstruksi manifold non-linier untuk visualisasi intuitif pada ruang 2D.",
+        "notes": "Tutup perkuliahan dengan menegaskan bahwa reduksi dimensi adalah jembatan krusial antara matematika dan rekayasa data."
+    }
+]
+
+def build_slides():
+    out_path = pathlib.Path(__file__).parent.parent / "slides" / "deck.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(slides, f, indent=2, ensure_ascii=False)
+    print(f"Slide deck ({len(slides)} slide) berhasil disimpan ke: {out_path}")
+
+if __name__ == "__main__":
+    build_slides()

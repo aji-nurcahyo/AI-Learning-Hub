@@ -1,0 +1,111 @@
+{
+  "id": 29,
+  "slug": "chapter-29",
+  "levelId": 3,
+  "title": "Large Language Models & Generative AI",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Large Language Models & Generative AI: ruang lingkup pemodelan generatif versus diskriminatif, taksonomi keluarga model generatif (Autoregressive Transformers, Diffusion Models, VAE, GAN), tokenisasi subword BPE, manajemen kosakata, Token ID, dan pembatasan jendela konteks (Context Window), formulasi probabilistik pemodelan bahasa dan prediksi token berikutnya (Next-Token Prediction) berbasis aturan perkalian rantai probabilitas, fungsi rugi Cross-Entropy Loss, Negative Log-Likelihood (NLL), dan metrik evaluasi Perplexity (PPL), arsitektur Decoder-Only Transformer dan mekanisme autoregresif rekursif, tiga tahapan siklus hidup pelatihan LLM modern (Pre-training mandiri skala masif, Supervised Fine-Tuning/Instruction Tuning dengan chat templates, dan Alignment kepatuhan etika 3H via RLHF dan DPO), adaptasi efisien parameter (PEFT) dan dekomposisi matriks rank rendah LoRA (W_0 + alpha/r * B*A) dengan pembuktian penghematan memori >90%, perbandingan strategi decoding (Greedy deterministik dan jebakan pengulangan kata, Temperature scaling kendali entropi probabilitas, Top-k filtering pemotongan ekor distribusi panjang, dan Nucleus Top-p sampling adaptif dinamis), In-Context Learning tanpa pembaruan bobot (pola Zero-Shot, Few-Shot, dan ekstraksi skema JSON terstruktur), prinsip Retrieval-Augmented Generation (RAG) untuk grounding fakta eksternal, taksonomi dan evaluasi kuantitatif halusinasi (Groundedness Score dan Hallucination Rate), sistem pertahanan Guardrails masukan (pencegahan Prompt Injection) dan keluaran (redaksi otomatis data pribadi PII), tantangan evaluasi model bahasa (BLEU, ROUGE, Exact Match, LLM-as-a-judge), implementasi model TinyGPT Decoder-Only mandiri pada CPU, serta kerangka kerja Responsible Generative AI (NIST AI RMF).",
+  "objectives": [
+    "Menjelaskan konsep dasar Generative AI dan perbedaan pemodelan generatif versus diskriminatif.",
+    "Menggunakan teknik tokenisasi subword dan pemetaan Token ID untuk pengelolaan jendela konteks.",
+    "Menghitung probabilitas bersyarat next-token prediction, Cross-Entropy Loss, dan Perplexity.",
+    "Menganalisis siklus pembangkitan autoregresif rekursif dan kondisi terminasi end-of-sequence.",
+    "Membandingkan karakteristik greedy decoding, temperature scaling, top-k sampling, dan nucleus top-p sampling.",
+    "Membedakan tahapan pelatihan Pre-training, Instruction Tuning (SFT), dan Alignment (RLHF/DPO).",
+    "Menerapkan teknik Parameter-Efficient Fine-Tuning menggunakan dekomposisi matriks Low-Rank Adaptation (LoRA).",
+    "Merancang prompt terstruktur In-Context Learning mencakup pola Zero-Shot, Few-Shot, dan luaran JSON.",
+    "Menjelaskan arsitektur Retrieval-Augmented Generation (RAG) dan perannya dalam memitigasi halusinasi.",
+    "Mengevaluasi keandalan faktual teks menggunakan metrik Groundedness Score dan deteksi halusinasi.",
+    "Mendeteksi ancaman keamanan Prompt Injection dan merancang Input Guardrail pelindung sistem.",
+    "Menerapkan sanitasi data pribadi (PII) dan pemaksaan skema validasi keluaran pada Output Guardrail.",
+    "Membangun model Tiny Transformer Decoder-Only mandiri untuk inferensi pembangkitan teks pada CPU.",
+    "Mengevaluasi implikasi etika, bias representasi bahasa, dan tata kelola Responsible Generative AI."
+  ],
+  "prerequisites": [
+    28
+  ],
+  "tags": [
+    "Deep Learning",
+    "Large Language Models",
+    "Generative AI",
+    "LLM",
+    "Next-Token Prediction",
+    "Autoregressive Generation",
+    "Subword Tokenization",
+    "Context Window",
+    "Cross-Entropy",
+    "Perplexity",
+    "Pre-training",
+    "Instruction Tuning",
+    "Supervised Fine-Tuning",
+    "SFT",
+    "Alignment",
+    "RLHF",
+    "DPO",
+    "PEFT",
+    "LoRA",
+    "Low-Rank Adaptation",
+    "Greedy Decoding",
+    "Temperature Sampling",
+    "Top-k Sampling",
+    "Top-p Sampling",
+    "Nucleus Sampling",
+    "In-Context Learning",
+    "Prompt Engineering",
+    "Few-Shot Learning",
+    "RAG",
+    "Retrieval-Augmented Generation",
+    "Grounding",
+    "Hallucination",
+    "Groundedness",
+    "Guardrails",
+    "Prompt Injection",
+    "PII Redaction",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Vaswani, A., et al. (2017). Attention Is All You Need. NeurIPS 2017, 30",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "status": "verified"
+    },
+    {
+      "title": "Radford, A., et al. (2019). Language Models are Unsupervised Multitask Learners (GPT-2). OpenAI",
+      "url": "https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "Brown, T., et al. (2020). Language Models are Few-Shot Learners (GPT-3). NeurIPS 2020, 33",
+      "url": "https://arxiv.org/abs/2005.14165",
+      "status": "verified"
+    },
+    {
+      "title": "Hu, E. J., et al. (2021). LoRA: Low-Rank Adaptation of Large Language Models. ICLR 2022",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "status": "verified"
+    },
+    {
+      "title": "Lewis, P., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. NeurIPS 2020, 33",
+      "url": "https://arxiv.org/abs/2005.11401",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

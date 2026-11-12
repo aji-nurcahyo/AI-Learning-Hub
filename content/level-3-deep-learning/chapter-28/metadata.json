@@ -1,0 +1,99 @@
+{
+  "id": 28,
+  "slug": "chapter-28",
+  "levelId": 3,
+  "title": "Attention & Transformer Architecture",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Attention & Transformer Architecture: pergeseran paradigma dari sekuensial rekuren ke atensi paralel, batasan bottleneck representasi statis dan peluruhan gradien pada model rekuren, evolusi historis dari Additive Attention Bahdanau menuju Self-Attention Vaswani et al., formulasi aljabar linier Query (Q), Key (K), dan Value (V) melalui transformasi linier terpelajari, formulasi dan pembuktian variansi Scaled Dot-Product Attention serta rasionalisasi pembagian faktor akar dimensi sqrt(d_k) guna mencegah kepunahan gradien pada fungsi Softmax, stabilitas numerik floating-point dan mitigasi overflow melalui shift-max trick, distingsi mekanisme Self-Attention intra-sekuens simetris versus Cross-Attention asimetris memori Encoder-Decoder, perancangan masker atensi komposit mencakup Padding Mask untuk mengabaikan token pelengkap dan Causal Mask segitiga bawah untuk pemodelan bahasa autoregresif tanpa kebocoran label masa depan, arsitektur Multi-Head Attention (MHA) dari dasar NumPy dan spesialisasi representasi multi-subspace paralel, pembedahan modul PyTorch nn.MultiheadAttention mencakup efisiensi matriks in_proj_weight dan verifikasi analitis parameter 4*d^2 + 4*d, pembuktian kelemahan sifat invarian permutasi dari Self-Attention dan solusi Positional Encoding sinusoidal (Vaswani et al. 2017) berbasis kombinasi frekuensi trigonometri geometris serta pembuktian relasi pergeseran linier, rancang bangun blok pembangun terintegrasi Transformer Encoder (MHA, Add & LayerNorm, FFN, Pre-LN vs Post-LN) dan Transformer Decoder (Masked MHA, Cross-Attention, Add & LayerNorm, FFN), orkestrasi arsitektur Sequence-to-Sequence (Seq2Seq) Mini Transformer terpadu dan pengukuran profil latensi inferensi CPU, taksonomi tiga keluarga besar Transformer modern (Encoder-Only seperti BERT, Decoder-Only seperti GPT, dan Encoder-Decoder seperti T5), analisis komparasi kompleksitas komputasi dan memori O(T^2) vs O(T) serta inovasi kontemporer FlashAttention dan Linear Attention, audit verifikasi kesetaraan numerik deterministik ketat NumPy versus PyTorch (deviasi < 1e-6), serta pertimbangan etika kecerdasan buatan, efisiensi energi komputasi hijau, privasi data pada model bahasa, dan kerangka kerja Responsible AI.",
+  "objectives": [
+    "Menjelaskan keterbatasan fundamental komputasi serial rekuren dan motivasi paradigma all-to-all attention.",
+    "Merumuskan konsep aljabar linier Query, Key, dan Value sebagai sistem temu-kembali informasi representasi.",
+    "Menghitung skor keselarasan dan bobot atensi menggunakan mekanisme Scaled Dot-Product Attention.",
+    "Menurunkan bukti matematis perlunya faktor penskalaan sqrt(d_k) untuk menstabilkan variansi skor dan mencegah vanishing gradients.",
+    "Mengimplementasikan fungsi Softmax stabil secara numerik menggunakan shift-max trick untuk mencegah floating-point overflow.",
+    "Membedakan mekanisme komputasi dan dimensi tensor antara Self-Attention dan Cross-Attention.",
+    "Merancang Padding Mask dan Causal Mask segitiga bawah untuk penegakan integritas linguistik dan kausalitas waktu.",
+    "Membangun modul Multi-Head Attention dari dasar NumPy dengan paralelisasi proyeksi tensor multi-subspace.",
+    "Menganalisis arsitektur internal PyTorch nn.MultiheadAttention, struktur bobot in_proj_weight, dan total parameter analitis.",
+    "Menjelaskan sifat invarian permutasi Self-Attention dan formulasi Positional Encoding sinusoidal.",
+    "Membangun blok pembangun modular Transformer Encoder dan Transformer Decoder lengkap dengan koneksi residu dan Layer Normalization.",
+    "Mengembangkan model Sequence-to-Sequence Mini Transformer terpadu untuk evaluasi inferensi lintasan maju pada CPU.",
+    "Membandingkan karakteristik arsitektur Encoder-Only, Decoder-Only, dan Encoder-Decoder pada ekosistem LLM modern.",
+    "Mengevaluasi trade-off kompleksitas komputasi kuadratik O(T^2) terhadap O(T) serta implikasi efisiensi energi dan etika Responsible AI."
+  ],
+  "prerequisites": [
+    27
+  ],
+  "tags": [
+    "Deep Learning",
+    "Attention Mechanism",
+    "Self-Attention",
+    "Cross-Attention",
+    "Query Key Value",
+    "Scaled Dot-Product",
+    "Softmax Stability",
+    "Shift-Max Trick",
+    "Attention Mask",
+    "Causal Mask",
+    "Padding Mask",
+    "Multi-Head Attention",
+    "MHA",
+    "PyTorch nn.MultiheadAttention",
+    "Positional Encoding",
+    "Sinusoidal PE",
+    "Transformer Encoder",
+    "Transformer Decoder",
+    "Seq2Seq",
+    "Layer Normalization",
+    "Residual Connection",
+    "Feed-Forward Network",
+    "Computational Complexity",
+    "FlashAttention",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Vaswani, A., et al. (2017). Attention Is All You Need. Advances in Neural Information Processing Systems (NeurIPS 2017), 30",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "status": "verified"
+    },
+    {
+      "title": "Bahdanau, D., Cho, K., & Bengio, Y. (2015). Neural Machine Translation by Jointly Learning to Align and Translate. ICLR 2015",
+      "url": "https://arxiv.org/abs/1409.0473",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Jurafsky, D., & Martin, J. H. (2024). Speech and Language Processing (3rd ed. draft). Stanford University",
+      "url": "https://web.stanford.edu/~jurafsky/slp3/",
+      "status": "verified"
+    },
+    {
+      "title": "ACM / IEEE-CS Joint Task Force on Computing Curricula. (2023). Computer Science Curricula 2023 (CS2023)",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

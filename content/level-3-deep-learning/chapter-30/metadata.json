@@ -1,0 +1,96 @@
+{
+  "id": 30,
+  "slug": "chapter-30",
+  "levelId": 3,
+  "title": "Deep Learning Capstone",
+  "status": "published",
+  "description": "Puncak integrasi siklus hidup rekayasa Deep Learning & Generative AI: perumusan hipotesis ilmiah dan metrik keberhasilan kuantitatif, kurasi dataset dan partisi bertingkat 3-way (Train/Val/Test) bebas kebocoran (zero data leakage), pembentukan model acuan pembanding (baseline) transparan, perancangan arsitektur deep learning modular berbasis PyTorch dengan koneksi lewatan residual, LayerNorm, dan Dropout, pengembangan mesin pelatihan profesional dengan optimasi AdamW, pemotongan gradien (gradient clipping), dan penghentian dini (early stopping), evaluasi diagnostik independen pada data uji terisolasi multi-metrik (Accuracy, Macro F1, Recall) serta diseksi galat kualitatif (error analysis), manajemen persistensi model checkpoint PyTorch (.pt) dengan pembuktian paritas numerik bitwise deterministik (< 1e-7), audit etika Responsible AI mencakup disparitas keadilan subgrup mesin dan uji ketahanan derau sensor Gauss, implementasi acuan Deep Predictive Maintenance Net end-to-end runnable pada CPU, penyusunan Model Card, serta panduan pengerjaan 6 pilihan lintasan proyek mandiri dan rubrik komprehensif 100 poin.",
+  "objectives": [
+    "Merumuskan masalah rekayasa kecerdasan buatan, hipotesis ilmiah terukur, dan kriteria sukses kuantitatif.",
+    "Menyiapkan himpunan data telemetri dengan partisi bertingkat 3-way (Train/Val/Test) bebas kebocoran data.",
+    "Membangun model acuan pembanding (baseline) linier untuk menetapkan ambang batas minimum pembenaran deep learning.",
+    "Merancang arsitektur jaringan saraf tiruan modular PyTorch menggunakan blok residual, LayerNorm, dan Dropout.",
+    "Mengimplementasikan mesin pelatihan tangguh dengan optimizer AdamW, pemotongan gradien, dan early stopping.",
+    "Mengevaluasi performa model pada data uji terisolasi menggunakan metrik akurasi, Macro F1, dan matriks konfusi.",
+    "Menganalisis karakteristik galat prediksi model melalui diseksi sampel kualitatif untuk mengidentifikasi batas keputusan.",
+    "Mengelola persistensi bobot model checkpoint PyTorch (.pt) dan membuktikan kesetaraan inferensi paritas bitwise.",
+    "Mendeteksi potensi bias performa lintas armada mesin melalui audit disparitas keadilan subgrup Responsible AI.",
+    "Mengevaluasi ketahanan model terhadap degradasi lingkungan operasional menggunakan injeksi derau acak Gauss.",
+    "Mendokumentasikan karakteristik teknis, batasan operasional, dan pertimbangan etika model ke dalam format Model Card.",
+    "Mengintegrasikan seluruh tahapan rekayasa deep learning Level 3 ke dalam laporan capstone komprehensif."
+  ],
+  "prerequisites": [
+    29
+  ],
+  "tags": [
+    "Deep Learning",
+    "Generative AI",
+    "Capstone Project",
+    "PyTorch",
+    "Modular Architecture",
+    "Residual Connections",
+    "Skip Connections",
+    "LayerNorm",
+    "Dropout",
+    "AdamW",
+    "Gradient Clipping",
+    "Early Stopping",
+    "Baseline Model",
+    "Data Leakage Prevention",
+    "Stratified Split",
+    "Confusion Matrix",
+    "Error Analysis",
+    "Model Checkpoint",
+    "Bitwise Parity",
+    "Responsible AI",
+    "Subgroup Fairness",
+    "Noise Robustness",
+    "Model Card",
+    "Predictive Maintenance"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. Nature, 521(7553), 436–444",
+      "url": "https://doi.org/10.1038/nature14539",
+      "status": "verified"
+    },
+    {
+      "title": "He, K., Zhang, X., Ren, S., & Sun, J. (2016). Deep Residual Learning for Image Recognition. CVPR 2016",
+      "url": "https://arxiv.org/abs/1512.03385",
+      "status": "verified"
+    },
+    {
+      "title": "Vaswani, A., et al. (2017). Attention Is All You Need. NeurIPS 2017, Vol. 30",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "status": "verified"
+    },
+    {
+      "title": "Mitchell, M., et al. (2019). Model Cards for Model Reporting. FAT* '19, pp. 220–229",
+      "url": "https://doi.org/10.1145/3287560.3287596",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

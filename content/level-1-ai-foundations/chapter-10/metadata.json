@@ -1,0 +1,83 @@
+{
+  "id": 10,
+  "slug": "chapter-10",
+  "levelId": 1,
+  "title": "AI Foundations Capstone",
+  "status": "published",
+  "description": "Proyek integrasi puncak Level 1 (AI Foundations): perumusan masalah nyata, pemilihan solusi AI vs deterministik, desain input-processing-output, implementasi prototype Python Smart Sensor Data Quality Monitor, pengujian terukur, serta audit Responsible AI.",
+  "objectives": [
+    "Mengidentifikasi dan merumuskan masalah nyata yang sesuai untuk penyelesaian berbasis AI atau pendekatan deterministik.",
+    "Memilih pendekatan AI yang sesuai dengan karakteristik masalah.",
+    "Merancang input, processing, output, dan evaluation.",
+    "Mengintegrasikan minimal beberapa kompetensi dari Chapter 01–09.",
+    "Mengimplementasikan prototype sederhana menggunakan Python.",
+    "Mengelola data dan melakukan Data Preparation jika diperlukan.",
+    "Menyusun testing dan evaluation berdasarkan kriteria keberhasilan.",
+    "Mengevaluasi risiko, keterbatasan, dan Responsible AI.",
+    "Mendokumentasikan project secara reproducible.",
+    "Mengomunikasikan hasil project secara akademik."
+  ],
+  "prerequisites": [
+    9
+  ],
+  "tags": [
+    "AI Foundations",
+    "AI Foundations Capstone",
+    "Project-Based Learning",
+    "Problem Formulation",
+    "AI vs Non-AI",
+    "Smart Sensor Monitor",
+    "Data Preparation",
+    "Exploratory Data Analysis",
+    "Rule-Based Reasoning",
+    "Quality Testing",
+    "Reproducibility",
+    "Responsible AI",
+    "Human Oversight"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "ACM / IEEE-CS / AAAI. (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    },
+    {
+      "title": "National Institute of Standards and Technology (NIST). (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0).",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "status": "verified"
+    },
+    {
+      "title": "UNESCO. (2024). AI Competency Framework for Students and Teachers.",
+      "url": "https://www.unesco.org/en/digital-education/ai-competency-framework",
+      "status": "verified"
+    },
+    {
+      "title": "Python Software Foundation. (2024). The Python Standard Library Documentation.",
+      "url": "https://docs.python.org/3/library/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

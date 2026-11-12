@@ -1,0 +1,91 @@
+{
+  "id": 23,
+  "slug": "chapter-23",
+  "levelId": 3,
+  "title": "Deep Learning with PyTorch",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Deep Learning modern berbasis framework PyTorch (Deep Learning with PyTorch): transisi dari aljabar NumPy manual ke komputasi tensor terakselerasi dan mesin autograd dinamis, representasi tensor, dimensi (shape), tipe data (dtype), dan manajemen alokasi perangkat (CPU vs CUDA), manipulasi bentuk tensor (view, reshape, squeeze, unsqueeze, permute, flatten) serta aturan penyiaran dimensi (broadcasting), jembatan zero-copy dua arah dengan array NumPy, mekanisme graf komputasi (DAG) autograd dan bahaya akumulasi gradien bawaan tanpa zero_grad(), penghematan memori evaluasi dengan torch.no_grad() dan detach(), perancangan arsitektur jaringan saraf berorientasi objek menggunakan torch.nn.Module, integrasi lapisan linear dan aktivasi non-linier, klarifikasi krusial mengapa model menghasilkan logits mentah tanpa Softmax untuk nn.CrossEntropyLoss, abstraksi aliran data modular melalui subclassing torch.utils.data.Dataset dan DataLoader dengan konfigurasi batching serta shuffling terstandar, protokol partisi data 3-way (Train 70%, Validation 15%, Test 15%) dan isolasi statistik normalisasi demi pencegahan kebocoran data (zero data leakage), siklus pelatihan lima langkah terstandar industri (model.train, zero_grad, forward, loss, backward, step), siklus validasi terisolasi (model.eval dan torch.no_grad), eksperimen komparasi objektif TabularMLP non-linier terhadap SimpleBaseline linier dengan evaluasi matriks konfusi, tata kelola penyimpanan dan pemuatan parameter aman menggunakan state_dict dengan weights_only=True, batas reproduksibilitas floating-point pada perangkat keras heterogen, serta checklist penanganan tujuh kesalahan umum (debugging) pemula.",
+  "objectives": [
+    "Menjelaskan peran framework deep learning dan perbandingannya dengan komputasi aljabar linier manual.",
+    "Mengidentifikasi karakteristik tensor PyTorch mencakup shape, ndim, dtype, dan alokasi perangkat eksekusi (device).",
+    "Melakukan manipulasi dimensi tensor menggunakan operasi view, reshape, squeeze, unsqueeze, dan permute.",
+    "Menjelaskan mekanisme autograd dan graf komputasi terarah (DAG) dalam menghitung turunan parsial secara otomatis.",
+    "Membedakan fungsi model.train() dan model.eval() serta menjelaskan peran blok torch.no_grad() pada evaluasi model.",
+    "Mengidentifikasi penyebab dan mitigasi masalah akumulasi gradien bawaan melalui pemanggilan optimizer.zero_grad().",
+    "Merancang model jaringan saraf tiruan modular berorientasi objek dengan mewarisi kelas torch.nn.Module.",
+    "Menjelaskan alasan pemisahan lapisan luaran berupa logits mentah tanpa Softmax ketika dipasangkan dengan nn.CrossEntropyLoss.",
+    "Membangun pipa aliran data efisien dengan mengimplementasikan kelas custom Dataset dan DataLoader.",
+    "Menerapkan protokol partisi data 3-way (Train, Validation, Test) secara terisolasi tanpa kebocoran data (data leakage).",
+    "Mengimplementasikan siklus pelatihan (training loop) dan validasi terstruktur dengan pelacakan metrik loss dan akurasi.",
+    "Mengoperasikan mekanisme checkpointing aman menggunakan state_dict dengan parameter weights_only=True untuk inferensi.",
+    "Menganalisis batas reproduksibilitas floating-point dan memitigasi kesalahan umum dalam pengembangan model PyTorch."
+  ],
+  "prerequisites": [
+    22
+  ],
+  "tags": [
+    "Deep Learning",
+    "PyTorch",
+    "Tensor Operations",
+    "Autograd",
+    "Computational Graph",
+    "nn.Module",
+    "Dataset",
+    "DataLoader",
+    "CrossEntropyLoss",
+    "Adam Optimizer",
+    "Training Loop",
+    "Validation Loop",
+    "Model Evaluation",
+    "state_dict",
+    "Checkpointing",
+    "Data Leakage Prevention",
+    "Reproducibility",
+    "Debugging"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Paszke, A., et al. (2019). PyTorch: An Imperative Style, High-Performance Deep Learning Library. NeurIPS 32, 8024-8035",
+      "url": "https://proceedings.neurips.cc/paper/2019/hash/bdbca288fee7f92f2bfa9f7012727740-Abstract.html",
+      "status": "verified"
+    },
+    {
+      "title": "PyTorch Foundation (2024). PyTorch Documentation and Official Tutorials",
+      "url": "https://pytorch.org/docs/stable/index.html",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Baydin, A. G., Pearlmutter, B. A., Radul, A. A., & Siskind, J. M. (2018). Automatic differentiation in machine learning: a survey. JMLR, 18(153), 1-43",
+      "url": "https://jmlr.org/papers/v18/17-468.html",
+      "status": "verified"
+    },
+    {
+      "title": "ACM / IEEE-CS (2024). Computer Science Curricula 2023 (CS2023): Artificial Intelligence Knowledge Area",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

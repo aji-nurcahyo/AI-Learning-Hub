@@ -1,0 +1,212 @@
+[
+  {
+    "kind": "cover",
+    "title": "Attention & Transformer Architecture",
+    "body": "### Bab 28 — Artificial Intelligence Learning Hub\n\n**Mekanisme Atensi, Query-Key-Value, Scaled Dot-Product, Multi-Head Attention, dan Arsitektur Transformer**\n\n*Aji Pamungkas Tri Nurcahyo — Institut Teknologi Sumatera*",
+    "notes": "Selamat datang di Bab 28. Pada modul ini, kita mempelajari lompatan paradigma terbesar dalam sejarah AI modern: transisi dari komputasi rekuren sekuensial (RNN/LSTM) menuju arsitektur Transformer berbasis mekanisme atensi murni (Attention Is All You Need)."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Mekanisme Atensi (Attention) Diperlukan?",
+    "body": "Perhatikan bagaimana manusia membaca paragraf yang rumit:\n\n- **Fokus Selektif**: Manusia tidak membaca teks dengan menumpuk seluruh memori secara membabi buta ke dalam satu wadah tetap. Saat membaca kata ganti 'ia', mata dan pikiran kita seketika *mengarahkan atensi* ke entitas subjek yang telah disebutkan sebelumnya.\n- **Kelemahan Model Rekuren Klasik**: Simple RNN, LSTM, dan GRU memproses kata satu per satu secara linear, memaksa seluruh informasi dari puluhan atau ratusan kata dimampatkan ke dalam satu vektor $\\mathbf{h}_T$ berukuran kaku (*fixed-size context bottleneck*).\n- **Prinsip Dasar Atensi**: Mengizinkan model menghubungkan representasi suatu token secara langsung ke token lainnya tanpa terhalang jarak waktu.",
+    "notes": "Tekankan analogi fokus selektif manusia: saat menerjemahkan kalimat, kita melihat kata sumber yang relevan secara dinamis, bukan mengingat seluruh kalimat sebagai satu gumpalan kabur."
+  },
+  {
+    "kind": "content",
+    "title": "Tujuan Pembelajaran (Learning Objectives)",
+    "body": "Setelah menyelesaikan modul ini, mahasiswa diharapkan mampu:\n\n1. **Menjelaskan** keterbatasan model rekuren dan motivasi penemuan mekanisme atensi.\n2. **Mengidentifikasi** peran konseptual dan matematis dari Query (Q), Key (K), dan Value (V).\n3. **Menghitung** Scaled Dot-Product Attention secara analitis langkah-demi-langkah.\n4. **Membedakan** mekanisme Self-Attention dengan Cross-Attention.\n5. **Menerapkan** Padding Mask dan Causal Mask pada arsitektur autoregresif.\n6. **Menganalisis** arsitektur Multi-Head Attention, Positional Encoding, serta blok utuh Transformer Encoder dan Decoder.\n7. **Melakukan verifikasi numerik ketat** kesetaraan implementasi NumPy mandiri terhadap PyTorch.",
+    "notes": "Rangkum tujuan pembelajaran agar mahasiswa memiliki peta kognitif yang jelas mengenai perjalanan materi dari perkalian dot-product sederhana hingga blok Transformer lengkap."
+  },
+  {
+    "kind": "split",
+    "title": "Keterbatasan Model Rekuren Klasik (RNN & LSTM)",
+    "body": "### Bottleneck Vektor Konteks Statis\n\n- Seluruh informasi historis sekuens panjang dikompresi paksa menjadi satu vektor keadaan tersembunyi akhir $\\mathbf{h}_T$.\n- Informasi kata-kata awal kalimat kerap terdegradasi atau terhapus saat mencapai akhir kalimat panjang (*information loss*).\n\n---\n\n### Ketiadaan Paralelisasi Komputasi\n\n- Langkah waktu $t$ mutlak harus menunggu luaran langkah waktu $t-1$ selesai dihitung: komputasi bersifat serial $O(T)$.\n- Perangkat keras akselerator modern (GPU/TPU dengan ribuan core komputasi) tidak dapat dimaksimalkan untuk memproses seluruh kata secara simultan.",
+    "notes": "Garis bawahi bahwa keterbatasan paralelisasi inilah yang membuat pelatihan model rekuren pada korpus internet berskala miliaran kata menjadi tidak layak secara ekonomi komputasi."
+  },
+  {
+    "kind": "content",
+    "title": "Konsep Mekanisme Atensi (The Attention Concept)",
+    "body": "Mekanisme atensi membuang ketergantungan pada vektor konteks tunggal statis:\n\n- Daripada memampatkan seluruh sekuens ke satu vektor $\\mathbf{h}_T$, atensi mempertahankan representasi dari **setiap posisi token** $\\mathbf{h}_1, \\mathbf{h}_2, \\dots, \\mathbf{h}_T$.\n- Saat memproses atau menghasilkan token baru, jaringan menghitung **derajat relevansi (skor atensi)** dinamis terhadap seluruh posisi token masa lalu.\n- Vektor konteks akhir dibentuk dari **penjumlahan terbobot (*weighted sum*)** dari representasi token yang relevan.",
+    "notes": "Beri gambaran bahwa atensi bertindak sebagai jalur pintas langsung (direct shortcut) berkecepatan tinggi antar sembarang pasangan token dalam sekuens."
+  },
+  {
+    "kind": "content",
+    "title": "Metafora Query, Key, dan Value (Q-K-V)",
+    "body": "Arsitektur Transformer mengadaptasi prinsip sistem temu-balik informasi (*Information Retrieval* / Database Retrieval):\n\n- **Query ($Q$)**: Informasi atau kata kunci yang sedang dicari oleh token saat ini (*'Apa yang saya cari?'*).\n- **Key ($K$)**: Label deskriptif atau indeks penanda konten dari setiap token dalam sekuens (*'Informasi apa yang saya miliki?'*).\n- **Value ($V$)**: Konten isi informasi substantif aktual yang akan diambil (*'Berapa nilai informasinya?'*).\n\n### Alur Temu-Balik Informasi:\nModel mencocokkan Query terhadap seluruh Key via produk titik, menghasilkan bobot kecocokan, lalu menggunakan bobot tersebut untuk menyerap porsi Value yang relevan.",
+    "notes": "Gunakan analogi YouTube atau Google Search: Query adalah teks pencarian di kolom search bar, Key adalah judul/tag video di basis data, dan Value adalah video aktual yang ditonton."
+  },
+  {
+    "kind": "content",
+    "title": "Produk Titik (Dot Product) sebagai Ukuran Kesamaan",
+    "body": "Bagaimana model mengukur kecocokan antara Query $\\mathbf{q}$ dan Key $\\mathbf{k}$?\n\n- Dua vektor di ruang berdimensi sama $d_k$ memiliki derajat keselarasan orientasi yang diukur melalui **produk titik (*dot product*)**:\n\n$$\\text{Skor}(\\mathbf{q}, \\mathbf{k}) = \\mathbf{q} \\cdot \\mathbf{k} = \\sum_{i=1}^{d_k} q_i k_i$$\n\n- **Sifat Aljabar Linier**:\n  - Nilai positif besar: Query dan Key memiliki orientasi fitur yang sangat selaras.\n  - Nilai nol: Query dan Key independen (ortogonal saling tegak lurus).\n  - Nilai negatif: Query dan Key berorientasi berlawanan arah.",
+    "notes": "Ingatkan kembali kaitan materi ini dengan perkalian matriks formal dan cosine similarity yang telah dipelajari pada Bab 06 dan Bab 27."
+  },
+  {
+    "kind": "content",
+    "title": "Kalkulasi Matriks Skor Atensi Mentah",
+    "body": "Jika seluruh vektor Query disusun ke dalam matriks $\\mathbf{Q} \\in \\mathbb{R}^{T_q \\times d_k}$ dan seluruh Key disusun ke dalam $\\mathbf{K} \\in \\mathbb{R}^{T_k \\times d_k}$:\n\n$$\\mathbf{S} = \\mathbf{Q} \\mathbf{K}^T \\in \\mathbb{R}^{T_q \\times T_k}$$\n\n- Setiap baris $i$ pada matriks $\\mathbf{S}$ memuat skor kesesuaian antara token Query ke-$i$ terhadap seluruh token Key $j = 1, \\dots, T_k$.\n- Komputasi ini dieksekusi secara masif paralel melalui satu operasi perkalian matriks (*General Matrix Multiply* / GEMM) teroptimasi perangkat keras.",
+    "notes": "Tunjukkan bahwa penyusunan Q dan K ke dalam bentuk matriks memungkinkan komputasi seluruh pasangan token selesai dalam satu instruksi GPU."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Perlu Penskalaan dengan $\\sqrt{d_k}$? (The Scaling Factor)",
+    "body": "Vaswani et al. (2017) menemukan bahwa produk titik standar mengalami degradasi pada dimensi besar:\n\n- Asumsikan komponen $q_i$ dan $k_i$ adalah variabel acak independen berdistribusi normal standar $\\mathcal{N}(0, 1)$:\n\n$$\\mathbb{E}[\\mathbf{q} \\cdot \\mathbf{k}] = 0, \\quad \\operatorname{Var}(\\mathbf{q} \\cdot \\mathbf{k}) = d_k$$\n\n- Untuk dimensi besar (misal $d_k = 64$), variansi melambung menjadi $64$, sehingga magnitudo nilai skor dapat mencapai angka sangat besar ($> 20$).\n- **Dampak pada Softmax**: Nilai logit yang sangat besar mendorong fungsi Softmax masuk ke wilayah saturasi ekstrem, di mana gradien fungsi bernilai mendekati nol (*vanishing gradient in softmax*)!\n- **Solusi Penskalaan**: Membagi skor dengan $\\sqrt{d_k}$ menormalkan variansi kembali ke $1.00$.",
+    "notes": "Jelaskan penurunan variansi ini secara gamblang agar mahasiswa paham mengapa pembagian sqrt(d_k) adalah kebutuhan matematis mutlak, bukan sekadar konstanta heuristik."
+  },
+  {
+    "kind": "content",
+    "title": "Distribusi Probabilitas Atensi via Fungsi Softmax",
+    "body": "Matriks skor berskala dinormalisasi baris-demi-baris menggunakan fungsi aktivasi Softmax:\n\n$$\\mathbf{W} = \\operatorname{softmax} \\left( \\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}} \\right) \\in \\mathbb{R}^{T_q \\times T_k}$$\n\n$$W_{i, j} = \\frac{\\exp(S_{i, j} / \\sqrt{d_k})}{\\sum_{l=1}^{T_k} \\exp(S_{i, l} / \\sqrt{d_k})}$$\n\n- **Karakteristik Bobot $\\mathbf{W}$**:\n  1. Bernilai non-negatif: $W_{i, j} \\ge 0$.\n  2. Berjumlah tepat satu per baris: $\\sum_{j=1}^{T_k} W_{i, j} = 1.0$.\n- Setiap sel $W_{i, j}$ merepresentasikan **proporsi perhatian (*attention weight*)** yang dialokasikan oleh token Query $i$ ke token Key $j$.",
+    "notes": "Tunjukkan bahwa matriks bobot atensi W dapat dipandang sebagai peta panas (heatmap) probabilitas interaksi semantik antar-kata."
+  },
+  {
+    "kind": "content",
+    "title": "Agregasi Nilai Terbobot (Weighted Value Aggregation)",
+    "body": "Tahap akhir mekanisme atensi adalah mengekstrak kombinasi linier dari matriks Value $\\mathbf{V} \\in \\mathbb{R}^{T_k \\times d_v}$ menggunakan bobot atensi $\\mathbf{W}$:\n\n$$\\operatorname{Output} = \\mathbf{W} \\mathbf{V} \\in \\mathbb{R}^{T_q \\times d_v}$$\n\n- Untuk setiap token Query $i$, vektor konteks luaran $\\mathbf{z}_i$ adalah penjumlahan terbobot dari seluruh vektor Value:\n\n$$\\mathbf{z}_i = \\sum_{j=1}^{T_k} W_{i, j} \\mathbf{v}_j$$\n\n- Token yang memiliki kecocokan tinggi (bobot $W_{i, j}$ besar) akan menyumbangkan porsi informasi Value terbesar ke dalam representasi akhir.",
+    "notes": "Tekankan bahwa Value adalah pembawa materi semantik yang sesungguhnya; Query dan Key hanyalah sarana penentu porsi filter pembobotan."
+  },
+  {
+    "kind": "content",
+    "title": "Formula Lengkap Scaled Dot-Product Attention",
+    "body": "Menggabungkan seluruh tahapan ke dalam satu formula fundamental paling termasyhur dalam kecerdasan buatan modern:\n\n$$\\operatorname{Attention}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\operatorname{softmax} \\left( \\frac{\\mathbf{Q} \\mathbf{K}^T}{\\sqrt{d_k}} \\right) \\mathbf{V}$$\n\n```\n   Q ──┐\n       ├──► [ MatMul ] ──► [ Scale 1/sqrt(d_k) ] ──► [ Mask (Opt) ] ──► [ Softmax ] ──┐\n   K ──┘                                                                              ├──► [ MatMul ] ──► Output\n                                                                                 V ───┘\n```\n\n- Beroperasi pada tensor arbitrer dengan dimensi batch masif.\n- Seluruh operasi bersifat diferensiabel penuh sehingga dapat dilatih secara *end-to-end* via Gradient Descent.",
+    "notes": "Ajak mahasiswa mencermati diagram alur komputasi ini. Diagram ini adalah arsitektur inti dari modul scaled_dot_product_attention.py."
+  },
+  {
+    "kind": "case",
+    "title": "Contoh Terhitung Langkah-demi-Langkah (Worked Example)",
+    "body": "### Penelusuran Numerik Skalar 2 Query & 3 Key ($d_k = 4$)\n\n$$\\mathbf{Q} = \\begin{bmatrix} 1 & 0 & 1 & 0 \\\\ 0 & 2 & 0 & 1 \\end{bmatrix}, \\quad \\mathbf{K} = \\begin{bmatrix} 1 & 0 & 1 & 0 \\\\ 0 & 1 & 0 & 1 \\\\ 1 & 1 & 0 & 0 \\end{bmatrix}, \\quad \\sqrt{d_k} = \\sqrt{4} = 2.0$$\n\n1. Matriks Skor Mentah $\\mathbf{Q} \\mathbf{K}^T$:\n   - Baris 1: $[1(1)+0+1(1)+0 = 2.0, \\; 0+0+0+0 = 0.0, \\; 1(1)+0+0+0 = 1.0]$\n2. Skor Berskala $\\mathbf{S} / 2.0$: Baris 1 $\\rightarrow [1.0, 0.0, 0.5]$\n3. Softmax: $e^1 = 2.718, e^0 = 1.000, e^{0.5} = 1.649$ (Jumlah = $5.367$)\n   - Bobot Atensi Baris 1: $[0.5065, \\; 0.1863, \\; 0.3072]$\n4. Output: $0.5065 \\mathbf{v}_1 + 0.1863 \\mathbf{v}_2 + 0.3072 \\mathbf{v}_3 = [4.2029, 5.2029, 6.2029, 7.2029]$.",
+    "notes": "Tunjukkan bahwa seluruh langkah matematis ini dapat diverifikasi dengan tangan dan terbukti cocok presisi dengan eksekusi kode Python."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Self-Attention (Intra-Sequence Interaction)",
+    "body": "Pada **Self-Attention**, matriks Query, Key, dan Value diproyeksikan dari **sekuens sumber yang sama** $\\mathbf{X} \\in \\mathbb{R}^{T \\times d_{\\text{model}}}$:\n\n$$\\mathbf{Q} = \\mathbf{X} \\mathbf{W}_Q, \\quad \\mathbf{K} = \\mathbf{X} \\mathbf{W}_K, \\quad \\mathbf{V} = \\mathbf{X} \\mathbf{W}_V$$\n\n- Setiap kata membandingkan dirinya sendiri terhadap seluruh kata lain dalam kalimat yang sama.\n- **Contoh Kontekstual**: Pada kalimat *'Hewan itu tidak menyeberang jalan karena **ia** terlalu lelah.'*\n- Mekanisme Self-Attention mengizinkan token kata ganti *'ia'* mengalokasikan bobot atensi tertinggi ke token *'Hewan'*, secara otomatis menyelesaikan rujukan kata ganti (*coreference resolution*).",
+    "notes": "Tekankan kehebatan Self-Attention: model mampu menghubungkan subjek dan kata ganti terlepas dari seberapa jauh posisi spasial kedua kata tersebut di dalam kalimat."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Cross-Attention (Decoder-Encoder Bridging)",
+    "body": "Pada **Cross-Attention**, vektor Query berasal dari sekuens yang berbeda dibandingkan Key dan Value:\n\n- **Query ($Q$)**: Berasal dari sekuens target pada Decoder: $\\mathbf{Q} = \\mathbf{X}_{\\text{dec}} \\mathbf{W}_Q \\in \\mathbb{R}^{T_{\\text{dec}} \\times d_k}$.\n- **Key ($K$) & Value ($V$)**: Berasal dari memori representasi luaran Encoder: $\\mathbf{K} = \\mathbf{X}_{\\text{enc}} \\mathbf{W}_K$, $\\mathbf{V} = \\mathbf{X}_{\\text{enc}} \\mathbf{W}_V$.\n- **Fleksibilitas Sekuens Asimetris**: Panjang sekuens sumber ($T_{\\text{enc}}$) dan target ($T_{\\text{dec}}$) **tidak perlu sama** ($T_{\\text{dec}} \\ne T_{\\text{enc}}$).\n- Esensial untuk tugas *Machine Translation*, di mana kalimat bahasa sumber dan target memiliki jumlah kata yang berbeda.",
+    "notes": "Jelaskan bahwa Cross-Attention adalah jembatan yang menghubungkan apa yang sedang dihasilkan oleh decoder dengan apa yang telah dipahami oleh encoder."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Masking: Kebutuhan Penapisan Informasi",
+    "body": "Dalam pemrosesan bahasa alami modern, terdapat dua kondisi di mana skor atensi harus dilarang dialokasikan ke posisi tertentu:\n\n1. **Kondisi Posisi Tak Valid (Padding)**: Token dummy `<pad>` yang ditambahkan demi menyamakan panjang batch tidak boleh menerima atensi maupun menyumbangkan informasi ke token riil.\n2. **Kondisi Autoregresif Masa Depan (Causality)**: Saat menghasilkan teks kata demi kata pada tahap decoding, model tidak boleh diizinkan mengintip kata-kata masa depan yang belum digenerasi (*no peeking into the future*).\n\n### Implementasi Numerik Masking:\nPosisi terlarang digantikan dengan nilai negatif sangat besar ($-\\infty$ atau $-10^9$) sebelum Softmax: $\\exp(-10^9) = 0.0000$.",
+    "notes": "Tekankan trik numerik: mengganti nilai skor dengan minus satu miliar menjamin bahwa setelah eksponensial softmax, bobot probabilitasnya menjadi tepat nol."
+  },
+  {
+    "kind": "split",
+    "title": "Dua Jenis Mask Utama: Padding Mask vs Causal Mask",
+    "body": "### Padding Mask\n\n- Menghapus pengaruh token `<pad>` pada batch heterogen.\n- Diterapkan pada Encoder maupun Decoder.\n- Posisi `<pad>` digantikan $-\\infty$ pada dimensi Key sekuens.\n\n---\n\n### Causal / Look-Ahead Mask\n\n- Menjaga batasan waktu generasi autoregresif.\n- Diterapkan khusus pada Self-Attention Decoder.\n- Berbentuk **matriks segitiga bawah (*lower triangular*)** di mana seluruh sel di atas diagonal utama $j > i$ dimask menjadi $-\\infty$.",
+    "notes": "Beri catatan penting mengenai perbedaan konvensi boolean: pada PyTorch key_padding_mask, True menandakan posisi yang dimask/diabaikan."
+  },
+  {
+    "kind": "content",
+    "title": "Konsep Multi-Head Attention (MHA)",
+    "body": "Daripada hanya melakukan satu perhitungan atensi tunggal dengan dimensi $d_{\\text{model}}$, arsitektur Transformer memecah representasi ke dalam $h$ kepala (*heads*) independen:\n\n$$\\operatorname{MultiHead}(\\mathbf{Q}, \\mathbf{K}, \\mathbf{V}) = \\operatorname{Concat}(\\text{head}_1, \\text{head}_2, \\dots, \\text{head}_h) \\mathbf{W}_O$$\n\n$$\\text{head}_i = \\operatorname{Attention}(\\mathbf{Q} \\mathbf{W}_i^Q, \\mathbf{K} \\mathbf{W}_i^K, \\mathbf{V} \\mathbf{W}_i^V)$$\n\n- Dimensi per head: $d_k = d_v = d_{\\text{model}} / h$.\n- **Mengapa Multi-Head?** Satu head mungkin fokus pada relasi gramatikal sintaksis (subjek-predikat), head lain fokus pada relasi semantik objek, dan head lainnya fokus pada pelacakan temporal.",
+    "notes": "Analogikan Multi-Head Attention seperti tim ahli: setiap analis mengamati kalimat dari perspektif keahlian linguistik yang berbeda secara simultan."
+  },
+  {
+    "kind": "content",
+    "title": "Alur Pemecahan & Penggabungan Tensor pada MHA",
+    "body": "Operasi Multi-Head Attention dieksekusi secara elegan melalui manipulasi bentuk tensor 4D:\n\n1. **Proyeksi Linier Global**: Proyeksikan input ke $(\\text{Batch}, T, d_{\\text{model}})$.\n2. **Split Heads & Transpose**: Bentuk tensor diubah menjadi $(\\text{Batch}, h, T, d_k)$.\n3. **Scaled Dot-Product Paralel**: Komputasi perkalian matriks batch menghasilkan skor atensi $(\\text{Batch}, h, T_q, T_k)$.\n4. **Penggabungan (Concatenate)**: Hasil konteks disatukan kembali menjadi $(\\text{Batch}, T_q, h \\cdot d_k) = (\\text{Batch}, T_q, d_{\\text{model}})$.\n5. **Proyeksi Luaran Akhir**: Dikalikan terhadap matriks $\\mathbf{W}_O \\in \\mathbb{R}^{d_{\\text{model}} \\times d_{\\text{model}}}$.",
+    "notes": "Tunjukkan bahwa pembagian dimensi d_k = d_model / h membuat total biaya komputasi Multi-Head Attention persis sama dengan Single-Head Attention berdimensi penuh!"
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Transformer Memerlukan Positional Encoding?",
+    "body": "Mekanisme Self-Attention bersifat **Invarian Permutasi (*Permutation Invariant*)**:\n\n- Operasi perkalian titik dan penjumlahan terbobot tidak memiliki pemahaman intrinsik mengenai posisi urutan token.\n- Kalimat *'Kucing mengejar tikus'* dan *'Tikus mengejar kucing'* akan menghasilkan himpunan skor atensi yang persis identik jika tidak ada informasi urutan yang disuntikkan!\n- Pada model rekuren (RNN), urutan waktu inheren dalam loop komputasi $t=1, 2, \\dots, T$.\n- Karena Transformer memproses seluruh token sekaligus secara paralel, **vektor penanda posisi (*Positional Encoding*) wajib ditambahkan ke vektor embedding kata** sebelum memasuki lapisan atensi.",
+    "notes": "Tegaskan perbedaan fundamental: RNN tahu urutan karena jalannya serial; Transformer memproses paralel, jadi urutan harus disuntikkan eksplisit."
+  },
+  {
+    "kind": "content",
+    "title": "Formulasi Sinusoidal Positional Encoding (Vaswani et al. 2017)",
+    "body": "Pengkodean posisi sinusoidal memproyeksikan indeks posisi integer $pos$ ke dalam fungsi gelombang kontinu:\n\n$$PE_{(pos, 2i)} = \\sin \\left( \\frac{pos}{10000^{2i / d_{\\text{model}}}} \\right)$$\n\n$$PE_{(pos, 2i+1)} = \\cos \\left( \\frac{pos}{10000^{2i / d_{\\text{model}}}} \\right)$$\n\n- $pos \\in [0, \\text{max\\_len}-1]$: Indeks posisi token dalam kalimat.\n- $i \\in [0, d_{\\text{model}}/2 - 1]$: Indeks dimensi frekuensi gelombang.\n- **Panjang Gelombang Geometris**: Dimensi awal berfluktuasi cepat (frekuensi tinggi untuk menangkap jarak dekat), dimensi akhir berfluktuasi sangat lambat (frekuensi rendah untuk jarak jauh).",
+    "notes": "Jelaskan bahwa pola sinusoidal memungkinkan model menggeneralisasi ke panjang sekuens yang lebih panjang daripada yang pernah dilihat saat pelatihan."
+  },
+  {
+    "kind": "content",
+    "title": "Sifat Transformasi Linier Posisi Relatif",
+    "body": "Keunggulan matematis luar biasa dari formulasi sinusoidal terletak pada sifat trigonometri pergeseran sudut:\n\n$$\\sin(\\alpha + \\beta) = \\sin \\alpha \\cos \\beta + \\cos \\alpha \\sin \\beta$$\n\n$$\\cos(\\alpha + \\beta) = \\cos \\alpha \\cos \\beta - \\sin \\alpha \\sin \\beta$$\n\n- **Teorema Relatif**: Untuk sembarang jarak offset posisi tetap $k$, vektor posisi $PE_{pos + k}$ dapat direpresentasikan sebagai **transformasi linier langsung** dari $PE_{pos}$:\n\n$$PE_{pos + k} = \\mathbf{M}_k \\cdot PE_{pos}$$\n\n- Hal ini memudahkan model atensi untuk mempelajari atensi berbasis jarak relatif antar-kata secara aljabar linier.",
+    "notes": "Paparkan fakta matematis ini untuk menunjukkan keanggunan rancangan paper 'Attention Is All You Need'."
+  },
+  {
+    "kind": "content",
+    "title": "Anatomi Arsitektur Lengkap Transformer (Vaswani et al. 2017)",
+    "body": "Arsitektur Transformer utuh mengadopsi struktur klasik **Encoder-Decoder**:\n\n```\n          [ OUTPUT LOGITS ]\n                  ▲\n          [ Linear Head ]\n                  ▲\n   ┌───► [ DECODER STACK (xN) ] ◄── Causal Mask & Memory\n   │              ▲\n   │      [ Positional Encoding ]\n   │              ▲\n   │      [ Output Embeddings ]\n   │\n[ ENCODER STACK (xN) ]\n         ▲\n [ Positional Encoding ]\n         ▲\n [ Input Embeddings ]\n```\n\n- Encoder memproses sekuens masukan utuh menjadi representasi memori kaya konteks.\n- Decoder mengonsumsi representasi encoder untuk menghasilkan sekuens luaran secara autoregresif.",
+    "notes": "Tunjukkan diagram makro ini sebelum membedah komponen mikro Encoder dan Decoder pada slide berikutnya."
+  },
+  {
+    "kind": "content",
+    "title": "Bedah Blok Transformer Encoder",
+    "body": "Setiap blok Encoder tersusun atas dua sub-lapisan terstandarisasi:\n\n1. **Multi-Head Self-Attention**: Memodelkan interaksi intra-sekuens antar seluruh token masukan.\n2. **Position-Wise Feed-Forward Network (FFN)**: Memetakan setiap representasi posisi secara non-linear independen:\n\n$$\\operatorname{FFN}(\\mathbf{x}) = \\max(0, \\mathbf{x} \\mathbf{W}_1 + \\mathbf{b}_1) \\mathbf{W}_2 + \\mathbf{b}_2$$\n\n- **Residual Connection (Add)**: Setiap sub-lapisan membungkus dirinya dengan sambungan sisa $\\mathbf{x} + \\operatorname{SubLayer}(\\mathbf{x})$ untuk memperlancar aliran gradien saat pelatihan.\n- **Layer Normalization (Norm)**: Menstabilkan distribusi aktivasi pada setiap lapisan: $\\operatorname{LayerNorm}(\\mathbf{x} + \\operatorname{SubLayer}(\\mathbf{x}))$.",
+    "notes": "Jelaskan peran residual connection yang memungkinkan penumpukan blok Transformer hingga ratusan lapisan tanpa degradasi gradien."
+  },
+  {
+    "kind": "content",
+    "title": "Peran Krusial Layer Normalization (LayerNorm vs BatchNorm)",
+    "body": "Mengapa Transformer mengadopsi **Layer Normalization** dan bukan Batch Normalization yang populer pada CNN?\n\n- **Batch Normalization**: Menghitung rata-rata dan variansi melintasi dimensi batch untuk setiap fitur. Rentan gagal pada data teks karena panjang kalimat bervariasi dinamis dan ukuran batch kecil saat inferensi.\n- **Layer Normalization**: Menghitung rata-rata dan variansi **melintasi dimensi fitur tersembunyi ($d_{\\text{model}}$)** secara independen untuk setiap token individual:\n\n$$\\mu_L = \\frac{1}{d} \\sum_{i=1}^d x_i, \\quad \\sigma_L^2 = \\frac{1}{d} \\sum_{i=1}^d (x_i - \\mu_L)^2$$\n\n$$\\hat{x}_i = \\frac{x_i - \\mu_L}{\\sqrt{\\sigma_L^2 + \\epsilon}} \\cdot \\gamma + \\beta$$\n\n- Bekerja konsisten pada batch size 1 maupun sekuens dengan panjang arbitrer.",
+    "notes": "Hubungkan slide ini dengan pembahasan Batch Normalization pada CNN Bab 24."
+  },
+  {
+    "kind": "content",
+    "title": "Bedah Blok Transformer Decoder",
+    "body": "Setiap blok Decoder tersusun atas tiga sub-lapisan bertingkat:\n\n1. **Masked Multi-Head Self-Attention**: Memproses token target yang telah digenerasi sejauh ini, dilengkapi Causal Mask untuk mencegah kebocoran masa depan.\n2. **Multi-Head Cross-Attention**: Menghubungkan Query dari decoder terhadap Key dan Value dari luaran Encoder stack.\n3. **Position-Wise Feed-Forward Network (FFN)**: Proyeksi non-linear representasi token.\n\n- Setiap sub-lapisan diapit oleh sambungan sisa (*Residual Connection*) dan Layer Normalization.\n- Luaran blok decoder terakhir diproyeksikan ke ukuran kosakata target via matriks linier `Linear(d_model, vocab_size)`.",
+    "notes": "Tunjukkan bahwa Decoder adalah struktur yang paling kompleks karena harus menangani dua jenis atensi sekaligus: Self-Attention bermask dan Cross-Attention."
+  },
+  {
+    "kind": "content",
+    "title": "Proses Generasi Autoregresif pada Decoder",
+    "body": "Bagaimana Transformer menghasilkan teks terjemahan atau respons kata demi kata?\n\n1. **Langkah 1**: Umpankan token awal `<bos>` ke Decoder. Decoder mengeksekusi atensi ke encoder dan memprediksi probabilitas kata pertama (misal *'Selamat'*).\n2. **Langkah 2**: Masukkan sekuens `['<bos>', 'Selamat']` kembali ke Decoder untuk memprediksi kata kedua (*'pagi'*).\n3. **Langkah 3**: Proses berlanjut berulang (*autoregressive loop*) hingga model mengeluarkan token akhir `<eos>`.\n4. **Inference vs Training (Teacher Forcing)**: Saat pelatihan, seluruh sekuens target diumpankan sekaligus dalam satu kali jalan menggunakan Causal Mask (*Teacher Forcing* paralel).",
+    "notes": "Jelaskan efisiensi fantastis saat pelatihan: seluruh langkah waktu dapat dilatih bersamaan berkat causal mask, tidak perlu loop bertahap seperti pada RNN."
+  },
+  {
+    "kind": "split",
+    "title": "Tiga Keluarga Besar Arsitektur Transformer Modern",
+    "body": "### 1. Encoder-Only (Autoencoding)\n- Hanya menggunakan blok Encoder (Self-Attention dua arah bebas).\n- Contoh Terkenal: **BERT**, RoBERTa.\n- Sangat unggul untuk: Klasifikasi teks, NER, ekstraksi fitur representasi.\n\n---\n\n### 2. Decoder-Only (Autoregressive)\n- Hanya menggunakan blok Decoder dengan Causal Masking.\n- Contoh Terkenal: **GPT-1/2/3/4**, LLaMA, Mistral.\n- Sangat unggul untuk: Generasi teks bebas, dialog interaktif, penalaran *prompting*.\n\n---\n\n### 3. Encoder-Decoder (Seq2Seq)\n- Arsitektur asli Vaswani et al. (2017).\n- Contoh Terkenal: **T5**, BART.\n- Sangat unggul untuk: Penerjemahan bahasa dan peringkasan teks panjang.",
+    "notes": "Beri gambaran taksonomi ini sebagai pengantar menuju Bab 29 (Large Language Models & Generative AI)."
+  },
+  {
+    "kind": "content",
+    "title": "Analisis Kompleksitas Komputasi: $O(T^2)$ vs $O(T)$",
+    "body": "Komparasi kompleksitas komputasi per lapisan antara model Rekuren dan Transformer:\n\n| Aspek Komputasi | Recurrent Neural Network (RNN/LSTM) | Self-Attention (Transformer) |\n|---|:---:|:---:|\n| **Kompleksitas Komputasi per Layer** | $O(T \\cdot d^2)$ | $O(T^2 \\cdot d)$ |\n| **Operasi Minimum Sekuensial (Paralel)** | $O(T)$ (Serial bertahap) | **$O(1)$ (Simultan Paralel)** |\n| **Jarak Jalur Maksimum Antar-Token** | $O(T)$ (Teredam peluruhan waktu) | **$O(1)$ (Koneksi Langsung Instan)** |\n\n### Bottleneck Kuadratik Sekuens Panjang:\nKompleksitas $O(T^2)$ berarti jika panjang sekuens dinaikkan $10\\times$ (dari $1.000$ ke $10.000$ token), komputasi matriks atensi melonjak **$100\\times$ lipat**! Keterbatasan memori kuadratik ini melahirkan riset *FlashAttention* dan model *Linear Attention*.",
+    "notes": "Jelaskan dilema kuadratik: Transformer sangat cepat untuk sekuens pendek-menengah karena paralel, namun terhambat memori pada sekuens raksasa jutaan token."
+  },
+  {
+    "kind": "content",
+    "title": "Demonstrasi Kode Mandiri: MHA dari Dasar NumPy",
+    "body": "Implementasi Multi-Head Attention dari dasar tanpa pustaka deep learning (`multi_head_attention_numpy.py`):\n\n```python\n# 1. Proyeksi Linier ke Q, K, V berdimensi (Batch, Seq, d_model)\nq_proj, k_proj, v_proj = X @ W_q, X @ W_k, X @ W_v\n\n# 2. Reshape multi-head ke (Batch, Heads, Seq, d_k)\nq_heads = q_proj.reshape(B, T, h, d_k).swapaxes(1, 2)\nk_heads = k_proj.reshape(B, T, h, d_k).swapaxes(1, 2)\n\n# 3. Scaled Dot-Product Attention paralel\nscores = (q_heads @ k_heads.swapaxes(-2, -1)) / math.sqrt(d_k)\nweights = softmax(scores, axis=-1)\ncontext = weights @ v_heads\n\n# 4. Concatenation & Out Projection\nout = context.swapaxes(1, 2).reshape(B, T, d_model) @ W_o\n```",
+    "notes": "Soroti kebersihan kode NumPy ini. Hanya dengan beberapa baris aljabar linier tensor, algoritma mutakhir yang menopang seluruh AI modern dapat diwujudkan."
+  },
+  {
+    "kind": "content",
+    "title": "Pembedahan PyTorch nn.MultiheadAttention",
+    "body": "Dalam lingkungan produksi PyTorch, MHA dikemas dalam `nn.MultiheadAttention` teroptimasi C++ / CUDA:\n\n- Parameter Inisialisasi: `embed_dim`, `num_heads`, `dropout=0.0`, `bias=True`, `batch_first=True`.\n- **Efisiensi Struktur Bobot**: Tiga matriks $W_Q, W_K, W_V$ digabungkan menjadi satu matriks besar `in_proj_weight` berdimensi $(3 \\cdot d_{\\text{model}} \\times d_{\\text{model}})$ untuk mengoptimalkan transfer memori GPU.\n- **Total Parameter Terpelajari**:\n\n$$\\text{Total Parameters} = 4 \\cdot d_{\\text{model}}^2 + 4 \\cdot d_{\\text{model}}$$\n\n- Mendukung `key_padding_mask` dan `attn_mask` float/boolean.",
+    "notes": "Tekankan pentingnya batch_first=True agar dimensi tensor masukan konsisten berbentuk (Batch, SeqLen, EmbeddingDim)."
+  },
+  {
+    "kind": "case",
+    "title": "Audit Kesetaraan Numerik Ketat (NumPy vs PyTorch)",
+    "body": "### Pembuktian Kesetaraan Presisi Floating-Point\n\nPengujian deterministik pada berkas `attention_numerical_verification.py` dengan sinkronisasi bobot dan bias identik menghasilkan:\n\n| Skenario Pengujian | Deviasi Maksimum Output | Deviasi Maksimum Bobot Atensi | Status |\n|---|:---:|:---:|:---:|\n| **Kasus A: Unmasked Attention** | $7.82 \\times 10^{-8}$ | $1.19 \\times 10^{-7}$ | **MATCH (100%)** |\n| **Kasus B: Causal Masked Attention** | $7.60 \\times 10^{-8}$ | $6.40 \\times 10^{-8}$ | **MATCH (100%)** |\n\n*Seluruh deviasi numerik terbukti berada jauh di bawah ambang batas toleransi ketat $1.0 \\times 10^{-6}$, membuktikan kebenaran matematis implementasi scratch secara ilmiah.*",
+    "notes": "Paparkan data audit nyata ini sebagai bukti integritas kode laboratorium yang tidak hanya 'berjalan', melainkan terbukti secara analitis identik dengan pustaka standar dunia."
+  },
+  {
+    "kind": "content",
+    "title": "Diskusi & Pertanyaan Reflektif Kelas",
+    "body": "Ujilah penalaran arsitektur Anda dengan mendiskusikan topik berikut:\n\n1. Jika mekanisme atensi mampu menghubungkan sembarang pasangan kata secara instan $O(1)$, mengapa kita tetap membutuhkan tumpukan (*stack*) beberapa lapisan blok Transformer bertingkat?\n2. Mengapa Positional Encoding ditambahkan secara penjumlahan linier ($x + PE$) dan bukan digabungkan secara konkatenasi tensor ($[x; PE]$)?\n3. Bagaimana dampak terhadap pelatihan jika faktor penskalaan $1/\\sqrt{d_k}$ sengaja dihapus pada model berukuran $d_k = 128$?\n4. Mengapa arsitektur Decoder-Only (seperti keluarga GPT) menjadi sangat dominan dalam evolusi Large Language Models modern?",
+    "notes": "Gunakan pertanyaan-pertanyaan ini untuk memancing diskusi kelas tingkat lanjut sebelum beralih ke sesi praktik laboratorium."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Bab 28: Intisari Pembelajaran",
+    "body": "### Poin-Poin Kunci yang Harus Dikuasai:\n\n1. **Attention vs Recurrence**: Menggantikan bottleneck kompresi serial sekuensial dengan akses langsung antar-token secara masif paralel.\n2. **Scaled Dot-Product**: $\\operatorname{Attention}(Q, K, V) = \\operatorname{softmax}(QK^T / \\sqrt{d_k}) V$ dengan pembagian $\\sqrt{d_k}$ untuk menjaga stabilitas variansi dan aliran gradien.\n3. **Self-Attention & Cross-Attention**: Self-Attention memodelkan relasi intra-sekuens; Cross-Attention menjembatani representasi Decoder terhadap Encoder.\n4. **Masking & Positional Encoding**: Causal mask menjaga kausalitas masa depan; Positional encoding menyuntikkan informasi urutan kata ke dalam operasi atensi yang invarian permutasi.\n5. **Pondasi Menuju LLM**: Seluruh model AI Generatif modern (ChatGPT, Gemini, Claude) dibangun di atas arsitektur dasar yang kita pelajari hari ini.",
+    "notes": "Tutup sesi pembelajaran dengan memberikan apresiasi kepada mahasiswa karena telah menguasai fondasi arsitektur paling berpengaruh dalam sejarah komputasi modern."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi Akademik & Bacaan Lanjutan",
+    "body": "Daftar pustaka primer terverifikasi untuk eksplorasi lebih mendalam:\n\n1. **Vaswani, A., et al.** (2017). Attention Is All You Need. *Advances in Neural Information Processing Systems (NeurIPS 2017)*, 30, 5998–6008.\n2. **Bahdanau, D., Cho, K., & Bengio, Y.** (2015). Neural Machine Translation by Jointly Learning to Align and Translate. *ICLR 2015*.\n3. **Alammar, J.** (2018). *The Illustrated Transformer*. https://jalammar.github.io/illustrated-transformer/\n4. **Rush, A.** (2018). *The Annotated Transformer*. Harvard NLP. https://nlp.seas.harvard.edu/annotated-transformer/\n5. **ACM / IEEE-CS / AAAI** (2024). *Computer Science Curricula 2023 (CS2023): Artificial Intelligence Knowledge Area*. https://csed.acm.org/",
+    "notes": "Rekomendasikan visualisasi Jay Alammar dan Annotated Transformer karya Sasha Rush sebagai materi pengayaan visual mandiri di rumah."
+  }
+]

@@ -1,0 +1,99 @@
+{
+  "chapter": 39,
+  "title": "AI Safety, Security & Governance",
+  "total_scripts": 15,
+  "all_passed": true,
+  "scripts": {
+    "ai_risk_register.py": {
+      "status": "passed",
+      "duration_seconds": 0.141,
+      "return_code": 0,
+      "stdout_snippet": "================================================================================\nCHAPTER 39: WORKED AI RISK REGISTER (NIST AI RMF 1.0 ALIGNED)\n================================================================================\nDisclaimer: Synthetic academic worked example (not a real org audit).\n\nID     | NIST RMF        | Priority | Inh | Res | Owner               | Title\n---------------------------------------------------------------------------------------------------------\nRSK-01 | Map / Manage    | CRITICAL |  20 |   6 | Security Lead       | Indirect Prompt Injection via Retrieved Document\nRSK-02 | Measure         | CRITICAL |  16 |   6 | ML Data Steward     | Representation Bias Causing Subgroup TPR Disparity\nRSK-03 | Govern / Manage | CRITICAL |  15 |   3 | Agent Platform Owner | Unau"
+    },
+    "ai_safety_evaluation.py": {
+      "status": "passed",
+      "duration_seconds": 0.934,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: INTEGRATED AI SAFETY, SECURITY & GOVERNANCE EVALUATION\n==============================================================================\n1. Security & Validation Gate Suite : 5/5 PASS\n2. Risk Register Mitigation Score   : Inherent=75 -> Residual=23 (-69.33%)\n3. Academic Governance Checklist    : 6/6 Verified\n\nNote: All evaluations reflect offline synthetic academic test harnesses.\n[SUCCESS] Chapter 39 safety & governance integration complete.\n"
+    },
+    "dataset_bias_analysis.py": {
+      "status": "passed",
+      "duration_seconds": 0.247,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: SYNTHETIC DATASET BIAS ANALYSIS\n===========================================================================\nNotice: Synthetic Group A & Group B are purely mathematical constructs.\n\nGroup A (Majority)   | n=743 ( 74.3%) | Positive Label Rate=38.76% | Mean Score=-0.093 | Mean Biased Proxy=-0.083\nGroup B (Minority)   | n=257 ( 25.7%) | Positive Label Rate=24.12% | Mean Score=-0.002 | Mean Biased Proxy=-0.634\n\nRepresentation Ratio (B / A) : 0.346\nPositive Label Rate Gap      : 14.64 percentage points (due to injected label shift)\n\n[SUCCESS] Dataset bias audit verified representation & measurement disparity.\n"
+    },
+    "fairness_metrics.py": {
+      "status": "passed",
+      "duration_seconds": 0.227,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: FAIRNESS METRICS & IMPOSSIBILITY TRADE-OFF VERIFICATION\n==============================================================================\n1. Worked Manual Fairness Metric & Conflict Verification (N=20):\n   Group 0: Selection Rate=0.5000 | TPR=0.6667 | FPR=0.2500\n   Group 1: Selection Rate=0.3000 | TPR=0.6667 | FPR=0.1429\n   - Demographic Parity Diff  (|Sel_0 - Sel_1|) : 0.2000 (NOT equal because base rates differ 60% vs 30%)\n   - Equal Opportunity Diff   (|TPR_0 - TPR_1|) : 0.0000 (SATISFIED perfectly at 0.6667 vs 0.6667!)\n   - Equalized Odds Gap       (max |dTPR|,|dFPR|): 0.1071\n\n   Takeaway: Equal Opportunity can be 0.0000 while Demographic Parity simultaneously reads 0.2000!\n   No single fairness met"
+    },
+    "governance_checklist.py": {
+      "status": "passed",
+      "duration_seconds": 0.097,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: ACADEMIC AI GOVERNANCE CHECKLIST\n==============================================================================\nNotice: Educational governance review only (NOT regulatory certification).\n\n[DONE] Ownership & Accountability       | Named system owner, data steward, and faculty reviewer assigned\n[DONE] Intended & Prohibited Use        | Model Card explicitly lists intended scope and disallowed high-risk uses\n[DONE] Data Provenance & Privacy        | Synthetic/licensed dataset verified free of unauthorized personal data\n[DONE] Fairness & Bias Inspection       | Subgroup performance & conflicting fairness metrics reported\n[DONE] Security & Approval Gates        | Allowlists, schema checks, and Human Appro"
+    },
+    "group_performance_analysis.py": {
+      "status": "passed",
+      "duration_seconds": 3.327,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: SUBGROUP PERFORMANCE & THRESHOLD AUDIT\n===========================================================================\nOverall Test Accuracy      : 85.00%\nGroup A (n=267)           : Acc=86.14% | Sel=0.408 | TPR=0.840 | FPR=0.124\nGroup B (n= 93)           : Acc=81.72% | Sel=0.366 | TPR=0.905 | FPR=0.208\nFairness Disparity Summary : DP Diff=0.043 | EO Diff=0.065 | EqOdds=0.084\n\nSaved Fairness Trade-off Chart to: D:\\Workstation\\Repo My Corses\\Kecerdasan Buatan\\content\\level-4-advanced-ai\\chapter-39\\experiments\\fairness_metrics_comparison.png\n[SUCCESS] Subgroup performance analysis passed.\n"
+    },
+    "input_validation.py": {
+      "status": "passed",
+      "duration_seconds": 0.126,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: DEFENSIVE INPUT SCHEMA & BOUNDARY VALIDATION\n===========================================================================\n- Valid Sensor Reading      -> [ALLOW] (VALID)\n- Missing Field             -> [BLOCK] (Missing required field: 'vibration_rms')\n- Boolean Injection         -> [BLOCK] (Invalid numeric type for 'sensor_temp_c')\n- NaN Poison Input          -> [BLOCK] (Non-finite value (NaN/Inf) rejected for 'sensor_temp_c')\n- Out-of-Bounds Spike       -> [BLOCK] (Out-of-bounds 'sensor_temp_c': 9999.0 not in [-20.0, 150.0])\n- Malformed ID / Traversal  -> [BLOCK] (Invalid device_id format (allowlist alphanumeric/hyphen only))\n\n[SUCCESS] Defensive validation blocked 5/5 malformed payloads cleanly.\n"
+    },
+    "model_card_generator.py": {
+      "status": "passed",
+      "duration_seconds": 0.127,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: MODEL CARD GENERATOR\n===========================================================================\n{\n  \"schema_version\": \"model-card-edu-v1\",\n  \"generated_date\": \"2026-11-11\",\n  \"model_details\": {\n    \"name\": \"SyntheticScreeningBaseline\",\n    \"version\": \"1.0.0\",\n    \"architecture\": \"LogisticRegression / RandomForest (CPU Reference)\",\n    \"owner\": \"ITERA AI Learning Hub Coursework Team\",\n    \"license\": \"CC-BY-4.0 (Educational Use Only)\"\n  },\n  \"intended_use\": {\n    \"primary_domain\": \"Demonstrating group fairness & robustness diagnostics in academic workshops.\",\n    \"out_of_scope_and_prohibited\": [\n      \"Real-world scholarship, hiring, medical, or credit eligibility decisions.\",\n      \"Deployment without d"
+    },
+    "model_robustness_checks.py": {
+      "status": "passed",
+      "duration_seconds": 2.302,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: MODEL ROBUSTNESS, SHIFT & HUMAN ESCALATION FALLBACK\n==============================================================================\nCaveat: Synthetic robustness stress-test does NOT prove production safety.\n\n- Clean In-Distribution Test       | Acc= 84.50% | MeanConf=0.813 | Human Escalation= 22.0%\n- Noisy Shift (sigma=1.2)          | Acc= 69.00% | MeanConf=0.727 | Human Escalation= 40.5%\n- Missing Features (30% NaN)       | Acc= 72.50% | MeanConf=0.727 | Human Escalation= 41.0%\n- Extreme OOD Stress (+6.0 shift)  | Acc= 50.00% | MeanConf=0.599 | Human Escalation=100.0%\n\n[SUCCESS] Robustness degradation & OOD Human Escalation fallback verified.\n"
+    },
+    "privacy_data_minimization.py": {
+      "status": "passed",
+      "duration_seconds": 0.261,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: PRIVACY, DATA MINIMIZATION & RE-IDENTIFICATION RISK\n==============================================================================\n1. Re-Identification Audit on Naive De-Identified Records (n=4):\n   - Dropped direct identifier ('name'), kept (zip3, birth_year, dept).\n   - Unique singleton quasi-identifiers found: 1 (Re-identification risk = 25.0%!)\n   - Generalized minimized record sample    : {'zip3': '353', 'age_bucket': '2000-2004', 'grade': 79.0}\n   Lesson: Simple name deletion / anonymization is NOT an absolute privacy guarantee.\n\n2. Laplace Differential Privacy Concept (Bounded Mean Query):\n   - True Non-Private Mean : 85.62\n   - DP Mean (epsilon=2.0) : 95.55 (Smaller epsilon -> stronger privac"
+    },
+    "prompt_injection_defense_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.131,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: PROMPT INJECTION DEFENSE & INSTRUCTION-DATA BOUNDARY\n==============================================================================\nDocument DOC-101: Injection Detected=False | Executed Directives=0\n<untrusted_document id=\"DOC-101\">\nStandard maintenance guide: check bearing temperature every 4 hours.\n</untrusted_document>\n------------------------------------------------------------------------------\nDocument DOC-202: Injection Detected=True | Executed Directives=0\n<untrusted_document id=\"DOC-202\">\nMotor spec: nominal 55C.\n[FILTERED_SUSPICIOUS_DIRECTIVE_AS_DATA]\n</untrusted_document>\n------------------------------------------------------------------------------\n[SUCCESS] Prompt injection patterns neut"
+    },
+    "responsible_ai_audit.py": {
+      "status": "passed",
+      "duration_seconds": 0.274,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: AUTOMATED RESPONSIBLE AI AUDIT\n===========================================================================\n- risk_register_complete             : PASS\n- input_validation_blocks_nan        : PASS\n- prompt_injection_isolated          : PASS\n- human_approval_gate_enforced       : PASS\n- fairness_audit_operational         : PASS\n\nSummary: 5/5 defensive & governance checks passed.\n"
+    },
+    "risk_scoring.py": {
+      "status": "passed",
+      "duration_seconds": 1.012,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: QUANTITATIVE RISK SCORING & MATRIX ANALYSIS\n===========================================================================\nTotal Inherent Risk Points : 75\nTotal Residual Risk Points : 23\nControl Risk Reduction     : 69.33% (Note: residual risk never becomes absolute zero!)\n\n- RSK-01: Inherent=20 (CRITICAL) -> Residual= 6 (Reduced by 14)\n- RSK-02: Inherent=16 (CRITICAL) -> Residual= 6 (Reduced by 10)\n- RSK-03: Inherent=15 (CRITICAL) -> Residual= 3 (Reduced by 12)\n- RSK-04: Inherent=12 (HIGH    ) -> Residual= 4 (Reduced by 8)\n- RSK-05: Inherent=12 (HIGH    ) -> Residual= 4 (Reduced by 8)\n\nSaved Risk Matrix visualization to: D:\\Workstation\\Repo My Corses\\Kecerdasan Buatan\\content\\level-4-advanced-ai\\chapter-3"
+    },
+    "tool_permission_checks.py": {
+      "status": "passed",
+      "duration_seconds": 0.135,
+      "return_code": 0,
+      "stdout_snippet": "==============================================================================\nCHAPTER 39: TOOL PERMISSIONS, ALLOWLIST & HUMAN APPROVAL GATE\n==============================================================================\n- Role=viewer  | Tool=read_sensor_summary  | Approval=False -> [audit:2648feb400365e2b] APPROVED: Executed 'read_sensor_summary' with args={\"device_id\": \"MTR-01\"}\n- Role=viewer  | Tool=export_report        | Approval=False -> [audit:f8724cf4922e3fc9] DENIED: Role 'viewer' lacks permission for 'export_report'.\n- Role=analyst | Tool=delete_all_models    | Approval=False -> [audit:6de9f5151524a9e4] DENIED: Unregistered tool 'delete_all_models' blocked by allowlist.\n- Role=admin   | Tool=update_threshold     | Approval=False -> [audit:162c8cfbd7c56773] BLOCKED: State-changing t"
+    },
+    "untrusted_content_handling.py": {
+      "status": "passed",
+      "duration_seconds": 0.133,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 39: UNTRUSTED CONTENT SANITIZATION & DEFENSE IN DEPTH\n===========================================================================\nRaw length=70 -> Sanitized='Contact [REDACTED_EMAIL] or [REDACTED_PHONE].   Check sensor log.'\n- URL Check: https://arxiv.org/abs/1705.09406         -> ALLOW\n- URL Check: http://arxiv.org/abs/1705.09406          -> BLOCK\n- URL Check: https://evil.untrusted.example/payload   -> BLOCK\n- URL Check: javascript:alert(1)                      -> BLOCK\n\n[SUCCESS] Multi-layer untrusted content sanitization & URL allowlist passed.\n"
+    }
+  },
+  "total_duration_seconds": 9.47
+}

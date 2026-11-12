@@ -1,0 +1,105 @@
+{
+  "id": 26,
+  "slug": "chapter-26",
+  "levelId": 3,
+  "title": "Computer Vision Applications",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Computer Vision Applications: taksonomi spektrum visi komputer dari klasifikasi, deteksi objek, segmentasi semantik/instans, hingga pelacakan spasio-temporal dan analitik video, struktur representasi citra digital dalam memori matriks piksel uint8, komparasi standar memori kanal OpenCV BGR versus display RGB, formulasi bobot fisiologis luminansi Grayscale ITU-R BT.601, isolasi fitur warna pada ruang warna HSV dan LAB dengan fungsi inRange, dasar konvolusi spasial 2D, komparasi kinerja filter reduksi derau spasial (Box, Gaussian, Median untuk derau impulsif Salt-and-Pepper, dan Bilateral filter pengawet tepi) dengan evaluasi metrik objektif Peak Signal-to-Noise Ratio (PSNR), analisis diskontinuitas dan operator gradien parsial Sobel, arsitektur multi-tahap detektor tepi Canny (penghalusan Gaussian, gradien Sobel, penekanan non-maksimum, dan histeresis ganda), teori morfologi matematika citra biner mencakup operasi erosi, dilasi, opening untuk eliminasi derau luar, closing untuk penutupan lubang internal, dan ekstraksi batas morfologis terverifikasi idempoten, segmentasi ambang batas otomatis metode Otsu yang memaksimalkan variansi antar-kelas serta adaptive thresholding, ekstraksi properti geometri komponen terhubung (luas area, bounding box, dan centroid) via connectedComponentsWithStats, evaluasi kuantitatif segmentasi biner mencakup Mask IoU (Jaccard Index), Dice Similarity Coefficient (F1-Score), Pixel Accuracy, dan pembuktian relasi matematis analitis Dice terhadap IoU, arsitektur pelacakan objek multi-frame (Multi-Object Tracking) berbasis Tracking-by-Detection menggunakan algoritma Centroid Tracking dengan metrik jarak spasial Euclidean dan manajemen siklus hidup status trek (registration, update, disappeared, deregistration), pemrosesan deret frame video digital serta pembedaan kritis antara Input Video FPS versus Processing FPS, analitik video penghitungan objek melintasi garis maya (virtual tripwire line crossing) dengan deteksi vektor arah dan mitigasi penghitungan ganda (double-counting prevention), rekayasa arsitektur pipeline modular end-to-end terintegrasi (Preprocessor, Detector, Tracker, Visualizer) teroptimasi CPU dengan profiling distribusi latensi per frame, serta pertimbangan etika kecerdasan visual, pengaburan wajah/plat nomor, privasi visual (Responsible AI), dan analisis batas ketahanan sistem.",
+  "objectives": [
+    "Membedakan spektrum tugas Computer Vision: klasifikasi, deteksi objek, segmentasi semantik, segmentasi instans, dan pelacakan video.",
+    "Merepresentasikan struktur citra digital dalam memori matriks piksel dan membedakan format BGR terhadap RGB.",
+    "Menghitung nilai intensitas Grayscale terbobot secara fisiologis berdasarkan rekomendasi ITU-R BT.601.",
+    "Menerapkan penapisan warna berbasis ruang warna HSV dan LAB untuk isolasi objek target.",
+    "Membandingkan efektivitas filter spasial linear (Gaussian) dan non-linear (Median) dalam mereduksi derau impulsif berbasis metrik PSNR.",
+    "Mengimplementasikan operator deteksi tepi Sobel dan algoritma multi-tahap Canny.",
+    "Menggunakan operasi morfologi matematika (erosi, dilasi, opening, dan closing) untuk pembersihan kontur dan penutupan lubang biner.",
+    "Menerapkan segmentasi citra otomatis metode Otsu dan mengekstraksi geometri komponen terhubung (luas, bounding box, dan centroid).",
+    "Menghitung metrik evaluasi segmentasi citra Mask IoU (Jaccard Index) dan Dice Similarity Coefficient serta membuktikan relasi aljabar keduanya.",
+    "Mengimplementasikan algoritma Centroid Tracking untuk pelacakan multi-objek antar-frame dengan manajemen siklus hidup trek.",
+    "Membangun sistem penghitungan perlintasan garis maya (virtual tripwire) dua arah dengan mitigasi penghitungan ganda.",
+    "Mengintegrasikan pipeline Computer Vision modular end-to-end teroptimasi CPU dengan evaluasi latensi dan pertimbangan privasi visual."
+  ],
+  "prerequisites": [
+    25
+  ],
+  "tags": [
+    "Deep Learning",
+    "Computer Vision",
+    "Image Processing",
+    "OpenCV",
+    "BGR vs RGB",
+    "Color Spaces",
+    "HSV",
+    "Grayscale",
+    "Image Filtering",
+    "Gaussian Blur",
+    "Median Blur",
+    "Bilateral Filter",
+    "PSNR",
+    "Edge Detection",
+    "Sobel",
+    "Canny",
+    "Morphology",
+    "Erosion",
+    "Dilation",
+    "Opening",
+    "Closing",
+    "Image Segmentation",
+    "Otsu Thresholding",
+    "Connected Components",
+    "Mask IoU",
+    "Dice Score",
+    "Object Tracking",
+    "Centroid Tracking",
+    "Video Processing",
+    "Virtual Tripwire",
+    "Object Counting",
+    "Processing FPS",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Gonzalez, R. C., & Woods, R. E. (2018). Digital Image Processing (4th ed.). Pearson",
+      "url": "https://www.pearson.com/en-us/subject-catalog/p/digital-image-processing/P200000003300",
+      "status": "verified"
+    },
+    {
+      "title": "Szeliski, R. (2022). Computer Vision: Algorithms and Applications (2nd ed.). Springer",
+      "url": "https://szeliski.org/Book/",
+      "status": "verified"
+    },
+    {
+      "title": "Bradski, G., & Kaehler, A. (2008). Learning OpenCV: Computer Vision with the OpenCV Library. O'Reilly Media",
+      "url": "https://www.oreilly.com/library/view/learning-opencv/9780596516130/",
+      "status": "verified"
+    },
+    {
+      "title": "Otsu, N. (1979). A Threshold Selection Method from Gray-Level Histograms. IEEE Transactions on Systems, Man, and Cybernetics, 9(1), 62-66",
+      "url": "https://doi.org/10.1109/TSMC.1979.4310076",
+      "status": "verified"
+    },
+    {
+      "title": "Canny, J. (1986). A Computational Approach to Edge Detection. IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-8(6), 679-698",
+      "url": "https://doi.org/10.1109/TPAMI.1986.4767851",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

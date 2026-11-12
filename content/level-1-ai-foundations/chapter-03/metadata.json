@@ -1,0 +1,66 @@
+{
+  "id": 3,
+  "slug": "chapter-03",
+  "levelId": 1,
+  "track": "core",
+  "title": "Intelligent Agents & AI Problem Solving",
+  "subtitle": "Arsitektur Agen Cerdas, Lingkungan Tugas PEAS, dan Formulasi Masalah Ruang Keadaan",
+  "status": "published",
+  "description": "Mempelajari prinsip agen rasional, deskripsi lingkungan tugas PEAS, taksonomi lingkungan, hierarki 5 arsitektur agen (Simple Reflex, Model-Based, Goal-Based, Utility-Based, Learning Agent), serta formulasi matematis masalah ruang keadaan.",
+  "objectives": [
+    "Menjelaskan konsep Intelligent Agent dan interaksi agent dengan environment.",
+    "Mengidentifikasi sensors, actuators, percepts, actions, dan performance measures.",
+    "Membedakan beberapa jenis agent architecture.",
+    "Menyusun PEAS description untuk masalah sederhana.",
+    "Merumuskan masalah dalam bentuk initial state, actions, transition model, goal test, dan path cost.",
+    "Menjelaskan perbedaan antara reactive behavior dan goal-directed problem solving."
+  ],
+  "prerequisites": [
+    1,
+    2
+  ],
+  "tags": [
+    "AI Foundations",
+    "Intelligent Agents",
+    "PEAS",
+    "Rational Agent",
+    "Agent Architecture",
+    "Problem Solving",
+    "State Space"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson. Bab 2 & 3.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Wooldridge, M. (2009). An Introduction to MultiAgent Systems (2nd ed.). John Wiley & Sons.",
+      "url": "https://www.wiley.com/en-us/An+Introduction+to+MultiAgent+Systems%2C+2nd+Edition-p-9780470519462",
+      "status": "verified"
+    },
+    {
+      "title": "ACM/IEEE-CS/AAAI (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

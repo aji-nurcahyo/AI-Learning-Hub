@@ -1,0 +1,179 @@
+[
+  {
+    "kind": "cover",
+    "title": "Embeddings & Vector Search",
+    "body": "Representasi Vektor Semantik, Aljabar Kesamaan, Indeks FAISS, dan Evaluasi Temu Kembali Informasi\n\nLevel 4: Applied & Advanced AI Systems\nArtificial Intelligence Learning Hub",
+    "notes": "Selamat datang di Bab 32 AI Learning Hub. Bab ini membahas landasan representasi data padat dan teknik pencarian vektor kecepatan tinggi."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Butuh Embeddings?",
+    "body": "- Data dunia nyata (teks, audio, gambar, sinyal telemetri) bersifat tak terstruktur (*unstructured*).\n- Komputer dan algoritma pembelajaran mesin hanya dapat beroperasi pada angka dan vektor aljabar.\n- **Embeddings** memetakan objek dunia nyata ke dalam ruang vektor berdimensi padat kontinu ($d$), di mana jarak dan sudut antar-vektor merefleksikan makna dan relasi semantik.",
+    "notes": "Jelaskan bahwa embeddings adalah jembatan fundamental antara data simbolik manusia dan aljabar linier komputasi."
+  },
+  {
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Bab 32",
+    "body": "1. Membedakan representasi jarang (*Sparse*) versus representasi padat (*Dense*).\n2. Menguasai operasi aljabar: Dot Product, Euclidean Distance, dan Cosine Similarity.\n3. Membuktikan kesetaraan aljabar vektor satuan hasil normalisasi L2.\n4. Mengimplementasikan pencarian tetangga terdekat eksak (*Exact Search*).\n5. Memahami arsitektur indeks FAISS dan konsep *Approximate Nearest Neighbor* (ANN).\n6. Mengevaluasi sistem pencarian dengan Precision@k, Recall@k, dan MRR.",
+    "notes": "Soroti bahwa bab ini berfokus pada tahap temu kembali (retrieval) sebagai fondasi arsitektur RAG di Bab 33."
+  },
+  {
+    "kind": "split",
+    "title": "Sparse vs Dense Representations",
+    "body": "Kiri: Sparse (One-Hot / BoW / TF-IDF)\n- Dimensi ruang sama dengan ukuran kosakata ($V > 50.000$).\n- Mayoritas elemen bernilai nol murni.\n- Vektor saling ortogonal (dot product = 0).\n- Tidak menangkap sinonim atau parafrasa.\n\nKanan: Dense Embeddings\n- Dimensi kompak tetap ($d = 32$ hingga $1536$).\n- Seluruh elemen terisi bilangan riil kontinu.\n- Menangkap korelasi makna secara otomatis.\n- Jarak merefleksikan kesamaan semantik.",
+    "notes": "Bahas analogi mengapa representasi jarang mengalami 'vocabulary mismatch problem'."
+  },
+  {
+    "kind": "content",
+    "title": "Ruang Vektor & Hipotesis Distribusi",
+    "body": "- **Hipotesis Distribusi (Harris, 1954; Firth, 1957)**:\n  *\"Kata-kata yang muncul dalam konteks yang mirip cenderung memiliki makna yang mirip.\"*\n- Model embedding menempatkan konsep serupa saling berdekatan di ruang laten:\n  $$\\text{Dist}(\\mathbf{v}_{\\text{kucing}}, \\mathbf{v}_{\\text{anjing}}) < \\text{Dist}(\\mathbf{v}_{\\text{kucing}}, \\mathbf{v}_{\\text{kompresor}})$$\n- Mendukung operasi analogi aljabar vektor:\n  $$\\mathbf{v}_{\\text{Raja}} - \\mathbf{v}_{\\text{Pria}} + \\mathbf{v}_{\\text{Wanita}} \\approx \\mathbf{v}_{\\text{Ratu}}$$",
+    "notes": "Singgung sejarah penemuan Word2Vec (Mikolov et al., 2013) yang membuktikan sifat aljabar ini."
+  },
+  {
+    "kind": "content",
+    "title": "Dot Product (Inner Product)",
+    "body": "- Perkalian titik antara dua vektor $\\mathbf{u}, \\mathbf{v} \\in \\mathbb{R}^d$:\n  $$\\mathbf{u} \\cdot \\mathbf{v} = \\langle \\mathbf{u}, \\mathbf{v} \\rangle = \\sum_{i=1}^d u_i v_i = \\|\\mathbf{u}\\|_2 \\|\\mathbf{v}\\|_2 \\cos(\\theta)$$\n- Kelebihan: Operasi aljabar tercepat yang diakselerasi langsung oleh instruksi perangkat keras (BLAS / AVX / Tensor Cores).\n- Karakteristik: Menggabungkan informasi sudut (arah) sekaligus magnitudo (panjang vektor).",
+    "notes": "Jelaskan bahwa dot product sensitif terhadap magnitudo vektor."
+  },
+  {
+    "kind": "content",
+    "title": "Euclidean Distance (Jarak L2)",
+    "body": "- Mengukur jarak geometris garis lurus antara dua titik vektor di ruang $\\mathbb{R}^d$:\n  $$d_{\\text{Euc}}(\\mathbf{u}, \\mathbf{v}) = \\|\\mathbf{u} - \\mathbf{v}\\|_2 = \\sqrt{\\sum_{i=1}^d (u_i - v_i)^2}$$\n- Sifat Metrik: Memenuhi identitas tak terbedakan ($d=0 \\iff u=v$), simetri, dan ketaksamaan segitiga (*triangle inequality*).\n- Dalam perankingan temu kembali: Nilai terkecil berada di peringkat paling atas (*Ascending Order*).",
+    "notes": "Jelaskan perbedaan arah perankingan: jarak diminimalkan, kesamaan dimaksimalkan."
+  },
+  {
+    "kind": "content",
+    "title": "Cosine Similarity & Cosine Distance",
+    "body": "- Mengukur sudut kosinus antara dua vektor tanpa memedulikan panjang magnitudonya:\n  $$\\cos(\\theta) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\|_2 \\|\\mathbf{v}\\|_2} \\in [-1.0, 1.0]$$\n- Nilai $+1.0$: Searah sempurna (identik orientasi).\n- Nilai $0.0$: Saling tegak lurus (ortogonal / independen).\n- Nilai $-1.0$: Berlawanan arah murni.\n- **Cosine Distance**: Didefinisikan sebagai $d_{\\text{cos}} = 1 - \\cos(\\theta) \\in [0.0, 2.0]$.",
+    "notes": "Tekankan bahwa dokumen panjang dan pendek tentang topik yang sama memiliki sudut kosinus yang hampir identik."
+  },
+  {
+    "kind": "split",
+    "title": "Normalisasi L2 & Kesetaraan Aljabar",
+    "body": "Kiri: Normalisasi ke Vektor Satuan\n- Vektor dibagi panjang magnitudonya sendiri:\n  $$\\hat{\\mathbf{u}} = \\frac{\\mathbf{u}}{\\|\\mathbf{u}\\|_2} \\implies \\|\\hat{\\mathbf{u}}\\|_2 = 1.0$$\n\nKanan: Teorema Kesetaraan Aljabar\n1. Dot Product = Cosine Similarity:\n   $$\\hat{\\mathbf{u}} \\cdot \\hat{\\mathbf{v}} = \\cos(\\theta)$$\n2. Jarak Euclidean Kuadrat = $2 \\times$ Cosine Distance:\n   $$\\|\\hat{\\mathbf{u}} - \\hat{\\mathbf{v}}\\|_2^2 = 2 (1 - \\cos(\\theta))$$\n- Pengurutan peringkat L2 dan Cosine Similarity menjadi **IDENTIK 100%!**",
+    "notes": "Ini adalah teorema fundamental yang dieksploitasi oleh pustaka pencarian vektor berkecepatan tinggi."
+  },
+  {
+    "kind": "code",
+    "title": "Normalisasi Vektor di NumPy",
+    "body": "Implementasi L2 normalization yang stabil terhadap vektor nol:",
+    "code": "def l2_normalize(matrix, eps=1e-12):\n    # matrix: [N, d]\n    norms = np.linalg.norm(matrix, axis=-1, keepdims=True)\n    norms = np.maximum(norms, eps) # Proteksi zero division\n    return matrix / norms\n\n# Setelah normalisasi L2:\n# Cosine Similarity dihitung via perkalian matriks murni:\nsimilarity_matrix = query_vec @ database_matrix.T",
+    "notes": "Perhatikan bahwa np.maximum(norms, eps) mencegah ZeroDivisionError jika terdapat vektor nol."
+  },
+  {
+    "kind": "split",
+    "title": "Sparse vs Dense Retrieval",
+    "body": "Kiri: Sparse Retrieval (TF-IDF / BM25)\n- Berbasis pencocokan leksikal (*exact keyword matching*).\n- Sangat unggul untuk kata benda khusus, nomor part, akronim teknis, dan simbol kode.\n- Gagal total jika kueri menggunakan sinonim (*vocabulary mismatch*).\n\nKanan: Dense Retrieval (Vector Search)\n- Berbasis kedekatan semantik laten.\n- Unggul untuk kueri konseptual, pertanyaan deskriptif, dan lintas bahasa (*multilingual*).\n- Terkadang melewatkan nomor versi atau kata kunci unik persis.",
+    "notes": "Bahas mengapa kedua metode ini saling melengkapi, melahirkan konsep Hybrid Search."
+  },
+  {
+    "kind": "content",
+    "title": "Pencarian Tetangga Terdekat Eksak (Exact Search)",
+    "body": "- Membandingkan kueri terhadap **seluruh** $N$ vektor di basis data tanpa kompresi (*Brute-Force Search*).\n- Kompleksitas Waktu: $\\mathcal{O}(N \\cdot d)$ per kueri.\n- Kompleksitas Memori: $\\mathcal{O}(N \\cdot d)$ penyimpanan vektor presisi penuh.\n- Jaminan Mutu: Menghasilkan akurasi 100% (*Ground Truth*) tanpa kehilangan informasi.\n- Sangat cepat pada skala kecil ($N \\le 50.000$ membutuhkan waktu $< 2$ ms pada CPU).",
+    "notes": "Selalu gunakan Exact Search sebagai baseline sebelum memutuskan membangun indeks aproksimasi."
+  },
+  {
+    "kind": "code",
+    "title": "Exact Search dengan NumPy argpartition",
+    "body": "Pengambilan Top-k tercepat O(N) tanpa sorting penuh O(N log N):",
+    "code": "# db_norm: [N, d], q_norm: [d]\nscores = db_norm @ q_norm  # [N]\n\n# Ambil k indeks skor tertinggi dalam O(N)\ntop_k_part = np.argpartition(-scores, kth=k-1)[:k]\n\n# Urutkan k elemen terpilih secara teratur\nsorted_k = top_k_part[np.argsort(-scores[top_k_part])]\nprint(f'Top-{k} Dokumen: {sorted_k}')",
+    "notes": "argpartition jauh lebih efisien dibanding np.argsort pada array berukuran ratusan ribu."
+  },
+  {
+    "kind": "content",
+    "title": "Kebutuhan Approximate Nearest Neighbor (ANN)",
+    "body": "- Ketika basis data membesar ke jutaan atau milyaran vektor ($N > 10^7$), pencarian brute-force menjadi terlalu lambat dan memakan RAM masif.\n- **Approximate Nearest Neighbor (ANN)** mengorbankan sedikit akurasi (*Recall* berkurang $1-5\\%$) demi lonjakan kecepatan pencarian hingga puluhan atau ratusan kali lipat.\n- Mengelompokkan vektor ke dalam struktur indeks pintar (*clustering / graphs / trees*).",
+    "notes": "ANN adalah kompromi rekayasa standar dalam skala web."
+  },
+  {
+    "kind": "content",
+    "title": "Inverted File Index (IVF): Partisi Sel Voronoi",
+    "body": "- Ruang vektor dibagi menjadi $n_{\\text{list}}$ sel menggunakan algoritma K-Means (*Centroids*).\n- Setiap vektor didaftarkan ke dalam *inverted list* sel terdekatnya.\n- Saat kueri tiba, sistem hanya mencari $n_{\\text{probe}}$ centroid terdekat, lalu memindai dokumen di dalam sel tersebut saja!\n- Memangkas ruang pencarian dari $N$ menjadi $\\approx \\frac{n_{\\text{probe}}}{n_{\\text{list}}} \\times N$.",
+    "notes": "Tunjukkan diagram partisi Voronoi untuk membantu visualisasi mahasiswa."
+  },
+  {
+    "kind": "split",
+    "title": "Trade-off nlist vs nprobe pada IVF",
+    "body": "Kiri: Hiperparameter nlist\n- Menentukan jumlah sel partisi K-Means.\n- Membutuhkan proses *training* indeks di awal.\n- Aturan praktis: $n_{\\text{list}} \\approx 4 \\times \\sqrt{N}$.\n\nKanan: Hiperparameter nprobe\n- Menentukan berapa banyak sel Voronoi yang dipindai saat kueri.\n- $n_{\\text{probe}} = 1$: Sangat cepat, namun recall lebih rendah.\n- $n_{\\text{probe}} = n_{\\text{list}}$: Setara dengan pencarian eksak (Recall 100%).\n- Pengembang memilih titik seimbang antara latensi (ms) vs Recall.",
+    "notes": "Jelaskan bahwa nprobe dapat diubah-ubah secara dinamis saat runtime kueri."
+  },
+  {
+    "kind": "content",
+    "title": "Hierarchical Navigable Small World (HNSW)",
+    "body": "- Algoritma berbasis graf multi-lapisan (*Graph-Based ANN*).\n- Terinspirasi dari konsep *Six Degrees of Separation* (graf dunia kecil).\n- Lapisan atas memiliki lompatan panjang (*express highway*) untuk navigasi cepat melintasi ruang semantik.\n- Lapisan bawah memiliki koneksi lokal padat untuk pencarian detail presisi tinggi.\n- Menghasilkan Recall tertinggi dengan latensi terendah, namun membutuhkan memori RAM indeks lebih besar.",
+    "notes": "HNSW adalah indeks standar paling populer di industri (Pinecone, Qdrant, Weaviate, FAISS)."
+  },
+  {
+    "kind": "content",
+    "title": "Pengenalan Pustaka FAISS",
+    "body": "- **FAISS (Facebook AI Similarity Search)**: Pustaka C++ kelas industri dengan binding Python untuk pencarian kesamaan vektor efisien.\n- Dioptimalkan secara mendalam menggunakan instruksi SIMD (AVX2/AVX-512) dan paralelisasi multi-threading.\n- Menyediakan keluarga indeks: `IndexFlatL2`, `IndexFlatIP`, `IndexIVFFlat`, `IndexHNSWFlat`, dan `IndexPQ` (Product Quantization).",
+    "notes": "FAISS dikembangkan oleh tim riset fundamental AI Meta (Johnson et al., 2019)."
+  },
+  {
+    "kind": "code",
+    "title": "Alur Kerja Baku FAISS di Python",
+    "body": "Membangun dan mencari indeks dengan API resmi FAISS:",
+    "code": "import faiss\n\n# 1. Buat indeks datar L2\nd = 32\nindex = faiss.IndexFlatL2(d)\n\n# 2. Tambahkan vektor dokumen (tipe float32)\nindex.add(doc_vectors_np)  # [N, d]\nprint(f'Total Vektor: {index.ntotal}')\n\n# 3. Eksekusi Kueri Top-k\nk = 3\nD, I = index.search(query_vectors_np, k)\n# D: Jarak [Q, k], I: ID Indeks Dokumen [Q, k]",
+    "notes": "FAISS mewajibkan tipe data np.float32 dan array yang kontinu di memori (ascontiguousarray)."
+  },
+  {
+    "kind": "split",
+    "title": "Pemisahan Vektor & Penyimpanan Metadata",
+    "body": "Kiri: Yang Disimpan FAISS\n- Koordinat vektor floating-point $\\mathbf{x} \\in \\mathbb{R}^d$.\n- ID numerik bilangan bulat `0, 1, 2, ..., N-1`.\n- FAISS TIDAK menyimpan teks, URL, judul, atau timestamp dokumen!\n\nKanan: Arsitektur Aplikasi Nyata\n- Vektor $\\to$ Disimpan di Indeks FAISS.\n- Metadata Lengkap $\\to$ Disimpan di Document Store (SQLite / JSON / PostgreSQL).\n- Alur: FAISS mengembalikan ID $\\to$ Aplikasi mengambil teks dokumen berdasarkan ID (*Hydration*).",
+    "notes": "Klarifikasi ini penting agar mahasiswa tidak mencoba memasukkan string teks langsung ke dalam objek FAISS."
+  },
+  {
+    "kind": "content",
+    "title": "Pipa Lengkap Pencarian Vektor (Vector Pipeline)",
+    "body": "Delapan tahapan rekayasa pencarian semantik:\n\n1. **Koleksi Dokumen**: Pembersihan teks dan chunking.\n2. **Ekstraksi Embedding**: Pemetaan teks ke vektor laten kontinu.\n3. **Normalisasi**: Transformasi L2 untuk stabilitas sudut.\n4. **Konstruksi Indeks**: Pembangunan indeks Flat / IVF / HNSW.\n5. **Vektorisasi Kueri**: Pemetaan kueri pengguna dengan encoder yang identik.\n6. **Pencarian Kesamaan**: Eksekusi Top-k nearest neighbors.\n7. **Rekonstruksi Metadata**: Penggabungan teks dokumen dari basis data.\n8. **Penyajian Hasil**: Perankingan hasil akhir ke antarmuka pengguna.",
+    "notes": "Ingatkan bahwa pipeline ini berhenti pada hasil retrieval, sebelum LLM generation."
+  },
+  {
+    "kind": "content",
+    "title": "Evaluasi Retrieval: Precision@k & Recall@k",
+    "body": "- **Precision@k**: Proporsi dokumen terambil yang benar-benar relevan:\n  $$\\text{Precision@k} = \\frac{|\\text{Retrieved}_k \\cap \\text{Relevant}|}{k}$$\n- **Recall@k**: Proporsi dari seluruh dokumen relevan yang berhasil ditemukan:\n  $$\\text{Recall@k} = \\frac{|\\text{Retrieved}_k \\cap \\text{Relevant}|}{|\\text{Relevant}|}$$\n- **Hit Rate@k**: Bernilai $1.0$ jika minimal ada 1 dokumen relevan dalam top-$k$, dan $0.0$ jika gagal total.",
+    "notes": "Jelaskan hubungan trade-off antara Precision dan Recall saat nilai k ditingkatkan."
+  },
+  {
+    "kind": "content",
+    "title": "Mean Reciprocal Rank (MRR)",
+    "body": "- Mengukur seberapa tinggi posisi peringkat dokumen relevan **pertama**:\n  $$\\text{RR}(q) = \\frac{1}{\\text{rank}_q}, \\quad \\text{MRR} = \\frac{1}{|Q|} \\sum_{q=1}^{|Q|} \\text{RR}(q)$$\n- Jika dokumen relevan pertama berada di peringkat 1 $\\implies \\text{RR} = 1.0$.\n- Jika dokumen relevan pertama berada di peringkat 2 $\\implies \\text{RR} = 0.5$.\n- Jika dokumen relevan pertama berada di peringkat 5 $\\implies \\text{RR} = 0.2$.\n- Sangat relevan untuk sistem mesin pencari di mana pengguna hanya melihat hasil teratas.",
+    "notes": "MRR adalah metrik standar emas industri untuk mengukur kualitas ranking."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus: Pencarian Materi Pembelajaran AI",
+    "body": "- **Masalah**: Pengguna mencari materi dengan pertanyaan konseptual: *\"Bagaimana mencegah overfitting pada fine-tuning?\"*\n- **Kelemahan TF-IDF**: Tidak ada dokumen yang memiliki kata persis 'mencegah', skor TF-IDF rendah.\n- **Keberhasilan Vektor**: Embeddings menangkap kedekatan semantik konsep 'mencegah overfitting' dengan 'Weight Decay' dan 'Early Stopping', menempatkan DOC-08 di peringkat 1 (MRR = 1.0000).",
+    "notes": "Rujuk hasil pengujian langsung pada ai_telecom_corpus.json."
+  },
+  {
+    "kind": "split",
+    "title": "Privasi & Serangan Rekonstruksi (Inversion)",
+    "body": "Kiri: Mitos Anonimisasi Embeddings\n- Banyak pihak keliru menganggap bahwa mengubah teks sensitif menjadi vektor angka otomatis mengamankan data pribadi (PII).\n- **Kenyataan**: Embeddings BUKAN enkripsi satu arah!\n\nKanan: Embedding Inversion Attack\n- Riset modern (Morris et al., 2023; Vec2Text) membuktikan bahwa teks asli dapat direkonstruksi kembali dari vektor embeddings dengan akurasi tinggi.\n- **Kaidah Rekayasa**: Terapkan sanitasi data pribadi SEBELUM menghasilkan embeddings.",
+    "notes": "Ini adalah aspek etika dan keamanan data krusial dalam rekayasa AI tingkat lanjut."
+  },
+  {
+    "kind": "content",
+    "title": "Bias Representasi di Ruang Vektor",
+    "body": "- Ruang vektor dapat merefleksikan dan memperkuat bias stereotipe sosial yang ada di korpus pelatihan model embedding.\n- Contoh klasik: Kedekatan vektor profesi tertentu dengan gender tertentu.\n- **Mitigasi**: Audit bias kesamaan kosinus antar kelompok demografi, pembersihan data latih, dan kalibrasi pasca-embedding.",
+    "notes": "Kaitkan dengan prinsip AI Safety dan keadilan representasi."
+  },
+  {
+    "kind": "content",
+    "title": "Keterbatasan Pencarian Vektor",
+    "body": "1. **Ketidakpekaan Istilah Unik**: Terkadang salah membedakan entitas dengan nama mirip namun kode produk berbeda (*e.g.*, 'iPhone 14' vs 'iPhone 15').\n2. **Ketergantungan Model**: Jika encoder tidak dilatih pada domain khusus (misal kedokteran atau hukum), ruang vektor gagal membedakan nuansa teknis.\n3. **Overhead Komputasi Indeks**: Membangun indeks graf HNSW pada milyaran vektor membutuhkan waktu dan memori yang sangat masif.",
+    "notes": "Tegaskan kembali mengapa sistem produksi menggunakan arsitektur Hybrid Search."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Bab 32",
+    "body": "- Embeddings memetakan data tak terstruktur ke dalam vektor padat kontinu berdimensi tetap.\n- Pada vektor satuan hasil normalisasi L2, Dot Product identik dengan Cosine Similarity, dan kuadrat jarak Euclidean berbanding lurus dengan Cosine Distance.\n- Exact Search memberikan presisi mutlak $\\mathcal{O}(N \\cdot d)$, sedangkan FAISS ANN (IVF/HNSW) menawarkan akselerasi pencarian skala masif.\n- Evaluasi sistem temu kembali diukur secara kuantitatif melalui Precision@k, Recall@k, dan MRR.",
+    "notes": "Tutup dengan mengumumkan bahwa penguasaan pencarian vektor ini melengkapi prasyarat untuk membangun arsitektur RAG di Bab 33."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi Akademik Terverifikasi",
+    "body": "1. Johnson, J., Douze, M., & Jégou, H. (2019). Billion-scale similarity search with GPUs. IEEE TBD.\n2. Malkov, Y. A., & Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using HNSW. IEEE TPAMI.\n3. Mikolov, T., et al. (2013). Efficient Estimation of Word Representations in Vector Space. ICLR 2013.\n4. Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. EMNLP 2019.\n5. Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval. Cambridge University Press.",
+    "notes": "Seluruh referensi ini adalah buku teks dan publikasi primer di bidang Information Retrieval dan Vector Search."
+  }
+]

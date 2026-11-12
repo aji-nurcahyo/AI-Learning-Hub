@@ -1,0 +1,164 @@
+[
+  {
+    "kind": "cover",
+    "title": "Model Evaluation, Tuning & Explainability",
+    "body": "### Validasi Silang, Penelusuran Hyperparameter, Kalibrasi Probabilitas & Transparansi Model Pembelajaran Mesin\n\n**Level 2 — Machine Learning | Chapter 19**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di perkuliahan Chapter 19. Hari ini kita mendalami fondasi evaluasi model yang ketat, penyetelan hyperparameter bebas kebocoran data, dan teknik explainability untuk membangun kecerdasan buatan yang dapat dipercaya."
+  },
+  {
+    "kind": "content",
+    "title": "Why Model Evaluation Matters",
+    "body": "Mengapa evaluasi model yang tepat sangat krusial?\n\n- **Bahaya Optimisme Semu**: Model yang mencetak akurasi 99% pada data latih sering kali runtuh total saat menerima data dunia nyata karena fenomena overfitting.\n- **Biaya Asimetris Kesalahan**: Dalam sistem kritis (medis, pemeliharaan prediktif IoT, perbankan), konsekuensi False Negative (kegagalan tak terdeteksi) jauh lebih fatal daripada False Positive.\n- **Kebutuhan Akuntabilitas**: Di industri modern, model tidak cukup hanya berakurasi tinggi; perilakunya harus dapat dijelaskan (*explainable*), terkalibrasi secara probabilitas, dan diaudit terhadap risiko kegagalan subgrup.",
+    "notes": "Tekankan bahwa skor akurasi tinggi tanpa validasi metodologis yang benar hanyalah ilusi komputasi."
+  },
+  {
+    "kind": "content",
+    "title": "Learning Objectives",
+    "body": "Setelah menyelesaikan perkuliahan ini, mahasiswa diharapkan mampu:\n\n- **Membedakan** performa data latih, validasi, dan pengujian akhir (*generalization*).\n- **Memilih** metrik evaluasi regresi dan klasifikasi berdasarkan struktur biaya masalah.\n- **Menerapkan** strategi Cross-Validation (K-Fold, Stratified, Group, Time Series Split).\n- **Menjelaskan** konsep Nested Cross-Validation untuk mengeliminasi bias seleksi model.\n- **Mengoptimasi** hyperparameter menggunakan GridSearchCV dan RandomizedSearchCV.\n- **Mendiagnosis** masalah bias-varians melalui Learning Curves dan Validation Curves.\n- **Mengevaluasi** kalibrasi probabilitas dan menghitung Brier Score.\n- **Menginterpretasikan** model machine learning menggunakan Permutation Importance dan PDP.",
+    "notes": "Paparkan tujuan kognitif taksonomi Bloom yang terstandarisasi untuk bab ini."
+  },
+  {
+    "kind": "split",
+    "title": "Generalization & Data Splitting",
+    "body": "Tiga partisi data terisolasi untuk menjamin integritas evaluasi:\n\n### 1. Training Set (60–80%)\n- Digunakan secara eksklusif untuk melatih parameter internal model ($w, b$).\n\n### 2. Validation Set (10–20%)\n- Digunakan untuk membandingkan arsitektur kandidat model dan menyetel hyperparameter.\n\n### 3. Test Set Terisolasi (10–20%)\n- **Haram disentuh** selama proses pelatihan dan penyetelan hyperparameter!\n- Hanya dibuka SATU KALI di akhir untuk mengukur performa generalisasi final yang objektif.",
+    "notes": "Tekankan aturan mutlak: test set tidak boleh menjadi bagian dari proses pengambilan keputusan hyperparameter."
+  },
+  {
+    "kind": "content",
+    "title": "Baseline Models",
+    "body": "Titik tolak ilmiah sebelum membangun model kompleks:\n\n- **Tujuan Baseline**: Membuktikan bahwa model machine learning yang dibangun memberikan nilai tambah nyata di atas aturan tebakan sederhana.\n- **Tipologi Baseline Umum**:\n  - **Dummy Majority Classifier**: Selalu memprediksi kelas terbanyak. Jika akurasi model kompleks hanya 85% sementara baseline dummy mencetak 84%, model kompleks pada dasarnya tidak berguna!\n  - **Mean / Median Regressor**: Selalu memprediksi rata-rata target regresi.\n  - **Linear / Logistic Model Sederhana**: Model linier interpretable sebagai pembanding awal.",
+    "notes": "Ingatkan mahasiswa untuk selalu menguji model kompleks terhadap baseline sederhana."
+  },
+  {
+    "kind": "split",
+    "title": "Regression Evaluation Metrics",
+    "body": "Mengukur deviasi prediksi kontinu terhadap nilai aktual:\n\n### Mean Absolute Error (MAE)\n$$\\text{MAE} = \\frac{1}{N} \\sum_{i=1}^N |y_i - \\hat{y}_i|$$\n- Bersifat linier dan robust terhadap pencilan (*outliers*).\n\n### Root Mean Squared Error (RMSE)\n$$\\text{RMSE} = \\sqrt{\\frac{1}{N} \\sum_{i=1}^N (y_i - \\hat{y}_i)^2}$$\n- Memberikan penalti kuadratik yang sangat berat pada galat besar.\n\n### Koefisien Determinasi ($R^2$ Score)\n$$R^2 = 1 - \\frac{\\sum (y_i - \\hat{y}_i)^2}{\\sum (y_i - \\bar{y})^2}$$\n- Proporsi varians target yang berhasil dijelaskan oleh model ($R^2 \\le 1.0$).",
+    "notes": "Bandingkan MAE dan RMSE: selisih besar antara RMSE dan MAE menandakan adanya variasi galat ekstrem."
+  },
+  {
+    "kind": "split",
+    "title": "Classification Metrics & Confusion Matrix",
+    "body": "Matriks kebingungan dan dekomposisi metrik keputusan:\n\n### Tabel Kontingensi\n- **TP**: Aktual Positif, Prediksi Positif.\n- **TN**: Aktual Negatif, Prediksi Negatif.\n- **FP (Type I)**: Aktual Negatif, Prediksi Positif (Alarm Palsu).\n- **FN (Type II)**: Aktual Positif, Prediksi Negatif (Gagal Deteksi Kritis!).\n\n### Metrik Turunan Utama\n- **Presisi (Precision)**: $\\frac{\\text{TP}}{\\text{TP} + \\text{FP}}$ (Kemurnian alarm).\n- **Sensitivitas / Recall**: $\\frac{\\text{TP}}{\\text{TP} + \\text{FN}}$ (Cakupan deteksi).\n- **F1-Score**: Rata-rata harmonik Presisi dan Recall: $\\frac{2 \\cdot P \\cdot R}{P + R}$.",
+    "notes": "Tunjukkan bahwa F1-score adalah rata-rata harmonik yang menghukum ketimpangan ekstrem antara presisi dan recall."
+  },
+  {
+    "kind": "content",
+    "title": "Asymmetric Cost & Metric Selection",
+    "body": "Memilih metrik berdasarkan dampak kerugian bisnis/sistem:\n\n- **Kapan Memprioritaskan Recall?**\n  - Deteksi kanker, intrusi malware jaringan, atau kerusakan mesin kritis.\n  - Biaya meloloskan kerusakan (FN) adalah malapetaka operasional, sedangkan alarm palsu (FP) hanya memicu inspeksi tambahan.\n- **Kapan Memprioritaskan Precision?**\n  - Filter email spam atau rekomendasi transaksi finansial otomatis.\n  - Mengirim email bisnis penting ke folder spam (FP) sangat mengganggu pengguna.\n- **Bahaya Akurasi Standar**: Pada data tidak seimbang (95% Normal, 5% Rusak), model bodoh yang selalu memprediksi Normal mencetak akurasi 95% namun memiliki Recall 0%!",
+    "notes": "Bimbing mahasiswa agar tidak terjebak menggunakan akurasi pada dataset imbalanced."
+  },
+  {
+    "kind": "split",
+    "title": "ROC-AUC vs Precision-Recall AUC",
+    "body": "Evaluasi performa independen dari ambang batas keputusan (*threshold-independent*):\n\n### ROC Curve (Receiver Operating Characteristic)\n- Memplot True Positive Rate (Recall) vs False Positive Rate ($1 - \\text{Specificity}$).\n- **ROC-AUC**: Luas area di bawah kurva; tebakan acak bernilai $0.5$, model sempurna bernilai $1.0$.\n- Relatif kebal terhadap perubahan rasio prevalensi kelas.\n\n### PR Curve (Precision-Recall Curve)\n- Memplot Precision vs Recall untuk seluruh ambang probabilitas.\n- **Sangat direkomendasikan** untuk data dengan ketimpangan kelas ekstrem (*highly imbalanced*).\n- Garis dasar (*baseline*) sama dengan prevalensi kelas minoritas $\\frac{P}{P + N}$.",
+    "notes": "Gunakan PR-AUC saat kelas positif sangat langka, misal deteksi penipuan kartu kredit."
+  },
+  {
+    "kind": "content",
+    "title": "Cross-Validation Foundations",
+    "body": "Mengapa kita membutuhkan K-Fold Cross-Validation?\n\n- **Kelemahan Single Holdout**: Skor uji pada satu split sangat rentan terhadap variabilitas acak pembagian sampel (*variance of evaluation*).\n- **Mekanisme K-Fold**:\n  1. Bagi dataset latih menjadi $K$ partisi (*folds*) berukuran sama.\n  2. Pada iterasi ke-$k$, gunakan fold ke-$k$ sebagai data validasi dan sisa $K-1$ fold untuk melatih model.\n  3. Ulangi proses ini sebanyak $K$ kali dan hitung rata-rata serta deviasi standar performa.\n- **Keunggulan**: Setiap titik data berkesempatan menjadi data validasi tepat satu kali.",
+    "notes": "Jelaskan bahwa 5-fold atau 10-fold adalah standar industri yang seimbang antara bias dan waktu komputasi."
+  },
+  {
+    "kind": "split",
+    "title": "Stratified vs Group vs TimeSplit",
+    "body": "Menyesuaikan strategi validasi silang dengan struktur data:\n\n### Stratified K-Fold (Wajib untuk Klasifikasi)\n- Menjaga rasio persentase tiap kelas target identik di setiap fold.\n- Mencegah ada fold yang kekurangan sampel kelas minoritas.\n\n### Group K-Fold (Mencegah Kebocoran Entitas)\n- Jika data berasal dari kelompok tertentu (ID pasien, ID sensor, batch pabrik).\n- Menjamin **seluruh observasi dari satu grup** hanya berada di train ATAU di validation, tidak pernah terpecah!\n\n### Time Series Split (Menjaga Kausalitas Waktu)\n- Memvalidasi data deret waktu menggunakan pendekatan *rolling origin*.\n- Data masa depan tidak boleh digunakan untuk memprediksi data masa lalu!",
+    "notes": "Bocoran kelompok perangkat (device leakage) adalah penyebab paling sering kegagalan AI di industri IoT."
+  },
+  {
+    "kind": "content",
+    "title": "Nested Cross-Validation",
+    "body": "Mengatasi bias optimisme seleksi model (*Model Selection Bias*):\n\n- **Masalah Standar CV**: Ketika kita mencoba ratusan kombinasi hyperparameter pada CV biasa, konfigurasi 'terbaik' sering kali terpilih karena kebetulan overfitting pada fold validasi tersebut.\n- **Arsitektur Dua Lapisan (Nested CV)**:\n  - **Outer Loop (K-Fold Luar)**: Mengestimasi performa generalisasi model secara independen.\n  - **Inner Loop (K-Fold Dalam)**: Menjalankan Grid / Randomized Search untuk memilih hyperparameter terbaik dari data latih outer fold.\n- **Hasil Akhir**: Estimasi performa model yang terbukti secara matematis bebas dari bias pemilihan hyperparameter.",
+    "notes": "Nested CV adalah baku emas evaluasi dalam publikasi akademik dan riset bereputasi tinggi."
+  },
+  {
+    "kind": "split",
+    "title": "Hyperparameters vs Parameters",
+    "body": "Perbedaan mendasar dua jenis variabel dalam machine learning:\n\n### Model Parameters (Internal)\n- Dipelajari secara otomatis oleh algoritma dari data latih selama proses optimasi.\n- Contoh: Vektor bobot $\\mathbf{w}$ dan bias $b$ pada regresi linier, batas percabangan pada pohon keputusan.\n\n### Hyperparameters (Eksternal)\n- Ditetapkan oleh insinyur AI **sebelum** proses pelatihan dimulai.\n- Mengendalikan kapasitas model, regularisasi, dan dinamika pembelajaran.\n- Contoh: Kedalaman maksimum pohon (`max_depth`), parameter penalti regularisasi ($C$), laju pembelajaran (`learning_rate`).",
+    "notes": "Jelaskan bahwa penyetelan hyperparameter adalah proses mencari setelan terbaik di ruang pencarian."
+  },
+  {
+    "kind": "content",
+    "title": "Grid Search vs Randomized Search",
+    "body": "Dua strategi penelusuran ruang hyperparameter:\n\n- **GridSearchCV (Penelusuran Kisi)**:\n  - Mencoba setiap kombinasi nilai secara menyeluruh (*exhaustive*).\n  - Sangat rapi, namun kompleksitas komputasinya meledak secara eksponensial seiring bertambahnya parameter (kutukan kombinatorial).\n- **RandomizedSearchCV (Penelusuran Acak)**:\n  - Mengambil $N$ sampel konfigurasi acak dari distribusi probabilitas yang didefinisikan (kontinu maupun diskrit).\n  - **Teorema Bergstra & Bengio (2012)**: Menemukan konfigurasi prima jauh lebih cepat karena mengalokasikan anggaran pencarian pada dimensi parameter yang paling berdampak secara independen.",
+    "notes": "Randomized search sangat ideal untuk eksplorasi awal pada ruang parameter berdimensi jamak."
+  },
+  {
+    "kind": "split",
+    "title": "Diagnosing Learning Curves",
+    "body": "Mendiagnosis kapasitas model dari variasi ukuran data latih:\n\n### Rezim High Bias (Underfitting)\n- Skor latih dan skor validasi sama-sama rendah dan konvergen di bawah target.\n- Menambah data sampel latih **tidak akan membantu**!\n- Solusi: Tingkatkan kompleksitas model atau tambahkan fitur baru.\n\n### Rezim High Variance (Overfitting)\n- Skor latih sangat tinggi (mendekati 100%), namun skor validasi tertinggal jauh di bawah (selisih gap lebar).\n- Solusi: Kumpulkan lebih banyak data latih, terapkan regularisasi lebih kuat, atau pangkas kedalaman model.",
+    "notes": "Learning curve adalah alat diagnostik paling ampuh untuk mengetahui langkah perbaikan model selanjutnya."
+  },
+  {
+    "kind": "content",
+    "title": "Validation Curves",
+    "body": "Menganalisis sensitivitas terhadap variasi nilai satu hyperparameter:\n\n- **Sumbu Horizontal**: Nilai hyperparameter tunggal (misal `max_depth` atau parameter regulasi $C$).\n- **Sumbu Vertikal**: Skor performa pada data latih dan data validasi.\n- **Zona Underfitting**: Nilai parameter terlalu ketat/kecil sehingga model tidak mampu menangkap pola data.\n- **Titik Optimal (*Sweet Spot*)**: Nilai parameter di mana skor validasi mencapai puncak tertinggi sebelum mulai menurun.\n- **Zona Overfitting**: Model terus meningkatkan skor latih mendekati 100% namun skor validasi anjlok karena mulai menghafal derau.",
+    "notes": "Tunjukkan grafik kurva validasi untuk memvisualisasikan trade-off bias-varians."
+  },
+  {
+    "kind": "split",
+    "title": "Probability Calibration",
+    "body": "Apakah probabilitas yang dikeluarkan model dapat dipercaya?\n\n### Definisi Kalibrasi Sempurna\nJika model memprediksi 100 pasien memiliki probabilitas terkena penyakit sebesar $80\\%$, maka **persis 80 pasien** di antaranya harus benar-benar terbukti sakit!\n\n### Masalah Model Modern\n- Random Forest dan SVM sering kali menghasilkan probabilitas yang **tidak terkalibrasi** (terlalu percaya diri di perbatasan atau terlalu terpusat di tengah).\n\n### Brier Score (Metrik Kualitas Probabilitas)\n$$\\text{Brier} = \\frac{1}{N} \\sum_{i=1}^N (p_i - y_i)^2$$\n- Brier score mengukur galat kuadratik probabilitas; semakin kecil nilainya, semakin presisi kalibrasinya.",
+    "notes": "Pembeda utama praktisi amatir vs profesional adalah perhatian terhadap kalibrasi probabilitas."
+  },
+  {
+    "kind": "content",
+    "title": "Calibration Methods: Platt vs Isotonic",
+    "body": "Dua metode standar Scikit-Learn untuk mengalibrasi probabilitas (`CalibratedClassifierCV`):\n\n1. **Platt Scaling (Metode Sigmoid)**:\n   - Menyesuaikan fungsi logistik parametrik $p = \\frac{1}{1 + e^{A f(x) + B}}$ pada keluaran model.\n   - Sangat cocok untuk model margin linier (seperti SVM) dan dataset berukuran kecil hingga moderat.\n2. **Isotonic Regression (Regresi Non-Parametrik)**:\n   - Menyesuaikan fungsi tangga monoton naik (*piecewise constant non-decreasing*).\n   - Sangat fleksibel tanpa asumsi bentuk sigmoid kaku; membutuhkan sampel data validasi lebih besar ($N > 1.000$) untuk mencegah overfitting kalibrasi.",
+    "notes": "Jelaskan bahwa kalibrasi wajib di-fit pada set validasi terpisah dari data latih model inti."
+  },
+  {
+    "kind": "split",
+    "title": "Explainability vs Interpretability",
+    "body": "Transparansi model pembelajaran mesin:\n\n### Interpretability (Keterpahaman Intrinsik)\n- Sifat model yang sejak awal arsitekturnya dapat dipahami secara transparan oleh akal manusia.\n- Contoh: Regresi linier (bobot koefisien), Pohon keputusan dangkal (aturan if-else eksplisit).\n\n### Explainability (Kejelasan Post-Hoc)\n- Metode diagnostik eksternal untuk mengintrospeksi dan menjelaskan perilaku model kotak hitam (*black-box models*).\n- Contoh: Random Forest, Gradient Boosting, SVM Kernel.\n- Menjawab: Mengapa model membuat keputusan tertentu pada sampel individual?",
+    "notes": "Garis bawahi bahwa explainability adalah kebutuhan mutlak untuk kepatuhan regulasi AI."
+  },
+  {
+    "kind": "content",
+    "title": "Permutation Feature Importance",
+    "body": "Mengukur kontribusi riil fitur pada data uji:\n\n- **Kelemahan MDI Bawaan Pohon (Gini Importance)**:\n  Dihitung pada data latih; sangat bias melebih-lebihkan fitur numerik kontinu berkardinalitas tinggi atau fitur derau.\n- **Mekanisme Permutation Importance (Breiman, 2001)**:\n  1. Hitung skor dasar model pada test set (misal F1 = 0.82).\n  2. Acak urutan nilai pada satu kolom fitur $j$ untuk menghancurkan korelasi informasinya dengan target.\n  3. Hitung ulang skor performa: $\\Delta \\text{Score} = \\text{Score}_{\\text{asli}} - \\text{Score}_{\\text{acak}}$.\n  4. Fitur dengan penurunan performa terbesar adalah fitur yang paling kritis!",
+    "notes": "Permutation importance adalah metode model-agnostic yang dihitung secara adil pada data uji."
+  },
+  {
+    "kind": "split",
+    "title": "Partial Dependence & ICE",
+    "body": "Memvisualisasikan hubungan fungsional fitur terhadap prediksi:\n\n### Partial Dependence Plots (PDP)\n- Menampilkan rata-rata efek marjinal suatu fitur terhadap probabilitas target dengan memarginalkan seluruh fitur lainnya.\n- Mengungkapkan non-linearitas, titik jenuh, dan ambang batas kritis (*tipping points*).\n\n### Individual Conditional Expectation (ICE)\n- Memetakan kurva respons untuk setiap sampel individual secara terpisah (satu garis per observasi).\n- **Mendeteksi Interaksi Tersembunyi**: Jika garis-garis ICE saling bersilangan atau berlawanan arah, menandakan adanya efek interaksi kuat dengan variabel lain!",
+    "notes": "PDP memperlihatkan tren makro, sedangkan ICE mengungkap heterogenitas mikro individual."
+  },
+  {
+    "kind": "content",
+    "title": "SHAP & LIME Overview",
+    "body": "Metode atribusi lokal berbasis model-agnostic modern:\n\n- **SHAP (SHapley Additive exPlanations)**:\n  - Berakar pada Teori Permainan Koperasi (*Cooperative Game Theory*, Lloyd Shapley 1953).\n  - Mengalokasikan kontribusi 'hadiah' prediksi secara adil ke setiap fitur melalui permutasi koalisi.\n  - Memiliki jaminan aksiomatis konsistensi dan efisiensi lokal yang elegan.\n- **LIME (Local Interpretable Model-agnostic Explanations)**:\n  - Mendekati batas keputusan lokal di sekitar sampel tertentu menggunakan model linier sederhana yang mudah dipahami.\n- **Peringatan Penting**: Penjelasan model merefleksikan asosiasi statistik di dalam data, **bukan bukti kausalitas fisik (*correlation != causation*)**.",
+    "notes": "SHAP dan LIME adalah standar de facto industri untuk inspeksi keputusan sampel individual."
+  },
+  {
+    "kind": "split",
+    "title": "Model Error Analysis",
+    "body": "Membedah kasus kegagalan model secara sistematis:\n\n### Anatomi False Negatives (FN)\n- Mengapa model gagal mendeteksi kerusakan pada sampel tertentu?\n- Apakah sampel tersebut berada di perbatasan probabilitas ($p \\approx 0.49$) ataukah memiliki tanda sinyal sensor yang anomali?\n\n### Audit Subgrup & Keadilan Model\n- Menghitung metrik performa secara terpisah untuk setiap kategori perangkat atau wilayah operasional.\n- Mengidentifikasi apakah model memiliki disparitas performa ekstrem (misal akurasi 95% pada perangkat tipe A, namun anjlok ke 60% pada tipe B).",
+    "notes": "Error analysis adalah langkah paling bernilai dalam menyempurnakan model sebelum peluncuran produksi."
+  },
+  {
+    "kind": "content",
+    "title": "Dataset Shift & Robustness",
+    "body": "Ketika data dunia nyata menyimpang dari data latih:\n\n- **Covariate Shift**: Distribusi input fitur $P(\\mathbf{x})$ bergeser seiring waktu, namun fungsi target $P(y|\\mathbf{x})$ tetap sama.\n- **Concept Drift**: Hubungan antara fitur dan target $P(y|\\mathbf{x})$ berubah (misal pola kegagalan baru akibat keausan komponen yang belum pernah terjadi sebelumnya).\n- **Out-of-Distribution (OOD)**: Model menerima input dengan rentang nilai yang belum pernah dilihat saat pelatihan (misal suhu sensor ekstrem $> 120^\\circ\\text{C}$).\n- **Mitigasi**: Menerapkan pemantauan distribusi (*data drift monitoring*), uji stres keandalan, dan mekanisme fallback otomatis.",
+    "notes": "AI yang tangguh harus memiliki batasan operasional yang jelas saat menghadapi data di luar distribusi latih."
+  },
+  {
+    "kind": "content",
+    "title": "Reproducible Evaluation Report",
+    "body": "Standar dokumentasi model akademik dan industri (*Model Cards*):\n\n1. **Konteks & Karakteristik Data**: Sumber data, ukuran sampel, dan definisi target.\n2. **Integritas Metodologi**: Bukti pembagian train-validation-test terisolasi bebas bocor.\n3. **Benchmark Baseline**: Perbandingan performa kandidat model terhadap aturan tebakan sederhana.\n4. **Hasil Validasi Silang**: Estimasi performa rata-rata beserta rentang deviasi standar.\n5. **Evaluasi Test Set Final**: Laporan metrik komprehensif pada data uji yang tidak tersentuh.\n6. **Analisis Risiko & Keterbatasan**: Kasus kegagalan kritis dan batasan operasional Responsible AI.",
+    "notes": "Model card adalah portofolio rekayasa AI profesional yang wajib dikuasai mahasiswa."
+  },
+  {
+    "kind": "split",
+    "title": "Common Evaluation Pitfalls",
+    "body": "Jebakan metodologis yang wajib dihindari:\n\n### Kebocoran Data Test Set\n- Melakukan penskalaan, seleksi fitur, atau penyetelan hyperparameter pada seluruh data sebelum train-test split.\n\n### Mengabaikan Struktur Kelompok\n- Menggunakan Random K-Fold pada data yang memiliki ID entitas perangkat/pasien, menghasilkan akurasi optimis semu.\n\n### Memilih Model Berdasarkan Test Set\n- Memilih model terbaik berdasarkan skor test set, yang pada dasarnya menjadikan test set sebagai validation set terselubung.\n\n### Mengabaikan Kalibrasi Probabilitas\n- Mengasumsikan skor output 0.90 selalu berarti keyakinan 90% tanpa mengukur Brier score.",
+    "notes": "Ingatkan bahaya jebakan evaluasi ini agar mahasiswa memiliki integritas saintifik tinggi."
+  },
+  {
+    "kind": "content",
+    "title": "Summary & Key Takeaways",
+    "body": "Rangkuman poin-poin inti perkuliahan Chapter 19:\n\n- **Evaluasi Model yang Benar** membedakan performa hafalan data latih dari kemampuan generalisasi pada data baru yang belum pernah dilihat.\n- **Pemilihan Metrik** harus berakar pada asimetri biaya kesalahan (Recall untuk deteksi kritis, Precision untuk kebersihan alarm).\n- **Strategi Validasi Silang** wajib mencerminkan struktur intrinsik data (Stratified untuk klasifikasi, Group untuk entitas unik, TimeSeries untuk urutan temporal).\n- **Penyetelan Hyperparameter** (Grid & Randomized Search) harus berlangsung sepenuhnya di dalam CV tanpa menyentuh set uji terisolasi.\n- **Explainability & Error Analysis** memberikan transparansi akuntabel untuk mendiagnosis kegagalan model dan menjamin penerapan AI yang bertanggung jawab (*Responsible AI*).",
+    "notes": "Tutup perkuliahan dengan menegaskan bahwa evaluasi ketat adalah benteng pertahanan utama keandalan kecerdasan buatan."
+  }
+]

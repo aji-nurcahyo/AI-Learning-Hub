@@ -1,0 +1,99 @@
+{
+  "id": 32,
+  "slug": "chapter-32",
+  "levelId": 4,
+  "title": "Embeddings & Vector Search",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Embeddings & Vector Search pada Level 4 Applied & Advanced AI Systems: konsep dasar representasi vektor padat (Dense Embeddings) versus representasi jarang (Sparse One-Hot, Bag-of-Words, TF-IDF), aljabar kesamaan vektor mencakup Dot Product, Euclidean Distance (L2), Cosine Similarity, dan Cosine Distance, pembuktian matematis teorema normalisasi L2 (kesetaraan Dot Product dengan Cosine Similarity pada vektor satuan), penanganan kestabilan numerik dan vektor nol, algoritma pencarian tetangga terdekat eksak (Exact Brute-Force Search O(N*d)), optimalisasi perankingan tervektorisasi menggunakan np.argpartition O(N), konsep Approximate Nearest Neighbor (ANN) dengan Inverted File Index (IVF) partisi sel Voronoi dan navigasi graf HNSW, pengenalan arsitektur indeks FAISS (IndexFlatL2, IndexFlatIP, IndexIVFFlat) dan pemisahan penyimpanan metadata dokumen, perancangan pipa pencarian semantik end-to-end atas korpus dokumen akademik, evaluasi sistem temu kembali kuantitatif (Precision@k, Recall@k, Hit Rate@k, dan Mean Reciprocal Rank/MRR), analisis komparasi empiris Sparse vs Dense Retrieval, audit risiko keamanan dan privasi representasi embeddings (Embedding Inversion Attack dan mitigasi sanitasi data PII), serta panduan proyek mini pencarian semantik dan rubrik 100 poin.",
+  "objectives": [
+    "Menjelaskan konsep dasar Embeddings dan perbedaan representasi sparse versus dense.",
+    "Membedakan metrik kesamaan Dot Product, Euclidean Distance, dan Cosine Similarity secara geometris.",
+    "Menghitung skor kesamaan kosinus dengan penanganan proteksi numerik pada vektor nol.",
+    "Menurunkan pembuktian aljabar bahwa Dot Product pada vektor satuan L2 identik dengan Cosine Similarity.",
+    "Membangun algoritma pencarian tetangga terdekat eksak (Exact Search) menggunakan aljabar matriks NumPy.",
+    "Menerapkan teknik pemilihan partisi linier np.argpartition untuk akselerasi pengambilan Top-k dokumen.",
+    "Menjelaskan konsep Approximate Nearest Neighbor (ANN) berbasis partisi sel Voronoi IVF dan graf HNSW.",
+    "Mengoperasikan struktur indeks FAISS (IndexFlatL2 dan IndexFlatIP) serta mekanisme rekonstruksi metadata dokumen.",
+    "Mengimplementasikan pipa pencarian semantik end-to-end atas korpus dokumen pembelajaran akademik.",
+    "Menghitung metrik evaluasi temu kembali informasi mencakup Precision@k, Recall@k, Hit Rate@k, dan MRR.",
+    "Membandingkan keunggulan dan keterbatasan Sparse Retrieval (TF-IDF) versus Dense Semantic Retrieval.",
+    "Mengidentifikasi risiko keamanan privasi representasi vektor mencakup Embedding Inversion Attack.",
+    "Merancang sistem temu kembali informasi semantik mandiri yang dapat direproduksi pada CPU.",
+    "Mengevaluasi trade-off antara waktu latensi pencarian, efisiensi memori, dan akurasi temu kembali."
+  ],
+  "prerequisites": [
+    31
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Embeddings",
+    "Vector Search",
+    "Dense Representations",
+    "Sparse Representations",
+    "Cosine Similarity",
+    "Dot Product",
+    "Euclidean Distance",
+    "L2 Normalization",
+    "Unit Vectors",
+    "Exact Search",
+    "Nearest Neighbor",
+    "Approximate Nearest Neighbor",
+    "ANN",
+    "FAISS",
+    "IVF",
+    "HNSW",
+    "Semantic Search",
+    "Information Retrieval",
+    "Precision@k",
+    "Recall@k",
+    "MRR",
+    "TF-IDF",
+    "Embedding Inversion",
+    "AI Safety"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Johnson, J., Douze, M., & Jégou, H. (2019). Billion-scale similarity search with GPUs. IEEE TBD",
+      "url": "https://doi.org/10.1109/TBDATA.2019.2921572",
+      "status": "verified"
+    },
+    {
+      "title": "Malkov, Y. A., & Yashunin, D. A. (2018). Efficient and robust approximate nearest neighbor search using HNSW. IEEE TPAMI",
+      "url": "https://doi.org/10.1109/TPAMI.2018.2889473",
+      "status": "verified"
+    },
+    {
+      "title": "Mikolov, T., et al. (2013). Efficient Estimation of Word Representations in Vector Space. ICLR 2013",
+      "url": "https://arxiv.org/abs/1301.3781",
+      "status": "verified"
+    },
+    {
+      "title": "Reimers, N., & Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. EMNLP 2019",
+      "url": "https://arxiv.org/abs/1908.10084",
+      "status": "verified"
+    },
+    {
+      "title": "Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval. Cambridge University Press",
+      "url": "https://nlp.stanford.edu/IR-book/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

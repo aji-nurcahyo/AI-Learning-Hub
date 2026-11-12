@@ -1,0 +1,80 @@
+{
+  "id": 13,
+  "slug": "chapter-13",
+  "levelId": 2,
+  "title": "Regression Algorithms",
+  "status": "published",
+  "description": "Modul komprehensif algoritma regresi: Ordinary Least Squares (OLS), regresi berganda multivariat, Polynomial Regression, regularisasi L2 (Ridge), L1 (Lasso), ElasticNet, evaluasi metrik MAE/MSE/RMSE/R², serta analisis diagnostik residual.",
+  "objectives": [
+    "Menjelaskan konsep Regression dalam Supervised Learning.",
+    "Membedakan simple dan multiple Linear Regression.",
+    "Menjelaskan Ordinary Least Squares.",
+    "Menginterpretasikan coefficients, intercept, dan residuals.",
+    "Menggunakan Polynomial Regression.",
+    "Menjelaskan Regularization.",
+    "Membedakan Ridge, Lasso, dan ElasticNet.",
+    "Menghitung MAE, MSE, RMSE, dan R².",
+    "Mengimplementasikan Regression menggunakan Scikit-learn.",
+    "Mengevaluasi generalization dan keterbatasan model."
+  ],
+  "prerequisites": [
+    12
+  ],
+  "tags": [
+    "Machine Learning",
+    "Regression Algorithms",
+    "Linear Regression",
+    "Polynomial Regression",
+    "Ridge",
+    "Lasso",
+    "ElasticNet",
+    "OLS",
+    "Residual Analysis",
+    "Scikit-Learn"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Géron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd ed.)",
+      "url": "https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.)",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021). An Introduction to Statistical Learning with Applications in R/Python (2nd ed.)",
+      "url": "https://www.statlearning.com/",
+      "status": "verified"
+    },
+    {
+      "title": "Montgomery, D. C., Peck, E. A., & Vining, G. G. (2021). Introduction to Linear Regression Analysis (6th ed.)",
+      "url": "https://www.wiley.com/en-us/Introduction+to+Linear+Regression+Analysis%2C+6th+Edition-p-9781119578727",
+      "status": "verified"
+    },
+    {
+      "title": "CS2023 (2024), AI Knowledge Area, ACM/IEEE-CS/AAAI Computer Science Curricula",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

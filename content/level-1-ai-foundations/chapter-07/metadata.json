@@ -1,0 +1,78 @@
+{
+  "id": 7,
+  "slug": "chapter-07",
+  "levelId": 1,
+  "title": "Python Ecosystem for AI",
+  "status": "published",
+  "description": "Ekosistem komputasi kecerdasan buatan Python modern: komputasi numerik NumPy, manipulasi data tabular Pandas, visualisasi Matplotlib, Estimator API Scikit-learn, dan alur kerja yang dapat direproduksi.",
+  "objectives": [
+    "Menjelaskan komponen arsitektur utama ekosistem Python untuk kecerdasan buatan.",
+    "Menyiapkan lingkungan virtual mandiri dan mengelola dependensi proyek menggunakan pip serta requirements.txt.",
+    "Menggunakan pustaka NumPy untuk komputasi array multidimensi, operasi tervektorisasi, dan mekanisme broadcasting.",
+    "Menggunakan pustaka Pandas untuk manipulasi tabel DataFrame, pembersihan missing values, dan agregasi terkelompok GroupBy.",
+    "Membangun dashboard visualisasi data multi-plot menggunakan paradigma Figure dan Axes Matplotlib dalam mode headless.",
+    "Menerapkan pola antarmuka Estimator API Scikit-learn untuk proses pelatihan dan prediksi tanpa kebocoran data.",
+    "Menggunakan Jupyter Notebook untuk eksperimen eksplorasi interaktif terstruktur dengan disiplin restart kernel bersih.",
+    "Menyusun struktur direktori proyek Python yang modular, memisahkan data mentah, data bersih, kode logika, dan dokumentasi.",
+    "Mengelola replikasi eksperimen riset AI menggunakan kontrol random seed deterministik dan modul pathlib relatif.",
+    "Mengevaluasi trade-off komputasi antara list bawaan Python vs array C-contiguous NumPy serta batasan reproduksibilitas perangkat keras."
+  ],
+  "prerequisites": [
+    6
+  ],
+  "tags": [
+    "AI Foundations",
+    "Python Ecosystem for AI",
+    "NumPy",
+    "Pandas",
+    "Matplotlib",
+    "Scikit-learn",
+    "Jupyter",
+    "Reproducibility"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Harris, C. R., et al. (2020). Array programming with NumPy. Nature, 585(7825), 357–362.",
+      "url": "https://numpy.org/doc/",
+      "status": "verified"
+    },
+    {
+      "title": "McKinney, W. (2022). Python for Data Analysis: Data Wrangling with pandas, NumPy, and Jupyter (3rd ed.). O'Reilly Media.",
+      "url": "https://pandas.pydata.org/docs/",
+      "status": "verified"
+    },
+    {
+      "title": "Hunter, J. D. (2007). Matplotlib: A 2D Graphics Environment. Computing in Science & Engineering, 9(3), 90–95.",
+      "url": "https://matplotlib.org/stable/",
+      "status": "verified"
+    },
+    {
+      "title": "Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, 12, 2825–2830.",
+      "url": "https://scikit-learn.org/stable/",
+      "status": "verified"
+    },
+    {
+      "title": "Kluyver, T., et al. (2016). Jupyter Notebooks — a publishing format for reproducible computational workflows.",
+      "url": "https://jupyter.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

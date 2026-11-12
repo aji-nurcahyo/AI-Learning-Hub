@@ -1,0 +1,37 @@
+{
+  "chapter": 30,
+  "title": "Deep Learning Capstone Reference Pipeline",
+  "timestamp": "2026-11-08",
+  "total_runtime_seconds": 5.5478,
+  "dataset_samples": 1000,
+  "split_counts": {
+    "train": 700,
+    "val": 150,
+    "test": 150
+  },
+  "baseline": {
+    "model": "LogisticRegression",
+    "test_accuracy": 0.8067,
+    "test_macro_f1": 0.6887
+  },
+  "deep_learning": {
+    "model": "DeepPredictiveMaintenanceNet",
+    "epochs_trained": 19,
+    "final_train_loss": 0.3481,
+    "final_val_loss": 0.3731,
+    "test_accuracy": 0.82,
+    "test_macro_f1": 0.6894,
+    "accuracy_gain_vs_baseline": 0.0133,
+    "f1_gain_vs_baseline": 0.0006
+  },
+  "responsible_ai": {
+    "f1_disparity": 0.55,
+    "is_fair": false,
+    "noise_robustness": {
+      "0.0": 0.82,
+      "0.05": 0.8133333333333334,
+      "0.1": 0.82,
+      "0.2": 0.7733333333333333
+    }
+  }
+}

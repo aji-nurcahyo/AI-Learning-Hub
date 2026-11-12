@@ -1,0 +1,65 @@
+{
+  "id": 1,
+  "slug": "chapter-01",
+  "levelId": 1,
+  "title": "Introduction to Artificial Intelligence",
+  "status": "published",
+  "description": "Pengantar fundamental AI: perbedaan Rule-Based System, Machine Learning, Deep Learning, Generative AI, anatomi sistem cerdas, serta etika Responsible AI.",
+  "objectives": [
+    "Menjelaskan Artificial Intelligence melalui tujuan, kemampuan, dan keterbatasannya.",
+    "Membedakan Rule-Based System, Machine Learning, Deep Learning, dan Generative AI melalui contoh.",
+    "Mengidentifikasi input, proses, output, dan evaluasi sebuah sistem AI sederhana.",
+    "Menganalisis apakah suatu masalah membutuhkan AI atau cukup dengan pendekatan deterministik.",
+    "Mengevaluasi risiko dan keterbatasan penerapan AI dalam satu studi kasus."
+  ],
+  "prerequisites": [],
+  "tags": [
+    "AI Foundations",
+    "Introduction to Artificial Intelligence",
+    "Rule-Based Systems",
+    "Machine Learning",
+    "Deep Learning",
+    "Generative AI",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "ACM/IEEE-CS/AAAI Computer Science Curricula 2023 (CS2023) - Artificial Intelligence Knowledge Area",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    },
+    {
+      "title": "UNESCO AI Competency Framework for Students (2024)",
+      "url": "https://www.unesco.org/en/articles/ai-competency-framework-students",
+      "status": "verified"
+    },
+    {
+      "title": "NIST AI Risk Management Framework (AI RMF 1.0)",
+      "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+      "status": "verified"
+    },
+    {
+      "title": "Google Machine Learning Crash Course",
+      "url": "https://developers.google.com/machine-learning/crash-course/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

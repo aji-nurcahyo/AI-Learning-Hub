@@ -1,0 +1,50 @@
+{
+  "chapter": 26,
+  "title": "Computer Vision Applications",
+  "color_space_verification": {
+    "pure_green_bgr": [0, 255, 0],
+    "pure_green_rgb": [0, 255, 0],
+    "luminance_gray_actual": 150,
+    "luminance_gray_theoretical": 150,
+    "itu_r_bt601_match": true
+  },
+  "filtering_psnr_comparison": {
+    "initial_noisy_psnr_db": 15.68,
+    "gaussian_filter_psnr_db": 19.34,
+    "median_filter_psnr_db": 28.52,
+    "bilateral_filter_psnr_db": 20.15,
+    "median_superiority_confirmed": true
+  },
+  "segmentation_metrics": {
+    "intersection_pixels": 2000,
+    "union_pixels": 3000,
+    "mask_iou": 0.666667,
+    "dice_coefficient": 0.800000,
+    "pixel_accuracy": 0.9000,
+    "algebraic_relationship_verified": true
+  },
+  "tracking_evaluation": {
+    "tracker_type": "CentroidTracker",
+    "total_simulated_frames": 4,
+    "tracked_objects": 2,
+    "id_switches": 0,
+    "occlusion_recovery_successful": true
+  },
+  "object_counting_tripwire": {
+    "line_y_coordinate": 120,
+    "count_down": 1,
+    "count_up": 1,
+    "total_unique_objects": 2,
+    "double_counting_prevented": true
+  },
+  "pipeline_latency_profile": {
+    "preprocess_ms": 3.70,
+    "detection_ms": 0.86,
+    "tracking_ms": 0.07,
+    "visualization_ms": 28.07,
+    "total_pipeline_ms": 32.71,
+    "estimated_fps": 30.6,
+    "realtime_capable_cpu": true
+  }
+}
+

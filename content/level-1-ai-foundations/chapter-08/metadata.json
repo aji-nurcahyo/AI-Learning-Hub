@@ -1,0 +1,79 @@
+{
+  "id": 8,
+  "slug": "chapter-08",
+  "levelId": 1,
+  "title": "Data Preparation & Exploratory Analysis",
+  "status": "published",
+  "description": "Metodologi penyiapan data dan analisis eksploratif: pembersihan inkonsistensi string, imputasi missing values terkelompok, deteksi pencilan Tukey IQR vs domain context, transformasi fitur numerik dan kategorikal, visualisasi korelasi, serta pencegahan kebocoran data.",
+  "objectives": [
+    "Menjelaskan filosofi Data-Centric AI dan dampak kualitas data mentah terhadap keandalan model cerdas.",
+    "Mengidentifikasi tipe-tipe anomali data tabular, ketidakkonsistenan penulisan string, dan duplikasi observasi.",
+    "Menganalisis mekanisme kekosongan data MCAR, MAR, dan MNAR untuk menentukan strategi penanganan yang tepat.",
+    "Menerapkan teknik imputasi terkelompok berbasis median kelompok zona untuk menjaga struktur fisik data.",
+    "Mendeteksi pencilan menggunakan metode statistik non-parametrik Tukey IQR dan Z-Score parametrik.",
+    "Mengevaluasi konteks rekayasa domain untuk membedakan antara noise sensor dan kejadian kegagalan sistem nyata.",
+    "Membandingkan metode penyekalaan fitur numerik Min-Max Scaling, StandardScaler, dan transformasi logaritma.",
+    "Mengimplementasikan pengkodean variabel kategorikal Ordinal dan One-Hot Encoding bebas dummy variable trap.",
+    "Membangun visualisasi analitis univariat, bivariat, dan matriks korelasi Pearson secara headless.",
+    "Merancang pipeline pra-pemrosesan data yang terisolasi ketat guna mencegah bahaya kebocoran data."
+  ],
+  "prerequisites": [
+    7
+  ],
+  "tags": [
+    "AI Foundations",
+    "Data Preparation",
+    "Exploratory Data Analysis",
+    "Data Cleaning",
+    "Missing Values",
+    "Outlier Detection",
+    "Feature Scaling",
+    "Categorical Encoding",
+    "Data Leakage"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Wickham, H. (2014). Tidy Data. Journal of Statistical Software, 59(10), 1–23.",
+      "url": "https://doi.org/10.18637/jss.v059.i10",
+      "status": "verified"
+    },
+    {
+      "title": "Tukey, J. W. (1977). Exploratory Data Analysis. Addison-Wesley Publishing Company.",
+      "url": "https://www.scirp.org/reference/referencespapers?referenceid=1587841",
+      "status": "verified"
+    },
+    {
+      "title": "Little, R. J. A., & Rubin, D. B. (2019). Statistical Analysis with Missing Data (3rd ed.). John Wiley & Sons.",
+      "url": "https://doi.org/10.1002/9781119013563",
+      "status": "verified"
+    },
+    {
+      "title": "Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research, 12, 2825–2830.",
+      "url": "https://scikit-learn.org/stable/",
+      "status": "verified"
+    },
+    {
+      "title": "Kaufman, S., et al. (2012). Leakage in data mining: Formulation, detection, and avoidance. ACM TKDD, 6(4), 1–21.",
+      "url": "https://doi.org/10.1145/2382577.2382579",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

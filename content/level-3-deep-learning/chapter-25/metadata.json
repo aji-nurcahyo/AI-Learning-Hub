@@ -1,0 +1,95 @@
+{
+  "id": 25,
+  "slug": "chapter-25",
+  "levelId": 3,
+  "title": "Object Detection & YOLO",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Object Detection dan arsitektur YOLO (You Only Look Once): transisi dari klasifikasi citra global ke pemahaman spasial multi-objek simultan, representasi geometris bounding box 2D dan perumusan analitis konversi format PASCAL VOC (xyxy) ke format pusat YOLO (xywh) serta normalisasi koordinat [0.0, 1.0], formulasi matematis luas irisan (intersection), luas gabungan (union), dan rasio Intersection over Union (IoU) terverifikasi analitis (1/7), algoritma Non-Maximum Suppression (NMS) berbasis perangkingan skor keyakinan dan penapisan IoU untuk eliminasi prediksi duplikat redundan dengan perbandingan NMS Class-Aware vs Class-Agnostic, protokol evaluasi standar COCO dan PASCAL VOC mencakup pencocokan greedy predictions terhadap ground truth, True Positive, False Positive, False Negative, kurva Precision-Recall terinterpolasi, Average Precision (AP), komparasi kritis mAP@0.5 terhadap mAP@0.5:0.95, evolusi dan anatomi arsitektur one-stage YOLO (Backbone CSP/C2f, Neck PANet, Decoupled Detection Head, dan deteksi multi-skala P3/P4/P5), transisi anchor-based ke anchor-free, tata kelola dataset anotasi format YOLO (.txt) dan audit pencegahan kebocoran data (zero data leakage), pipeline inferensi model terlatih YOLOv8n teroptimasi CPU dengan latensi terukur, eksperimen trade-off ambang batas keyakinan (Confidence Threshold) terhadap precision dan recall, visualisasi diagnostik kode warna TP/FP/FN, serta pertimbangan etis Responsible Computer Vision dan privasi visual.",
+  "objectives": [
+    "Membedakan karakteristik Image Classification, Object Localization, dan Object Detection.",
+    "Merepresentasikan koordinat Bounding Box dalam format PASCAL VOC (xyxy), format pusat YOLO (xywh), dan koordinat ternormalisasi.",
+    "Menghitung nilai Intersection over Union (IoU) secara analitis dan memvalidasi presisinya menggunakan komputasi Python.",
+    "Menjelaskan peran skor keyakinan (confidence score) dalam penapisan deteksi objek.",
+    "Mengimplementasikan algoritma Non-Maximum Suppression (NMS) berbasis NumPy untuk meniadakan prediksi duplikat redundan.",
+    "Membedakan karakteristik algoritma NMS Class-Aware dan Class-Agnostic pada objek bertumpukan.",
+    "Mengevaluasi performa detektor objek menggunakan metrik Precision, Recall, Precision-Recall curve, Average Precision (AP), dan mAP.",
+    "Membedakan protokol evaluasi deteksi longgar mAP@0.5 dengan protokol multi-ambang batas ketat COCO mAP@0.5:0.95.",
+    "Menjelaskan prinsip arsitektur one-stage YOLO mencakup peran Backbone, Neck (PANet), dan Decoupled Detection Head.",
+    "Menganalisis evolusi arsitektur keluarga YOLO dari anchor-based multi-scale hingga sistem anchor-free modern.",
+    "Menyiapkan dan memvalidasi integritas dataset deteksi format YOLO bebas kebocoran data (zero data leakage).",
+    "Mengoperasikan pipeline inferensi model deteksi objek terlatih (YOLOv8n) pada perangkat CPU.",
+    "Menganalisis kompromi (trade-off) antara akurasi, latensi waktu inferensi, dan biaya komputasi serta risiko etis privasi visual."
+  ],
+  "prerequisites": [
+    24
+  ],
+  "tags": [
+    "Deep Learning",
+    "Computer Vision",
+    "Object Detection",
+    "YOLO",
+    "Bounding Box",
+    "Intersection over Union",
+    "IoU",
+    "Non-Maximum Suppression",
+    "NMS",
+    "Precision",
+    "Recall",
+    "Average Precision",
+    "mAP",
+    "mAP@0.5",
+    "mAP@0.5:0.95",
+    "Backbone",
+    "Neck",
+    "PANet",
+    "Anchor-Free",
+    "Dataset Annotation",
+    "Inference Latency",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Redmon, J., Divvala, S., Girshick, R., & Farhadi, A. (2016). You Only Look Once: Unified, Real-Time Object Detection. CVPR 2016, 779-788",
+      "url": "https://arxiv.org/abs/1506.02640",
+      "status": "verified"
+    },
+    {
+      "title": "Lin, T. Y., et al. (2014). Microsoft COCO: Common Objects in Context. ECCV 2014, 740-755",
+      "url": "https://arxiv.org/abs/1405.0312",
+      "status": "verified"
+    },
+    {
+      "title": "Everingham, M., et al. (2010). The Pascal Visual Object Classes (VOC) Challenge. IJCV, 88(2), 303-338",
+      "url": "https://link.springer.com/article/10.1007/s11263-009-0275-4",
+      "status": "verified"
+    },
+    {
+      "title": "Jocher, G., Chaurasia, A., & Qiu, J. (2023). Ultralytics YOLOv8 Documentation and Software Repository",
+      "url": "https://github.com/ultralytics/ultralytics",
+      "status": "verified"
+    },
+    {
+      "title": "ACM / IEEE-CS (2024). Computer Science Curricula 2023 (CS2023): Artificial Intelligence Knowledge Area",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

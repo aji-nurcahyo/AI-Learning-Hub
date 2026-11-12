@@ -1,0 +1,230 @@
+[
+  {
+    "kind": "cover",
+    "title": "MLOps, Model Deployment & Monitoring",
+    "body": "Rekayasa Siklus Hidup Produksi ML: Reproducibility, Experiment Tracking, Local Model Registry, REST API Serving, dan Drift Monitoring\n\n**Artificial Intelligence Learning Hub — Level 4 (Chapter 36)**\n*Aji Pamungkas Tri Nurcahyo — Institut Teknologi Sumatera*",
+    "notes": "Selamat datang di Chapter 36. Bab ini membahas disiplin rekayasa MLOps untuk menjembatani model eksperimen notebook menuju sistem perangkat lunak andal yang terpantau penuh."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Kita Membutuhkan MLOps?",
+    "body": "- **Hidden Technical Debt:** Dalam sistem ML dunia nyata, kode model hanyalah sebagian kecil; mayoritas kerumitan ada pada pipeline data, konfigurasi, penyajian, dan pemantauan.\n- **Silent Model Degradation:** Tidak seperti bug kode yang langsung memicu crash, model ML bisa terus mengembalikan angka HTTP 200 dengan akurasi yang diam-diam memburuk.\n- **Krisis Reproduksibilitas:** Tanpa pelacakan versi data, seed, dan dependensi, model unggul bulan lalu mustahil dibangun ulang.",
+    "notes": "Rujuk makalah klasik Sculley et al. (2015) mengenai Hidden Technical Debt in Machine Learning Systems."
+  },
+  {
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Bab 36",
+    "body": "1. **Menjelaskan** arsitektur siklus hidup MLOps dan pemisahan lingkungan dev vs produksi.\n2. **Membangun** pipeline pelatihan bebas kebocoran data yang deterministik.\n3. **Mengelola** *experiment tracking*, *model versioning*, dan *local model registry*.\n4. **Memvalidasi** integritas artefak model dengan checksum SHA-256.\n5. **Menyajikan** model via REST API lokal (`127.0.0.1`) dengan validasi skema.\n6. **Mendeteksi** *Data Drift*, *Concept Drift*, serta merancang strategi *rollback* terkendali.",
+    "notes": "Tujuan mencakup alur hulu ke hilir dari data provenance hingga pemantauan pasca-peluncuran dan tata kelola rollback."
+  },
+  {
+    "kind": "split",
+    "title": "ML Development vs Production Workflow",
+    "body": "- **Lingkungan Eksperimen (Notebook):**\n  - Fokus: Eksplorasi ide cepat, dataset statis CSV, metrik offline (Akurasi/AUC).\n  - Sering rapuh (*ad-hoc cell execution order*).\n- **Sistem Terkelola (Production-Style):**\n  - Fokus: Pipeline deterministik terotomasi, validasi skema input ketat, latensi P95, pemantauan drift kontinu, serta kemampuan *rollback* instan.",
+    "notes": "Tekankan secara tegas bahwa menjalankan REST API di localhost belum menjadikan suatu model siap produksi; keandalan butuh observability dan governance."
+  },
+  {
+    "kind": "content",
+    "title": "Siklus Hidup MLOps Lengkap",
+    "body": "```\n[1. Data Ingestion & Split] -> [2. Reproducible Training] -> [3. Experiment Tracker]\n           ^                                                           |\n           |                                                           v\n[6. Retraining / Rollback]  <- [5. Drift & Latency Monitor] <- [4. Registry & Serving API]\n```",
+    "notes": "Siklus MLOps bersifat melingkar (closed-loop): sinyal degradasi pada tahap monitoring memicu evaluasi ulang dan pembaruan terkendali."
+  },
+  {
+    "kind": "content",
+    "title": "Data Pipeline & Pencegahan Kebocoran Data",
+    "body": "- **Dataset Provenance:** Setiap snapshot data diberi sidik jari kriptografis (hash) untuk menjamin konsistensi.\n- **Zero Data Leakage Rule:** Pemecahan data (`train_test_split`) **WAJIB** dilakukan sebelum menghitung statistik pra-pemrosesan (`mean`, `std`, `StandardScaler.fit`).\n- Membungkus *preprocessing* dan model dalam satu `sklearn.pipeline.Pipeline` mencegah *training-serving skew*.",
+    "notes": "Ingatkan kembali pelajaran penting Chapter 12 & 19 tentang bahaya data leakage saat scaling dilakukan sebelum split."
+  },
+  {
+    "kind": "content",
+    "title": "Training Pipeline Terisolasi",
+    "body": "- Memisahkan logika **pelatihan offline** (`reproducible_training.py`) secara total dari logika **inferensi online** (`model_serving_api.py`).\n- Pelatihan membaca konfigurasi terstruktur (`model_type`, `hyperparams`, `seed`), menghasilkan artefak terkemas, lalu menulis log metrik terisolasi.\n- Mesin penyajian tidak pernah memuat kode pelatihan atau melakukan `fit()` ulang secara liar saat menerima request.",
+    "notes": "Pemisahan training vs serving menjaga jejak memori server inferensi tetap ringan dan cepat."
+  },
+  {
+    "kind": "content",
+    "title": "Tiga Pilar Reproduksibilitas",
+    "body": "1. **Reproduksibilitas Data:** Hash versi dataset dan strategi partisi terstrata (`stratify=y`).\n2. **Reproduksibilitas Kode & Seed:** Menetapkan `random_state=42` konsisten pada NumPy, Scikit-learn, dan PyTorch.\n3. **Reproduksibilitas Lingkungan:** Mencatat versi tepat interpreter Python dan pustaka (`numpy`, `sklearn`) bersama setiap artefak model.",
+    "notes": "Tanpa ketiga pilar ini, audit forensik ketika model gagal memprediksi kasus kritis menjadi mustahil."
+  },
+  {
+    "kind": "content",
+    "title": "Konsep Experiment Tracking",
+    "body": "- **Experiment:** Pengelompokan logis untuk satu tujuan pemecahan masalah (misal: `telemetry_anomaly_cls`).\n- **Run:** Satu eksekusi pelatihan tunggal dengan konfigurasi spesifik.\n- **Tracker Lokal Ringan:** Memanfaatkan database SQLite lokal (`mlops_tracker.db`) atau JSON tanpa harus mengoperasikan server MLflow berat untuk skala pembelajaran.",
+    "notes": "Prinsip tracking dapat diterapkan menggunakan SQLite stdlib yang ringan dan zero-setup."
+  },
+  {
+    "kind": "split",
+    "title": "Anatomi Metadata Satu Run Eksperimen",
+    "body": "- **Identitas:** `run_id` unik & `timestamp_utc`.\n- **Inputs:** `dataset_version`, `hyperparams` (`C`, `n_estimators`, `seed`).\n- **Outputs:** `metrics` (`accuracy`, `f1_score`, `roc_auc`).\n- **Lineage & Verification:** `artifact_path`, `checksum_sha256`, dan `env_metadata`.",
+    "notes": "Setiap baris catatan dalam database SQLite mengikat parameter masukan, metrik luaran, dan berkas model secara permanen."
+  },
+  {
+    "kind": "content",
+    "title": "Perbandingan Eksperimen & Pemilihan Kandidat",
+    "body": "- Dengan mencatat seluruh run dalam format terstruktur, kita dapat menyusun papan peringkat (*leaderboard*) objektif:\n  - `LogReg (C=0.1)` vs `LogReg (C=1.0)` vs `RandomForest (n=20)` vs `RandomForest (n=80)`.\n- Kandidat terbaik dipilih berdasarkan metrik validasi yang disepakati sebelumnya (misal **ROC-AUC** tertinggi), bukan tebakan subjektif.",
+    "notes": "Pemilihan kandidat terbaik selalu mendahulukan perbandingan adil pada data test/val yang identik."
+  },
+  {
+    "kind": "content",
+    "title": "Model Versioning Semantik (SemVer)",
+    "body": "- Mengadopsi format standar `vMAJOR.MINOR.PATCH`:\n  - **PATCH (`v1.0.1`):** Perbaikan bug kecil atau penyesuaian konfigurasi kompatibel penuh.\n  - **MINOR (`v1.1.0`):** Pelatihan ulang bobot pada dataset baru dengan skema input/output tetap sama.\n  - **MAJOR (`v2.0.0`):** Perubahan fitur masukan (*breaking change*) atau perubahan kontrak skema API.",
+    "notes": "Semantic versioning memudahkan integrasi tim backend untuk mengetahui kapan kontrak API inferensi mengalami perubahan."
+  },
+  {
+    "kind": "content",
+    "title": "Local Model Registry (SQLite)",
+    "body": "- **Model Registry** bertindak sebagai katalog kebenaran tunggal untuk seluruh versi model terverifikasi.\n- Menggunakan status siklus yang jelas dan jujur secara edukasional:\n  1. `CANDIDATE` (Baru dilatih)\n  2. `VALIDATED` (Lolos ambang batas metrik & uji skema)\n  3. `STAGED_LOCAL_SERVING` (Aktif disajikan pada `127.0.0.1`)\n  4. `ARCHIVED` (Versi lama yang digantikan namun disimpan untuk *rollback*)",
+    "notes": "Pastikan label status tidak menyesatkan seolah-olah model sudah terpasang di cloud production nyata."
+  },
+  {
+    "kind": "content",
+    "title": "Tata Kelola Promosi Model",
+    "body": "- Promosi dari `CANDIDATE` $\\to$ `STAGED_LOCAL_SERVING` **tidak boleh otomatis membabi buta**.\n- Sistem kita menegakkan **Gerbang Persetujuan Manusia (*Human Approval Gate*)**: pemanggilan fungsi `promote_model(..., human_approved=False)` ditolak keras dengan `PermissionError`.\n- Hanya satu versi model per `model_id` yang boleh menyandang status aktif disajikan dalam satu waktu.",
+    "notes": "Menambahkan pengaman human_approved mencegah model bermasalah langsung melayani request pengguna akibat bug skrip otomasi."
+  },
+  {
+    "kind": "content",
+    "title": "Integritas Artefak & Risiko Keamanan Pickle",
+    "body": "- **Bahaya Deserialisasi:** Format `pickle` dan `joblib` Python mengeksekusi kode bytecode secara langsung saat `pickle.load()` dipanggil (*arbitrary code execution*).\n- **Aturan Pertahanan Wajib:**\n  1. Hitung dan simpan hash kriptografis **SHA-256** saat artefak selesai dibuat.\n  2. Verifikasi ulang kecocokan hash **SEBELUM** memanggil `pickle.load()`.\n  3. Tolak mutlak artefak unggahan luar yang tidak tepercaya.",
+    "notes": "Demonstrasi di model_artifact_validation.py membuktikan bahwa satu byte tambahan saja membatalkan loading dengan ArtifactSecurityError."
+  },
+  {
+    "kind": "content",
+    "title": "Model Packaging & Kepatuhan Dependensi",
+    "body": "- Mengemas artefak model berarti menyatukan:\n  - Objek `Pipeline` terlatih (termasuk *scaler* atau *encoder* fitur).\n  - Kontrak skema masukan (dimensi fitur, tipe data, batas rentang).\n  - Pinning versi dependensi (`scikit-learn`, `numpy`) untuk menghindari ketidakcocokan internal saat deserialisasi lintas versi.",
+    "notes": "Membungkus scaler di dalam Pipeline sangat penting agar data produksi ditransformasi dengan mean dan std persis seperti data latih."
+  },
+  {
+    "kind": "split",
+    "title": "Batch Inference vs Online Inference",
+    "body": "- **Batch Inference:**\n  - Memproses jutaan baris data sekaligus secara terjadwal (misal tiap tengah malam).\n  - Mengutamakan *throughput* tinggi; latensi per baris tidak terlalu sensitif.\n- **Online / Real-Time Inference:**\n  - Melayani satu permintaan tunggal via REST API dalam hitungan milidetik.\n  - Mengutamakan *low latency* (P95/P99) dan validasi masukan ketat.",
+    "notes": "Pemilihan arsitektur batch vs online ditentukan oleh kebutuhan aplikasi nyata."
+  },
+  {
+    "kind": "content",
+    "title": "Arsitektur Local REST API Model Serving",
+    "body": "```\n[API Client] ---HTTP POST /predict---> [127.0.0.1 ThreadingHTTPServer]\n                                                |\n                   +----------------------------+----------------------------+\n                   v                            v                            v\n         [Input Schema Check]         [Trusted Model Pipeline]     [Telemetry Logger]\n        (Dim=6, Finite, Bounds)        (Verified via SHA-256)     (Latency ms & Errors)\n```",
+    "notes": "Server diimplementasikan murni memakai ThreadingHTTPServer standar Python dan dibatasi ketat hanya mengikat ke 127.0.0.1."
+  },
+  {
+    "kind": "content",
+    "title": "Desain Endpoint Local Serving (`127.0.0.1`)",
+    "body": "- `GET /health` : Memeriksa kesiapan layanan dan versi model yang sedang dimuat.\n- `GET /model/info` : Menampilkan metadata model, algoritma, versi dataset, dan hash.\n- `POST /predict` : Menerima JSON `{\"features\": [...]}` $\\to$ mengembalikan `prediction`, `probability`, `model_version`, dan `latency_ms`.\n- `GET /metrics` : Mengekspos statistik agregat jumlah permintaan, galat, dan P95 latensi.\n- **Keamanan:** Terikat eksklusif pada `127.0.0.1` (bukan `0.0.0.0`).",
+    "notes": "Larangan keras mengikat ke 0.0.0.0 melindungi mesin lokal pengembang dari akses jaringan tak terduga selama pembelajaran."
+  },
+  {
+    "kind": "code",
+    "title": "Validasi Skema Masukan Ketat (HTTP 400)",
+    "body": "```python\ndef validate_predict_payload(payload, expected_dim=6):\n    if \"features\" not in payload or not isinstance(payload[\"features\"], list):\n        raise RequestValidationError(\"Missing 'features' list.\")\n    if len(payload[\"features\"]) != expected_dim:\n        raise RequestValidationError(\"Feature dimension mismatch.\")\n    for val in payload[\"features\"]:\n        if isinstance(val, bool) or not isinstance(val, (int, float)):\n            raise RequestValidationError(\"Expected numeric value.\")\n        if math.isnan(val) or math.isinf(val):\n            raise RequestValidationError(\"NaN/Inf rejected.\")\n```",
+    "notes": "Validasi sebelum memanggil model.predict() memastikan kegagalan input tertangkap bersih dengan HTTP 400 tanpa mencemari metrik model."
+  },
+  {
+    "kind": "content",
+    "title": "Fondasi Monitoring & Observability",
+    "body": "- **Observability Sistem:** Memantau kesehatan infrastruktur API (*Latency P95*, *Throughput req/s*, *HTTP 4xx/5xx Error Rate*, penggunaan CPU/RAM).\n- **Evaluasi Kesehatan ML:** Memantau integritas data masukan (*Data Drift*), pola keluaran (*Prediction Drift*), dan kestabilan hubungan target (*Concept Drift*).\n- Keduanya wajib dipantau berdampingan setelah model disajikan.",
+    "notes": "Server bisa 100% sehat secara infrastruktur (latensi 1ms, nol error 500) sementara kualitas prediksi ML-nya sedang hancur akibat drift."
+  },
+  {
+    "kind": "content",
+    "title": "Data Drift (Pergeseran Distribusi Masukan)",
+    "body": "- **Data Drift (*Covariate Shift*):** Terjadi ketika distribusi probabilitas fitur masukan $P(X)$ pada data langsung berubah dibandingkan data acuan latih $P_{\\text{ref}}(X)$.\n- **Contoh Nyata:** Sensor suhu dikalibrasi ulang sehingga nilai rata-ratanya bergeser $+1.8\\sigma$, atau kelompok usia pengguna aplikasi bergeser drastis.\n- **Peringatan Kritis:** Data Drift **TIDAK OTOMATIS** berarti akurasi model menurun apabila batas keputusan $P(y \\mid X)$ tetap berlaku pada wilayah baru tersebut.",
+    "notes": "Ingatkan konsep Covariate Shift dari Chapter 31 dan kaitkan dengan simulasi kuantitatif pada Chapter 36."
+  },
+  {
+    "kind": "content",
+    "title": "Metrik Deteksi Drift: PSI dan Uji KS",
+    "body": "- **Population Stability Index (PSI):** Mengukur perubahan proporsi antar-bin kuantil:\n$$\\text{PSI} = \\sum_{i=1}^{B} (p_{\\text{curr}, i} - p_{\\text{ref}, i}) \\ln\\left(\\frac{p_{\\text{curr}, i}}{p_{\\text{ref}, i}}\\right)$$\n  *(Heuristik umum: $< 0.1$ normal, $0.1-0.25$ geser ringan, $\\ge 0.25$ drift signifikan—bukan aturan universal)*.\n- **Kolmogorov–Smirnov (KS) 2-Sampel:** Mengukur jarak maksimum antara dua CDF empiris: $D = \\sup_x |F_{\\text{ref}}(x) - F_{\\text{curr}}(x)|$.",
+    "notes": "Jelaskan jebakan p-value pada uji KS: jika N sangat besar (misal 50.000 sampel), perbedaan mikroskopis pun memicu p < 0.001."
+  },
+  {
+    "kind": "split",
+    "title": "Concept Drift vs Data Drift",
+    "body": "- **Pure Data Drift:** $P(X)$ berubah, tetapi hukum alam/hubungan $P(y \\mid X)$ **TETAP SAMA**. Akurasi model sering bertahan tinggi.\n- **Concept Drift:** Hubungan intrinsik antara input dan target $P(y \\mid X)$ **BERUBAH** (secara mendadak/*abrupt*, bertahap/*gradual*, atau berulang/*recurring*).\n- **Kesimpulan Penting:** Tanpa label kebenaran (*ground truth*), kita **tidak dapat membuktikan** Concept Drift secara pasti.",
+    "notes": "Simulasi pada concept_drift_simulation.py menunjukkan bahwa saat P(X) bergeser dengan PSI tinggi, akurasi tetap 95%+; tetapi saat P(y|X) berbalik meski PSI=0.05, akurasi langsung anjlok."
+  },
+  {
+    "kind": "content",
+    "title": "Prediction Drift Monitoring",
+    "body": "- Ketika label kebenaran aktual $y_{\\text{true}}$ datang terlambat berminggu-minggu (misal skor risiko kredit), pantau distribusi keluaran prediksi $P(\\hat{y})$ dan skor kepercayaan.\n- Jika proporsi prediksi kelas positif melonjak dari 35% menjadi 68% atau proporsi probabilitas abu-abu $[0.4, 0.6]$ meningkat tajam, sistem segera memancangkan peringatan awal (*early warning signal*).",
+    "notes": "Prediction drift adalah sinyal pengaman proaktif selagi menunggu label aktual dari manusia/lapangan."
+  },
+  {
+    "kind": "content",
+    "title": "Pemantauan Kinerja Berbasis Label",
+    "body": "- Begitu *ground truth* $y_{\\text{true}}$ terkumpul dari peristiwa lapangan (*delayed feedback*), sistem menghitung metrik bergulir (*rolling metrics*): Akurasi, F1-Score, dan ROC-AUC.\n- Ambang batas perjanjian layanan (**SLA Threshold**, misal Akurasi $\\ge 80\\%$) menjadi tolok ukur objektif penentu kesehatan model.",
+    "notes": "Desain pipeline umpan balik tertunda (feedback loop joining predictions dengan actual labels via request_id) sangat vital di industri."
+  },
+  {
+    "kind": "content",
+    "title": "Latensi Inferensi (Average vs P95 & P99)",
+    "body": "- **Rata-rata (*Mean*) Menyembunyikan Masalah:** 90% request mungkin selesai dalam 0.5 ms, tetapi 5% permintaan lambat (*tail latency*) memakan 80 ms akibat *garbage collection*.\n- Oleh karena itu insinyur MLOps memantau persentil **Median (P50)**, **P95**, dan **P99**.\n- **Efek Warm-Up:** Selalu buang 10–20 permintaan awal sebelum mencatat benchmark agar inisialisasi JIT/cache tidak mendistorsi pengukuran.",
+    "notes": "Semua angka latensi di script benchmark lokal kita diukur di 127.0.0.1 setelah membuang fase warm-up."
+  },
+  {
+    "kind": "content",
+    "title": "Throughput & Batasan Benchmark Lokal",
+    "body": "- **Throughput:** Jumlah permintaan per detik (*req/s*) yang mampu dilayani sistem.\n- **Hasil Pengukuran Aktual di CPU Lokal (`inference_latency.py`):**\n  - *In-Memory Predict (N=500):* Mean `0.167 ms` | P95 `0.256 ms` | `5973.6 req/s`.\n  - *Localhost REST API (N=100):* Mean `4.009 ms` | P50 `2.131 ms` | P95 `19.422 ms` | `249.4 req/s`.\n- **Peringatan Metodologis:** Angka localhost Windows CPU tidak boleh digeneralisasi ke server cloud.",
+    "notes": "Tekankan kejujuran ilmiah dalam melaporkan lingkungan benchmark agar ekspektasi kapasitas produksi tetap realistis."
+  },
+  {
+    "kind": "content",
+    "title": "Dashboard Observability Terpadu",
+    "body": "- Script `monitoring_dashboard.py` mengagregasikan 3 panel utama melintasi 5 jendela waktu:\n  1. **Panel Feature PSI:** Mendeteksi lonjakan pergeseran distribusi masukan ($\\ge 0.25$).\n  2. **Panel Rolling Accuracy:** Mendeteksi kejatuhan akurasi di bawah SLA ($< 80\\%$) akibat *Concept Drift*.\n  3. **Panel Latency Histogram:** Memvisualisasikan kurva P95 latensi milidetik.",
+    "notes": "Dashboard visual memudahkan tim operasional mengorelasikan apakah penurunan akurasi terjadi bersamaan dengan drift fitur."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Alerting & Pencegahan False Alarms",
+    "body": "- Penentuan ambang batas peringatan (*alert thresholds*) membutuhkan kalibrasi empiris:\n  - Jika terlalu sensitif (mengandalkan p-value mentah pada jutaan sampel), tim akan terkena kelelahan peringatan (*alert fatigue*).\n  - Jika terlalu longgar, model rusak dibiarkan beroperasi berhari-hari.\n- Kombinasikan ambang batas statistik (**PSI** $\\ge 0.25$) dengan penurunan kinerja bisnis nyata sebelum memicu intervensi.",
+    "notes": "Alert yang baik harus actionable (jelas langkah penanganannya) dan memiliki tingkat false positive rendah."
+  },
+  {
+    "kind": "split",
+    "title": "Strategi Pelatihan Ulang (Retraining)",
+    "body": "- **Kapan Melatih Ulang?**\n  - *Scheduled:* Berkala (mingguan/bulanan) bila pola musiman stabil.\n  - *Triggered:* Dipicu oleh peringatan *Concept Drift* yang terverifikasi.\n- **Aturan Emas:** Model hasil retraining wajib berstatus `CANDIDATE` terlebih dahulu dan diuji komparatif terhadap model lama sebelum diusulkan promosi.",
+    "notes": "Jangan pernah menimpa model lama secara otomatis tanpa melewati pengujian regresi metrik."
+  },
+  {
+    "kind": "case",
+    "title": "Simulasi Model Rollback Terkendali",
+    "body": "- **Skenario (`model_rollback_simulation.py`):**\n  1. Model baru `v1.1.0` dipromosikan ke `STAGED_LOCAL_SERVING`.\n  2. Monitoring mendeteksi akurasi anjlok ke `68.0%` (di bawah batas SLA `80%`).\n  3. Sistem menyarankan *rollback* ke versi stabil tervalidasi `v1.0.0`.\n  4. **Human Approval Gate** mengonfirmasi *rollback*, memverifikasi SHA-256 artefak `v1.0.0`, dan memulihkan layanan dalam hitungan detik.",
+    "notes": "Rollback cepat yang andal adalah asuransi terbaik tim rekayasa MLOps ketika rilis model baru mengalami kegagalan tak terduga."
+  },
+  {
+    "kind": "content",
+    "title": "Keamanan & Responsible MLOps",
+    "body": "- **Privasi Data Log:** Jangan mencatat data pribadi sensitif (*PII*) mentah ke log teks inferensi tanpa penyamaran (*masking*).\n- **Keamanan Artefak:** Selalu ikat deserialisasi model dengan pengecekan checksum SHA-256.\n- **Bias & Pengawasan Manusia:** Pantau disparitas prediksi antarkelompok subpopulasi; siapkan jalur penghentian darurat serta eskalasi insiden *(terhubung ke Chapter 39 AI Safety & Governance)*.",
+    "notes": "Jelaskan peran auditability dan tanggung jawab pengembang dalam operasional model berkelanjutan."
+  },
+  {
+    "kind": "code",
+    "title": "Demonstrasi Pipeline MLOps Terpadu",
+    "body": "```python\n# Alur ujung ke ujung: Train -> Track -> Registry -> Serve -> Monitor\nres = train_and_save_pipeline(\"random_forest\", n_estimators=40, seed=42)\nrun_id = tracker.log_run(\"e2e_demo\", res[\"dataset_version\"], ...)\nregistry.promote_model(\"e2e_clf\", \"v1.0.0\", \"STAGED_LOCAL_SERVING\", human_approved=True)\n\n# Validasi kriptografis sebelum serving di 127.0.0.1\nmodel = safe_load_trusted_artifact(staged[\"artifact_path\"], staged[\"checksum_sha256\"])\npsi = compute_psi(X_ref[:, 0], X_curr[:, 0])\n```",
+    "notes": "Seluruh skrip berjalan mandiri dalam 1 command python content/level-4-advanced-ai/chapter-36/code/mlops_pipeline_demo.py."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus Mini Project Bab 36",
+    "body": "- **Judul:** *Building a Local MLOps Pipeline with Model Serving & Drift Monitoring.*\n- Mahasiswa membangun ekosistem MLOps lengkap lokal menggunakan Scikit-learn, SQLite Registry, HTTP REST API `127.0.0.1`, pengujian beban latensi, analisis simulasi *Data Drift vs Concept Drift*, serta uji *rollback* yang diaudit checksum.",
+    "notes": "Rubrik 100 poin: Pipeline & Reproducibility (20), Tracking & Registry (20), Local Serving (25), Monitoring & Drift (25), Security & Docs (10)."
+  },
+  {
+    "kind": "content",
+    "title": "Diskusi Reflektif Kelas",
+    "body": "1. Mengapa sebuah model dengan skor **PSI fitur = 0.45** belum tentu harus langsung dilatih ulang (*retrained*) jika metrik bisnis dan akurasinya ternyata masih stabil?\n2. Jelaskan skenario terburuk apabila pengembang mengikat server model Flask/FastAPI/HTTP langsung ke `0.0.0.0` dan menerima berkas `.pkl` unggahan pengguna luar!\n3. Bagaimana merancang mekanisme penangkapan *delayed labels* dalam kasus sistem deteksi penipuan transaksi?",
+    "notes": "Gunakan diskusi ini untuk menguji kedalaman nalar arsitektural dan kesadaran keamanan siber mahasiswa."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Pembelajaran Bab 36",
+    "body": "- **Reproducibility:** Memisahkan data split sebelum penskalaan dan membungkus prapemrosesan dalam Pipeline.\n- **Governance:** Melacak eksperimen dan mengelola siklus model melalui *Local Model Registry* + persetujuan manusia.\n- **Security & Serving:** Verifikasi SHA-256 wajib sebelum deserialisasi; ikat REST API secara eksklusif pada `127.0.0.1` dengan validasi masukan.\n- **Monitoring:** Memisahkan diagnosis *Data Drift* (PSI/KS pada $P(X)$) dari *Concept Drift* (perubahan $P(y \\mid X)$).",
+    "notes": "Bab ini menutup penguasaan rekayasa perangkat lunak ML praktis sebelum berlanjut ke optimasi perangkat tepi (Edge AI) di Bab 37."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi Akademik & Standar Resmi",
+    "body": "1. **Sculley, D., et al. (2015).** *Hidden Technical Debt in Machine Learning Systems.* NeurIPS 2015.\n2. **Zinkevich, M. (2017).** *Rules of Machine Learning: Best Practices for ML Engineering.* Google Research.\n3. **Google Cloud (2021).** *Practitioners Guide to MLOps: A Framework for Continuous Delivery and Automation of Machine Learning.*\n4. **Gama, J., et al. (2014).** *A Survey on Concept Drift Adaptation.* ACM Computing Surveys (CSUR), 46(4), 1–37.\n5. **NIST (2023).** *Artificial Intelligence Risk Management Framework (AI RMF 1.0).* NIST AI 100-1.",
+    "notes": "Seluruh referensi merupakan publikasi rujukan primer dalam rekayasa MLOps dan pemantauan pergeseran konsep."
+  }
+]

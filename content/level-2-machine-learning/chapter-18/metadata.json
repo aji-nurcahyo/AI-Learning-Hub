@@ -1,0 +1,95 @@
+{
+  "id": 18,
+  "slug": "chapter-18",
+  "levelId": 2,
+  "title": "Dimensionality Reduction",
+  "status": "published",
+  "description": "Modul mendalam Reduksi Dimensi (Dimensionality Reduction): fenomena kutukan dimensi (Curse of Dimensionality), konsentrasi jarak geometris di ruang berdimensi tinggi, penurunan matematis Principal Component Analysis (PCA) berbasis maksimisasi varians dan minimisasi galat rekonstruksi kuadratik, pemusatan data (centering) dan dekomposisi matriks kovarians, evaluasi Scree Plot dan kriteria pemilihan komponen (Kaiser-Guttman, ambang batas varians kumulatif 95%), rekonstruksi data lossy dan galat norma Frobenius, Singular Value Decomposition (SVD) dan Teorema Eckart-Young-Mirsky, TruncatedSVD untuk matriks jarang (sparse NLP), integrasi pipeline Scikit-Learn bebas kebocoran data (zero data leakage), serta algoritma manifold learning non-linier t-SNE (probabilitas t-Student dan crowding problem) dan UMAP (fuzzy simplicial sets).",
+  "objectives": [
+    "Menjelaskan fenomena kutukan dimensi (Curse of Dimensionality) dan konsentrasi jarak pada ruang berdimensi tinggi.",
+    "Menurunkan formulasi matematis Principal Component Analysis (PCA) menggunakan Pengali Lagrange.",
+    "Menjelaskan kesetaraan antara maksimisasi varians dan minimisasi galat kuadrat rekonstruksi.",
+    "Mengimplementasikan algoritma PCA dari dasar berbasis dekomposisi nilai eigen matriks kovarians menggunakan NumPy murni.",
+    "Mengidentifikasi bobot pemuatan (factor loadings) dan menafsirkan arti fisis komponen utama pada domain sistem IoT.",
+    "Menganalisis kurva Scree Plot, kriteria Kaiser, dan ambang batas varians kumulatif untuk menentukan nilai k optimal.",
+    "Menghitung transformasi balik (inverse transform) dan mengukur galat kompresi menggunakan norma Frobenius.",
+    "Menjelaskan dekomposisi Singular Value Decomposition (SVD) dan membuktikan Teorema Eckart-Young-Mirsky untuk aproksimasi rank rendah.",
+    "Membedakan TruncatedSVD untuk matriks jarang (sparse) terhadap PCA standar yang memusatkan data.",
+    "Membangun pipeline machine learning dengan Scikit-Learn Pipeline yang bebas dari kebocoran data (zero data leakage).",
+    "Menjelaskan prinsip kerja t-SNE dalam mengatasi crowding problem menggunakan distribusi t-Student 1 derajat kebebasan.",
+    "Menganalisis pengaruh pemilihan parameter perplexity terhadap topologi visualisasi 2D pada t-SNE.",
+    "Membandingkan kelebihan, kelemahan, dan trade-off komputasi seluruh metode reduksi dimensi (PCA, SVD, t-SNE, UMAP)."
+  ],
+  "prerequisites": [
+    17
+  ],
+  "tags": [
+    "Machine Learning",
+    "Dimensionality Reduction",
+    "PCA",
+    "Principal Component Analysis",
+    "SVD",
+    "Singular Value Decomposition",
+    "Eckart-Young-Mirsky",
+    "Curse of Dimensionality",
+    "Distance Concentration",
+    "Scree Plot",
+    "Kaiser Criterion",
+    "Explained Variance",
+    "Factor Loadings",
+    "Data Reconstruction",
+    "Frobenius Norm",
+    "TruncatedSVD",
+    "Data Leakage",
+    "Scikit-Learn Pipeline",
+    "t-SNE",
+    "Manifold Learning",
+    "UMAP",
+    "Perplexity"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Pearson, K. (1901). On lines and planes of closest fit to systems of points in space. Phil. Mag., 2(11), 559-572",
+      "url": "https://doi.org/10.1080/14786440109462720",
+      "status": "verified"
+    },
+    {
+      "title": "Hotelling, H. (1933). Analysis of a complex of statistical variables into principal components. J. Educ. Psychol., 24(6), 417-441",
+      "url": "https://doi.org/10.1037/h0071325",
+      "status": "verified"
+    },
+    {
+      "title": "Eckart, C., & Young, G. (1936). The approximation of one matrix by another of lower rank. Psychometrika, 1(3), 211-218",
+      "url": "https://doi.org/10.1007/BF02288367",
+      "status": "verified"
+    },
+    {
+      "title": "van der Maaten, L., & Hinton, G. (2008). Visualizing data using t-SNE. J. Mach. Learn. Res., 9(Nov), 2579-2605",
+      "url": "https://www.jmlr.org/papers/v9/vandermaaten08a.html",
+      "status": "verified"
+    },
+    {
+      "title": "McInnes, L., Healy, J., & Melville, J. (2018). UMAP: Uniform manifold approximation and projection for dimension reduction. arXiv:1802.03426",
+      "url": "https://arxiv.org/abs/1802.03426",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

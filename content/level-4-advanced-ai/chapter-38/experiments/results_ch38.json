@@ -1,0 +1,105 @@
+{
+  "chapter": 38,
+  "title": "Multimodal AI Systems",
+  "total_scripts": 16,
+  "total_duration_seconds": 73.74,
+  "all_passed": true,
+  "scripts": {
+    "clip_miniature.py": {
+      "status": "passed",
+      "duration_seconds": 9.433,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: MINIATURE DUAL ENCODER (CLIP-STYLE CONTRASTIVE ALIGNMENT)\n===========================================================================\nDual Encoder Params : 36,704\nContrastive Loss    : Epoch 1 = 1.6808 -> Epoch 35 = 0.0717\nUnseen Test (16 concepts):\n- Positive Pair Cosine Sim Mean : +0.9753\n- Negative Pair Cosine Sim Mean : -0.0650\n- Alignment Margin (Pos - Neg)  : +1.0403\n- 16-Way Zero-Shot Match Acc    : 10"
+    },
+    "contrastive_loss.py": {
+      "status": "passed",
+      "duration_seconds": 2.48,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: SYMMETRIC INFONCE / CLIP CONTRASTIVE LOSS\n===========================================================================\n1. Worked Manual 3x3 Contrastive Matrix Verification (tau=0.5):\n   Cosine Similarity Matrix (I @ T^T):\n     Img 0: [0.9, 0.1, 0.7071]\n     Img 1: [0.4359, 0.995, 0.7071]\n     Img 2: [0.9446, 0.7743, 1.0]\n   - Manual Image->Text Loss : 0.73244\n   - Manual Text->Image Loss : 0.75112\n   - Symmetr"
+    },
+    "cross_attention_fusion.py": {
+      "status": "passed",
+      "duration_seconds": 5.909,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: CROSS-ATTENTION MULTIMODAL FUSION\n===========================================================================\n1. Worked Tensor Cross-Attention Verification (NumPy == PyTorch Parity):\n   Q (Text Tokens)  shape: (2, 4)   | K, V (Image Patches) shape: (3, 4)\n   Attention Weights (2x3): [[0.5434, 0.1999, 0.2567], [0.1999, 0.5434, 0.2567]]\n   Row Sums == 1.0 Check  : [1.0, 1.0] (PASS)\n   Fused Output     shape: (2"
+    },
+    "cross_modal_evaluation.py": {
+      "status": "passed",
+      "duration_seconds": 2.841,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: BIDIRECTIONAL CROSS-MODAL RETRIEVAL EVALUATION\n===========================================================================\nEvaluation Strictly on Held-Out Unseen Test Samples (N=96 images, 16 concepts):\n\n1. Image-to-Text Retrieval (Query=Image -> 16 Captions):\n   Recall@1: 100.00% | Recall@3: 100.00% | Recall@5: 100.00% | Median Rank: 1.0\n\n2. Text-to-Image Retrieval (Query=Caption -> 96 Unseen Images):\n   Rec"
+    },
+    "early_fusion.py": {
+      "status": "passed",
+      "duration_seconds": 5.721,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: EARLY FUSION (FEATURE-LEVEL CONCATENATION)\n===========================================================================\nConcatenated Joint Feature Vector: [z_img (64) ; z_txt (64)] -> 128-dim MLP\n- Test Accuracy (Both Modalities Present) : 100.00%\n- Test Accuracy (Missing Text Modality)   : 25.00%\n- Test Accuracy (Missing Image Modality)  : 93.75%\n\nNote: Because concatenated MLP weights couple both modalities"
+    },
+    "image_encoder.py": {
+      "status": "passed",
+      "duration_seconds": 2.621,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: LIGHTWEIGHT IMAGE ENCODER VERIFICATION\n===========================================================================\nTinyImageEncoder Parameters : 23,584\nInput Image Batch Shape     : (4, 3, 32, 32)\nSpatial Patch Tokens Shape  : (4, 16, 64) (4x4 = 16 patches)\nGlobal Pooled Vector Shape  : (4, 64)\n\n[SUCCESS] TinyImageEncoder verified."
+    },
+    "image_to_text_retrieval.py": {
+      "status": "passed",
+      "duration_seconds": 2.64,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: IMAGE-TO-TEXT CROSS-MODAL RETRIEVAL\n===========================================================================\nCandidate Text Pool: 16 unique concepts\n\nQuery Unseen Test Image #00 (Ground Truth: 'red circle'):\n  Rank 1 | Cosine=+0.9827 | 'red circle' [MATCH]\n  Rank 2 | Cosine=+0.4652 | 'red square' [MISS]\n  Rank 3 | Cosine=+0.3799 | 'red triangle' [MISS]\n\nQuery Unseen Test Image #30 (Ground Truth: 'blue squa"
+    },
+    "late_fusion.py": {
+      "status": "passed",
+      "duration_seconds": 5.915,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: LATE FUSION (DECISION-LEVEL ENSEMBLE)\n===========================================================================\nDecision Probability Ensemble (0.5 * P_img + 0.5 * P_txt):\n- Test Accuracy (Both Modalities Present) : 100.00%\n- Test Accuracy (Image Modality Only)     : 43.75% (Text dropped cleanly)\n- Test Accuracy (Text Modality Only)      : 100.00% (Image dropped cleanly)\n\nAdvantage: Late Fusion handles missi"
+    },
+    "multimodal_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 14.897,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: FUSION STRATEGY BENCHMARK & MISSING MODALITY RESILIENCE\n===========================================================================\nFusion Architecture  | Both Present   | No Text (Img Only)  | No Image (Txt Only)\n------------------------------------------------------------------------------\nEarly Fusion         | 100.00       % | 25.00             % | 93.75%\nLate Fusion          | 100.00       % | 43.75"
+    },
+    "multimodal_embeddings.py": {
+      "status": "passed",
+      "duration_seconds": 3.462,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: SHARED MULTIMODAL EMBEDDING SPACE & L2 NORMALIZATION\n===========================================================================\nImage Embedding Shape   : (8, 32) | Unit Norms == 1.0 Verified\nText  Embedding Shape   : (8, 32) | Unit Norms == 1.0 Verified\nUntrained Mean Pair Cosine Similarity (Modality Gap): 0.2650\n\nNote: Before contrastive training, image and text encoders occupy unaligned\nregions of the hype"
+    },
+    "multimodal_foundations.py": {
+      "status": "passed",
+      "duration_seconds": 0.297,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: MULTIMODAL AI FOUNDATIONS\n===========================================================================\n1. Why Isolated Unimodal Models Fail Synergy Cases:\n   Scenario                         | Visual   | Text/Therm | True Critical Alert\n   --------------------------------------------------------------------\n   Clean Image + Cool Report        | 0.0      | 0.0        | 0\n   Clean Image + Overheat Report    | 0."
+    },
+    "paired_dataset_generator.py": {
+      "status": "passed",
+      "duration_seconds": 3.546,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: PAIRED SYNTHETIC IMAGE-TEXT DATASET GENERATOR\n===========================================================================\nGenerated Synthetic Multimodal Geometry Corpus (16 concepts = 4 colors x 4 shapes):\n- Train Split Pairs : 320 | Image Tensor Shape: (320, 3, 32, 32)\n- Test  Split Pairs : 96  | Text Token Shape  : (96, 2)\n- Sample Pair [0]   : Caption='red circle', Tokens=[1, 5], ConceptID=0\n\nSaved dataset"
+    },
+    "similarity_matrix.py": {
+      "status": "passed",
+      "duration_seconds": 5.219,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: CROSS-MODAL SIMILARITY MATRIX HEATMAP\n===========================================================================\nSample 4x4 Submatrix (First 4 Concepts: red shapes vs texts):\nImage \\\\ Text    | red circle    | red square    | red triangle  | red rectangle\n------------------------------------------------------------------------------\nred circle       |       +0.9827 |       +0.4652 |       +0.3799 |       +0."
+    },
+    "text_encoder.py": {
+      "status": "passed",
+      "duration_seconds": 2.906,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: LIGHTWEIGHT TEXT ENCODER VERIFICATION\n===========================================================================\nTinyTextEncoder Parameters  : 9,024\nInput Tokens Batch Shape    : (4, 2)\nToken Embeddings Shape      : (4, 2, 64)\nPooled Sentence Vector Shape: (4, 64)\n\n[SUCCESS] TinyTextEncoder verified."
+    },
+    "text_to_image_retrieval.py": {
+      "status": "passed",
+      "duration_seconds": 2.979,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: TEXT-TO-IMAGE CROSS-MODAL RETRIEVAL\n===========================================================================\nCandidate Pool: 96 unseen test images (16 concepts x 6 variants each)\n\nText Query: 'red circle'\n  Rank 1 | Cosine=+0.9974 | Test Img #03 ('red circle') [MATCH]\n  Rank 2 | Cosine=+0.9922 | Test Img #01 ('red circle') [MATCH]\n  Rank 3 | Cosine=+0.9827 | Test Img #00 ('red circle') [MATCH]\n\nText Query:"
+    },
+    "vqa_concept_demo.py": {
+      "status": "passed",
+      "duration_seconds": 2.872,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 38: VISUAL QUESTION ANSWERING (RULE-BASED CONCEPT DEMO)\n===========================================================================\nDisclaimer: Rule-based deterministic attribute baseline, NOT neural generative VQA.\n\nTest Image #00 (Ground Truth: 'red circle'):\n  Q1: 'Apa warna objek pada gambar?' -> Warna objek dominan pada citra adalah 'red'.\n  Q2: 'Apa bentuk geometris objek tersebut?' -> Bentuk geometris yang"
+    }
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "project": "Intelligent Sensor Monitoring (CPU Reference)",
+  "execution_time_seconds": 1.773,
+  "data_dictionary_path": "D:\\Workstation\\Repo My Corses\\Kecerdasan Buatan\\content\\level-4-advanced-ai\\chapter-40\\data\\sensor_data_dictionary.json",
+  "splits": {
+    "train": 900,
+    "val": 300,
+    "test": 300
+  },
+  "dummy_baseline_val": {
+    "accuracy": 0.7333333333333333,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "roc_auc": 0.5
+  },
+  "candidate_comparison": {
+    "LogisticRegression": {
+      "val_metrics": {
+        "accuracy": 0.9533333333333334,
+        "precision": 0.8928571428571429,
+        "recall": 0.9375,
+        "f1": 0.9146341463414634,
+        "roc_auc": 0.989659090909091
+      },
+      "latency_ms": {
+        "mean_ms": 0.0716330000796006,
+        "p50_ms": 0.06540000140375923,
+        "p95_ms": 0.10814500019478149
+      },
+      "bundle_size_kb": 1.15,
+      "train_time_s": 0.003
+    },
+    "RandomForest(n=50,d=8)": {
+      "val_metrics": {
+        "accuracy": 0.94,
+        "precision": 0.8875,
+        "recall": 0.8875,
+        "f1": 0.8875,
+        "roc_auc": 0.9853693181818182
+      },
+      "latency_ms": {
+        "mean_ms": 2.0316893332953136,
+        "p50_ms": 1.9865999984176597,
+        "p95_ms": 2.5755499989827513
+      },
+      "bundle_size_kb": 313.66,
+      "train_time_s": 0.063
+    },
+    "MLP(32,16)": {
+      "val_metrics": {
+        "accuracy": 0.9433333333333334,
+        "precision": 0.8705882352941177,
+        "recall": 0.925,
+        "f1": 0.896969696969697,
+        "roc_auc": 0.9882954545454545
+      },
+      "latency_ms": {
+        "mean_ms": 0.06609900012942187,
+        "p50_ms": 0.06230000144569203,
+        "p95_ms": 0.08159999924828298
+      },
+      "bundle_size_kb": 39.22,
+      "train_time_s": 0.593
+    }
+  },
+  "selected_model": "LogisticRegression",
+  "sha256_prefix": "2e6ebc8046ef3835",
+  "heldout_test_metrics": {
+    "accuracy": 0.96,
+    "precision": 0.9473684210526315,
+    "recall": 0.9,
+    "f1": 0.9230769230769231,
+    "roc_auc": 0.9936931818181818
+  },
+  "confusion_matrix": [
+    [
+      216,
+      4
+    ],
+    [
+      8,
+      72
+    ]
+  ],
+  "feature_importance": {
+    "temperature_c": 0.0824,
+    "vibration_rms": 0.1298,
+    "current_amp": 0.0,
+    "acoustic_db": 0.0769,
+    "rpm_deviation": -0.0004,
+    "voltage_ripple_v": 0.0071
+  },
+  "error_count_on_test": 12,
+  "sample_local_inference": {
+    "status": "OK",
+    "model_name": "LogisticRegression",
+    "predicted_class": 1,
+    "label": "WARNING_FAULT",
+    "fault_probability": 1.0,
+    "confidence": 1.0,
+    "human_escalation": false,
+    "recommended_action": "Manual engineer inspection required"
+  },
+  "drift_monitoring": {
+    "Nominal Stream": {
+      "metrics": {
+        "accuracy": 0.96,
+        "precision": 0.971830985915493,
+        "recall": 0.8734177215189873,
+        "f1": 0.92,
+        "roc_auc": 0.9921530442751589
+      },
+      "psi_per_feature": {
+        "temperature_c": 0.0587,
+        "vibration_rms": 0.0478,
+        "current_amp": 0.0245,
+        "acoustic_db": 0.0165,
+        "rpm_deviation": 0.0351,
+        "voltage_ripple_v": 0.0844
+      },
+      "max_psi": 0.0844,
+      "ks_temp_stat": 0.0522,
+      "drift_alert": false
+    },
+    "Drifted Stream (+9.5C/+1.1mm/s)": {
+      "metrics": {
+        "accuracy": 0.9433333333333334,
+        "precision": 0.9748743718592965,
+        "recall": 0.941747572815534,
+        "f1": 0.9580246913580247,
+        "roc_auc": 0.9876058665564965
+      },
+      "psi_per_feature": {
+        "temperature_c": 1.256,
+        "vibration_rms": 2.0395,
+        "current_amp": 0.036,
+        "acoustic_db": 0.1671,
+        "rpm_deviation": 0.0454,
+        "voltage_ripple_v": 0.0291
+      },
+      "max_psi": 2.0395,
+      "ks_temp_stat": 0.4478,
+      "drift_alert": true
+    }
+  },
+  "risk_register_items": 4,
+  "model_card_schema": "capstone-model-card-v1"
+}

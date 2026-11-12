@@ -1,0 +1,224 @@
+[
+  {
+    "kind": "cover",
+    "title": "Introduction to Artificial Intelligence",
+    "body": "Memahami hakikat, paradigma pendekatan, arsitektur dasar, batasan, serta etika pengembangan sistem cerdas.",
+    "notes": "Selamat datang di perkuliahan perdana AI Learning Hub. Slide ini dirancang untuk memandu pengajar mengantarkan konsep fundamental AI secara objektif dan sistematis."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Mempelajari Artificial Intelligence?",
+    "body": "AI merevolusi cara komputasi menyelesaikan masalah persepsi dan penalaran yang sulit dirumuskan dengan aturan kaku:",
+    "columns": [
+      {
+        "title": "Tantangan Dunia Nyata",
+        "items": [
+          "Variasi bahasa alami manusia yang sarat kiasan",
+          "Pengenalan objek visual dalam berbagai kondisi",
+          "Deteksi pola anomali dinamis berskala besar"
+        ]
+      },
+      {
+        "title": "Solusi Berbasis AI",
+        "items": [
+          "Representasi fitur matematis fleksibel",
+          "Optimasi fungsi objektif dari data",
+          "Adaptif terhadap variasi pola baru"
+        ]
+      }
+    ],
+    "diagram": ["Data Melimpah", "Komputasi Modern", "Algoritma Adaptif", "Sistem Cerdas"],
+    "notes": "Tekankan kepada mahasiswa bahwa AI bukan sihir. AI adalah disiplin ilmu komputer yang memodelkan ketidakpastian dunia nyata menggunakan matematika dan komputasi adaptif."
+  },
+  {
+    "kind": "content",
+    "title": "Learning Objectives",
+    "body": "Setelah menyelesaikan sesi ini, mahasiswa diharapkan mampu:\n1. Menjelaskan AI melalui tujuan, kapabilitas, dan batasannya.\n2. Membedakan Rule-Based System, Machine Learning, Deep Learning, dan Generative AI.\n3. Mengidentifikasi siklus Input → Representasi → Pemrosesan → Output → Evaluasi.\n4. Menganalisis kebutuhan AI vs pendekatan deterministik untuk masalah tertentu.\n5. Mengevaluasi risiko dan keterbatasan penerapan AI pada studi kasus nyata.",
+    "notes": "Ajak mahasiswa membaca capaian pembelajaran ini. Tegaskan bahwa target kompetensi mencakup pemahaman konsep sekaligus ketajaman analisis rekayasa sistem."
+  },
+  {
+    "kind": "content",
+    "title": "Definisi Kerja Artificial Intelligence",
+    "body": "Secara operasional dalam ilmu komputer, Artificial Intelligence adalah perancangan sistem atau agen yang mampu mempersepsikan lingkungan, memproses informasi, bernalar, dan mengambil tindakan terarah guna mencapai tujuan tertentu secara rasional.\n• Analogi Fungsional: AI meniru fungsi kognitif komputasi, bukan kesadaran atau perasaan biologis.\n• Narrow AI (Kecerdasan Sempit): Sistem saat ini unggul pada satu domain tugas spesifik, tanpa kemampuan transfer lintas domain otomatis.",
+    "notes": "Rujuk definisi Russell & Norvig: berpikir dan bertindak rasional. Hindari definisi antropomorfis mistis seperti 'mesin yang memiliki rasa atau jiwa'."
+  },
+  {
+    "kind": "split",
+    "title": "Contoh vs Noncontoh AI",
+    "body": "Tidak semua perangkat lunak otomatisasi tergolong sebagai Artificial Intelligence:",
+    "columns": [
+      {
+        "title": "Bukan AI (Deterministik Statis)",
+        "items": [
+          "Perhitungan pajak dengan formula tetap",
+          "Query sorting data SQL secara ascending",
+          "Pencarian kata eksak (Ctrl+F) pada dokumen",
+          "Validasi format email menggunakan regex"
+        ]
+      },
+      {
+        "title": "Sistem AI (Adaptif / Pola)",
+        "items": [
+          "Deteksi fraud kartu kredit berdasarkan pola transaksi",
+          "Filter email spam yang terus belajar dari kata baru",
+          "Pengenalan rambu lalu lintas pada mobil otonom",
+          "Rekomendasi musik adaptif berbasis preferensi"
+        ]
+      }
+    ],
+    "notes": "Ajak mahasiswa berdiskusi: bedakan komputasi deterministik dengan inferensi pola adaptif. Jika aturan sudah 100% pasti dan statis, gunakan pemrograman konvensional."
+  },
+  {
+    "kind": "content",
+    "title": "Paradigma 1: Rule-Based System",
+    "body": "Sistem Berbasis Aturan (Symbolic AI) memproses fakta menggunakan kaidah logika eksplisit yang disusun oleh pakar manusia:\n• Komponen: Basis Pengetahuan (Knowledge Base) + Mesin Inferensi (Inference Engine).\n• Keunggulan: 100% transparan, dapat diaudit, dan tidak memerlukan dataset training besar.\n• Keterbatasan: Kaku (*brittle*); gagal bila menghadapi kasus di luar daftar aturan.",
+    "notes": "Sistem Pakar era 1970–1980 adalah bukti keberhasilan symbolic AI. Tekankan bahwa Rule-Based System tetap merupakan bagian sah dari AI, terutama untuk domain kepatuhan regulasi."
+  },
+  {
+    "kind": "content",
+    "title": "Paradigma 2: Machine Learning",
+    "body": "Pergeseran paradigma: Manusia tidak lagi menuliskan seluruh aturan secara manual, melainkan menyediakan data dan algoritma pembelajar (*learner*):\n• Belajar dari Data: Model mengestimasi parameter matematis dari observasi data historis.\n• Generalisasi: Mampu melakukan prediksi akurat pada data baru yang belum pernah dilihat.\n• Contoh Algoritma: Linear Regression, Decision Tree, Support Vector Machine, Random Forest.",
+    "notes": "Rujuk definisi Tom Mitchell: Program belajar dari pengalaman E terhadap tugas T dengan ukuran performa P, jika kinerjanya pada T meningkat seiring pengalaman E."
+  },
+  {
+    "kind": "content",
+    "title": "Paradigma 3: Deep Learning",
+    "body": "Subbidang Machine Learning yang memanfaatkan Artificial Neural Network dengan banyak lapisan tersembunyi (*deep layers*):\n• Feature Representation Learning: Menghilangkan kebutuhan rekayasa fitur manual; mengekstrak fitur langsung dari data mentah.\n• Domain Unggulan: Komputasi data perseptual berdimensi tinggi seperti citra, audio, dan deret waktu kompleks.\n• Kebutuhan: Memerlukan volume data besar dan akselerasi komputasi paralel.",
+    "notes": "Bandingkan: ML klasik butuh pakar manusia untuk mendesain fitur manual. Deep Learning mempelajari representasi fitur hierarkis: dari deteksi garis tepi, bentuk, hingga objek utuh."
+  },
+  {
+    "kind": "content",
+    "title": "Paradigma 4: Generative AI & LLM",
+    "body": "Pemanfaatan model fondasi modern untuk menyintesis konten baru:\n• Diskriminatif vs Generatif: Model diskriminatif membedakan kelas; model generatif memodelkan distribusi data untuk membuat konten baru.\n• Large Language Models (LLM): Model bahasa berbasis Transformer yang memprediksi probabilitas kemunculan token berikutnya (*next-token prediction*).\n• Realitas Teknis: Menghasilkan kalimat fasih bukan berarti memahami fakta sejati; rentan halusinasi.",
+    "notes": "Tegaskan bahwa LLM bekerja atas dasar korelasi probabilitas token teks. Kefasihan tata bahasa sering disalahartikan sebagai kecerdasan sadar oleh masyarakat umum."
+  },
+  {
+    "kind": "content",
+    "title": "Peta Hubungan Antar Pendekatan",
+    "body": "Hubungan hierarki konsentris dalam lanskap kecerdasan buatan modern:\n• Artificial Intelligence: Payung utama yang mencakup pendekatan simbolik dan sistem berbasis data.\n• Machine Learning: Cabang AI yang mengekstrak pola dari dataset.\n• Deep Learning: Cabang ML berbasis jaringan saraf tiruan berlapis banyak.\n• Generative AI: Penerapan DL modern untuk sintesis konten baru (teks, gambar, kode).",
+    "diagram": ["Artificial Intelligence", "Machine Learning", "Deep Learning", "Generative AI"],
+    "notes": "Tekankan bahwa ini adalah relasi subset konsentris, bukan entitas yang saling bersaing. ML adalah salah satu cara mewujudkan AI."
+  },
+  {
+    "kind": "split",
+    "title": "Dua Fase Utama: Training vs Inference",
+    "body": "Sistem berbasis model Machine Learning beroperasi dalam dua tahapan komputasi yang terpisah:",
+    "columns": [
+      {
+        "title": "Fase 1: Training (Pelatihan)",
+        "items": [
+          "Input data latih berlabel historis",
+          "Menghitung selisih prediksi dengan fungsi loss",
+          "Memperbarui bobot parameter secara iteratif",
+          "Komputasi intensif (memerlukan GPU/server)"
+        ]
+      },
+      {
+        "title": "Fase 2: Inference (Prediksi)",
+        "items": [
+          "Menggunakan bobot model yang sudah dibekukan",
+          "Menerima data baru dari pengguna",
+          "Menghasilkan prediksi dalam hitungan milidetik",
+          "Ringan & hemat daya (dapat berjalan di CPU)"
+        ]
+      }
+    ],
+    "notes": "Gunakan analogi: Training seperti mahasiswa belajar selama satu semester; Inference seperti saat mahasiswa mengerjakan lembar ujian secara langsung."
+  },
+  {
+    "kind": "content",
+    "title": "Anatomy of an AI System",
+    "body": "Lima blok fungsional berurutan dalam setiap perancangan sistem cerdas:\n1. Input: Penerimaan data mentah dari dunia nyata (teks, audio, gambar, sensor).\n2. Representation: Konversi data mentah menjadi vektor numerik (*feature engineering/embeddings*).\n3. Processing: Inferensi matematis model pada vektor fitur.\n4. Output: Prediksi kategori, estimasi nilai, atau tindakan sistem.\n5. Evaluation: Pengukuran kualitas kinerja sistem menggunakan metrik objektif.",
+    "diagram": ["Input Mentah", "Vektorisasi", "Model Processing", "Output Prediksi", "Evaluasi Metrik"],
+    "notes": "Ingat prinsip GIGO (Garbage In, Garbage Out). Kualitas representasi numerik menentukan batas atas performa model apa pun."
+  },
+  {
+    "kind": "content",
+    "title": "Studi Kasus: Sistem Filter Spam Email",
+    "body": "Penerapan konkret lima blok fungsional pada sistem filter spam:\n• Input: Teks subjek dan badan email yang masuk ke server.\n• Representasi: Matriks frekuensi kata (*TF-IDF*) atau vektor embedding semantik.\n• Pemrosesan: Model klasifikasi memprediksi probabilitas kemunculan spam.\n• Output: Memindahkan email ke Inbox atau karantina ke folder Spam.\n• Evaluasi: Analisis rasio False Positive (email penting terblokir) vs False Negative (spam lolos).",
+    "notes": "Ajak mahasiswa memikirkan konsekuensi: jika email pengumuman beasiswa masuk ke folder spam (False Positive), kerugian pengguna sangat besar."
+  },
+  {
+    "kind": "code",
+    "title": "Contoh Kode: Logika Aturan vs Evaluasi",
+    "body": "Evaluasi akurasi klasifikasi dapat dihitung secara transparan menggunakan logika Python standar:",
+    "code": "def calculate_accuracy(y_true, y_pred):\n    correct = sum(1 for t, p in zip(y_true, y_pred) if t == p)\n    return correct / len(y_true)\n\n# 1 = Spam, 0 = Ham\ny_ground_truth = [1, 0, 0, 1]\ny_predictions  = [1, 0, 1, 1]  # Sampel #3 salah\n\nacc = calculate_accuracy(y_ground_truth, y_predictions)\nprint(f\"Akurasi Sistem: {acc * 100:.1f}%\")",
+    "notes": "Tunjukkan bahwa metrik akurasi 75% dihitung dari 3 benar dari 4 sampel. Pada kode riil, kita membongkar ini lebih lanjut menjadi Confusion Matrix."
+  },
+  {
+    "kind": "content",
+    "title": "Keterbatasan & Titik Kegagalan AI",
+    "body": "Sistem cerdas memiliki keterbatasan mendasar yang wajib diantisipasi insinyur:\n• Kualitas Data: Sampah masuk, sampah keluar (*Garbage In, Garbage Out*).\n• Kerapuhan Generalisasi: Model anjlok saat menghadapi kondisi baru (*distribution shift*).\n• Bias Algoritmik: AI melanggengkan diskriminasi sosial yang terekam pada data masa lalu.\n• Ketiadaan Akal Sehat (*Common Sense*): Model hanya menangkap korelasi statistik, bukan sebab-akibat sejati (*causality*).",
+    "notes": "Tekankan mengapa pemikiran kritis manusia mutlak diperlukan. Model AI tidak memiliki moralitas, tanggung jawab hukum, atau pemahaman kausalitas sejati."
+  },
+  {
+    "kind": "split",
+    "title": "Kapan Memerlukan AI vs Solusi Deterministik?",
+    "body": "Gunakan prinsip kehati-hatian rekayasa: utamakan solusi paling sederhana yang andal:",
+    "columns": [
+      {
+        "title": "Cukup Solusi Deterministik",
+        "items": [
+          "Aturan bisnis baku dan pasti 100%",
+          "Kepatuhan regulasi hukum mutlak",
+          "Kalkulasi matematis & keuangan terstruktur",
+          "Lebih murah, cepat, dan mudah di-debug"
+        ]
+      },
+      {
+        "title": "Memerlukan Machine Learning",
+        "items": [
+          "Aturan terlalu rumit untuk ditulis manual",
+          "Masalah persepsi (citra, audio, bahasa)",
+          "Data melimpah dan pola dinamis",
+          "Siap menerima toleransi error statistik"
+        ]
+      }
+    ],
+    "notes": "Prinsip Google ML: 'Don't use machine learning if you can solve the problem with simple heuristics'. Solusi deterministik selalu lebih murah perawatannya."
+  },
+  {
+    "kind": "content",
+    "title": "Pengantar Responsible AI",
+    "body": "Lima pilar tata kelola etika dalam perancangan kecerdasan buatan (NIST & UNESCO):\n1. Fairness (Keadilan): Tidak menghasilkan disparitas dampak negatif bagi kelompok rentan.\n2. Transparency (Transparansi): Alasan dan faktor penentu keputusan dapat dijelaskan (*explainability*).\n3. Privacy (Privasi): Perlindungan data pribadi dan kepatuhan hak subjek data.\n4. Accountability (Akuntabilitas): Organisasi dan insinyur tetap memegang tanggung jawab penuh.\n5. Safety & Reliability: Sistem teruji aman terhadap manipulasi dan kondisi kegagalan.",
+    "notes": "Rujuk kerangka NIST AI RMF. Di abad ke-21, integritas etika dan keselamatan sama krusialnya dengan kemampuan coding teknis."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus: Seleksi Beasiswa Otomatis",
+    "body": "Sebuah universitas ingin membangun sistem otomatis untuk menyaring ribuan berkas pendaftaran beasiswa mahasiswa baru secara efisien.",
+    "caseBox": {
+      "title": "Skenario Operasional",
+      "scenario": "Universitas menerima 10.000 berkas per tahun untuk 500 kuota penerima beasiswa. Tim panitia seleksi kewalahan meninjau berkas prestasi, esai motivasi, surat rekomendasi, dan status ekonomi keluarga pemohon.",
+      "goal": "Mempercepat seleksi awal dan menghasilkan pemeringkatan rekomendasi calon penerima yang adil dan objektif.",
+      "options": [
+        "Pendekatan A: Rule-Based System Eksplisit",
+        "Pendekatan B: Machine Learning Berbasis Data Historis"
+      ]
+    },
+    "notes": "Jelaskan kepada mahasiswa: jangan terburu-buru mengklaim salah satu pendekatan lebih unggul. Rule-based kuat pada syarat batas pasti (misal IPK minimal atau kelengkapan berkas), sedangkan ML berpotensi membantu penaksiran esai namun membawa risiko bias historis."
+  },
+  {
+    "kind": "case",
+    "title": "Pertanyaan Diskusi: Seleksi Beasiswa",
+    "body": "Diskusikan bersama rekan Anda tiga pertanyaan analitis berikut:",
+    "questions": [
+      "Bagian keputusan mana yang dapat menggunakan aturan eksplisit, dan bagian mana yang mungkin membutuhkan Machine Learning?",
+      "Risiko apa yang muncul ketika melatih model menggunakan data penerima beasiswa 10 tahun terakhir?",
+      "Bagaimana merancang mekanisme Human-in-the-Loop dan peninjauan keberatan keputusan?"
+    ],
+    "notes": "Panduan diskusi untuk dosen:\n1. Persyaratan administratif (IPK minimal, batas pendapatan) cocok untuk rule-based; penilaian esai/rekomendasi ambigu.\n2. Data historis 10 tahun rentan bias demografi masa lalu (gender, sekolah favorit).\n3. Privasi data finansial keluarga harus dijaga ketat.\n4. AI hanya bertindak sebagai alat bantu rekomendasi peringkat; keputusan final dan banding hak mahasiswa wajib di tangan dewan dosen manusia."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Materi Chapter 01",
+    "body": "Poin kunci yang wajib dipahami perekayasa sistem cerdas:\n• AI adalah payung disiplin komputasi yang mencakup sistem simbolik dan sistem berbasis data.\n• Machine Learning belajar pola matematis dari data; Deep Learning mengotomasi representasi fitur berlapis.\n• Setiap sistem AI tersusun atas Input, Representasi Vektor, Pemrosesan, Output, dan Evaluasi.\n• Akurasi hanyalah langkah awal; selalu telaah trade-off False Positive vs False Negative.\n• Terapkan prinsip Responsible AI sejak tahap analisis kelayakan dan perancangan awal.",
+    "notes": "Ulas kelima poin ini sebagai jembatan pengetahuan. Pastikan seluruh mahasiswa memiliki pemahaman konseptual yang solid sebelum beralih ke praktik."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi & Arahan Belajar",
+    "body": "Rujukan akademik primer yang digunakan:\n• ACM/IEEE-CS/AAAI Computer Science Curricula 2023 (CS2023).\n• UNESCO AI Competency Framework for Students (2024).\n• NIST AI Risk Management Framework (AI RMF 1.0).\n• Google Machine Learning Crash Course.\n\nLangkah berikutnya:\nBuka modul lengkap untuk membaca pendalaman materi, mengerjakan latihan terstruktur, dan jalankan skrip di halaman praktik.",
+    "notes": "Arahkan mahasiswa untuk melanjutkan ke Modul Bacaan Lengkap dan Halaman Praktik di platform AI Learning Hub."
+  }
+]

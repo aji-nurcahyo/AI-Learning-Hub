@@ -1,0 +1,182 @@
+[
+  {
+    "kind": "cover",
+    "title": "Backpropagation & Optimization",
+    "body": "### Kalkulus Graf Komputasi, Perambatan Mundur & Algoritma Pengoptimal Modern\n\n**Level 3 — Deep Learning & Generative AI | Chapter 22**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di sesi perkuliahan Chapter 22. Hari ini kita mendalami mesin penggerak sesungguhnya di balik revolusi deep learning: algoritma Backpropagation dan keluarga pengoptimal gradien modern."
+  },
+  {
+    "kind": "content",
+    "title": "Bagaimana Jaringan Saraf Belajar?",
+    "body": "- **Siklus Belajar Berulang (Iterative Learning)**:\n  1. Lakukan *Forward Pass* untuk menghasilkan prediksi $\\hat{\\mathbf{y}}$.\n  2. Hitung besaran galat melalui *Loss Function* $\\mathcal{L}(\\mathbf{y}, \\hat{\\mathbf{y}})$.\n  3. Hitung kontribusi kesalahan setiap bobot via *Backpropagation* (aturan rantai kalkulus).\n  4. Perbarui parameter menggunakan *Optimization Algorithm* (Gradient Descent, Adam).\n- **Tujuan Akhir**: Menemukan konfigurasi bobot $\\mathbf{W}^*$ dan bias $\\mathbf{b}^*$ yang meminimalkan nilai ekspektasi loss di seluruh distribusi data.",
+    "notes": "Jelaskan bahwa proses belajar pada dasarnya adalah masalah optimasi numerik kontinu di ruang berdimensi tinggi."
+  },
+  {
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Bab 22",
+    "body": "Setelah menyelesaikan perkuliahan ini, mahasiswa diharapkan mampu:\n\n- **Memahami** konsep graf komputasi dan aliran diferensiasi otomatis (*Autograd*).\n- **Menerapkan** Aturan Rantai (*Chain Rule*) untuk menurunkan gradien matriks terbobot.\n- **Menghitung** perambatan galat mundur (*Backpropagation*) secara analitis.\n- **Melakukan** pengujian kebenaran gradien (*Gradient Checking*) dengan beda hingga terpusat.\n- **Membedakan** dinamika Batch GD, Stochastic GD (SGD), dan Mini-Batch GD.\n- **Mengimplementasikan** pengoptimal adaptif: Momentum, RMSprop, dan Adam.\n- **Mendiagnosis** ketidakstabilan pelatihan (Vanishing/Exploding Gradients, Learning Rate).",
+    "notes": "Tujuan pembelajaran ini menekankan penguasaan komputasi kalkulus rantai dan algoritma optimasi numerik."
+  },
+  {
+    "kind": "split",
+    "title": "Dasar Kalkulus: Vektor Gradien",
+    "body": "Arah laju perubahan fungsi multi-variabel:\n\n### Turunan Parsial (Partial Derivatives)\n- Mengukur laju perubahan fungsi skalar $f(x_1, x_2, \\dots, x_n)$ terhadap salah satu variabel saja dengan menganggap variabel lain konstan:\n$$\\frac{\\partial f}{\\partial x_i}$$\n\n### Vektor Gradien ($\\nabla f$)\n$$\\nabla f = \\left[ \\frac{\\partial f}{\\partial x_1}, \\frac{\\partial f}{\\partial x_2}, \\dots, \\frac{\\partial f}{\\partial x_n} \\right]^T$$\n- Menunjuk tepat ke arah kenaikan fungsi paling curam (*steepest ascent*).\n- Nilai $-\\nabla f$ menunjuk ke arah penurunan tercepat (*steepest descent*).",
+    "notes": "Vektor gradien adalah instrumen matematis utama yang mengarahkan pergerakan bobot menuju lembah loss terendah."
+  },
+  {
+    "kind": "split",
+    "title": "Aturan Rantai Kalkulus (Chain Rule)",
+    "body": "Fondasi analitis perambatan mundur:\n\n### Kasus Skalar Komposit\n- Misalkan $y = f(u)$ dan $u = g(x)$:\n$$\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dx}$$\n\n### Rantai Komposisi Tiga Tahap\n- Misalkan $y = f(u), u = g(v), v = h(x)$:\n$$\\frac{dy}{dx} = \\frac{dy}{du} \\cdot \\frac{du}{dv} \\cdot \\frac{dv}{dx}$$\n\n### Prinsip Dekomposisi Lokal\n- Gradien global diperoleh dari perkalian sederhana gradien-gradien lokal di setiap simpul komputasi perantara.",
+    "notes": "Aturan rantai memungkinkan kita memecah komputasi turunan fungsi yang sangat rumit menjadi perkalian lokal yang sederhana."
+  },
+  {
+    "kind": "content",
+    "title": "Konsep Graf Komputasi (Computational Graph)",
+    "body": "- **Graf Asiklik Terarah (Directed Acyclic Graph - DAG)**: Representasi formal operasi matematika di mana *nodes* bertindak sebagai variabel/operasi dan *edges* membawa aliran tensor.\n- **Forward Mode**: Operasi berjalan dari masukan $\\mathbf{x}$ menuju luaran $\\mathcal{L}$, mengevaluasi dan menyimpan nilai perantara dalam *cache*.\n- **Reverse Mode**: Aliran diferensiasi berjalan terbalik dari akar loss $\\mathcal{L}$ menuju daun-daun parameter ($\\mathbf{W}, \\mathbf{b}$).\n- **Inti Backpropagation**: Backpropagation adalah implementasi efisien dari *reverse-mode automatic differentiation* pada graf komputasi terstruktur.",
+    "notes": "Jelaskan bahwa framework seperti PyTorch autograd dan TensorFlow pada prinsipnya mengotomatiskan traversal graf komputasi ini."
+  },
+  {
+    "kind": "split",
+    "title": "Perambatan Mundur: Sinyal Galat Output",
+    "body": "Memulai penelusuran balik dari fungsi rugi:\n\n### Lapisan Luaran Klasifikasi Biner (Sigmoid + BCE)\n$$\\mathcal{L} = - [ y \\ln(\\hat{y}) + (1 - y) \\ln(1 - \\hat{y}) ], \\quad \\hat{y} = \\sigma(z^{[L]})$$\n\n### Dekomposisi Aturan Rantai\n$$\\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} = - \\frac{y}{\\hat{y}} + \\frac{1 - y}{1 - \\hat{y}} = \\frac{\\hat{y} - y}{\\hat{y}(1 - \\hat{y})}$$\n$$\\frac{\\partial \\hat{y}}{\\partial z^{[L]}} = \\hat{y}(1 - \\hat{y})$$\n\n### Pembatalan Elegan: Sinyal Galat $\\delta^{[L]}$\n$$\\delta^{[L]} = \\frac{\\partial \\mathcal{L}}{\\partial z^{[L]}} = \\frac{\\partial \\mathcal{L}}{\\partial \\hat{y}} \\cdot \\frac{\\partial \\hat{y}}{\\partial z^{[L]}} = \\mathbf{\\hat{y} - y}$$",
+    "notes": "Tunjukkan keindahan matematika: penyebut pembagi pada turunan BCE saling membatalkan secara sempurna dengan turunan Sigmoid!"
+  },
+  {
+    "kind": "content",
+    "title": "Gradien Parameter Lapisan Luaran",
+    "body": "- Dengan sinyal galat $\\delta^{[L]} = \\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{z}^{[L]}}$ yang telah terhitung, gradien terhadap bobot dan bias diperoleh langsung:\n- **Gradien Bobot $\\mathbf{W}^{[L]}$**:\n  $$\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{W}^{[L]}} = (\\mathbf{A}^{[L-1]})^T \\boldsymbol{\\delta}^{[L]}$$\n- **Gradien Bias $\\mathbf{b}^{[L]}$**:\n  $$\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{b}^{[L]}} = \\sum_{\\text{batch}} \\boldsymbol{\\delta}^{[L]}$$\n- **Intuisi Fisik**: Besaran perubahan bobot ditentukan oleh besarnya sinyal aktivasi masukan $\\mathbf{A}^{[L-1]}$ dikalikan dengan besarnya kesalahan prediksi $\\boldsymbol{\\delta}^{[L]}$.",
+    "notes": "Perhatikan aturan dimensi matriks: transpose aktivasi layer sebelumnya menjamin kecocokan bentuk matriks gradien bobot."
+  },
+  {
+    "kind": "split",
+    "title": "Perambatan Mundur ke Hidden Layer",
+    "body": "Menyalurkan sinyal galat menembus kedalaman lapisan:\n\n### Penyaluran Galat Lapis Tersembunyi\n$$\\boldsymbol{\\delta}^{[l]} = \\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{Z}^{[l]}} = \\left( \\boldsymbol{\\delta}^{[l+1]} (\\mathbf{W}^{[l+1]})^T \\right) \\odot f'^{[l]}(\\mathbf{Z}^{[l]})$$\n\n### Dua Komponen Utama\n1. **Proyeksi Mundur Bobot**: $\\boldsymbol{\\delta}^{[l+1]} (\\mathbf{W}^{[l+1]})^T$ mendistribusikan galat layer di atasnya proporsional terhadap bobot penghubung.\n2. **Gerbang Modulasi Aktivasi**: $\\odot f'^{[l]}(\\mathbf{Z}^{[l]})$ (perkalian Hadamard elemen-demi-elemen dengan turunan aktivasi lokal).",
+    "notes": "Simbol lingkaran titik mewakili perkalian Hadamard (element-wise multiplication) antara vektor proyeksi dan turunan aktivasi."
+  },
+  {
+    "kind": "content",
+    "title": "Gradien Parameter Hidden Layer",
+    "body": "- Begitu sinyal galat lokal $\\boldsymbol{\\delta}^{[l]}$ pada lapisan tersembunyi $l$ diketahui, gradien bobot dan bias dihitung dengan rumus identik:\n- **Gradien Bobot $\\mathbf{W}^{[l]}$**:\n  $$\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{W}^{[l]}} = (\\mathbf{A}^{[l-1]})^T \\boldsymbol{\\delta}^{[l]}$$\n- **Gradien Bias $\\mathbf{b}^{[l]}$**:\n  $$\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{b}^{[l]}} = \\sum_{\\text{batch}} \\boldsymbol{\\delta}^{[l]}$$\n- **Sifat Rekursif Elegan**: Prosedur ini diulang mundur lapis demi lapis hingga mencapai lapisan masukan pertama.",
+    "notes": "Inilah kekuatan algoritma backpropagation: satu pola komputasi yang seragam dan elegan di seluruh lapisan jaringan."
+  },
+  {
+    "kind": "content",
+    "title": "Worked Example Backpropagation (2 -> 2 -> 1)",
+    "body": "- **Masukan**: $\\mathbf{x} = [0.5, 1.0]$, target $y = 1.0$, learning rate $\\eta = 0.5$.\n- **Parameter Awal**:\n  - $\\mathbf{W}^{[1]} = \\begin{bmatrix} 0.15 & 0.20 \\\\ 0.25 & 0.30 \\end{bmatrix}, \\mathbf{b}^{[1]} = [0.35, 0.35]$.\n  - $\\mathbf{W}^{[2]} = [0.40, 0.45]^T, b^{[2]} = 0.60$.\n- **Hasil Forward Pass Awal**:\n  - $\\mathbf{Z}^{[1]} = [0.675, 0.750] \\implies \\mathbf{A}^{[1]} = [0.6626, 0.6792]$ (Sigmoid).\n  - $Z^{[2]} = 1.1707 \\implies \\hat{y} = 0.7633$.\n  - Loss Awal $\\mathcal{L} = \\frac{1}{2}(1.0 - 0.7633)^2 = \\mathbf{0.028014}$.",
+    "notes": "Catat angka loss awal 0.028014. Kita akan membuktikan bahwa setelah satu langkah update bobot, nilai loss ini dipastikan mengecil."
+  },
+  {
+    "kind": "content",
+    "title": "Worked Example: Perhitungan Gradien & Update",
+    "body": "- **1. Galat Output**:\n  - $\\delta^{[2]} = (\\hat{y} - y) \\cdot \\sigma'(Z^{[2]}) = (0.7633 - 1.0) \\cdot (0.7633)(1 - 0.7633) = -0.2367 \\cdot 0.1807 = \\mathbf{-0.04277}$.\n- **2. Gradien Output**:\n  - $\\frac{\\partial \\mathcal{L}}{\\partial \\mathbf{W}^{[2]}} = \\mathbf{A}^{[1]T} \\delta^{[2]} = [0.6626(-0.0428), 0.6792(-0.0428)]^T = [-0.0283, -0.0290]^T$.\n  - $\\frac{\\partial \\mathcal{L}}{\\partial b^{[2]}} = -0.04277$.\n- **3. Galat Hidden**:\n  - $\\boldsymbol{\\delta}^{[1]} = (\\delta^{[2]} \\mathbf{W}^{[2]T}) \\odot \\sigma'(\\mathbf{Z}^{[1]}) = [-0.0038, -0.0042]$.\n- **4. Update Bobot ($\\eta = 0.5$)**:\n  - $\\mathbf{W}^{[2]}_{\\text{new}} = [0.40, 0.45]^T - 0.5[-0.0283, -0.0290]^T = [0.4142, 0.4645]^T$.\n- **5. Forward Pass Ulang**: $\\hat{y}_{\\text{new}} = 0.7788 \\implies \\mathcal{L}_{\\text{new}} = \\mathbf{0.024464} < 0.028014$ (**Loss Terbukti Turun!**)",
+    "notes": "Tunjukkan pembuktian empiris: loss berkurang dari 0.028014 menjadi 0.024464, memvalidasi kebenaran turunan analitis."
+  },
+  {
+    "kind": "split",
+    "title": "Verifikasi Kritis: Gradient Checking",
+    "body": "Prosedur standar industri untuk menjamin ketiadaan bug kalkulus:\n\n### Beda Hingga Terpusat (Central Differences)\n$$g_{\\text{num}}[i] = \\frac{\\mathcal{L}(\\boldsymbol{\\theta} + \\epsilon \\mathbf{e}_i) - \\mathcal{L}(\\boldsymbol{\\theta} - \\epsilon \\mathbf{e}_i)}{2\\epsilon}$$\n- Biasanya $\\epsilon = 10^{-7}$.\n\n### Evaluasi Galat Relatif\n$$\\text{Relative Error} = \\frac{\\| \\mathbf{g}_{\\text{analytical}} - \\mathbf{g}_{\\text{numerical}} \\|_2}{\\| \\mathbf{g}_{\\text{analytical}} \\|_2 + \\| \\mathbf{g}_{\\text{numerical}} \\|_2}$$\n- $\\le 10^{-7}$: Lolos audit mutlak!\n- $\\ge 10^{-4}$: Terdapat bug fatal pada kode backpropagation.",
+    "notes": "Gradient checking sangat penting saat membangun lapisan jaringan kustom atau fungsi loss baru."
+  },
+  {
+    "kind": "content",
+    "title": "Spektrum Algoritma Gradient Descent",
+    "body": "- **Batch Gradient Descent (BGD)**:\n  - Menggunakan seluruh data latih ($N$ sampel) untuk setiap satu kali pembaruan parameter.\n  - (+) Lintasan loss mulus dan deterministik.\n  - (-) Sangat lambat dan memakan memori masif pada dataset besar.\n- **Stochastic Gradient Descent (SGD)**:\n  - Memperbarui parameter setelah mengevaluasi setiap 1 sampel tunggal ($B=1$).\n  - (+) Cepat dan mampu melompati local minima dangkal.\n  - (-) Fluktuasi gradien sangat liar dan tidak stabil.\n- **Mini-Batch Gradient Descent (MBGD)**:\n  - Memperbarui parameter pada irisan kumpulan sampel ($B = 16, 32, 64, 128$).\n  - Standar industri: memadukan efisiensi paralelisasi GPU dengan kestabilan gradien.",
+    "notes": "Bandingkan ketiga pendekatan: MBGD adalah titik kompromi terbaik dalam rekayasa deep learning modern."
+  },
+  {
+    "kind": "split",
+    "title": "Topologi Permukaan Loss: Saddle Points vs Minima",
+    "body": "Tantangan geometris pada ruang berdimensi tinggi:\n\n### Saddle Points (Titik Pelana)\n- Gradien nol di mana beberapa arah melengkung ke atas sementara arah lain melengkung ke bawah.\n- Pada jaringan berdimensi ribuan parameter, titik pelana jauh lebih sering dijumpai daripada local minima!\n\n### Peran Derau Stokastik (Stochastic Noise)\n- Fluktuasi gradien pada Mini-Batch/SGD bertindak seperti getaran termal yang membantu melempar parameter keluar dari jebakan titik pelana.",
+    "notes": "Dauphin et al. (2014) membuktikan bahwa rintangan utama optimasi deep learning adalah saddle points, bukan local minima."
+  },
+  {
+    "kind": "split",
+    "title": "Kelemahan Dasar SGD: Lembah Anisotropic",
+    "body": "Permukaan fungsi rugi dengan kelengkungan tidak seimbang:\n\n### Fenomena Ravines (Lembah Jurang)\n- Kelengkungan sangat curam pada satu sumbu dan sangat landai pada sumbu lainnya.\n- Contoh: $f(x_1, x_2) = 0.1 x_1^2 + 2.0 x_2^2$.\n\n### Masalah Perilaku SGD Murni\n- Mengalami osilasi transversal yang hebat bolak-balik di lereng curam $x_2$.\n- Sangat lambat bergerak maju menyusuri sumbu landai $x_1$ menuju minimum global.",
+    "notes": "Lembah anisotropic adalah salah satu rintangan optimasi terbesar yang memotivasi lahirnya pengoptimal momentum."
+  },
+  {
+    "kind": "split",
+    "title": "Pengoptimal Momentum",
+    "body": "Mengakumulasi kecepatan inersia fisik bola menggelinding:\n\n### Formula Akumulasi Kecepatan (Velocity)\n$$\\mathbf{v}_t = \\beta \\mathbf{v}_{t-1} + (1 - \\beta) \\nabla_\\theta \\mathcal{L}(\\boldsymbol{\\theta})$$\n$$\\boldsymbol{\\theta} \\leftarrow \\boldsymbol{\\theta} - \\eta \\mathbf{v}_t$$\n- Parameter momentum $\\beta \\in [0.8, 0.99]$ (umumnya $\\beta = 0.9$).\n\n### Prinsip Kerja Fisik\n- Komponen osilasi yang berlawanan tanda di sumbu curam saling membatalkan.\n- Komponen searah di sumbu landai terakumulasi, mempercepat penelusuran menuju dasar lembah.",
+    "notes": "Analogikan seperti bola bowling yang menggelinding menuruni lereng: inersia menjaga bola tetap melaju lurus meski lereng bergelombang."
+  },
+  {
+    "kind": "split",
+    "title": "Nesterov Accelerated Gradient (NAG)",
+    "body": "Pengoptimal momentum dengan pandangan ke depan (Look-ahead):\n\n### Konsep Fisika\n- Jangan mengevaluasi gradien di posisi saat ini, melainkan di posisi proyeksi masa depan $\\boldsymbol{\\theta} - \\beta \\mathbf{v}_{t-1}$!\n\n### Formula Komputasi\n$$\\mathbf{g}_t = \\nabla_\\theta \\mathcal{L}(\\boldsymbol{\\theta}_{t-1} - \\beta \\mathbf{v}_{t-1})$$\n$$\\mathbf{v}_t = \\beta \\mathbf{v}_{t-1} + \\eta \\mathbf{g}_t$$\n$$\\boldsymbol{\\theta}_t = \\boldsymbol{\\theta}_{t-1} - \\mathbf{v}_t$$\n- Memberikan rem otomatis (*damping*) saat mendekati dasar lembah agar tidak melompati minimum.",
+    "notes": "Nesterov momentum mempercepat laju konvergensi teoritis dari O(1/k) menjadi O(1/k^2)."
+  },
+  {
+    "kind": "split",
+    "title": "Pengoptimal AdaGrad & Keterbatasannya",
+    "body": "Inovasi awal laju belajar adaptif (Duchi et al., 2011):\n\n### Formula Akumulasi Monotonik\n$$\\mathbf{s}_t = \\mathbf{s}_{t-1} + \\mathbf{g}_t^2$$\n$$\\boldsymbol{\\theta}_t = \\boldsymbol{\\theta}_{t-1} - \\frac{\\eta}{\\sqrt{\\mathbf{s}_t} + \\epsilon} \\mathbf{g}_t$$\n\n### Kelemahan Fatal AdaGrad\n- Vektor $\\mathbf{s}_t$ mengakumulasi seluruh kuadrat gradien sejak awal pelatihan tanpa batas.\n- Penyebut terus membesar secara monotonik $\\implies$ laju pembelajaran mengecil prematur hingga nol sebelum model konvergen!",
+    "notes": "Kelemahan fatal AdaGrad memotivasi Geoffrey Hinton untuk menciptakan RMSprop."
+  },
+  {
+    "kind": "split",
+    "title": "Pengoptimal RMSprop",
+    "body": "Laju pembelajaran adaptif per dimensi parameter (Hinton 2012):\n\n### Rata-rata Bergerak Kuadrat Gradien\n$$\\mathbf{s}_t = \\beta_2 \\mathbf{s}_{t-1} + (1 - \\beta_2) (\\nabla_\\theta \\mathcal{L})^2$$\n\n### Aturan Pembaruan Parameter\n$$\\boldsymbol{\\theta} \\leftarrow \\boldsymbol{\\theta} - \\frac{\\eta}{\\sqrt{\\mathbf{s}_t} + \\epsilon} \\odot \\nabla_\\theta \\mathcal{L}$$\n- Biasanya $\\beta_2 = 0.9$ dan $\\epsilon = 10^{-8}$.\n\n### Efek Regulasi\n- Membagi gradien dengan akar kuadrat magnitudonya: dimensi bergradien curam diredam, dimensi bergradien landai dipercepat.",
+    "notes": "RMSprop secara otomatis menyeimbangkan skala laju belajar di setiap dimensi parameter secara independen."
+  },
+  {
+    "kind": "content",
+    "title": "Pengoptimal Adam (Kingma & Ba, 2014)",
+    "body": "- **Kombinasi Sinergis**: Menggabungkan mekanisme Momentum (*First Moment*) dan RMSprop (*Second Moment*).\n- **First Moment Vector (Rata-rata)**: $\\mathbf{m}_t = \\beta_1 \\mathbf{m}_{t-1} + (1 - \\beta_1) \\mathbf{g}_t$.\n- **Second Moment Vector (Varians)**: $\\mathbf{v}_t = \\beta_2 \\mathbf{v}_{t-1} + (1 - \\beta_2) \\mathbf{g}_t^2$.\n- **Koreksi Bias Awal (*Bias Correction*)**:\n  $$\\hat{\\mathbf{m}}_t = \\frac{\\mathbf{m}_t}{1 - \\beta_1^t}, \\quad \\hat{\\mathbf{v}}_t = \\frac{\\mathbf{v}_t}{1 - \\beta_2^t}$$\n- **Aturan Pembaruan Bobot**:\n  $$\\boldsymbol{\\theta}_t = \\boldsymbol{\\theta}_{t-1} - \\frac{\\eta}{\\sqrt{\\hat{\\mathbf{v}}_t} + \\epsilon} \\hat{\\mathbf{m}}_t$$\n- **Default Standar Emas**: $\\eta = 0.001, \\beta_1 = 0.9, \\beta_2 = 0.999, \\epsilon = 10^{-8}$.",
+    "notes": "Adam adalah optimizer paling populer dan default pertama dalam hampir seluruh arsitektur deep learning modern."
+  },
+  {
+    "kind": "split",
+    "title": "Pentingnya Koreksi Bias pada Adam",
+    "body": "Mengapa kita membagi dengan $(1 - \\beta^t)$?\n\n### Masalah Inisialisasi Nol\n- Karena vektor awal $\\mathbf{m}_0 = \\mathbf{0}$ dan $\\mathbf{v}_0 = \\mathbf{0}$, pada iterasi pertama $t=1$:\n$$\\mathbf{m}_1 = 0.9(0) + 0.1 \\mathbf{g}_1 = 0.1 \\mathbf{g}_1$$\n- Nilai ini sangat bias mengecil menuju nol!\n\n### Efek Pembatalan Koreksi\n- Pada $t=1$: $1 - \\beta_1^1 = 1 - 0.9 = 0.1$.\n- $\\hat{\\mathbf{m}}_1 = \\frac{0.1 \\mathbf{g}_1}{0.1} = \\mathbf{g}_1$.\n- Skala estimasi ternormalkan kembali ke magnitudo gradien yang sesungguhnya.",
+    "notes": "Koreksi bias menjamin bahwa pada awal pelatihan, langkah pembaruan tidak menjadi kerdil akibat inisialisasi nol."
+  },
+  {
+    "kind": "content",
+    "title": "Dilema Learning Rate: Teori Stabilitas Lipschitz",
+    "body": "- **Learning Rate Terlalu Kecil ($\\eta < 10^{-4}$)**: Konvergensi merayap sangat lambat, rawan terjebak di saddle point, dan memboroskan komputasi.\n- **Learning Rate Terlalu Besar ($\\eta > 2 / L$)**: Menimbulkan osilasi tak terkendali (*overshooting*), lonjakan nilai loss menjadi `NaN`, dan divergensi meledak.\n- **Learning Rate Optimal**: Menghasilkan kurva penurunan loss yang stabil dan cepat mencapai dasar cekungan optimum.\n- **Solusi Modern**: Gunakan *Learning Rate Schedulers* (Cosine Annealing, Warmup Steps, ReduceLROnPlateau).",
+    "notes": "Pemilihan learning rate yang tepat adalah hyperparameter terpenting dalam melatih jaringan saraf."
+  },
+  {
+    "kind": "split",
+    "title": "Learning Rate Schedulers Populer",
+    "body": "Menyesuaikan laju belajar sepanjang pelatihan:\n\n### 1. Step Decay\n- Menurunkan laju belajar dengan faktor $\\gamma = 0.1$ setiap $K$ epoch.\n\n### 2. Cosine Annealing\n$$\\eta_t = \\eta_{\\text{min}} + \\frac{1}{2}(\\eta_{\\text{max}} - \\eta_{\\text{min}})\\left(1 + \\cos\\left(\\frac{t}{T}\\pi\\right)\\right)$$\n- Menurunkan laju belajar mulus menyerupai kurva kosinus.\n\n### 3. Warmup Steps\n- Memulai dari $\\eta$ sangat kecil lalu dinaikkan linier pada epoch-epoch awal untuk menstabilkan bobot acak.",
+    "notes": "Warmup dan Cosine Annealing kini menjadi konfigurasi standar dalam melatih LLM dan Vision Transformer."
+  },
+  {
+    "kind": "split",
+    "title": "Vanishing & Exploding Gradients",
+    "body": "Patologi perambatan gradien pada jaringan dalam:\n\n### Vanishing Gradient (Gradien Lenyap)\n- Terjadi saat perambatan mundur mengalikan banyak faktor $< 1$ (misal turunan Sigmoid $\\le 0.25$).\n- Sinyal gradien menyusut eksponensial menuju nol di lapisan awal.\n- **Solusi**: Gunakan aktivasi ReLU/Leaky ReLU dan inisialisasi bobot He/Xavier.\n\n### Exploding Gradient (Gradien Meledak)\n- Terjadi saat bobot parameter bernilai besar sehingga perkalian matriks gradien meledak tak hingga.\n- **Solusi**: *Gradient Clipping* dan inisialisasi yang tepat.",
+    "notes": "Dua fenomena patologis ini sempat menghambat perkembangan deep learning selama bertahun-tahun sebelum ditemukannya ReLU dan teknik inisialisasi modern."
+  },
+  {
+    "kind": "split",
+    "title": "Teknik Gradient Clipping",
+    "body": "Membatasi lonjakan vektor gradien ekstrem:\n\n### 1. Clip by Value\n$$g_i = \\max(\\min(g_i, c_{\\text{max}}), c_{\\text{min}})$$\n- Memotong setiap komponen skalar gradien.\n- (-) Mendistorsi arah sudut vektor pencarian.\n\n### 2. Clip by Global Norm (Standar Industri)\n$$\\text{Jika } \\|\\mathbf{g}\\|_2 > c, \\quad \\mathbf{g} \\leftarrow \\mathbf{g} \\cdot \\frac{c}{\\|\\mathbf{g}\\|_2}$$\n- (+) Membatasi magnitudo langkah tanpa mengubah arah vektor gradien sama sekali (*100% direction preserved*).",
+    "notes": "Clip by global norm adalah teknik wajib saat melatih jaringan rekuren (RNN) dan model bahasa Transformer."
+  },
+  {
+    "kind": "content",
+    "title": "Diagnostik Kurva Loss & Deteksi Masalah",
+    "body": "- **Kurva Loss Normal**: Loss latih dan validasi turun mulus secara stabil hingga mencapai plato (*plateau*).\n- **Gejala Underfitting (High Bias)**: Loss latih dan validasi sama-sama berhenti di angka yang tinggi. Jaringan kekurangan kapasitas atau feature representation.\n- **Gejala Overfitting (High Variance)**: Loss latih terus turun mendekati nol, namun loss validasi berbalik naik tajam (*divergence gap*).\n- **Gejala Learning Rate Terlalu Besar**: Kurva loss menunjukkan gerigi kasar atau lonjakan mendadak menuju tak terhingga.\n- **Early Stopping**: Menghentikan pelatihan saat loss validasi tidak membaik setelah $K$ epoch (*patience*).",
+    "notes": "Mampu membaca dan mendiagnosis kurva loss adalah keterampilan fundamental seorang deep learning practitioner."
+  },
+  {
+    "kind": "content",
+    "title": "Panduan Praktis Debugging Jaringan Saraf",
+    "body": "1. **Overfit pada 1 Batch Kecil**: Latih model pada 4–8 sampel data saja. Jika model TIDAK BISA mencapai loss mendekati nol (akurasi 100%), ada bug fatal pada kode forward/backward!\n2. **Jalankan Gradient Checking**: Pastikan selisih analitis vs numerik $< 10^{-7}$.\n3. **Pantau Magnitudo Gradien**: Cetak norma gradien $\\|\\mathbf{g}\\|_2$ per lapisan; jika nilainya $< 10^{-6}$ (vanishing) atau $> 10^{3}$ (exploding), sesuaikan inisialisasi dan aktivasi.\n4. **Verifikasi Bentuk Tensor**: Cetak dimensi matriks di setiap layer untuk mencegah penyiaran tak sengaja (*accidental broadcasting*).",
+    "notes": "Tips debugging 'overfit on single batch' yang diperkenalkan Andrej Karpathy adalah trik nomor satu di industri."
+  },
+  {
+    "kind": "content",
+    "title": "Jembatan ke Chapter 23: Dari NumPy ke PyTorch",
+    "body": "- **Pencapaian Kita di Chapter 22**: Kita telah membongkar dan menguasai seluruh 'jeroan' matematika diferensiasi dan optimasi menggunakan NumPy murni.\n- **Tantangan Skalabilitas**: Menulis manual turunan analitis untuk jaringan berkedalaman ratusan lapisan dengan arsitektur kompleks (CNN, Transformer) tidak lagi praktis secara rekayasa.\n- **Peran Deep Learning Frameworks**: Framework modern seperti **PyTorch** menyediakan:\n  1. Diferensiasi otomatis dinamis (*Autograd Engine*).\n  2. Akselerasi komputasi masif pada GPU (CUDA) dan TPU.\n  3. Abstraksi modular layer jaringan dan pustaka optimizer lengkap.\n- **Langkah Berikutnya (Chapter 23)**: *Deep Learning with PyTorch*!",
+    "notes": "Transisikan mahasiswa dari pemahaman matematika manual ke adopsi framework modern PyTorch pada bab berikutnya."
+  },
+  {
+    "kind": "summary",
+    "title": "Rangkuman Inti Chapter 22",
+    "body": "- **Backpropagation**: Merupakan penerapan aturan rantai kalkulus pada graf komputasi untuk menghitung gradien galat analitis secara efisien ($O(N)$ waktu).\n- **Gradient Checking**: Prosedur validasi wajib untuk memastikan implementasi gradien bebas galat numerik.\n- **Optimizers**: Adam memadukan Momentum dan RMSprop dengan koreksi bias, menjadi pilihan utama untuk stabilitas konvergensi.\n- **Stabilitas Pelatihan**: Inisialisasi bobot He/Xavier dan Gradient Clipping mencegah bahaya vanishing/exploding gradients.\n- **Selamat**: Anda telah menguasai jantung matematika Deep Learning!",
+    "notes": "Berikan apresiasi kepada mahasiswa atas keberhasilan menaklukkan konsep matematika paling menantang di kurikulum kecerdasan buatan."
+  }
+]

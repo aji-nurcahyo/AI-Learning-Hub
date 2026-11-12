@@ -1,0 +1,354 @@
+[
+  {
+    "id": 1,
+    "kind": "cover",
+    "title": "Intelligent Agents & AI Problem Solving",
+    "body": "Arsitektur Agen Cerdas, Lingkungan Tugas PEAS, dan Formulasi Masalah Ruang Keadaan.\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera\nPengampu: Aji Pamungkas Tri Nurcahyo",
+    "notes": "Selamat datang di pertemuan ketiga. Hari ini kita membedah konsep inti AI modern dari sudut pandang agen cerdas (Intelligent Agents), bagaimana mendefinisikan lingkungan tugas menggunakan PEAS, lima hierarki arsitektur agen, hingga merumuskan masalah ke dalam ruang keadaan pencarian."
+  },
+  {
+    "id": 2,
+    "kind": "content",
+    "title": "Mengapa Sudut Pandang Agen Itu Krusial?",
+    "body": "Pendekatan berbasis agen menyatukan seluruh subbidang AI ke dalam satu kerangka terpadu:",
+    "bullets": [
+      "Menggeser fokus dari algoritma pasif menjadi entitas otonom yang berinteraksi aktif dengan dunia luar.",
+      "Menyediakan metodologi sistematis untuk merancang kecerdasan: persepsi -> penalaran -> aksi nyata.",
+      "Memperjelas batas tanggung jawab sistem melalui definisi lingkungan tugas yang eksplisit.",
+      "Menjembatani transisi alami dari perilaku refleks sederhana menuju algoritma pemecahan masalah (Problem Solving)."
+    ],
+    "notes": "Tekankan kepada mahasiswa bahwa AI bukan sekadar menghitung formula di notebook, melainkan merancang entitas yang menerima input dunia nyata dan mengambil tindakan yang berdampak pada lingkungannya."
+  },
+  {
+    "id": 3,
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Chapter 03",
+    "body": "Setelah menyelesaikan sesi ini, pembelajar diharapkan mampu:",
+    "bullets": [
+      "Menjelaskan konsep Intelligent Agent dan siklus interaksinya dengan lingkungan.",
+      "Mengidentifikasi sensors, actuators, percepts, actions, dan performance measures.",
+      "Menyusun analisis PEAS komprehensif untuk berbagai skenario dunia nyata.",
+      "Menganalisis 6 dimensi karakteristik lingkungan tugas (task environment).",
+      "Membedakan 5 arsitektur agen (Simple Reflex hingga Learning Agent).",
+      "Merumuskan masalah formal (Problem Formulation) ke dalam 5 elemen ruang keadaan."
+    ],
+    "notes": "Pastikan mahasiswa memahami bahwa tujuan sesi ini adalah menguasai fondasi arsitektur dan pemodelan masalah sebelum masuk ke algoritma pencarian rute pada Chapter 04."
+  },
+  {
+    "id": 4,
+    "kind": "content",
+    "title": "Anatomi Agen: Sensor, Persepsi, Aksi & Aktuator",
+    "body": "Agen berinteraksi dengan lingkungan fisik melalui antarmuka masuk dan keluar:",
+    "bullets": [
+      "Sensor: Perangkat penerima yang menangkap sinyal fisik dari lingkungan dan mengubahnya menjadi data.",
+      "Percept: Masukan perseptual instan yang diterima sensor pada satu titik waktu tertentu.",
+      "Percept Sequence: Riwayat lengkap seluruh persepsi yang pernah diterima agen sejak awal dinyalakan.",
+      "Actions: Himpunan keputusan atau tindakan yang dapat diambil agen untuk mengubah lingkungan.",
+      "Aktuator: Mekanisme fisik atau fungsi sistem yang mengeksekusi aksi nyata ke dunia luar."
+    ],
+    "notes": "Berikan analogi langsung: Pada manusia, mata dan telinga adalah sensor, impuls saraf visual adalah percept, keputusan melangkah adalah aksi, dan otot kaki adalah aktuator."
+  },
+  {
+    "id": 5,
+    "kind": "content",
+    "title": "Siklus Interaksi Agen–Lingkungan",
+    "body": "Operasi agen cerdas berlangsung dalam sebuah siklus berkesinambungan tanpa henti:",
+    "diagram": [
+      "Lingkungan Luar (Environment)",
+      "Sensor Menangkap Sinyal (Percepts)",
+      "Program Penalaran Agen (Agent Program)",
+      "Aktuator Mengeksekusi Tindakan (Actions)"
+    ],
+    "bullets": [
+      "Agent Function (Abstrak): Pemetaan matematis ideal f: P* -> A dari seluruh riwayat persepsi.",
+      "Agent Program (Konkret): Kode perangkat lunak nyata yang berjalan pada arsitektur perangkat keras fisik."
+    ],
+    "notes": "Jelaskan bahwa program agen di dunia nyata umumnya tidak bisa menerima seluruh riwayat P* tak hingga secara langsung karena keterbatasan memori, sehingga agen memerlukan status internal (internal state)."
+  },
+  {
+    "id": 6,
+    "kind": "content",
+    "title": "Konsep Rasionalitas: Rasional vs Sempurna",
+    "body": "Rasionalitas mengukur kualitas keputusan komputasi, bukan keberuntungan hasil akhir.",
+    "bullets": [
+      "Definisi Agen Rasional: Agen yang memilih tindakan untuk memaksimalkan ukuran kinerja yang diharapkan (expected performance), berdasarkan riwayat persepsi dan pengetahuan bawaannya.",
+      "Bukan Omniscience (Maha Tahu): Agen rasional tidak bisa meramal masa depan di luar jangkauan sensornya.",
+      "Bukan Perfection (Kesempurnaan): Hasil akhir bisa saja buruk akibat faktor acak lingkungan, namun keputusannya tetap rasional jika diambil berdasarkan bukti terbaik saat itu.",
+      "Otonomi (Autonomy): Kemampuan agen belajar dari pengalamannya untuk mengoreksi pengetahuan awal."
+    ],
+    "notes": "Ceritakan contoh pejalan kaki yang menyeberang jalan saat lampu hijau setelah menengok kiri-kanan, lalu tiba-tiba tertimpa meteorit. Tindakannya tetap rasional, meskipun hasil akhirnya celaka."
+  },
+  {
+    "id": 7,
+    "kind": "content",
+    "title": "Ukuran Kinerja (Performance Measures)",
+    "body": "Kriteria objektif eksternal untuk mengukur derajat keberhasilan tugas agen di lingkungannya.",
+    "bullets": [
+      "Prinsip Desain Objektif: Ukuran kinerja harus mengukur apa yang sebenarnya diinginkan di lingkungan, bukan bagaimana perilaku agen.",
+      "Jebakan Desain: Jika robot pembersih diberi nilai '+1 setiap menyedot kotoran', ia akan sengaja membuang kotoran kembali ke lantai agar bisa menyedotnya berulang kali.",
+      "Ukuran yang Benar: Tingkat kebersihan rata-rata seluruh lantai sepanjang hari dikurangi total konsumsi listrik.",
+      "Multi-Objektif: Sering kali melibatkan trade-off antara kecepatan, keselamatan, biaya, dan kenyamanan."
+    ],
+    "notes": "Ini adalah pengingat penting bagi perancang AI: hati-hati dengan apa yang Anda jadikan fungsi objektif optimasi, karena sistem akan mengeksploitasi celah aturan tersebut (Goodhart's Law)."
+  },
+  {
+    "id": 8,
+    "kind": "content",
+    "title": "Kerangka Kerja PEAS (Russell & Norvig)",
+    "body": "Empat pilar wajib dalam merumuskan spesifikasi sistem agen cerdas:",
+    "bullets": [
+      "P — Performance Measure: Metrik kuantitatif keberhasilan (misal: keselamatan, kecepatan, efisiensi energi).",
+      "E — Environment: Dunia tempat agen bertugas (misal: jalan perkotaan, kebun kaca, gedung perkantoran).",
+      "A — Actuators: Sarana fisik untuk bertindak (misal: setir kemudi, katup solenoid pompa air, layar display).",
+      "S — Sensors: Perangkat penangkap sinyal lingkungan (misal: kamera video, sensor suhu, inframerah PIR)."
+    ],
+    "notes": "Sebelum menulis sebaris kode pun, seorang insinyur AI wajib merinci tabel PEAS terlebih dahulu agar batasan sistem terdefinisi dengan tuntas."
+  },
+  {
+    "id": 9,
+    "kind": "content",
+    "title": "Taksonomi 6 Karakteristik Task Environment",
+    "body": "Sifat lingkungan menentukan kompleksitas arsitektur agen yang wajib dibangun:",
+    "bullets": [
+      "1. Observabilitas: Fully Observable (terlihat utuh) vs Partially Observable (terhalang/berderau).",
+      "2. Determinisasi: Deterministic (pasti sesuai aksi) vs Stochastic (ada unsur keacakan/probabilitas).",
+      "3. Sifat Episode: Episodic (keputusan independen) vs Sequential (keputusan memengaruhi masa depan).",
+      "4. Kedinamisan: Static (dunia diam saat agen berpikir) vs Dynamic (dunia terus berubah).",
+      "5. Diskrit/Kontinu: Discrete (jumlah state terhingga) vs Continuous (nilai riil kontinu).",
+      "6. Jumlah Agen: Single-Agent (sendirian) vs Multi-Agent (kooperatif atau kompetitif zero-sum)."
+    ],
+    "notes": "Lingkungan paling mudah: Fully observable, deterministic, episodic, static, discrete, single-agent (seperti tebak teka-teki). Lingkungan paling menantang: Partially observable, stochastic, sequential, dynamic, continuous, multi-agent (seperti menyetir taksi otonom)."
+  },
+  {
+    "id": 10,
+    "kind": "content",
+    "title": "Simple Reflex Agent: Reaksi Kondisi-Aksi",
+    "body": "Arsitektur paling dasar yang memetakan percept saat ini langsung ke tindakan tanpa memori.",
+    "bullets": [
+      "Mekanisme: Menjalankan kaidah kondisi-aksi (Condition-Action Rules): IF [Kondisi Cocok] THEN [Aksi].",
+      "Karakteristik: Sangat cepat, hemat komputasi, tidak menyimpan status internal masa lalu.",
+      "Kelemahan Fatal: Hanya bekerja pada lingkungan Fully Observable.",
+      "Bahaya Infinite Loop: Pada lingkungan Partially Observable, agen dapat berosilasi bolak-balik tanpa akhir (perceptual aliasing)."
+    ],
+    "notes": "Contoh: Termostat bimetal sederhana. Jika suhu > 25°C nyalakan pendingin, jika tidak matikan. Tidak tahu tren suhu naik atau turun, dan tidak tahu apakah ruangan berpenghuni."
+  },
+  {
+    "id": 11,
+    "kind": "content",
+    "title": "Model-Based Reflex Agent: Memori Status Internal",
+    "body": "Mengatasi keterbatasan observabilitas parsial dengan memelihara representasi dunia internal.",
+    "bullets": [
+      "Internal State: Variabel memori yang melacak aspek dunia yang tidak dapat dilihat sensor saat ini.",
+      "Model Perkembangan Dunia: Pemahaman agen tentang bagaimana lingkungan berubah secara alami seiring waktu.",
+      "Model Dampak Aksi: Pemahaman tentang bagaimana tindakan agen sendiri mengubah status lingkungan.",
+      "Aplikasi Nyata: Menghitung tren suhu (naik/turun) dan mencegah kompresor AC rusak akibat sakelar cepat (anti-chattering)."
+    ],
+    "notes": "Dengan memiliki memori, agen tahu apa yang baru saja ia lakukan dan bagaimana dunia bereaksi, sehingga terhindar dari jebakan infinite loop refleks sederhana."
+  },
+  {
+    "id": 12,
+    "kind": "content",
+    "title": "Goal-Based Agent: Keputusan Berorientasi Tujuan",
+    "body": "Menggabungkan status dunia saat ini dengan deskripsi tujuan yang ingin dicapai.",
+    "bullets": [
+      "Penalaran Masa Depan: Bertanya 'Apa yang akan terjadi jika saya mengambil aksi A, dan apakah itu mendekatkan saya ke tujuan?'",
+      "Fleksibilitas Tinggi: Jika tujuan berubah (misal destinasi rute berganti), agen cukup merencanakan jalur baru tanpa perlu menulis ulang aturan kondisi-aksi.",
+      "Dasar Algoritma AI: Menjadi fondasi untuk teknik Pencarian (Search) dan Perencanaan (Planning).",
+      "Kelemahan: Lebih lambat dibanding refleks karena memerlukan simulasi eksplorasi beberapa langkah ke depan."
+    ],
+    "notes": "Bandingkan: Reflex agent seperti pengemudi yang hanya mengikuti marka jalan instan; Goal-based agent seperti pengemudi yang membawa peta navigasi menuju alamat tertentu."
+  },
+  {
+    "id": 13,
+    "kind": "content",
+    "title": "Utility-Based Agent: Optimasi Trade-Off Preferensi",
+    "body": "Menyelesaikan konflik antar-tujuan menggunakan fungsi utilitas skalar matematis.",
+    "bullets": [
+      "Fungsi Utilitas (Utility Function): U(s) -> Bilangan Riil, mengukur derajat kepuasan/kebahagiaan pada status s.",
+      "Menangani Trade-off Kompleks: Menyeimbangkan antara tujuan yang saling bertentangan (misal: cepat sampai vs hemat bensin vs kenyamanan).",
+      "Pengambilan Keputusan Stokastik: Memilih aksi yang memaksimalkan Expected Utility di bawah ketidakpastian lingkungan.",
+      "Pondasi Teori Keputusan Modern: Digunakan luas dalam sistem finansial, logistik armada, dan kendali otonom."
+    ],
+    "notes": "Goal-based agent hanya mengenal biner (berhasil atau gagal). Utility-based agent mampu membedakan rute yang 'berhasil tetapi berbahaya' dengan rute yang 'berhasil, aman, dan sangat nyaman'."
+  },
+  {
+    "id": 14,
+    "kind": "content",
+    "title": "Learning Agent: Arsitektur Pembelajar Otonom",
+    "body": "Memisahkan komponen eksekusi keputusan dari komponen pembaruan pengetahuan mandiri.",
+    "bullets": [
+      "Critic: Mengevaluasi perilaku agen terhadap standar kinerja eksternal dan memberikan umpan balik.",
+      "Learning Element: Memodifikasi aturan dan bobot program agen agar berkinerja lebih baik di masa depan.",
+      "Performance Element: Komponen pengambil keputusan aktif yang memilih tindakan ke lingkungan.",
+      "Problem Generator: Menyarankan aksi eksplorasi baru untuk menguji skenario yang belum pernah dialami.",
+      "Trade-off Klasik: Keseimbangan antara eksploitasi pengetahuan yang sudah ada vs eksplorasi strategi baru."
+    ],
+    "notes": "Problem generator adalah komponen jenius dalam AI: agen yang baik sesekali harus mencoba rute baru yang belum dikenal untuk menemukan jalan pintas yang lebih optimal."
+  },
+  {
+    "id": 15,
+    "kind": "split",
+    "title": "Spektrum Hierarki 5 Arsitektur Agen",
+    "body": "Pilihlah arsitektur yang paling proporsional dengan karakteristik masalah yang dihadapi.",
+    "columns": [
+      {
+        "heading": "Arsitektur Sederhana (Reaktif)",
+        "points": [
+          "Simple Reflex: Aturan kondisi-aksi murni, tanpa memori, cepat O(1).",
+          "Model-Based Reflex: Memori internal state untuk mengatasi observabilitas parsial.",
+          "Cocok untuk: Kontroler rem darurat, sakelar termostat bimetal."
+        ]
+      },
+      {
+        "heading": "Arsitektur Maju (Terarah & Adaptif)",
+        "points": [
+          "Goal-Based: Menemukan urutan aksi menuju tujuan via pencarian.",
+          "Utility-Based: Mengoptimalkan trade-off preferensi kuantitatif.",
+          "Learning Agent: Belajar mandiri dari evaluasi kritik dan eksplorasi.",
+          "Cocok untuk: Robot otonom, sistem navigasi rute dinamis."
+        ]
+      }
+    ],
+    "notes": "Tegaskan prinsip rekayasa perangkat lunak: jangan membuat agen pembelajaran yang rumit jika aturan refleks sederhana sudah terbukti mampu menyelesaikan masalah dengan sempurna."
+  },
+  {
+    "id": 16,
+    "kind": "content",
+    "title": "Dari Agen Reaktif Menuju Problem Solving",
+    "body": "Ketika aksi instan tidak cukup, agen harus merencanakan urutan tindakan ke masa depan.",
+    "bullets": [
+      "Goal Formulation: Menentukan kondisi akhir dunia yang diinginkan agen.",
+      "Problem Formulation: Abstraksi status dunia nyata menjadi model komputasi formal.",
+      "Proses Pencarian (Search): Simulasi eksplorasi jalur di dalam representasi ruang keadaan.",
+      "Fase Eksekusi (Execution): Menjalankan rangkaian tindakan solusi yang telah ditemukan satu demi satu."
+    ],
+    "notes": "Ini adalah jembatan intelektual penting dalam kurikulum AI: transisi dari Bab 03 (konsep agen) menuju Bab 04 (algoritma pencarian graf ruang keadaan)."
+  },
+  {
+    "id": 17,
+    "kind": "content",
+    "title": "5 Elemen Formulasi Masalah Formal (Problem Formulation)",
+    "body": "Russell & Norvig merumuskan masalah pencarian formal ke dalam lima komponen baku:",
+    "bullets": [
+      "1. Initial State (s0): Status awal tempat agen memulai pencarian solusi.",
+      "2. Actions (Actions(s)): Himpunan seluruh tindakan sah/legal yang dapat diambil dari status s.",
+      "3. Transition Model (Result(s, a)): Fungsi transisi deterministik yang menghasilkan status baru s'.",
+      "4. Goal Test (is_goal(s)): Fungsi penguji boolean apakah status s memenuhi kondisi tujuan akhir.",
+      "5. Path Cost (c(s, a, s')): Fungsi akumulasi biaya dari total langkah yang dilalui di sepanjang jalur."
+    ],
+    "notes": "Setiap algoritma pencarian kecerdasan buatan—mulai dari BFS, DFS, Dijkstra, hingga A*—selalu beroperasi di atas lima komponen formal ini."
+  },
+  {
+    "id": 18,
+    "kind": "content",
+    "title": "Representasi Ruang Keadaan (State Space)",
+    "body": "Semesta seluruh status yang dapat dicapai agen membentuk sebuah graf berarah terstruktur.",
+    "bullets": [
+      "State Space Graph: Node melambangkan status (states), edge melambangkan transisi tindakan (actions).",
+      "Abstraksi Masalah: Mengabaikan detail fisik yang tidak relevan (misal warna mobil) dan fokus pada variabel penentu (koordinat posisi).",
+      "Ukuran Ruang Keadaan: Dapat berukuran kecil (grid 3x3 = 8 status) hingga raksasa tak berhingga (catur = 10^120 status).",
+      "Pencarian Solusi: Menemukan jalur terpendek atau termurah dari Initial State menuju Goal State."
+    ],
+    "notes": "Gambarkan konsep abstraksi: peta navigasi kota tidak perlu menggambar setiap daun di pohon pinggir jalan; cukup persimpangan jalan dan panjang ruas jalan."
+  },
+  {
+    "id": 19,
+    "kind": "content",
+    "title": "Studi Kasus: Navigasi Grid 3x3 Sederhana",
+    "body": "Contoh konseptual perumusan ruang keadaan navigasi robot pada koordinat 2D:",
+    "bullets": [
+      "Initial State: Robot berada di pojok kiri atas koordinat (0, 0).",
+      "Actions: Bergerak diskret ke empat arah mata angin {UP, DOWN, LEFT, RIGHT}.",
+      "Rintangan: Sel koordinat (1, 1) adalah dinding penghalang yang tidak dapat dimasuki.",
+      "Goal Test: Robot tiba di pojok kanan bawah koordinat (2, 2).",
+      "Path Cost: Setiap langkah bernilai biaya seragam 1.0 unit langkah.",
+      "Jalur Solusi: (0,0) -> (1,0) -> (2,0) -> (2,1) -> (2,2) dengan total biaya 4.0 unit."
+    ],
+    "notes": "Jelaskan bagaimana transition function membatasi aksi robot agar tidak menabrak batas dinding grid dan sel rintangan."
+  },
+  {
+    "id": 20,
+    "kind": "split",
+    "title": "Perilaku Reaktif vs Perencanaan Terarah",
+    "body": "Membandingkan dua kutub paradigma perilaku dalam sistem kecerdasan buatan:",
+    "columns": [
+      {
+        "heading": "Reactive Behavior (Refleks)",
+        "points": [
+          "Mekanisme: Aturan langsung p -> a.",
+          "Kecepatan: Sangat cepat waktu konstan O(1).",
+          "Kelemahan: Mudah terjebak jalan buntu lokal.",
+          "Peran: Rem darurat keselamatan refleks."
+        ]
+      },
+      {
+        "heading": "Planning-Based Behavior (Pencarian)",
+        "points": [
+          "Mekanisme: Simulasi eksplorasi jalur masa depan.",
+          "Kecepatan: Membutuhkan waktu pencarian graf.",
+          "Keunggulan: Menjamin rute optimal global.",
+          "Peran: Navigasi rute perjalanan jarak jauh."
+        ]
+      }
+    ],
+    "notes": "Sistem cerdas terbaik di dunia nyata selalu menggabungkan keduanya: lapisan bawah bertindak secara refleks untuk keselamatan seketika, lapisan atas berpikir secara terencana untuk navigasi strategis."
+  },
+  {
+    "id": 21,
+    "kind": "case",
+    "title": "Aktivitas Diskusi (Bagian 1): Skenario Studi Kasus",
+    "body": "Evaluasi perancangan sistem kendali suhu dan efisiensi energi gedung cerdas modern.",
+    "caseBox": {
+      "title": "Studi Kasus: Smart Building Climate & Energy Control",
+      "scenario": "Sebuah gedung perkantoran 10 lantai dilengkapi sensor suhu kamar, sensor kelembapan, sensor kehadiran inframerah (PIR), dan data prakiraan cuaca. Sistem harus mengendalikan kompresor AC dan katup ventilasi udara untuk menjaga kenyamanan karyawan sekaligus menekan tagihan listrik bulanan seminimal mungkin.",
+      "options": [
+        "Opsi 1: Menggunakan Simple Reflex Agent dengan ambang batas termostat kaku.",
+        "Opsi 2: Menggunakan Model-Based Agent yang memelihara riwayat suhu dan occupancy.",
+        "Opsi 3: Menggunakan Utility-Based Agent dengan fungsi trade-off energi vs kenyamanan termal."
+      ]
+    },
+    "notes": "Berikan waktu bagi mahasiswa untuk membaca skenario gedung pintar ini. Minta mereka menganalisis kelemahan Opsi 1 saat karyawan keluar masuk ruangan untuk rapat singkat."
+  },
+  {
+    "id": 22,
+    "kind": "content",
+    "title": "Aktivitas Diskusi (Bagian 2): Pertanyaan Kritis",
+    "body": "Diskusikan dalam kelompok dan berikan analisis teknis terukur untuk tiga pertanyaan ini:",
+    "bullets": [
+      "1. Apa saja sensors, actuators, performance measures, dan sifat lingkungan dalam sistem ini?",
+      "2. Mengapa Simple Reflex Agent tidak memadai dan dapat menyebabkan pemborosan listrik serta kerusakan kompresor AC?",
+      "3. Bagaimana Utility-Based Agent menyeimbangkan konflik kepentingan antara kenyamanan karyawan (suhu sejuk 22°C) dengan efisiensi biaya tagihan listrik gedung di jam puncak tarif?"
+    ],
+    "notes": "Arahkan mahasiswa membahas fenomena chattering pada termostat sederhana, serta bagaimana utility function memetakan rupiah biaya listrik dan deviasi kenyamanan ke satu skala komparatif yang sama."
+  },
+  {
+    "id": 23,
+    "kind": "content",
+    "title": "Katalog Praktik Python Chapter 03",
+    "body": "Lima implementasi kode runnable mandiri telah disediakan di direktori code/:",
+    "bullets": [
+      "01_simple_reflex_temperature.py: Agen kondisi-aksi tanpa status internal.",
+      "02_model_based_room_agent.py: Agen berstatus internal dengan pelacakan tren suhu.",
+      "03_peas_specification_model.py: Struktur data PEAS dan kalkulasi metrik rasionalitas.",
+      "04_grid_state_space.py: Representasi ruang keadaan grid 3x3 dan model transisi.",
+      "05_problem_formulation_search_prep.py: Kelas formal SearchProblem baku Russell & Norvig.",
+      "Companion Notebook: Jalankan notebooks/chapter_03_companion.ipynb untuk eksperimen terpadu."
+    ],
+    "notes": "Ajak mahasiswa menjalankan kelima skrip di terminal atau VS Code. Tekankan bahwa skrip 05 adalah batu loncatan langsung yang akan kita gunakan untuk algoritma BFS/DFS/A* di Chapter 04."
+  },
+  {
+    "id": 24,
+    "kind": "summary",
+    "title": "Ringkasan Modul & Pratinjau Chapter 04",
+    "body": "Poin-poin kunci yang wajib dibawa pulang dari pertemuan hari ini:",
+    "bullets": [
+      "Intelligent Agent adalah fondasi utama AI: bertindak rasional untuk memaksimalkan expected performance.",
+      "PEAS Framework adalah langkah analisis pertama untuk merumuskan spesifikasi masalah sistem cerdas.",
+      "Enam dimensi task environment menentukan arsitektur agen yang wajib dipilih.",
+      "Lima arsitektur agen membentuk spektrum dari reaktif murni hingga adaptif pembelajar.",
+      "Problem Formulation menyusun 5 komponen baku (Initial State, Actions, Result, Goal Test, Path Cost).",
+      "Pratinjau Chapter 04: 'Uninformed Search Algorithms' — kita akan membedah algoritma pencarian BFS, DFS, DLS, IDDFS, dan Uniform Cost Search untuk menemukan solusi optimal!"
+    ],
+    "notes": "Tutup sesi dengan memberikan motivasi untuk mengerjakan Latihan Terstruktur di Bab 29 dan Tugas Mini Project di Bab 31 pada modul bacaan."
+  }
+]

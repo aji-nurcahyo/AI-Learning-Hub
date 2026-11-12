@@ -1,0 +1,136 @@
+[
+  {
+    "kind": "cover",
+    "title": "Convolutional Neural Networks (CNN)",
+    "body": "Prinsip Konvolusi 2D, Local Receptive Field, Parameter Sharing, dan Pengenalan Pola Visual.",
+    "notes": "Slide pembuka Bab 24. Sampaikan bahwa CNN merevolusi computer vision dengan meniru cara kerja korteks visual mamalia dalam memproses sinyal spasial lokal."
+  },
+  {
+    "kind": "content",
+    "title": "Kelemahan MLP pada Data Citra",
+    "body": "Mengapa Fully Connected Layer tidak efisien untuk data visual:\n- Ledakan Parameter: Citra kecil 28x28 dengan 128 hidden neuron butuh 100.000+ bobot di layer pertama saja.\n- Citra modern 1000x1000x3 piksel akan membutuhkan milyaran parameter yang memicu overfitting instan.\n- Kehilangan Korelasi Spasial 2D: Meratakan matriks piksel menjadi vektor 1D merusak hubungan tetangga piksel.\n- Sensitivitas Translasi: Objek yang bergeser satu piksel dianggap sebagai pola fitur yang sama sekali baru.",
+    "notes": "Tekankan bahwa piksel citra memiliki keterkaitan spasial lokal yang kuat, di mana piksel yang berdekatan memiliki makna semantik bersama."
+  },
+  {
+    "kind": "content",
+    "title": "Dua Pilar Utama Konvolusi",
+    "body": "Prinsip matematis yang memangkas parameter secara dramatis:\n- Local Receptive Field: Setiap neuron konvolusi hanya terhubung ke sub-wilayah spasial kecil (misal: 3x3 atau 5x5 piksel).\n- Weight Sharing (Parameter Sharing): Kumpulan bobot filter/kernel yang sama digeser (sliding window) ke seluruh permukaan citra.\n- Translation Invariance / Equivariance: Jika fitur tepi atau tekstur muncul di sudut kiri atas atau kanan bawah, filter yang sama tetap mendeteksinya.",
+    "notes": "Jelaskan bahwa weight sharing mengasumsikan bahwa fitur visual yang berguna di satu lokasi kemungkinan besar berguna di lokasi lainnya."
+  },
+  {
+    "kind": "split",
+    "title": "Konvolusi Matematika vs Deep Learning",
+    "body": "Klarifikasi Ilmiah Istilah Komputasi:\n- Konvolusi Formal: Memerlukan pembalikan kernel 180 derajat (kernel flipping) sebelum perkalian: (f * g)(t).\n- Konvolusi Deep Learning: Sebenarnya adalah Korelasi Silang (Cross-Correlation) tanpa pembalikan kernel.\n- Dalam pelatihan deep learning, nilai bobot kernel dipelajari dari data mentah, sehingga pembalikan kernel tidak berpengaruh terhadap kapasitas representasi model.",
+    "notes": "Beri tahu mahasiswa bahwa hampir seluruh pustaka deep learning termasuk PyTorch mengimplementasikan cross-correlation namun tetap menyebutnya Conv2d."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Kernel dan Feature Maps",
+    "body": "Transformasi dari citra masukan menjadi peta fitur representasional:\n- Kernel / Filter: Matriks bobot kecil berdimensi (K_h, K_w) yang mendeteksi pola spesifik.\n- Sliding Window: Kernel bergeser langkah demi langkah melintasi citra masukan.\n- Operasi Elementer: Perkalian elemen-ke-elemen (Hadamard) diikuti penjumlahan skalar dan bias.\n- Feature Map: Matriks 2D hasil pemindaian yang menunjukkan intensitas kehadiran fitur di setiap lokasi.",
+    "notes": "Jelaskan bahwa satu kernel menghasilkan satu feature map. Jika kita menggunakan 32 kernel, kita akan menghasilkan 32 feature maps 2D."
+  },
+  {
+    "kind": "code",
+    "title": "Operasi Konvolusi 2D Dasar",
+    "body": "Contoh perhitungan manual korelasi silang pada grid 5x5 dengan kernel 3x3.",
+    "code": "import torch\nimport torch.nn.functional as F\n\n# Citra masukan (Batch=1, Channel=1, H=5, W=5)\nimg = torch.tensor([[1., 2., 3., 0., 1.],\n                    [0., 1., 2., 3., 1.],\n                    [3., 0., 1., 2., 0.],\n                    [2., 1., 0., 1., 2.],\n                    [1., 0., 2., 1., 0.]]).view(1, 1, 5, 5)\n\n# Kernel deteksi tepi vertikal (1, 1, 3, 3)\nkernel = torch.tensor([[-1., 0., 1.],\n                       [-2., 0., 2.],\n                       [-1., 0., 1.]]).view(1, 1, 3, 3)\n\nout = F.conv2d(img, kernel, stride=1, padding=0)\nprint(\"Output shape:\", out.shape)  # torch.Size([1, 1, 3, 3])",
+    "notes": "Tunjukkan bahwa dimensi output menyusut dari 5x5 menjadi 3x3 karena tidak ada padding (valid padding)."
+  },
+  {
+    "kind": "content",
+    "title": "Peran Padding: Valid vs Same Padding",
+    "body": "Mengontrol ukuran resolusi dan mencegah hilangnya informasi tepi:\n- Valid Padding (P = 0): Tanpa penambahan piksel batas; resolusi spasial menyusut setiap kali melewati konvolusi.\n- Same Padding (P = floor(K/2)): Menambahkan piksel bernilai nol (zero-padding) di sekeliling batas citra.\n- Pada stride 1 dan kernel 3x3, padding=1 mempertahankan resolusi tinggi dan lebar tepat sama (H_out = H_in).\n- Mencegah informasi pada piksel tepi citra terbuang secara prematur.",
+    "notes": "Gambarkan bahwa tanpa padding, jaringan dengan 10 layer konvolusi akan menghabiskan ukuran gambar hingga menjadi 1x1 terlalu cepat."
+  },
+  {
+    "kind": "content",
+    "title": "Peran Stride (Langkah Pergeseran)",
+    "body": "Menentukan seberapa jauh kernel melompat di setiap langkah:\n- Stride S = 1: Kernel bergeser 1 piksel setiap langkah; ekstraksi fitur sangat padat dan detail.\n- Stride S = 2: Kernel melompati 1 piksel (bergeser 2 langkah); mereduksi resolusi spasial sekitar 50%.\n- Strided Convolution sering digunakan sebagai alternatif operasi pooling untuk mempercepat komputasi dan mereduksi ukuran tensor secara terpelajari (*learnable downsampling*).",
+    "notes": "Jelaskan bahwa stride yang lebih besar menghasilkan representasi yang lebih ringkas dengan biaya komputasi yang lebih rendah."
+  },
+  {
+    "kind": "content",
+    "title": "Rumus Lengkap Dimensi Output Konvolusi",
+    "body": "Formula deterministik menghitung tinggi dan lebar feature map luaran:\n- Kasus Khusus (Dilation D = 1):\n  H_out = floor((H_in + 2*P - K) / S) + 1\n- Bentuk Umum (Dilation D >= 1):\n  H_out = floor((H_in + 2*P - D*(K - 1) - 1) / S) + 1\n- Simbol: H_in = tinggi input, P = padding, K = ukuran kernel, S = stride, D = dilation.\n- Rumus yang persis sama berlaku untuk dimensi lebar W_out.",
+    "notes": "Ajak mahasiswa berlatih menghitung: Citra 28x28, K=3, P=1, S=2 -> floor((28 + 2 - 3)/2) + 1 = floor(27/2) + 1 = 14."
+  },
+  {
+    "kind": "content",
+    "title": "Konvolusi Multi-Channel (Format NCHW)",
+    "body": "Pemrosesan tensor berwarna atau kumpulan feature maps:\n- Tensor masukan memiliki kedalaman channel C_in (misal: 3 untuk citra RGB atau 32 dari layer sebelumnya).\n- Setiap filter konvolusi memiliki kedalaman yang WAJIB cocok dengan C_in (K_h x K_w x C_in).\n- Filter menjumlahkan hasil perkalian di seluruh saluran C_in menjadi satu nilai skalar per posisi spasial.\n- Jumlah filter C_out menentukan kedalaman feature maps pada lapisan luaran.",
+    "notes": "Tekankan bahwa filter konvolusi adalah balok 3D, bukan sekadar lempengan 2D, jika input memiliki lebih dari 1 channel."
+  },
+  {
+    "kind": "content",
+    "title": "Penghitungan Parameter Layer Konvolusi",
+    "body": "Berapa banyak bobot yang harus dipelajari oleh model CNN?\n- Bobot per filter: K_h x K_w x C_in\n- Bias per filter: 1 skalar (jika bias=True)\n- Total Parameter = (K_h x K_w x C_in + 1) x C_out\n- CATATAN KRUSIAL: Jumlah parameter TIDAK bergantung pada ukuran resolusi gambar masukan (H_in, W_in)!\n- Inilah alasan utama CNN dapat memproses citra resolusi tinggi dengan parameter yang sangat ringkas.",
+    "notes": "Bandingkan dengan MLP di mana ukuran gambar menentukan jumlah parameter secara langsung."
+  },
+  {
+    "kind": "split",
+    "title": "Lapisan Pooling: Max Pooling vs Average Pooling",
+    "body": "Mereduksi resolusi spasial dan meningkatkan invariansi:\n- Max Pooling: Mengambil nilai maksimum dalam jendela lokal (misal: 2x2 stride 2).\n  Mengekstraksi fitur paling menonjol dan memberikan resistensi terhadap sedikit pergeseran spasial.\n- Average Pooling: Menghitung nilai rata-rata dalam jendela lokal; menghasilkan respons yang lebih halus.\n- Karakteristik Unik: Pooling TIDAK memiliki parameter bobot yang dipelajari (0 parameter).",
+    "notes": "Tunjukkan bahwa Max Pooling 2x2 dengan stride 2 memotong jumlah piksel sebanyak 75% tanpa menambah satu pun parameter bobot."
+  },
+  {
+    "kind": "content",
+    "title": "Anatomi Blok Konvolusi Standar",
+    "body": "Pola baku arsitektur Convolutional Neural Networks:\n1. Convolution Layer: Ekstraksi fitur spasial lokal via nn.Conv2d.\n2. Batch Normalization: Menstabilkan distribusi aktivasi antar-batch via nn.BatchNorm2d.\n3. Non-Linear Activation: Mengintroduksi non-linearitas via nn.ReLU.\n4. Pooling Layer: Mereduksi dimensi spasial via nn.MaxPool2d.\n5. Classification Head: Flattening feature maps diikuti Fully Connected (nn.Linear) menuju output logits.",
+    "notes": "Jelaskan urutan Conv -> BatchNorm -> ReLU -> Pool sebagai blok penyusun modular standar dalam modern CNN."
+  },
+  {
+    "kind": "code",
+    "title": "Implementasi Model FashionCNN di PyTorch",
+    "body": "Membangun arsitektur CNN 2-blok untuk klasifikasi citra greyscale.",
+    "code": "class FashionCNN(nn.Module):\n    def __init__(self, num_classes=10):\n        super().__init__()\n        self.features = nn.Sequential(\n            nn.Conv2d(1, 16, kernel_size=3, padding=1),\n            nn.BatchNorm2d(16), nn.ReLU(),\n            nn.MaxPool2d(2, 2),  # (16, 14, 14)\n            nn.Conv2d(16, 32, kernel_size=3, padding=1),\n            nn.BatchNorm2d(32), nn.ReLU(),\n            nn.MaxPool2d(2, 2)   # (32, 7, 7)\n        )\n        self.classifier = nn.Sequential(\n            nn.Flatten(),\n            nn.Linear(32 * 7 * 7, 64), nn.ReLU(),\n            nn.Linear(64, num_classes)\n        )",
+    "notes": "Tunjukkan bagaimana ukuran 28x28 menyusut menjadi 14x14 di pool pertama, lalu menjadi 7x7 di pool kedua."
+  },
+  {
+    "kind": "content",
+    "title": "Dataset Acuan: Fashion-MNIST",
+    "body": "Tolok ukur klasifikasi citra fesyen 28x28 berstandar terbuka:\n- Dibuat oleh Zalando Research (2017) berlisensi MIT sebagai pengganti modern dataset MNIST angka klasik.\n- 60.000 citra latih dan 10.000 citra uji greyscale terbagi ke dalam 10 kategori produk nyata.\n- Kategori: T-shirt/top, Trouser, Pullover, Dress, Coat, Sandal, Shirt, Sneaker, Bag, Ankle boot.\n- Tingkat kesulitan lebih realistis karena memuat tekstur kain, pola jahitan, dan kerumitan bentuk fisik.",
+    "notes": "Jelaskan bahwa MNIST angka terlalu mudah (algoritma sederhana mencapai 99%), sedangkan Fashion-MNIST menyajikan tantangan nyata untuk CNN."
+  },
+  {
+    "kind": "case",
+    "title": "Protokol Transformasi & Data Augmentasi",
+    "body": "Pemisahan Ketat Pipeline Data Latih dan Evaluasi:\n- Normalisasi: Menggunakan konstanta resmi mean=0.2860 dan std=0.3530.\n- Data Augmentasi (RandomHorizontalFlip): Diaplikasikan HANYA pada data latih guna mencegah overfitting.\n- Data Validasi dan Uji: Strictly deterministik (hanya ToTensor dan Normalisasi tanpa augmentasi acak).\n- Peringatan: Menerapkan augmentasi pada data uji memalsukan metrik evaluasi model secara tidak sah.",
+    "notes": "Tekankan prinsip integritas evaluasi: data uji merefleksikan kondisi produksi nyata sehingga tidak boleh dimodifikasi dengan augmentasi acak."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus: CNN vs Flatten MLP (Fashion-MNIST)",
+    "body": "Hasil Eksperimen Terverifikasi pada Test Set Terisolasi (N=2000):\n- Arsitektur CNN (105.962 parameter): Akurasi Uji 86.30% (Loss: 0.3755)\n- Arsitektur FlattenMLP (109.386 parameter): Akurasi Uji 84.15% (Loss: 0.4319)\n- Waktu Pelatihan CPU (5 Epochs): CNN = 6.6 detik vs MLP = 4.8 detik.\n- Keunggulan Utama: CNN mengungguli MLP secara signifikan pada kategori berstruktur rumit:\n  - Kategori 'Shirt': CNN 75.63% vs MLP 54.31% (Keunggulan telak +21.32%!).",
+    "notes": "Paparkan data riil dari experiments/results_ch24.json. Tunjukkan bahwa pada kategori kemeja yang memiliki pola kerah dan kancing, CNN jauh lebih unggul karena menangkap pola spasial lokal."
+  },
+  {
+    "kind": "content",
+    "title": "Error Analysis: Pasangan Kelas Tertukar",
+    "body": "Mendiagnosis kegagalan model melalui matriks konfusi:\n- T-shirt/top tertukar dengan Shirt (226 kasus): Kemiripan siluet badan tanpa lengan panjang.\n- Pullover tertukar dengan Coat (129 kasus): Kemiripan tekstur tebal dan lengan panjang.\n- Sandal tertukar dengan Sneaker: Potongan bentuk sol kaki yang tumpang tindih.\n- Analisis kesalahan membuktikan bahwa galat model terjadi pada kategori yang secara visual memang memiliki ambiguitas tinggi bagi mata manusia.",
+    "notes": "Ajak mahasiswa berdiskusi bahwa model tidak membuat kesalahan acak (misal: Ankle boot tertukar dengan T-shirt hampir 0%), melainkan kesalahan yang logis secara visual."
+  },
+  {
+    "kind": "content",
+    "title": "Ekstraksi & Visualisasi Feature Maps",
+    "body": "Mengintip representasi perantara di dalam lapisan konvolusi:\n- Feature Maps lapisan pertama (Block 1) menangkap tepi horizontal, tepi vertikal, dan kontras kontur.\n- Melalui fungsi aktivasi ReLU, sekitar 30% aktivasi menjadi tepat nol (representasi jarang / sparse).\n- Semakin dalam lapisan jaringan, feature maps menangkap kombinasi pola yang lebih kompleks (tekstur kancing, kerah, pola sol sepatu).",
+    "notes": "Jelaskan bahwa visualisasi feature maps membantu kita memverifikasi bahwa filter mempelajari pola visual bermakna, bukan sekadar noise."
+  },
+  {
+    "kind": "case",
+    "title": "Batas Interpretasi Ilmiah Feature Maps",
+    "body": "Peringatan Terhadap Misleading Anthromorphism:\n- Feature maps BUKAN bukti bahwa model memahami konsep objek secara semantik seperti manusia.\n- Filter konvolusi murni merupakan operator matematis respon frekuensi spasial lokal.\n- Model CNN rentan terhadap serangan adversarial: sedikit derau tak kasat mata dapat mengubah prediksi secara drastis.\n- Tetap bersikap objektif dan kritis dalam menginterpretasikan representasi visual AI.",
+    "notes": "Ingatkan mahasiswa untuk tidak terjebak mengklaim bahwa 'AI melihat baju'. Model hanya menghitung konvolusi tensor numerik."
+  },
+  {
+    "kind": "content",
+    "title": "Batas Invariansi CNN & Mitigasinya",
+    "body": "Apa yang TIDAK secara otomatis diatasi oleh CNN standar?\n- Invariansi Translasi Terbatas: CNN tahan terhadap pergeseran kecil (karena pooling), tetapi bukan translasi besar.\n- Rotasi dan Penskalaan: CNN standar TIDAK invarian terhadap rotasi besar (misal: citra terbalik 180 derajat) atau perubahan skala ekstrem.\n- Solusi Praktis: Terapkan Data Augmentation (RandomRotation, RandomResizedCrop) selama pelatihan untuk mengajarkan invariansi tersebut secara eksplisit.",
+    "notes": "Koreksi miskonsepsi umum bahwa CNN otomatis kebal terhadap segala macam deformasi citra."
+  },
+  {
+    "kind": "summary",
+    "title": "Rangkuman Bab 24",
+    "body": "Poin Inti Pembelajaran:\n- CNN mengatasi keterbatasan MLP melalui Local Receptive Field dan Parameter Sharing.\n- Dimensi output spasial dihitung secara presisi dengan formula H_out.\n- Operasi konvolusi di deep learning adalah korelasi silang (cross-correlation).\n- Arsitektur modular memadukan Conv2d, BatchNorm, ReLU, dan MaxPool2d.\n- Pada Fashion-MNIST, CNN membuktikan keunggulan representasi spasial terukur dibanding MLP.",
+    "notes": "Tutup sesi Bab 24. Sampaikan bahwa arsitektur CNN yang dipelajari hari ini menjadi fondasi bagi visi komputer modern."
+  }
+]

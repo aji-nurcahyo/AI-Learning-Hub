@@ -1,0 +1,165 @@
+[
+  {
+   "kind": "cover",
+   "title": "Python Ecosystem for AI",
+   "body": "### Pustaka Komputasi, Manipulasi Data & Rekayasa Workflow AI\n\n**Level 1 — AI Foundations | Chapter 07**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+   "notes": "Selamat datang di Chapter 07: Python Ecosystem for AI. Bab ini membekali mahasiswa dengan penguasaan praktis empat pustaka pilar data science Python: NumPy, Pandas, Matplotlib, dan Scikit-learn, serta metodologi membangun alur kerja komputasi yang dapat direproduksi (reproducible AI)."
+  },
+  {
+   "kind": "content",
+   "title": "Mengapa Python Populer dalam AI?",
+   "body": "Python menjadi standar industri kecerdasan buatan global berkat tiga kekuatan utama:\n\n- **Sintaksis Bersih & Deklaratif**: Mirip notasi matematika, memudahkan translasi ide teori ke dalam baris kode program.\n- **Kinerja Eksekusi Mesin Tingkat Rendah**: Komputasi berat dieksekusi oleh binding bahasa C/C++ dan Fortran berkecepatan tinggi pada tingkat prosesor (SIMD CPU & CUDA GPU).\n- **Ekosistem Terintegrasi Tanpa Batas**: Berbagi struktur array yang sama dari tahap data ingestion, visualisasi, machine learning klasik, hingga deep learning skala besar.",
+   "notes": "Jelaskan bahwa Python berfungsi sebagai orchestrator (konduktor orkestra) yang mengatur pustaka-pustaka C/C++ berperforma tinggi di baliknya."
+  },
+  {
+   "kind": "content",
+   "title": "Capaian Pembelajaran (Learning Objectives)",
+   "body": "Setelah menyelesaikan materi ini, pembelajar diharapkan mampu:\n\n- **Mengisolasi** dependensi proyek menggunakan *Virtual Environment* dan `requirements.txt`.\n- **Mengoperasikan** array multidimensi NumPy, vektorisasi, dan broadcasting.\n- **Memanipulasi** tabel data menggunakan Pandas, membersihkan missing values, dan agregasi GroupBy.\n- **Membangun** grafik visual analitis menggunakan paradigma Figure & Axes Matplotlib dalam mode headless.\n- **Menerapkan** pola antarmuka Estimator API Scikit-learn (`fit` dan `predict`) tanpa kebocoran data.\n- **Menyusun** proyek Python AI modular dan menerapkan kontrol random seed demi reproduksibilitas.",
+   "notes": "Tekankan bahwa bab ini fokus pada penguasaan perkakas (tools) dan pola desain antarmuka software sebelum mendalami teori algoritma Machine Learning di Level 2."
+  },
+  {
+   "kind": "split",
+   "title": "Arsitektur Ekosistem AI Python",
+   "body": "Integrasi berlapis pustaka data science standar:\n\n### Lapisan Fondasi\n- **Python Standard Library**: `pathlib`, `sys`, `math`, `collections`.\n- **NumPy**: Pengelola struktur memori array kontinu dan komputasi aljabar linear.\n\n### Lapisan Pemrosesan & Visualisasi\n- **Pandas**: Pengolah data tabular berlabel dan operasi CSV.\n- **Matplotlib**: Kanvas grafis 2D dan perender visualisasi data.\n- **Scikit-learn**: Antarmuka algoritma pembelajaran mesin terstandarisasi.",
+   "notes": "Tunjukkan bagaimana tiap lapisan saling menopang: Pandas dan Matplotlib dibangun di atas array NumPy, sedangkan Scikit-learn mengonsumsi keduanya."
+  },
+  {
+   "kind": "content",
+   "title": "Virtual Environment & Package Management",
+   "body": "Setiap proyek AI memerlukan lingkungan terisolasi untuk menghindari konflik versi pustaka:\n\n- **Membuat Lingkungan Mandiri**:\n  ```bash\n  python -m venv .venv\n  ```\n- **Aktivasi (Windows PowerShell)**:\n  ```powershell\n  .venv\\Scripts\\Activate.ps1\n  ```\n- **Instalasi Aman Berbasis Modul**:\n  ```bash\n  python -m pip install numpy pandas matplotlib scikit-learn\n  ```\n- **Mengunci Versi Dependensi**:\n  ```bash\n  python -m pip freeze > requirements.txt\n  ```",
+   "notes": "Ingatkan kembali prinsip GS-04: selalu gunakan python -m pip daripada sekadar pip untuk menjamin paket terpasang pada interpreter yang aktif."
+  },
+  {
+   "kind": "split",
+   "title": "Notebook vs Skrip Python Standar",
+   "body": "Kapan menggunakan masing-masing format berkas komputasi?\n\n### Jupyter Notebook (`.ipynb`)\n- Ideal untuk **eksplorasi awal**, pembersihan interaktif, dan visualisasi grafik bertahap.\n- Sangat baik untuk presentasi kuliah dan laporan eksperimen mahasiswa.\n\n### Skrip Python (`.py`)\n- Wajib untuk **modul logika produksi** yang dapat diuji otomatis (*unit testing*).\n- Memudahkan kolaborasi tim melalui Git Version Control tanpa konflik metadata JSON.",
+   "notes": "Jelaskan bahwa dalam praktik industri, eksplorasi data dilakukan di notebook, namun pipeline model final selalu diekstrak ke dalam skrip .py yang modular."
+  },
+  {
+   "kind": "content",
+   "title": "Struktur Direktori Proyek AI Terstandarisasi",
+   "body": "Tata letak folder terstruktur memisahkan data, kode, dan luaran:\n\n```text\nproject_ai/\n├── data/\n│   ├── raw/                 # Berkas data asli (read-only, tidak boleh diubah)\n│   └── processed/           # Data bersih hasil imputasi dan rekayasa fitur\n├── notebooks/               # Eksplorasi interaktif tahap awal (.ipynb)\n├── src/                     # Modul kode sumber reusable (.py)\n├── requirements.txt         # Daftar spesifikasi dependensi dan versi terkunci\n└── README.md                # Dokumentasi petunjuk eksekusi langkah demi langkah\n```\n\n*Gunakan modul `pathlib.Path` untuk seluruh operasi I/O agar bebas dari absolute path!*",
+   "notes": "Tekankan bahaya absolute path: kode yang ditulis dengan D:\\my_project\\data.csv dipastikan akan langsung crash jika dibuka oleh dosen atau tim lain."
+  },
+  {
+   "kind": "content",
+   "title": "NumPy: Objek ndarray & Efisiensi Memori",
+   "body": "Perbedaan fundamental antara List bawaan Python dengan NumPy ndarray:\n\n- **List Python**: Kumpulan pointer yang merujuk ke objek heap terpisah. Memiliki overhead memori besar (~28 byte per integer) dan lokasi memori tersebar (*scattered*).\n- **NumPy `ndarray`**: Menyimpan bilangan dalam blok memori kontinu C (*contiguous memory buffer*) homogen.\n- **Efisiensi Nyata (10.000 bilangan integer)**:\n  - List Python: Membutuhkan memori $\\approx 351$ KB.\n  - NumPy Array: Membutuhkan memori hanya $39.1$ KB ($9\\times$ lebih ringkas!).\n  - Mendukung eksekusi instruksi paralel prosesor (*SIMD Hardware Vectorization*).",
+   "notes": "Jelaskan bahwa contiguous memory membuat CPU cache hit meningkat drastis, sehingga iterasi array NumPy berkali-kali lipat lebih cepat dari list Python."
+  },
+  {
+   "kind": "split",
+   "title": "NumPy: Dimensi, Shape & Reshaping",
+   "body": "Memahami anatomi bentuk array multidimensi:\n\n### Atribut Kunci\n- **`.shape`**: Ukuran dimensi, misal `(3, 4)` untuk matriks 3 baris 4 kolom.\n- **`.ndim`**: Jumlah sumbu dimensi (1D vektor, 2D matriks, 3D/4D tensor).\n- **`.dtype`**: Tipe data elemen (misal `float64`, `int32`).\n\n### Manipulasi Bentuk\n- `.reshape((m, n))`: Mengubah dimensi tanpa menyalin data di memori.\n- `.ravel()`: Memipihkan array multidimensi kembali menjadi vektor 1D.",
+   "notes": "Beri contoh: citra grayscale 28x28 piksel dapat di-reshape menjadi vektor 1D 784 fitur sebelum dimasukkan ke model klasifikasi sederhana."
+  },
+  {
+   "kind": "content",
+   "title": "Operasi Tervektorisasi (Vectorization)",
+   "body": "Menghilangkan perulangan loop `for` lambat di tingkat kode Python:\n\n```python\n# Tanpa loop for: dikompilasi langsung di tingkat C\nfeatures = np.array([10.0, 20.0, 30.0, 40.0])\nscaled = features * 2.5            # [25.0, 50.0, 75.0, 100.0]\nnormalized = (features - 10.0) / 30.0  # [0.0, 0.33, 0.67, 1.0]\n```\n\n- Seluruh operasi aritmetika (`+`, `-`, `*`, `/`, `**`) berjalan elemen demi elemen secara simultan.\n- Menghasilkan peningkatan kecepatan komputasi puluhan hingga ratusan kali lipat pada dataset jutaan baris.",
+   "notes": "Gunakan aturan praktis: jika Anda menulis loop 'for i in range(len(data))' untuk mengalikan array, Anda kehilangan seluruh keunggulan performa NumPy!"
+  },
+  {
+   "kind": "content",
+   "title": "Mekanisme Broadcasting NumPy",
+   "body": "Penyesuaian dimensi otomatis saat melakukan operasi antar array berbeda bentuk:\n\n- **Aturan Broadcasting**: Dua dimensi kompatibel jika nilainya sama **atau** salah satunya bernilai 1.\n- **Contoh Kalibrasi Sensor Otomatis**:\n  - Matriks data sensor $\\mathbf{X}$: Berukuran $(4 \\times 3)$ (4 baris sampel, 3 fitur).\n  - Vektor offset kalibrasi $\\mathbf{c}$: Berukuran $(3,)$ (1 nilai offset per fitur).\n  - Operasi $\\mathbf{X} + \\mathbf{c}$: NumPy otomatis mereplikasi offset ke seluruh 4 baris sampel!\n- Terjadi tanpa menyalin data fisik tambahan di memori RAM.",
+   "notes": "Broadcasting adalah fitur paling elegan di NumPy yang memungkinkan normalisasi data matriks dengan vektor mean dilakukan dalam satu baris kode: X - mean."
+  },
+  {
+   "kind": "split",
+   "title": "Agregasi Berbasis Sumbu (Axis Reductions)",
+   "body": "Pembedaan arah reduksi komputasi pada matriks 2D:\n\n### Sumbu Baris (`axis=0`)\n- Operasi berjalan vertikal menelusuri baris ke bawah.\n- Mereduksi baris, menghasilkan ringkasan per **kolom / fitur**:\n  `mean_fitur = X.mean(axis=0)`\n\n### Sumbu Kolom (`axis=1`)\n- Operasi berjalan horizontal menelusuri kolom ke samping.\n- Mereduksi kolom, menghasilkan ringkasan per **baris / sampel**:\n  `total_skor = X.sum(axis=1)`",
+   "notes": "Ingatkan trik mengingat: axis=0 artinya mereduksi dimensi pertama (baris), sehingga hasilnya memiliki panjang sesuai jumlah kolom."
+  },
+  {
+   "kind": "content",
+   "title": "Pandas: Series & Anatomi DataFrame",
+   "body": "Pandas mengorganisasi data tabular berlabel di atas struktur dasar NumPy:\n\n- **`pandas.Series`**: Array 1D dengan indeks baris berlabel.\n- **`pandas.DataFrame`**: Tabel 2D berlabel yang tersusun dari kumpulan Series.\n- **Tiga Komponen Utama DataFrame**:\n  1. **Index**: Penanda label baris data (`df.index`).\n  2. **Columns**: Nama-nama fitur variabel (`df.columns`).\n  3. **Values**: Blok array NumPy 2D underlying yang menyimpan nilai sel (`df.values`).\n- Menyediakan fungsi inspeksi cepat: `.head()`, `.info()`, dan `.describe()`.",
+   "notes": "Tunjukkan bahwa DataFrame pada dasarnya adalah kamus (dictionary) dari beberapa array NumPy yang memiliki indeks baris yang sama."
+  },
+  {
+   "kind": "split",
+   "title": "Pengaksesan Data: .loc vs .iloc",
+   "body": "Dua metode pengaksesan irisan data pada Pandas DataFrame:\n\n### `.loc` (Label-based Indexing)\n- Mengakses baris dan kolom berdasarkan **nama label string** atau kondisi boolean:\n  `df.loc[3, 'temperature_c']`\n  `df.loc[df['status'] != 'NORMAL']`\n\n### `.iloc` (Integer-based Indexing)\n- Mengakses baris dan kolom berdasarkan **posisi indeks integer 0-based**:\n  `df.iloc[3, 2]`\n  `df.iloc[0:5, 1:4]`",
+   "notes": "Tekankan perbedaan: .loc inklusif pada batas akhir jika menggunakan label, sedangkan .iloc eksklusif pada batas akhir mengikuti konvensi slicing Python."
+  },
+  {
+   "kind": "content",
+   "title": "Pembersihan Data: Missing Values & GroupBy",
+   "body": "Dua tahapan fundamental pemrosesan data tabular sebelum analisis model:\n\n- **Penanganan Nilai Hilang (Missing Values)**:\n  - Deteksi: `df.isna().sum()`.\n  - Imputasi Rata-rata: `df['suhu'] = df['suhu'].fillna(df['suhu'].mean())`.\n  - Menjaga integritas data tanpa membuang baris sampel secara ceroboh.\n- **Agregasi Terkelompok (*GroupBy*)**:\n  - Pola *Split-Apply-Combine* untuk menganalisis statistik per kategori:\n  ```python\n  df.groupby('location')[['temperature_c', 'vibration_mms']].agg(['mean', 'max'])\n  ```",
+   "notes": "Jelaskan bahwa membuang baris missing values (dropna) dapat mengurangi sampel drastis jika data berharga, sehingga imputasi sering menjadi pilihan utama."
+  },
+  {
+   "kind": "content",
+   "title": "Matplotlib: Paradigma Figure & Axes",
+   "body": "Pendekatan berorientasi objek (*Object-Oriented Interface*) untuk pembuatan visualisasi:\n\n- **Figure (`fig`)**: Kanvas gambar keseluruhan yang menampung jendela visualisasi.\n- **Axes (`ax`)**: Bidang grafik tempat data, kurva, sumbu koordinat, dan label digambar.\n\n```python\nimport matplotlib.pyplot as plt\n\nfig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2, figsize=(10, 4))\nax1.plot(df['temperature_c'], label='Suhu')\nax1.set_title('Tren Suhu')\nax1.legend()\n\nax2.scatter(df['temperature_c'], df['vibration_mms'])\nax2.set_title('Suhu vs Getaran')\n```",
+   "notes": "Hindari gaya plt.plot langsung (state-machine interface) saat membuat dashboard multi-plot karena sulit dikontrol secara presisi."
+  },
+  {
+   "kind": "split",
+   "title": "Empat Jenis Visualisasi Fundamental AI",
+   "body": "Memilih visualisasi yang tepat sesuai tipe variabel pengamatan:\n\n### Line Plot & Scatter Plot\n- **Line Plot**: Tren metrik runut waktu dan kurva penurunan loss pelatihan.\n- **Scatter Plot**: Menilai korelasi linier/non-linier antara dua fitur kontinu.\n\n### Histogram & Bar Chart\n- **Histogram**: Melihat bentuk sebaran frekuensi dan kecondongan data (*skewness*).\n- **Bar Chart**: Membandingkan nilai rata-rata metrik antar kelompok kategori.",
+   "notes": "Bahas pentingnya histogram untuk mengecek apakah data berdistribusi normal sebelum menerapkan algoritma yang mengasumsikan gaussian noise."
+  },
+  {
+   "kind": "content",
+   "title": "Eksekusi Headless & Ekspor Visualisasi",
+   "body": "Menjalankan visualisasi di lingkungan server terminal tanpa antarmuka GUI desktop:\n\n- **Mengaktifkan Backend Headless 'Agg'**:\n  ```python\n  import matplotlib\n  matplotlib.use('Agg')  # Wajib dipanggil sebelum mengimpor pyplot\n  import matplotlib.pyplot as plt\n  ```\n- **Mengekspor Gambar Resolusi Tinggi ke Disk**:\n  ```python\n  plt.tight_layout()     # Mencegah teks label sumbu terpotong\n  plt.savefig('analisis_sensor.png', dpi=150, bbox_inches='tight')\n  plt.close(fig)         # Mengosongkan alokasi memori kanvas\n  ```",
+   "notes": "Backend Agg adalah trik industri penting agar skrip visualisasi otomatis dapat berjalan di CI/CD pipeline, Docker container, atau remote server."
+  },
+  {
+   "kind": "content",
+   "title": "Scikit-Learn: Pola Siklus Estimator API",
+   "body": "Standarisasi antarmuka pembelajaran mesin yang konsisten di seluruh model:\n\n```mermaid\nflowchart LR\n    Init[\"Instansiasi Model:<br/>model = ModelClass()\"] --> Fit[\"Pelatihan Bobot:<br/>model.fit(X_train, y_train)\"]\n    Fit --> Pred[\"Inferensi Data Baru:<br/>y_pred = model.predict(X_test)\"]\n    Fit --> Eval[\"Evaluasi Metrik:<br/>score = model.score(X_test, y_test)\"]\n```\n\n- Seluruh model (Regresi, SVM, Decision Tree, Random Forest) menggunakan pemanggilan `.fit()` dan `.predict()` yang persis sama.\n- *Transformer* (seperti `StandardScaler`) menggunakan pola `.fit()` dan `.transform()`.",
+   "notes": "Tekankan keindahan konsistensi Scikit-learn: sekali mahasiswa memahami Estimator API, mereka dapat menggunakan ratusan model berbeda dengan cara yang sama."
+  },
+  {
+   "kind": "split",
+   "title": "Representasi Data Masukan Scikit-Learn",
+   "body": "Format standar struktur data yang dikonsumsi oleh Scikit-learn:\n\n### Matriks Fitur ($\\mathbf{X}$)\n- Wajib berupa array 2D dengan bentuk `(n_samples, n_features)`.\n- Baris = Objek pengamatan, Kolom = Variabel pengukur.\n\n### Vektor Target ($\\mathbf{y}$)\n- Wajib berupa array 1D dengan bentuk `(n_samples,)`.\n- Memuat nilai target kontinu (regresi) atau label kelas diskrit (klasifikasi).",
+   "notes": "Ingatkan mahasiswa: kesalahan umum pemula adalah memasukkan vektor 1D sebagai X, yang akan langsung memicu ValueError: Expected 2D array, got 1D array instead."
+  },
+  {
+   "kind": "content",
+   "title": "Train/Test Split & Bahaya Data Leakage",
+   "body": "Membagi dataset untuk mengukur performa generalisasi model secara obyektif:\n\n- **Pemisahan Data Terstratifikasi**:\n  ```python\n  X_train, X_test, y_train, y_test = train_test_split(\n      X, y, test_size=0.30, random_state=42, stratify=y\n  )\n  ```\n- **Pencegahan Data Leakage pada Preprocessing**:\n  - `scaler.fit(X_train)`: Hanya pelajari $\\mu$ dan $\\sigma$ dari data latih!\n  - `X_train_scaled = scaler.transform(X_train)`\n  - `X_test_scaled = scaler.transform(X_test)`\n  - *Jangan pernah melakukan fit pada seluruh dataset sebelum proses split!*",
+   "notes": "Jelaskan analogi: melakukan fit pada seluruh dataset ibarat membiarkan siswa melihat soal ujian sebelum belajar. Nilainya terlihat tinggi tetapi palsu."
+  },
+  {
+   "kind": "case",
+   "title": "Evaluasi Awal: Confusion Matrix & Akurasi",
+   "body": "### Evaluasi Prediksi Deteksi Anomali Sensor:\n- Data Uji Uji ($N=6$ sampel): Target aktual $[0, 1, 0, 0, 0, 0]$.\n- Prediksi Model: $[0, 1, 0, 0, 0, 0]$.\n- **Akurasi**: $100.00\\%$.\n\n### Tabel Matriks Konfusi (Confusion Matrix):\n- **True Negative (TN) = 5**: Kondisi Normal diprediksi tepat Normal.\n- **False Positive (FP) = 0**: Tidak ada alarm palsu.\n- **False Negative (FN) = 0**: Tidak ada anomali yang lolos terlewat.\n- **True Positive (TP) = 1**: Anomali mesin kritis terdeteksi tepat waktu.\n\n*Catatan*: Pada data tidak seimbang (*imbalanced data*), akurasi tinggi semu harus diimbangi metrik Precision dan Recall (dibahas mendalam di Level 2).",
+   "notes": "Peringatkan mahasiswa agar tidak mudah puas dengan akurasi 99% jika dataset memiliki 99% data negatif dan model hanya menebak negatif terus-menerus."
+  },
+  {
+   "kind": "content",
+   "title": "Disiplin Jupyter Notebook & Kernel State",
+   "body": "Menghindari jebakan urutan eksekusi sel (*hidden state pitfalls*):\n\n- **Nomor Urut Sel `In [x]`**: Eksekusi bergantung pada urutan interaksi pengguna, bukan posisi baris sel di layar monitor.\n- Variabel yang didefinisikan di sel bawah dapat merusak sel atas jika dijalankan tidak berurutan.\n- **Disiplin Emas \"Restart and Run All\"**:\n  - Sebelum membagikan kode eksperimen, lakukan selalu *Kernel -> Restart & Run All*.\n  - Memastikan seluruh sel berjalan bersih dan dapat diulang dari baris pertama hingga terakhir.",
+   "notes": "Banyak proyek mahasiswa gagal saat dinilai dosen karena mahasiswa menjalankan sel secara acak di notebook sehingga variabel tidak sinkron saat di-restart."
+  },
+  {
+   "kind": "content",
+   "title": "Prinsip Reproduksibilitas Riset AI",
+   "body": "Menjamin eksperimen komputasi menghasilkan luaran yang konsisten di seluruh komputer:\n\n1. **Kendalikan Random Seed Global**:\n   ```python\n   random.seed(42)\n   np.random.seed(42)\n   os.environ[\"PYTHONHASHSEED\"] = \"42\"\n   ```\n2. **Manajemen Jalur Berkas Relatif (`pathlib.Path`)**: Kebal terhadap perbedaan struktur direktori sistem operasi Windows vs Linux.\n3. **Penguncian Versi Dependensi**: Menggunakan `requirements.txt` yang spesifik.",
+   "notes": "Jelaskan bahwa sains kecerdasan buatan menuntut keterbukaan dan keterulangan. Tanpa random seed, perbandingan dua model menjadi tidak adil karena faktor keberuntungan acak."
+  },
+  {
+   "kind": "case",
+   "title": "Diskusi: Batas Reproduksibilitas di Dunia Nyata",
+   "body": "### Mengapa Dua Komputer Kadang Menghasilkan Nilai Berbeda Meski Seed Sama?\n\n1. **Perbedaan Arsitektur CPU**: Eksekusi instruksi floating-point pada prosesor x86 (Intel/AMD) vs ARM64 (Apple Silicon) dapat berbeda pada digit presisi ke-16.\n2. **Paralelisme GPU (CUDA Non-determinism)**: Operasi reduksi atomik GPU secara acak mengelompokkan penjumlahan float, memicu akumulasi galat pembulatan mikro.\n3. **Perbedaan Versi Pustaka C Dasar**: Versi library BLAS/LAPACK atau MKL yang berbeda pada lingkungan Python.",
+   "notes": "Ajak mahasiswa berdiskusi: reproduksibilitas absolut menuntut kita mengunci bukan hanya kode dan seed, tetapi juga environment sistem (Docker container)."
+  },
+  {
+   "kind": "summary",
+   "title": "Ringkasan Materi Chapter 07",
+   "body": "Poin-poin kunci penguasaan ekosistem Python AI:\n\n- **NumPy**: Mengelola array contiguous berkinerja tinggi, vektorisasi tanpa loop for, dan broadcasting.\n- **Pandas**: Mengatur data tabular berlabel, menangani missing values, dan agregasi GroupBy.\n- **Matplotlib**: Memisahkan Figure & Axes untuk dashboard multi-plot yang dapat dirender headless.\n- **Scikit-learn**: Pola desain Estimator seragam `.fit()` dan `.predict()`. Waspadai kebocoran data pada fase prapemrosesan.\n- **Reproducibility**: Pengaturan random seed, jalur relatif pathlib, dan disiplin Restart & Run All menjamin riset AI berintegritas.",
+   "notes": "Tutup bab dengan ucapan selamat: mahasiswa kini telah menguasai fondasi matematika (Ch 06) dan perkakas ekosistem komputasi (Ch 07), siap memasuki Level 2!"
+  },
+  {
+   "kind": "content",
+   "title": "Referensi Resmi & Dokumentasi Pustaka",
+   "body": "Dokumentasi dan publikasi primer standar industri:\n\n1. **Harris, C. R., et al.** (2020). *Array programming with NumPy*. Nature, 585, 357–362. https://numpy.org/doc/\n2. **McKinney, W.** (2022). *Python for Data Analysis (3rd ed.)*. O'Reilly. https://pandas.pydata.org/docs/\n3. **Hunter, J. D.** (2007). *Matplotlib: A 2D Graphics Environment*. Computing in Science & Eng., 9, 90–95. https://matplotlib.org/\n4. **Pedregosa, F., et al.** (2011). *Scikit-learn: Machine Learning in Python*. JMLR, 12, 2825–2830. https://scikit-learn.org/\n5. **Kluyver, T., et al.** (2016). *Jupyter Notebooks — a publishing format for reproducible computational workflows*. https://jupyter.org/",
+   "notes": "Arahkan mahasiswa untuk selalu memeriksa dokumentasi resmi pustaka saat mengeksplorasi parameter atau metode baru."
+  }
+]
+

@@ -1,0 +1,372 @@
+[
+  {
+    "id": 1,
+    "kind": "cover",
+    "title": "Knowledge Representation & Reasoning",
+    "body": "Logika Proposisional, First-Order Logic, Mesin Inferensi (Forward & Backward Chaining), dan Sistem Pakar.\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera\nPengampu: Aji Pamungkas Tri Nurcahyo",
+    "notes": "Selamat datang di pertemuan kelima. Hari ini kita mendalami pilar utama Symbolic AI: bagaimana merepresentasikan pengetahuan manusia secara formal menggunakan logika matematika, serta bagaimana mesin inferensi menarik kesimpulan baru yang sah secara deduktif."
+  },
+  {
+    "id": 2,
+    "kind": "content",
+    "title": "Mengapa Knowledge Representation Diperlukan?",
+    "body": "Representasi pengetahuan menjembatani data mentah dengan pengambilan keputusan rasional:",
+    "bullets": [
+      "Melampaui Pencarian Buta: Memberikan agen pemahaman semantik internal mengenai struktur fakta di dunianya.",
+      "Generalisasi Kaidah: Mampu menerapkan satu prinsip pengetahuan umum ke ribuan kasus spesifik.",
+      "Transparansi & Akuntabilitas (Explainability): Setiap keputusan dapat ditelusuri jejak aturan penalarannya.",
+      "Pemisahan Logika & Data: Memungkinkan basis pengetahuan diperbarui tanpa merombak kode algoritma."
+    ],
+    "notes": "Tekankan kepada mahasiswa bahwa sistem pakar berbasis pengetahuan adalah teknologi AI pertama yang berhasil dikomersialkan secara masif di industri finansial, kedokteran, dan manufaktur."
+  },
+  {
+    "id": 3,
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Chapter 05",
+    "body": "Setelah menyelesaikan sesi ini, pembelajar diharapkan mampu:",
+    "bullets": [
+      "Menjelaskan peran dan arsitektur Knowledge Representation dalam AI.",
+      "Membedakan fakta (facts), kaidah (rules), basis pengetahuan (KB), dan proses inferensi.",
+      "Merepresentasikan pengetahuan proposisional dan memvalidasi keabsahan melalui tabel kebenaran.",
+      "Menjelaskan konsep dasar First-Order Logic (predikat, variabel, dan kuantor).",
+      "Menerapkan aturan inferensi deduktif baku seperti Modus Ponens.",
+      "Membedakan mekanisme kerja mesin inferensi Forward Chaining dan Backward Chaining.",
+      "Mengidentifikasi keterbatasan penalaran simbolik di bawah Closed-World Assumption."
+    ],
+    "notes": "Pastikan mahasiswa memahami bahwa tujuan utama bab ini adalah menguasai penalaran simbolik deklaratif sebelum kita masuk ke penalaran probabilistik di bab berikutnya."
+  },
+  {
+    "id": 4,
+    "kind": "content",
+    "title": "Hirarki Data, Informasi & Pengetahuan (DIKW)",
+    "body": "Empat tingkatan pemrosesan pemahaman dalam sistem cerdas:",
+    "bullets": [
+      "Data: Simbol atau angka mentah tanpa interpretasi konteks (misal: '35', 'down', '0').",
+      "Informasi: Data yang telah terstruktur dan bermakna (misal: 'Suhu ruangan 35°C, antarmuka eth0 down').",
+      "Pengetahuan (Knowledge): Pemahaman relasi kausalitas dan dependensi (misal: 'JIKA kabel terpasang DAN lampu indikator padam MAKA kartu jaringan rusak').",
+      "Kebijaksanaan (Wisdom): Pengambilan keputusan strategis berbasis pengetahuan (misal: 'Ganti switch cadangan sekarang untuk mencegah downtime server')."
+    ],
+    "notes": "Beri contoh praktis di dunia jaringan: Log file mentah adalah Data; Alert dashboard adalah Informasi; Runbook pemecahan masalah teknisi adalah Pengetahuan."
+  },
+  {
+    "id": 5,
+    "kind": "content",
+    "title": "Arsitektur Knowledge-Based Agent",
+    "body": "Pemisahan modular antara basis data pengetahuan dengan mesin penalar independen:",
+    "diagram": [
+      "Sensors (Persepsi Lingkungan)",
+      "Operasi TELL(KB, Percept)",
+      "Knowledge Base (Fakta & Kaidah)",
+      "Inference Engine (Deduksi Logika)",
+      "Operasi ASK(KB, Action)",
+      "Actuators (Aksi Nyata)"
+    ],
+    "bullets": [
+      "Knowledge Base (KB): Tempat penyimpanan deklaratif seluruh fakta dan aturan logika tentang dunia.",
+      "Inference Engine: Mesin pemroses yang menjalankan algoritma penarikan kesimpulan secara otonom."
+    ],
+    "notes": "Pemisahan antara KB dan Inference Engine mirip dengan pemisahan antara Database (SQL) dan Database Engine (DBMS): aturan dapat diubah kapan saja tanpa menulis ulang mesin inferensi."
+  },
+  {
+    "id": 6,
+    "kind": "split",
+    "title": "Declarative vs Procedural Knowledge",
+    "body": "Dua filosofi dalam merekayasa kecerdasan ke dalam perangkat lunak:",
+    "columns": [
+      {
+        "heading": "Pengetahuan Deklaratif",
+        "points": [
+          "Fokus pada 'APA' yang benar tentang dunia.",
+          "Dinyatakan dalam kalimat logika formal eksplisit.",
+          "Sangat modular, transparan, dan mudah diaudit.",
+          "Mesin inferensi umum yang mencari solusinya."
+        ]
+      },
+      {
+        "heading": "Pengetahuan Prosedural",
+        "points": [
+          "Fokus pada 'BAGAIMANA' langkah menyelesaikan masalah.",
+          "Tertanam langsung dalam kode imperatif (if-else bersarang).",
+          "Kaku, sulit dipelihara jika aturan bertambah ribuan.",
+          "Jejak penjelasan keputusan sangat kabur."
+        ]
+      }
+    ],
+    "notes": "Jelaskan mengapa programmer pemula sering menulis if-else bersarang ribuan baris, dan mengapa pendekatan deklaratif jauh lebih unggul untuk sistem pakar skala industri."
+  },
+  {
+    "id": 7,
+    "kind": "content",
+    "title": "Logika Proposisional: Sintaksis & Simbol Atomik",
+    "body": "Bahasa representasi pengetahuan formal paling mendasar berbasis nilai biner True/False.",
+    "bullets": [
+      "Simbol Proposisi Atomik: Variabel proposisi (P, Q, R) yang mewakili fakta dunia nyata (misal: P = 'Kabel terpasang').",
+      "Nilai Kebenaran: Setiap proposisi hanya memiliki dua kemungkinan nilai mutlak: True atau False.",
+      "Formula Majemuk: Dibangun dengan menggabungkan proposisi atomik menggunakan operator logika (connectives).",
+      "Karakteristik: Semantik terdefinisi secara presisi dan matematis tanpa ambiguitas bahasa alami."
+    ],
+    "notes": "Ingatkan mahasiswa bahwa dalam logika proposisional, kita tidak dapat melihat bagian dalam dari objek, proposisi adalah sebuah kotak hitam biner utuh."
+  },
+  {
+    "id": 8,
+    "kind": "content",
+    "title": "Operator Logika Proposisional (Connectives)",
+    "body": "Lima operator baku untuk menyusun kalimat majemuk formal:",
+    "bullets": [
+      "1. Negasi (NOT / ~): Membalikkan nilai kebenaran (~P bernilai True jika P False).",
+      "2. Konjungsi (AND / &): Bernilai True HANYA JIKA kedua sisi True (P & Q).",
+      "3. Disjungsi (OR / |): Bernilai True jika minimal salah satu sisi True (P | Q).",
+      "4. Implikasi Material (IMPLIES / ->): Hubungan kondisional JIKA P MAKA Q (P -> Q).",
+      "5. Bikondisional / Ekuivalensi (IFF / <->): Bernilai True jika kedua sisi bernilai sama persis (P <-> Q)."
+    ],
+    "notes": "Pastikan mahasiswa memahami bahwa operator logika proposisional memiliki preseden operasi baku: NOT paling tinggi, diikuti AND, OR, lalu IMPLIES dan IFF."
+  },
+  {
+    "id": 9,
+    "kind": "content",
+    "title": "Tabel Kebenaran (Truth Tables)",
+    "body": "Mendefinisikan arti semantik formal dari setiap kombinasi nilai logika:",
+    "bullets": [
+      "Jumlah Baris Model: Untuk n variabel proposisi, terdapat tepat 2^n kemungkinan kombinasi nilai dunia.",
+      "Tautologi: Formula yang selalu bernilai True di seluruh 2^n model (misal: P OR ~P).",
+      "Kontradiksi: Formula yang selalu bernilai False di seluruh model (misal: P AND ~P).",
+      "Satisfiable: Formula yang memiliki minimal satu baris model yang bernilai True."
+    ],
+    "notes": "Tabel kebenaran adalah metode pembuktian mutlak yang paling aman, karena mengecek seluruh semesta kemungkinan tanpa ada yang terlewat."
+  },
+  {
+    "id": 10,
+    "kind": "content",
+    "title": "Implikasi Material vs Kausalitas Dunia Nyata",
+    "body": "Memahami baris unik implikasi logika: JIKA P MAKA Q (P -> Q).",
+    "bullets": [
+      "Definisi Ekuivalen: (P -> Q) identik dengan (~P OR Q).",
+      "Kapan Implikasi Bernilai FALSE?: HANYA JIKA premis P bernilai Benar tetapi kesimpulan Q bernilai Salah!",
+      "Kasus Vacuously True: Jika premis P bernilai False, maka kalimat P -> Q otomatis bernilai TRUE.",
+      "Bukan Kausalitas: Implikasi logika tidak mensyaratkan adanya hubungan sebab-akibat fisik di dunia nyata, melainkan hubungan tabel kebenaran formal."
+    ],
+    "notes": "Berikan contoh janji dosen: 'Jika kamu dapat nilai A, saya beri hadiah'. Jika kamu tidak dapat A, dan dosen memberi atau tidak memberi hadiah, dosen tidak melanggar janji!"
+  },
+  {
+    "id": 11,
+    "kind": "content",
+    "title": "Logical Entailment (KB |= alpha) & Model Checking",
+    "body": "Fondasi keabsahan penarikan kesimpulan cerdas dalam kecerdasan buatan:",
+    "bullets": [
+      "Definisi Entailment (KB |= alpha): Kalimat alpha terikat secara logis dari KB jika dalam setiap model di mana KB bernilai True, alpha juga pasti bernilai True.",
+      "Subset Model: M(KB) adalah himpunan bagian dari M(alpha). Tidak ada kemungkinan dunia di mana KB benar tetapi alpha salah.",
+      "Metode Model Checking: Mengevaluasi seluruh 2^n baris tabel kebenaran untuk membuktikan apakah KB |= alpha.",
+      "Sifat Soundness: Algoritma penalar disebut Sound jika ia hanya menurunkan kesimpulan yang memang di-entail oleh KB (tidak pernah berhalusinasi fakta palsu)."
+    ],
+    "notes": "Model checking menjamin 100% kebenaran deduksi, namun kompleksitasnya eksponensial O(2^n), sehingga dibutuhkan aturan inferensi cepat seperti Modus Ponens."
+  },
+  {
+    "id": 12,
+    "kind": "content",
+    "title": "Aturan Inferensi Baku: Modus Ponens",
+    "body": "Pola penarikan kesimpulan deduktif paling terkenal sejak era Yunani Kuno:",
+    "bullets": [
+      "Bentuk Baku Modus Ponens:",
+      "  Premis 1: P",
+      "  Premis 2: P -> Q",
+      "  -----------------",
+      "  Konklusi: Q",
+      "Generalized Modus Ponens (Aturan Jamak):",
+      "  Premis 1: P1, P2, ..., Pk",
+      "  Premis 2: (P1 AND P2 AND ... AND Pk) -> Q",
+      "  -------------------------------------------",
+      "  Konklusi: Q",
+      "Kecepatan Komputasi: Berjalan dalam waktu cepat tanpa perlu membangkitkan tabel kebenaran 2^n."
+    ],
+    "notes": "Modus Ponens adalah aturan utama yang diulang-ulang oleh mesin inferensi Forward Chaining untuk memicu kaidah IF-THEN."
+  },
+  {
+    "id": 13,
+    "kind": "content",
+    "title": "Keterbatasan Logika Proposisional",
+    "body": "Mengapa logika proposisional tidak memadai untuk sistem cerdas skala besar?",
+    "bullets": [
+      "Kurangnya Daya Ekspresi Objek: Tidak mampu mengungkapkan pernyataan umum tentang kategori objek.",
+      "Kombinatorik Kalimat Meledak: Untuk menyatakan 'Setiap kabel putus membuat port down' pada 1000 port router, kita harus menulis 1000 aturan proposisi terpisah!",
+      "Ketiadaan Kuantifikasi: Tidak dapat menyatakan konsep 'Semua' (All) atau 'Ada minimal satu' (Exists).",
+      "Solusi Formal: Beralih ke First-Order Logic (FOL) yang memperkaya logika proposisional dengan objek, predikat, fungsi, dan kuantor."
+    ],
+    "notes": "Gunakan analogi: Logika Proposisional seperti bahasa alami tanpa kata benda dan kata sifat; First-Order Logic memberikan kita tata bahasa lengkap dengan subjek, predikat, dan kuantitas."
+  },
+  {
+    "id": 14,
+    "kind": "content",
+    "title": "Unsur-Unsur First-Order Logic (FOL)",
+    "body": "Tiga pilar representasi dunia dalam logika predikat tingkat pertama:",
+    "bullets": [
+      "1. Objek (Objects): Entitas konkret yang ada di dunia (misal: PC1, ServerA, Router1, Port0).",
+      "2. Predikat (Predicates): Properti atau relasi antarobjek yang menghasilkan nilai biner (misal: Connected(PC1, Router1), IsDown(Port0)).",
+      "3. Fungsi (Functions): Pemetaan dari objek ke objek lain (misal: IPAddressOf(Router1) -> '192.168.1.1').",
+      "4. Variabel: Menggantikan objek konkret dengan simbol peubah umum (x, y, z) untuk perumusan kaidah."
+    ],
+    "notes": "Jelaskan perbedaan predikat dan fungsi: Predikat menghasilkan nilai kebenaran True/False, sedangkan Fungsi menghasilkan objek lain."
+  },
+  {
+    "id": 15,
+    "kind": "content",
+    "title": "Kuantor Universal & Eksistensial dalam FOL",
+    "body": "Memungkinkan perumusan hukum-hukum umum yang elegan dan ringkas:",
+    "bullets": [
+      "Kuantor Universal (Untuk Semua / FORALL x):",
+      "  - Menyatakan bahwa sifat berlaku untuk seluruh anggota semesta objek.",
+      "  - Contoh: FORALL x (CableCut(x) -> InterfaceDown(x))",
+      "  - 'Untuk setiap interface x, jika kabel x putus maka interface x berstatus down.'",
+      "Kuantor Eksistensial (Terdapat Minimal Satu / EXISTS x):",
+      "  - Menyatakan bahwa ada minimal satu objek yang memenuhi kondisi.",
+      "  - Contoh: EXISTS x (Server(x) AND InfectedByMalware(x))",
+      "  - 'Terdapat minimal satu server x yang terinfeksi malware.'"
+    ],
+    "notes": "Perhatikan konvensi baku: Kuantor Universal biasanya berpasangan alami dengan Implikasi (->), sedangkan Kuantor Eksistensial berpasangan alami dengan Konjungsi (AND)."
+  },
+  {
+    "id": 16,
+    "kind": "content",
+    "title": "Representasi Pengetahuan Berbasis Kaidah (Rule-Based)",
+    "body": "Mengorganisasikan keahlian praktis pakar ke dalam struktur IF-THEN yang modular:",
+    "bullets": [
+      "Komponen Rule: IF [Himpunan Premis] THEN [Kesimpulan / Konsekuensi].",
+      "Basis Fakta (Working Memory): Himpunan kondisi observasi yang sedang dialami sistem saat ini.",
+      "Mesin Inferensi: Otak sistem yang mencocokkan fakta dengan aturan dan menentukan urutan eksekusi.",
+      "Modularitas Tinggi: Penambahan satu aturan keahlian baru tidak merusak atau menuntut penulisan ulang aturan lama."
+    ],
+    "notes": "Ini adalah struktur data Rule yang kita bangun di facts_and_rules.py: premis disimpan dalam hash set untuk pencarian O(1) cepat."
+  },
+  {
+    "id": 17,
+    "kind": "content",
+    "title": "Forward Chaining: Inferensi Berbasis Data (Bottom-Up)",
+    "body": "Berangkat dari fakta-fakta yang diketahui menuju penarikan kesimpulan akhir.",
+    "bullets": [
+      "Prinsip Operasi: Data-Driven / Bottom-Up. Mengambil fakta awal yang dilaporkan sensor atau pengguna.",
+      "Rule Firing: Kaidah yang seluruh premisnya telah ada di basis fakta akan dipicu (fired).",
+      "Akumulasi Kesimpulan: Konklusi kaidah dimasukkan sebagai fakta baru ke working memory.",
+      "Titik Tetap (Fixpoint): Proses diulang berputar hingga tidak ada lagi kaidah baru yang dapat dipicu.",
+      "Cocok untuk: Monitoring lalu lintas jaringan, sistem peringatan dini, dan diagnosis reaktif."
+    ],
+    "notes": "Forward chaining bergerak maju: dari gejala fisik di lantai pabrik menuju diagnosis kerusakan alat."
+  },
+  {
+    "id": 18,
+    "kind": "code",
+    "title": "Forward Chaining Walkthrough & Fixpoint",
+    "body": "Pola algoritma penarikan kesimpulan maju hingga titik jenuh:",
+    "code": "inferred_facts = set(kb.facts)\nwhile True:\n    new_fired = []\n    for rule in kb.rules:\n        if rule.conclusion not in inferred_facts:\n            if rule.premises.issubset(inferred_facts):\n                new_fired.append(rule)\n    if not new_fired: break  # Fixpoint tercapai\n    for rule in new_fired:\n        inferred_facts.add(rule.conclusion)",
+    "notes": "Jelaskan bahwa looping berakhir saat new_fired kosong. Pada basis pengetahuan berhingga, algoritma ini dijamin pasti berhenti (terminate)."
+  },
+  {
+    "id": 19,
+    "kind": "content",
+    "title": "Backward Chaining: Inferensi Berbasis Tujuan (Top-Down)",
+    "body": "Berangkat dari sebuah hipotesis tujuan (Goal) menuju pembuktian fakta-fakta dasar.",
+    "bullets": [
+      "Prinsip Operasi: Goal-Driven / Top-Down. Dimulai dari pertanyaan spesifik pengguna (misal: 'Apakah NIC rusak?').",
+      "Sub-Goal Recursion: Menjadikan premis-premis dari kaidah pendukung sebagai sub-tujuan baru yang wajib dibuktikan.",
+      "Efisiensi Selektif: Hanya memeriksa kaidah yang relevan dengan tujuan; mengabaikan ribuan aturan lain yang tidak berkaitan.",
+      "Proteksi Siklus: Memelihara tumpukan pemanggilan (active call stack) untuk mencegah infinite recursion pada kaidah melingkar.",
+      "Cocok untuk: Diagnosis medis klinis dan verifikasi audit kepatuhan hukum."
+    ],
+    "notes": "Backward chaining mirip dengan cara dokter spesialis bekerja: menduga suatu penyakit tertentu, lalu meminta tes laboratorium spesifik untuk membuktikannya."
+  },
+  {
+    "id": 20,
+    "kind": "split",
+    "title": "Perbandingan Forward vs Backward Chaining",
+    "body": "Memilih mesin inferensi yang paling proporsional dengan kebutuhan interaksi aplikasi:",
+    "columns": [
+      {
+        "heading": "Forward Chaining (Maju)",
+        "points": [
+          "Arah: Dari fakta awal ke seluruh kesimpulan.",
+          "Sifat: Pasif (menerima data lengkap di awal).",
+          "Kelebihan: Menghasilkan seluruh kesimpulan potensial.",
+          "Cocok untuk: Monitoring sensor IoT & alarm."
+        ]
+      },
+      {
+        "heading": "Backward Chaining (Mundur)",
+        "points": [
+          "Arah: Dari hipotesis spesifik ke fakta dasar.",
+          "Sifat: Aktif (menanyakan fakta hanya jika perlu).",
+          "Kelebihan: Sangat efisien, fokus pada tujuan.",
+          "Cocok untuk: Tanya-jawab diagnosis konsultatif."
+        ]
+      }
+    ],
+    "notes": "Gunakan perbandingan ini untuk menegaskan bahwa kedua metode memiliki keunggulannya masing-masing tergantung pada apakah data sudah terkumpul lengkap atau harus ditanyakan bertahap."
+  },
+  {
+    "id": 21,
+    "kind": "content",
+    "title": "Closed-World Assumption & Keterbatasan Simbolik",
+    "body": "Asumsi kritis mengenai batas pengetahuan sistem cerdas di dunia nyata:",
+    "bullets": [
+      "Closed-World Assumption (CWA): Mengasumsikan segala hal yang tidak tercatat di KB dianggap False.",
+      "Bahaya CWA: Ketiadaan informasi gejala (absence of evidence) sering kali keliru disimpulkan sebagai bukti ketiadaan masalah (evidence of absence).",
+      "Kerapuhan Logika (Brittleness): Sistem gagal total jika menemui fakta baru yang bertentangan dengan asumsi awal.",
+      "Knowledge Acquisition Bottleneck: Menulis manual ribuan kaidah IF-THEN sangat memakan waktu dan sulit dikelola.",
+      "Ketiadaan Probabilitas: Logika klasik kesulitan menangani fakta berderau (misal: 'Kabel kemungkinan 80% longgar')."
+    ],
+    "notes": "Inilah jembatan intelektual penting yang mengantarkan kita ke Chapter 06: untuk menangani ketidakpastian dunia nyata, AI harus mengadopsi teori probabilitas dan pemodelan statistik."
+  },
+  {
+    "id": 22,
+    "kind": "case",
+    "title": "Aktivitas Diskusi (Bagian 1): Skenario Studi Kasus",
+    "body": "Sebuah sistem pakar membantu teknisi jaringan mendiagnosis kegagalan koneksi internet kantor.",
+    "caseBox": {
+      "title": "Studi Kasus: Sistem Pakar Rule-Based Network Troubleshooting",
+      "scenario": "Sebuah workstation tidak dapat membuka halaman web. Fakta yang diamati: kabel LAN tertancap di port fisik, lampu link light pada kartu jaringan mati, dan uji ping ke default gateway menghasilkan timeout. Basis pengetahuan memiliki aturan diagnosis hardware NIC, konfigurasi DHCP IP, dan resolusi DNS.",
+      "options": [
+        "Strategi 1: Forward Chaining menjalankan inferensi menyeluruh dari seluruh pembacaan sensor interface.",
+        "Strategi 2: Backward Chaining membuktikan hipotesis kegagalan spesifik secara interaktif kepada teknisi.",
+        "Strategi 3: Mengandalkan penalaran CWA murni tanpa melakukan verifikasi fisik tambahan."
+      ]
+    },
+    "notes": "Berikan waktu bagi mahasiswa untuk menelaah gejala jaringan: lampu link mati, kabel tertancap, ping gateway gagal. Bagaimana kaidah IF-THEN menyimpulkan bahwa kartu jaringan (NIC) mengalami kerusakan fisik."
+  },
+  {
+    "id": 23,
+    "kind": "content",
+    "title": "Aktivitas Diskusi (Bagian 2): Pertanyaan Kritis",
+    "body": "Diskusikan dalam kelompok dan berikan analisis teknis terukur untuk tiga pertanyaan ini:",
+    "bullets": [
+      "1. Facts apa saja yang wajib direpresentasikan dalam Knowledge Base dan bagaimana merumuskan aturan inferensinya?",
+      "2. Kapan Forward Chaining lebih menguntungkan diterapkan, dan pada kondisi apa Backward Chaining jauh lebih hemat interaksi bagi teknisi lapangan?",
+      "3. Apa risiko fatal penerapan Closed-World Assumption jika teknisi belum sempat memeriksa status konfigurasi DNS server kantor?"
+    ],
+    "notes": "Arahkan mahasiswa membahas: 1) Representasi atomik status port; 2) Backward chaining hemat pertanyaan; 3) Jika DNS belum diperiksa dan dianggap False (CWA), sistem dapat salah menuduh koneksi internet putus total."
+  },
+  {
+    "id": 24,
+    "kind": "summary",
+    "title": "Ringkasan Modul & Poin Kunci",
+    "body": "Prinsip utama yang wajib dipahami dari representasi pengetahuan dan penalaran logika:",
+    "bullets": [
+      "Knowledge Representation memisahkan pengetahuan deklaratif dari algoritma mesin inferensi.",
+      "Logika Proposisional memformalkan nilai kebenaran kalimat majemuk melalui operator formal dan tabel kebenaran.",
+      "Model Checking membuktikan entailment KB |= alpha dengan mengevaluasi seluruh semesta kemungkinan model.",
+      "Modus Ponens adalah aturan inferensi deduktif baku penarik kesimpulan kaidah IF-THEN.",
+      "Forward Chaining bergerak maju dari data ke kesimpulan; Backward Chaining bergerak mundur membuktikan hipotesis tujuan.",
+      "Penalaran simbolik sangat transparan dan dapat dijelaskan (How Facility), namun membutuhkan teori probabilitas untuk menangani derau dunia nyata."
+    ],
+    "notes": "Rangkum seluruh capaian pembelajaran Chapter 05. Berikan apresiasi kepada mahasiswa yang telah menuntaskan seluruh fondasi Level 1 AI Foundations!"
+  },
+  {
+    "id": 25,
+    "kind": "content",
+    "title": "Referensi Akademik & Pratinjau Chapter 06",
+    "body": "Materi sesi ini bersumber dari rujukan primer akademik terverifikasi:",
+    "bullets": [
+      "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson. Bab 7 & 9.",
+      "Brachman, R., & Levesque, H. (2004). Knowledge Representation and Reasoning. Morgan Kaufmann.",
+      "Giarratano, J. C., & Riley, G. D. (2005). Expert Systems: Principles and Programming. Thomson Course Technology.",
+      "Pratinjau Chapter 06: 'Probability, Statistics & Linear Algebra for AI' — kita akan memasuki fondasi matematika AI modern: Teorema Bayes, variabel acak, aljabar linier, dan vektor representasi!"
+    ],
+    "notes": "Tutup perkuliahan dengan mengarahkan mahasiswa membaca Bab 20 (Mini Project Troubleshooting Jaringan) pada modul bacaan sebelum melangkah ke Chapter 06."
+  }
+]

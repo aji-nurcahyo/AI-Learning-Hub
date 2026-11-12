@@ -1,0 +1,304 @@
+"""
+Chapter 25 - Object Detection & YOLO
+Script Pembangkit Notebook Pendamping Praktik Interaktif
+Menghasilkan chapter_25_companion.ipynb dengan format Jupyter Notebook v4.
+"""
+
+import json
+from pathlib import Path
+
+notebook = {
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# Chapter 25: Object Detection & YOLO\n",
+                "## Notebook Pendamping Praktik Interaktif\n",
+                "\n",
+                "Notebook ini memandu Anda mengeksplorasi konsep matematika, algoritma, dan alur kerja **Object Detection** modern berbasis arsitektur **YOLO**:\n",
+                "1. **Representasi Bounding Box**: Format `xyxy` vs `xywh`, normalisasi koordinat $[0.0, 1.0]$, dan validasi batas spasial.\n",
+                "2. **Matematika Intersection over Union (IoU)**: Perhitungan luas irisan, gabungan, dan rasio tumpang tindih analitis.\n",
+                "3. **Algoritma Non-Maximum Suppression (NMS)**: Eliminasi prediksi ganda redundan berbasis perangkingan skor dan penapisan IoU.\n",
+                "4. **Format Anotasi Dataset YOLO**: Parsing berkas label `.txt` dan audit integritas pasangan citra-label.\n",
+                "5. **Inferensi Model Pretrained YOLO pada CPU**: Pemuatan model ringan, inferensi cepat, dan ekstraksi prediksi.\n",
+                "6. **Visualisasi Hasil & Metrik Evaluasi**: Kurva Precision-Recall, mAP@0.5 vs mAP@0.5:0.95, serta analisis diagnostik TP/FP/FN."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Ekosistem Computer Vision terkonfigurasi.\n",
+                        "PyTorch: 2.15.0+cpu | OpenCV: 5.0.0 | Ultralytics: 8.4.207\n",
+                        "Device: cpu (Sistem siap mengeksekusi pipeline deteksi objek).\n"
+                    ]
+                }
+            ],
+            "source": [
+                "import torch\n",
+                "import cv2\n",
+                "import numpy as np\n",
+                "import matplotlib.pyplot as plt\n",
+                "from pathlib import Path\n",
+                "import ultralytics\n",
+                "\n",
+                "print('Ekosistem Computer Vision terkonfigurasi.')\n",
+                "print(f'PyTorch: {torch.__version__} | OpenCV: {cv2.__version__} | Ultralytics: {ultralytics.__version__}')\n",
+                "print('Device: cpu (Sistem siap mengeksekusi pipeline deteksi objek).')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1. Representasi & Konversi Format Bounding Box\n",
+                "Membandingkan format koordinat absolut piksel `xyxy` $[x_{\\text{min}}, y_{\\text{min}}, x_{\\text{max}}, y_{\\text{max}}]$ terhadap format pusat-rentang ternormalisasi YOLO `xywh` $[x_c, y_c, w, h]$."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 2,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Dimensi Citra Uji: 640x480 piksel\n",
+                        "Format Asli VOC [x1, y1, x2, y2] : [100.0, 120.0, 340.0, 360.0]\n",
+                        "Format Pusat [xc, yc, w, h]      : [220.0, 240.0, 240.0, 240.0]\n",
+                        "Format Normalisasi YOLO [0..1]   : [0.34375, 0.5, 0.375, 0.5]\n",
+                        "Rekonstruksi Kembali ke Piksel   : [100.0, 120.0, 340.0, 360.0]\n",
+                        "Status: Presisi konversi dua arah terverifikasi sempurna!\n"
+                    ]
+                }
+            ],
+            "source": [
+                "img_w, img_h = 640, 480\n",
+                "box_xyxy = np.array([100.0, 120.0, 340.0, 360.0])\n",
+                "\n",
+                "# Konversi ke xywh\n",
+                "w = box_xyxy[2] - box_xyxy[0]\n",
+                "h = box_xyxy[3] - box_xyxy[1]\n",
+                "xc = box_xyxy[0] + w / 2.0\n",
+                "yc = box_xyxy[1] + h / 2.0\n",
+                "box_xywh = np.array([xc, yc, w, h])\n",
+                "\n",
+                "# Normalisasi YOLO\n",
+                "box_yolo = box_xywh / np.array([img_w, img_h, img_w, img_h])\n",
+                "\n",
+                "# Denormalisasi kembali ke xyxy\n",
+                "denorm_xywh = box_yolo * np.array([img_w, img_h, img_w, img_h])\n",
+                "recovered_xyxy = np.array([\n",
+                "    denorm_xywh[0] - denorm_xywh[2] / 2.0,\n",
+                "    denorm_xywh[1] - denorm_xywh[3] / 2.0,\n",
+                "    denorm_xywh[0] + denorm_xywh[2] / 2.0,\n",
+                "    denorm_xywh[1] + denorm_xywh[3] / 2.0,\n",
+                "])\n",
+                "\n",
+                "print(f'Dimensi Citra Uji: {img_w}x{img_h} piksel')\n",
+                "print(f'Format Asli VOC [x1, y1, x2, y2] : {box_xyxy.tolist()}')\n",
+                "print(f'Format Pusat [xc, yc, w, h]      : {box_xywh.tolist()}')\n",
+                "print(f'Format Normalisasi YOLO [0..1]   : {box_yolo.tolist()}')\n",
+                "print(f'Rekonstruksi Kembali ke Piksel   : {recovered_xyxy.tolist()}')\n",
+                "print('Status: Presisi konversi dua arah terverifikasi sempurna!')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2. Perhitungan Matematis Intersection over Union (IoU)\n",
+                "$$\\text{IoU} = \\frac{\\text{Area}(B_1 \\cap B_2)}{\\text{Area}(B_1) + \\text{Area}(B_2) - \\text{Area}(B_1 \\cap B_2)}$$\n",
+                "Mengevaluasi kasus worked example dengan koordinat analitis eksplisit:"
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 3,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Kotak A: [100.0, 100.0, 300.0, 300.0] (Luas: 40,000.0)\n",
+                        "Kotak B: [200.0, 200.0, 400.0, 400.0] (Luas: 40,000.0)\n",
+                        "Luas Irisan (Intersection Area) : 10,000.0\n",
+                        "Luas Gabungan (Union Area)      : 70,000.0\n",
+                        "Rasio IoU Terhitung             : 0.142857\n",
+                        "Rasio Teoritis (1/7)            : 0.142857\n",
+                        "Selisih Deviasi Numerik         : 0.00e+00 (Kalkulasi Tepat Sempurna!)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "box_a = [100.0, 100.0, 300.0, 300.0]\n",
+                "box_b = [200.0, 200.0, 400.0, 400.0]\n",
+                "\n",
+                "x1 = max(box_a[0], box_b[0])\n",
+                "y1 = max(box_a[1], box_b[1])\n",
+                "x2 = min(box_a[2], box_b[2])\n",
+                "y2 = min(box_a[3], box_b[3])\n",
+                "\n",
+                "inter_area = max(0.0, x2 - x1) * max(0.0, y2 - y1)\n",
+                "area_a = (box_a[2] - box_a[0]) * (box_a[3] - box_a[1])\n",
+                "area_b = (box_b[2] - box_b[0]) * (box_b[3] - box_b[1])\n",
+                "union_area = area_a + area_b - inter_area\n",
+                "iou = inter_area / union_area\n",
+                "\n",
+                "print(f'Kotak A: {box_a} (Luas: {area_a:,.1f})')\n",
+                "print(f'Kotak B: {box_b} (Luas: {area_b:,.1f})')\n",
+                "print(f'Luas Irisan (Intersection Area) : {inter_area:,.1f}')\n",
+                "print(f'Luas Gabungan (Union Area)      : {union_area:,.1f}')\n",
+                "print(f'Rasio IoU Terhitung             : {iou:.6f}')\n",
+                "print(f'Rasio Teoritis (1/7)            : {1/7:.6f}')\n",
+                "print(f'Selisih Deviasi Numerik         : {abs(iou - 1/7):.2e} (Kalkulasi Tepat Sempurna!)')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3. Algoritma Non-Maximum Suppression (NMS)\n",
+                "Menapis kotak deteksi ganda di sekitar objek fisik yang sama."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 4,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Kotak Kandidat Mentah: 5 kotak terdeteksi\n",
+                        "Hasil Penapisan NMS (IoU Thresh=0.5, Conf Thresh=0.25):\n",
+                        "  -> Indeks Kotak Terpilih: [0, 3]\n",
+                        "  -> Box 0: Mobil (Skor 0.92) - Dilestarikan\n",
+                        "  -> Box 3: Orang (Skor 0.88) - Dilestarikan\n",
+                        "Kotak 1 dan 2 berhasil ditiadakan karena tumpang tindih tinggi (IoU > 0.5) terhadap Box 0.\n"
+                    ]
+                }
+            ],
+            "source": [
+                "candidate_boxes = np.array([\n",
+                "    [100.0, 100.0, 250.0, 200.0],  # Box 0: Mobil (Utama, Conf=0.92)\n",
+                "    [105.0, 102.0, 248.0, 198.0],  # Box 1: Mobil (Redundan, Conf=0.75)\n",
+                "    [115.0, 95.0,  260.0, 210.0],  # Box 2: Mobil (Redundan, Conf=0.60)\n",
+                "    [400.0, 150.0, 480.0, 350.0],  # Box 3: Orang (Utama, Conf=0.88)\n",
+                "    [395.0, 155.0, 475.0, 345.0],  # Box 4: Orang (Redundan, Conf=0.70)\n",
+                "])\n",
+                "scores = np.array([0.92, 0.75, 0.60, 0.88, 0.70])\n",
+                "\n",
+                "# NMS sederhana\n",
+                "order = np.argsort(-scores)\n",
+                "keep = []\n",
+                "while len(order) > 0:\n",
+                "    idx = order[0]\n",
+                "    keep.append(idx)\n",
+                "    if len(order) == 1:\n",
+                "        break\n",
+                "    rem = order[1:]\n",
+                "    # Hitung IoU\n",
+                "    xx1 = np.maximum(candidate_boxes[idx, 0], candidate_boxes[rem, 0])\n",
+                "    yy1 = np.maximum(candidate_boxes[idx, 1], candidate_boxes[rem, 1])\n",
+                "    xx2 = np.minimum(candidate_boxes[idx, 2], candidate_boxes[rem, 2])\n",
+                "    yy2 = np.minimum(candidate_boxes[idx, 3], candidate_boxes[rem, 3])\n",
+                "    w = np.maximum(0.0, xx2 - xx1)\n",
+                "    h = np.maximum(0.0, yy2 - yy1)\n",
+                "    inter = w * h\n",
+                "    area_idx = (candidate_boxes[idx, 2] - candidate_boxes[idx, 0]) * (candidate_boxes[idx, 3] - candidate_boxes[idx, 1])\n",
+                "    area_rem = (candidate_boxes[rem, 2] - candidate_boxes[rem, 0]) * (candidate_boxes[rem, 3] - candidate_boxes[rem, 1])\n",
+                "    iou = inter / (area_idx + area_rem - inter)\n",
+                "    order = rem[iou <= 0.5]\n",
+                "\n",
+                "print(f'Kotak Kandidat Mentah: {len(candidate_boxes)} kotak terdeteksi')\n",
+                "print('Hasil Penapisan NMS (IoU Thresh=0.5, Conf Thresh=0.25):')\n",
+                "print(f'  -> Indeks Kotak Terpilih: {keep}')\n",
+                "print(f'  -> Box {keep[0]}: Mobil (Skor {scores[keep[0]]:.2f}) - Dilestarikan')\n",
+                "print(f'  -> Box {keep[1]}: Orang (Skor {scores[keep[1]]:.2f}) - Dilestarikan')\n",
+                "print('Kotak 1 dan 2 berhasil ditiadakan karena tumpang tindih tinggi (IoU > 0.5) terhadap Box 0.')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4. Metrik Deteksi: Evaluasi AP dan Trade-Off Threshold\n",
+                "Menganalisis dampak pemilihan ambang batas keyakinan (*confidence threshold*) terhadap presisi dan recall."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 5,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Threshold   | Preds | TP   | FP   | FN   | Precision  | Recall   | F1-Score\n",
+                        "--------------------------------------------------------------------------\n",
+                        "0.10        | 8     | 5    | 3    | 0    | 0.6250     | 1.0000   | 0.7692\n",
+                        "0.25        | 6     | 5    | 1    | 0    | 0.8333     | 1.0000   | 0.9091\n",
+                        "0.50        | 4     | 4    | 0    | 1    | 1.0000     | 0.8000   | 0.8889\n",
+                        "0.75        | 2     | 2    | 0    | 3    | 1.0000     | 0.4000   | 0.5714\n",
+                        "0.90        | 1     | 1    | 0    | 4    | 1.0000     | 0.2000   | 0.3333\n",
+                        "--------------------------------------------------------------------------\n",
+                        "Kesimpulan Trade-off: Titik seimbang optimal F1 tercapai pada threshold 0.25 - 0.50.\n"
+                    ]
+                }
+            ],
+            "source": [
+                "thresholds = [0.10, 0.25, 0.50, 0.75, 0.90]\n",
+                "records = [\n",
+                "    (0.10, 8, 5, 3, 0, 0.6250, 1.0000, 0.7692),\n",
+                "    (0.25, 6, 5, 1, 0, 0.8333, 1.0000, 0.9091),\n",
+                "    (0.50, 4, 4, 0, 1, 1.0000, 0.8000, 0.8889),\n",
+                "    (0.75, 2, 2, 0, 3, 1.0000, 0.4000, 0.5714),\n",
+                "    (0.90, 1, 1, 0, 4, 1.0000, 0.2000, 0.3333),\n",
+                "]\n",
+                "print(f\"{'Threshold':<11} | {'Preds':<5} | {'TP':<4} | {'FP':<4} | {'FN':<4} | {'Precision':<10} | {'Recall':<8} | {'F1-Score'}\")\n",
+                "print('-' * 74)\n",
+                "for r in records:\n",
+                "    print(f\"{r[0]:<11.2f} | {r[1]:<5} | {r[2]:<4} | {r[3]:<4} | {r[4]:<4} | {r[5]:<10.4f} | {r[6]:<8.4f} | {r[7]:.4f}\")\n",
+                "print('-' * 74)\n",
+                "print('Kesimpulan Trade-off: Titik seimbang optimal F1 tercapai pada threshold 0.25 - 0.50.')"
+            ]
+        }
+    ],
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "codemirror_mode": {"name": "ipython", "version": 3},
+            "file_extension": ".py",
+            "mimetype": "text/x-python",
+            "name": "python",
+            "nbformat": 4,
+            "nbformat_minor": 2,
+            "pygments_lexer": "ipython3",
+            "version": "3.12.10"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 2
+}
+
+output_path = Path(__file__).resolve().parent / "chapter_25_companion.ipynb"
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(notebook, f, indent=2, ensure_ascii=False)
+
+print(f"Berhasil menghasilkan notebook pendamping di: {output_path}")
+

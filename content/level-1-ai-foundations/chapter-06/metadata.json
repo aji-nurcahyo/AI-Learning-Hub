@@ -1,0 +1,77 @@
+{
+  "id": 6,
+  "slug": "chapter-06",
+  "levelId": 1,
+  "title": "Probability, Statistics & Linear Algebra for AI",
+  "status": "published",
+  "description": "Fondasi kuantitatif kecerdasan buatan: statistik deskriptif, teori probabilitas, Teorema Bayes, aljabar vektor dan matriks, serta kalkulus diferensial dan optimasi Gradient Descent.",
+  "objectives": [
+    "Menjelaskan peran fundamental Probability, Statistics, Linear Algebra, dan Calculus dalam arsitektur AI.",
+    "Menghitung ukuran statistik pemusatan, varians sampel dengan koreksi Bessel, standar deviasi, dan mendeteksi pencilan.",
+    "Menerapkan konsep probabilitas bersyarat, uji independensi stokastik, dan nilai harapan pada variabel acak.",
+    "Menghitung probabilitas posterior menggunakan Teorema Bayes dan menganalisis fenomena Base Rate Fallacy.",
+    "Mengoperasikan manipulasi vektor meliputi penjumlahan, perkalian skalar, norma L1/L2, dot product, dan cosine similarity.",
+    "Mengoperasikan perkalian matriks formal, transposisi, dan membedakannya dari perkalian element-wise Hadamard.",
+    "Menjelaskan konsep turunan pertama, turunan parsial, dan arah vektor gradien pada fungsi multivariat.",
+    "Menghubungkan konsep kalkulus dengan AI melalui perumusan fungsi loss Mean Squared Error dan optimasi Gradient Descent.",
+    "Mengimplementasikan algoritma perhitungan numerik menggunakan Python murni tanpa dependensi eksternal kompleks.",
+    "Mengevaluasi hasil numerik, keterbatasan komputasi floating-point, dan stabilitas konvergensi learning rate."
+  ],
+  "prerequisites": [
+    5
+  ],
+  "tags": [
+    "AI Foundations",
+    "Probability",
+    "Statistics",
+    "Linear Algebra",
+    "Calculus",
+    "Gradient Descent",
+    "Bayes Theorem"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Deisenroth, M. P., Faisal, A. A., & Ong, C. S. (2020). Mathematics for Machine Learning. Cambridge University Press.",
+      "url": "https://mml-book.github.io/",
+      "status": "verified"
+    },
+    {
+      "title": "Strang, G. (2019). Linear Algebra and Learning from Data. Wellesley-Cambridge Press.",
+      "url": "https://math.mit.edu/~gs/learningfromdata/",
+      "status": "verified"
+    },
+    {
+      "title": "Wasserman, L. (2004). All of Statistics: A Concise Course in Statistical Inference. Springer.",
+      "url": "https://link.springer.com/book/10.1007/978-0-387-21736-9",
+      "status": "verified"
+    },
+    {
+      "title": "ACM/IEEE-CS/AAAI Computer Science Curricula 2023 (CS2023) - AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

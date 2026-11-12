@@ -1,0 +1,42 @@
+{
+  "schema_version": "model-card-edu-v1",
+  "generated_date": "2026-11-11",
+  "model_details": {
+    "name": "SyntheticScreeningBaseline",
+    "version": "1.0.0",
+    "architecture": "LogisticRegression / RandomForest (CPU Reference)",
+    "owner": "ITERA AI Learning Hub Coursework Team",
+    "license": "CC-BY-4.0 (Educational Use Only)"
+  },
+  "intended_use": {
+    "primary_domain": "Demonstrating group fairness & robustness diagnostics in academic workshops.",
+    "out_of_scope_and_prohibited": [
+      "Real-world scholarship, hiring, medical, or credit eligibility decisions.",
+      "Deployment without domain validation and human oversight."
+    ]
+  },
+  "datasets_and_evaluation": {
+    "dataset_type": "Controlled Synthetic Tabular Corpus (zero personal data)",
+    "overall_accuracy": 0.8389,
+    "subgroup_breakdown": {
+      "Group A (Synthetic Majority)": {
+        "accuracy": 0.859,
+        "tpr": 0.802,
+        "fpr": 0.114
+      },
+      "Group B (Synthetic Minority)": {
+        "accuracy": 0.778,
+        "tpr": 0.562,
+        "fpr": 0.145
+      }
+    }
+  },
+  "ethical_and_safety_considerations": {
+    "human_oversight": "Mandatory human review required for uncertain or adverse decisions.",
+    "regulatory_status": "Educational artifact only; NOT formally certified under ISO/IEC 42001 or statutory audits.",
+    "limitations": [
+      "Trained on synthetic distributions containing injected proxy measurement shift.",
+      "Subgroup accuracy disparity observed; requires mitigation before any practical trial."
+    ]
+  }
+}

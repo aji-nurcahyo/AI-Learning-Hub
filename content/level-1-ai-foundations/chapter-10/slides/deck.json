@@ -1,0 +1,160 @@
+[
+  {
+    "kind": "cover",
+    "title": "AI Foundations Capstone",
+    "body": "### Project-Based Learning & Integrasi Kompetensi Level 1\n\n**Level 1 — AI Foundations | Chapter 10**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di sesi pengarahan Chapter 10: AI Foundations Capstone. Ini adalah bab penutup Level 1 yang menguji kemandirian mahasiswa dalam merumuskan, merancang, mengimplementasikan, dan menguji sistem cerdas nyata berbasis kompetensi Bab 01 hingga 09."
+  },
+  {
+    "kind": "content",
+    "title": "What Is an AI Foundations Capstone?",
+    "body": "Hakikat proyek puncak fondasi kecerdasan buatan:\n\n- **Project-Based Learning (PBL)**: Pembelajaran berbasis proyek nyata untuk memecahkan masalah kontekstual secara terstruktur.\n- **Bukan Membangun Model ML**: Capstone ini tidak mewajibkan pelatihan Machine Learning, melainkan mengintegrasikan fondasi simbolik, pencarian, data, dan etika.\n- **Kualitas Konsep vs Kerumitan**: Solusi yang elegan, teruji, dan dapat diverifikasi jauh lebih bernilai daripada sistem rumit yang tidak dapat dipertanggungjawabkan.\n- **Jembatan Kompetensi**: Membuktikan kesiapan mahasiswa sebelum melangkah ke Level 2 (Machine Learning).",
+    "notes": "Tekankan kepada mahasiswa bahwa Capstone Level 1 bukan perlombaan membuat model paling canggih, melainkan pembuktian metodologi rekayasa kecerdasan buatan yang kokoh."
+  },
+  {
+    "kind": "content",
+    "title": "Capaian Pembelajaran Capstone",
+    "body": "Target kompetensi utama yang dinilai pada proyek ini:\n\n- **Mengidentifikasi** masalah nyata dan memilih solusi deterministik vs AI.\n- **Merumuskan** masalah secara formal (PEAS & State Space).\n- **Merancang** arsitektur Input–Processing–Output secara modular.\n- **Mengintegrasikan** minimal beberapa materi dari Chapter 01–09.\n- **Mengimplementasikan** prototype Python mandiri dan reproducible.\n- **Mengelola** data dan melakukan Data Preparation jika diperlukan.\n- **Menyusun** rencana pengujian (Testing Plan) berbasis kriteria sukses.\n- **Mengevaluasi** risiko keselamatan, privasi, dan Responsible AI.",
+    "notes": "Jelaskan bahwa penilaian mencakup seluruh siklus hidup pengembangan sistem, mulai dari formulasi ide hingga evaluasi etika."
+  },
+  {
+    "kind": "content",
+    "title": "Review Integrasi Level 1",
+    "body": "Pemetaan delapan pilar kompetensi yang telah dipelajari:\n\n- **Ch 01–03**: Definisi rasionalitas, taksonomi agen, dan perumusan PEAS.\n- **Ch 04**: Algoritma pencarian graf (Uninformed BFS & Informed A*).\n- **Ch 05**: Representasi pengetahuan First-Order Logic & Forward Chaining.\n- **Ch 06**: Aljabar linear matriks, probabilitas, dan statistik deskriptif.\n- **Ch 07**: Ekosistem Python (NumPy, Pandas, Matplotlib) & clean code.\n- **Ch 08**: Pembersihan data, imputasi terarah, dan analisis outlier.\n- **Ch 09**: Audit keadilan (fairness), privasi UU PDP, dan NIST AI RMF.",
+    "notes": "Ingatkan kembali bahwa setiap proyek mahasiswa minimal wajib menghubungkan setidaknya 4 pilar dari daftar ini."
+  },
+  {
+    "kind": "content",
+    "title": "Capstone Workflow (6 Stages)",
+    "body": "Enam tahapan terstruktur pelaksanaan proyek Capstone:\n\n- **Stage 1 (Problem Definition)**: Identifikasi masalah, pemangku kepentingan, dan baseline.\n- **Stage 2 (System Design)**: Perancangan arsitektur, skema data, aturan, dan flowchart.\n- **Stage 3 (Implementation)**: Penulisan kode Python modular dan data sintetis.\n- **Stage 4 (Testing & Validation)**: Uji unit otomatis, expected vs actual, dan analisis galat.\n- **Stage 5 (Responsible AI)**: Audit privasi data, transparansi, dan pengawasan manusia.\n- **Stage 6 (Documentation & Presentation)**: Laporan akhir dan demonstrasi.",
+    "notes": "Jelaskan bahwa proyek dikerjakan secara bertahap melalui 5 milestone mingguan agar kemajuan mahasiswa terpantau rapi."
+  },
+  {
+    "kind": "split",
+    "title": "Problem Identification",
+    "body": "Menemukan dan membedah akar permasalahan empiris:\n\n### Eksplorasi Konteks Nyata\n- Amati inefisiensi atau risiko di sekitar: jaringan kampus, pemborosan energi, antrean, atau data sensor bising.\n- Wawancarai pemangku kepentingan (*stakeholders*) untuk memahami kebutuhan riil.\n\n### Analisis Kebutuhan\n- Bedakan antara *kebutuhan esensial* (must-have) dan *keinginan tambahan* (nice-to-have).\n- Identifikasi batasan komputasi, waktu, dan ketersediaan data.",
+    "notes": "Dorong mahasiswa untuk memilih masalah yang benar-benar mereka pahami konteksnya di lingkungan kampus atau industri lokal."
+  },
+  {
+    "kind": "split",
+    "title": "AI vs Non-AI Decision",
+    "body": "Prinsip kehati-hatian dalam pemilihan teknologi:\n\n### Solusi Non-AI (Deterministik)\n- **Karakteristik**: Aturan pasti, rumus fisika baku, logika percabangan sederhana.\n- **Keunggulan**: Cepat, 100% konsisten, mudah diaudit, dan hemat sumber daya.\n- **Aturan Emas**: Jika kalkulasi deterministik sudah memadai, prioritaskan Non-AI!\n\n### Solusi Berbasis AI\n- **Karakteristik**: Menghadapi ketidakpastian, data beragam, atau ruang pencarian kombinasional yang sangat besar.",
+    "notes": "Tegaskan bahwa mahasiswa yang memilih solusi deterministik sederhana dan berhasil membuktikannya akan mendapat nilai tinggi atas kematangan berpikir rekayasa."
+  },
+  {
+    "kind": "content",
+    "title": "Problem Formulation Formal",
+    "body": "Merumuskan masalah rekayasa secara ilmiah:\n\n- **Spesifikasi PEAS**:\n  - *Performance measure*: Metrik keberhasilan kuantitatif (waktu, DQI, biaya rute).\n  - *Environment*: Karakteristik lingkungan (statis/dinamis, teramati penuh/sebagian).\n  - *Actuators*: Mekanisme tindakan atau luaran yang dihasilkan sistem.\n  - *Sensors*: Format masukan telemetri atau data mentah yang diterima.\n- **Search Problem Formulations**:\n  - State Space, Actions, Transition Model, Goal Test, dan Path Cost.",
+    "notes": "Gunakan kerangka PEAS dari Bab 03 sebagai template wajib dalam proposal proyek mahasiswa."
+  },
+  {
+    "kind": "split",
+    "title": "System Architecture Design",
+    "body": "Prinsip perancangan arsitektur perangkat lunak cerdas:\n\n### Modularitas Tinggi\n- Pisahkan fungsi pembangkit data, validator, analisis statistik, mesin aturan, dan visualisasi ke berkas mandiri.\n- Hindari skrip monolitik raksasa yang sulit diuji.\n\n### Pipeline Aliran Data\n- Pastikan aliran data satu arah yang jelas dari input mentah menuju rekomendasi akhir.\n- Sediakan jejak audit (*audit trail*) pada setiap transformasi data.",
+    "notes": "Tekankan pentingnya clean architecture agar kode mudah diuji melalui unit testing otomatis."
+  },
+  {
+    "kind": "content",
+    "title": "Pola Input–Processing–Output (IPO)",
+    "body": "Struktur standar pemrosesan sistem Level 1:\n\n- **Input Layer**:\n  - File CSV telemetri, rekaman status sistem, atau parameter koordinat pengguna.\n  - Pengecekan skema dan kelengkapan kolom wajib.\n- **Processing Layer**:\n  - Pembersihan missing values dan verifikasi batas fisika domain.\n  - Komputasi statistik (mean, median, IQR) atau inferensi aturan logika.\n  - Optimisasi jalur graf jika bertipe pencarian (A* search).\n- **Output Layer**:\n  - Laporan status, skor kualitas (DQI), rute optimal, alert, atau dashboard grafis.",
+    "notes": "Setiap proyek Capstone wajib memetakan modul-modul kodenya ke dalam skema IPO ini."
+  },
+  {
+    "kind": "content",
+    "title": "Pilihan Topik Proyek (Overview)",
+    "body": "Lima pilihan proyek standar dengan bobot evaluasi setara:\n\n- **Opsi 1**: Rule-Based Network Troubleshooting Assistant.\n- **Opsi 2**: Search-Based Indoor Navigation System.\n- **Opsi 3**: Smart Sensor Data Quality Monitor *(Primary Reference)*.\n- **Opsi 4**: Explainable Scholarship Screening Prototype.\n- **Opsi 5**: Intelligent Energy Usage Advisory System.\n- **Opsi Mandiri**: Proposal topik sendiri dengan persetujuan dosen pengampu.\n\nSeluruh opsi dinilai menggunakan rubrik 100 poin yang seragam.",
+    "notes": "Jelaskan bahwa mahasiswa bebas memilih topik sesuai minat karir mereka, baik di bidang jaringan, robotika, analitik data, maupun tata kelola sistem cerdas."
+  },
+  {
+    "kind": "split",
+    "title": "Option 1: Network Troubleshooting",
+    "body": "Asisten diagnosis gangguan konektivitas jaringan:\n\n### Fitur Minimal\n- Input gejala gangguan (IP conflict, DNS timeout, gateway drop).\n- Knowledge Base First-Order Logic dan mesin Forward Chaining.\n- Penjelasan aturan rantai deduksi (*audit trail*).\n- Penanganan gejala tidak lengkap.\n\n### Batasan Penting\n- Sistem dilarang mengklaim hasil sebagai kepastian mutlak; status selalu berupa rekomendasi awal untuk teknisi.",
+    "notes": "Cocok untuk mahasiswa yang tertarik pada infrastruktur sistem informasi dan jaringan komputer."
+  },
+  {
+    "kind": "split",
+    "title": "Option 2: Indoor Navigation System",
+    "body": "Pencarian rute evakuasi atau navigasi ruangan:\n\n### Fitur Minimal\n- Representasi graf grid lantai (minimal 10 x 10 simpul).\n- Titik awal, rintangan dinamis, dan simpul tujuan keluar.\n- Algoritma A* dengan heuristik Manhattan admissible.\n- Evaluasi efisiensi simpul dibandingkan baseline BFS.\n\n### Batasan Penting\n- Wajib menangani kondisi simpul tujuan tak terjangkau (*unreachable goal*) secara anggun.",
+    "notes": "Cocok untuk mahasiswa yang berminat pada robotika, game development, dan algoritma graf klasik."
+  },
+  {
+    "kind": "split",
+    "title": "Option 3: Sensor Quality Monitor",
+    "body": "Pemantau kualitas telemetri sensor IoT industri:\n\n### Fitur Minimal\n- Ingesti dataset deret waktu multi-sensor sintetis.\n- Validasi skema & batas operasional fisika sensor.\n- Pagar Tukey IQR untuk deteksi lonjakan statistik.\n- Mesin aturan alert dan kalkulasi Data Quality Index (DQI).\n- Dashboard visualisasi Matplotlib mode headless.\n\n### Status Proyek\n- Menjadi **Reference Implementation** resmi Chapter 10.",
+    "notes": "Jelaskan bahwa proyek ini mengintegrasikan matematika, ekosistem data, logika aturan, dan etika secara menyeluruh."
+  },
+  {
+    "kind": "split",
+    "title": "Option 4: Scholarship Screening",
+    "body": "Prototype penapisan administratif transparan:\n\n### Fitur Minimal\n- Dataset sintetis berkas pelamar beasiswa akademik.\n- Aturan kelayakan eksplisit (IPK, batas penghasilan, dokumen).\n- Transparansi alasan lolos/ditolak ke peninjauan komite.\n- Desain mekanisme sanggahan (*appeals mechanism*).\n\n### Batasan Penting\n- Dilarang memakai data mahasiswa asli; dilarang membuat keputusan final otomatis tanpa komite manusia.",
+    "notes": "Sangat relevan untuk mendalami pilar keadilan algoritmik dan perlindungan data pribadi UU PDP."
+  },
+  {
+    "kind": "split",
+    "title": "Option 5: Energy Advisory System",
+    "body": "Sistem penasihat efisiensi konsumsi daya gedung:\n\n### Fitur Minimal\n- Dataset konsumsi daya kWh sintetis per lantai kampus.\n- Statistik ringkasan beban dasar harian dan beban puncak.\n- Aturan inferensi pemborosan daya di luar jam kerja.\n- Rekomendasi jadwal penghematan berbasis skenario.\n\n### Batasan Penting\n- Dilarang mengklaim penghematan riil tanpa verifikasi data lapangan jangka panjang.",
+    "notes": "Pilihan tepat bagi mahasiswa yang tertarik pada isu keberlanjutan energi (green computing)."
+  },
+  {
+    "kind": "content",
+    "title": "Reference Implementation Overview",
+    "body": "Membedah Smart Sensor Data Quality Monitor:\n\n- **Kenapa Opsi 3?** Mengintegrasikan statistik, Python, Data Preparation, Rule-Based Reasoning, dan Responsible AI tanpa butuh training model ML.\n- **Dataset Deterministik**: Menggunakan random seed tetap (`seed=42`) untuk menjamin sifat keterulangan (*reproducibility*).\n- **Modularitas Kode**: Terbagi rapi ke dalam generator data, validator, penganalisis statistik, mesin aturan, dan visualisasi.\n- **Keluaran Terverifikasi**: Menghasilkan log terminal yang jelas, skor DQI, dan dashboard grafis beresolusi tinggi.",
+    "notes": "Jelaskan arsitektur kode referensi yang tersedia di folder code/ repositori."
+  },
+  {
+    "kind": "code",
+    "title": "Data Preparation: Validasi Batas Fisik",
+    "body": "Membedakan kerusakan sensor dari data normal:",
+    "code": "def validate_sensor_records(df):\n    validated_df = df.copy()\n    validated_df['validation_status'] = 'VALID'\n    for idx, row in validated_df.iterrows():\n        val, sid = row['measurement_value'], row['sensor_id']\n        if pd.isna(val):\n            validated_df.at[idx, 'validation_status'] = 'MISSING'\n        elif sid in PHYSICAL_BOUNDS:\n            b = PHYSICAL_BOUNDS[sid]\n            if val < b['min'] or val > b['max']:\n                validated_df.at[idx, 'validation_status'] = 'INVALID_BOUNDS'\n    return validated_df",
+    "notes": "Tunjukkan bahwa data yang melanggar batas fisik tidak langsung dibuang, melainkan ditandai untuk menjaga audit trail."
+  },
+  {
+    "kind": "code",
+    "title": "Rule-Based Analysis & Pagar Tukey",
+    "body": "Menghitung outlier statistik dan alert kualitas:",
+    "code": "def evaluate_records(self, df_validated):\n    alerts = []\n    for _, row in df_validated.iterrows():\n        sid, val, st = row['sensor_id'], row['measurement_value'], row['validation_status']\n        if st == 'INVALID_BOUNDS':\n            alerts.append({'severity': 'CRITICAL', 'rule': 'RULE-02-PHYSICAL',\n                           'desc': f'Nilai {val} di luar batas operasional {sid}'})\n        elif st == 'VALID' and sid in self.stats:\n            stat = self.stats[sid]\n            if val > stat['upper_fence'] or val < stat['lower_fence']:\n                alerts.append({'severity': 'MEDIUM', 'rule': 'RULE-03-SPIKE',\n                               'desc': f'Lonjakan outlier {val} terdeteksi'}) # Pagar Tukey\n    return alerts",
+    "notes": "Jelaskan bahwa aturan deduktif memberikan penjelasan kausal yang transparan bagi operator pabrik."
+  },
+  {
+    "kind": "content",
+    "title": "Testing, Validation & Reproducibility",
+    "body": "Strategi pengujian kualitas perangkat lunak sistem cerdas:\n\n- **Unit Testing Otomatis**: Menjalankan berkas pengujian menggunakan framework `unittest` standar Python.\n- **Pengujian Kasus Ekstrem**: Memverifikasi respons sistem saat sensor tidak terdaftar (`UNKNOWN_SENSOR`) atau data kosong.\n- **Reproducibility**: Menjalankan ulang pipeline dari awal dan memastikan hasil numerik DQI identik 100%.\n- **Error Analysis**: Membedakan antara false alarm beban kerja sesaat versus anomali sensor nyata.",
+    "notes": "Ingatkan mahasiswa untuk menyertakan instruksi eksekusi pengujian di berkas README proyek."
+  },
+  {
+    "kind": "content",
+    "title": "Responsible AI Capstone Checklist",
+    "body": "Dua belas pertanyaan kunci tata kelola etika proyek:\n\n- Apakah sistem membutuhkan AI vs solusi deterministik?\n- Apakah data memiliki lisensi atau aturan generasi yang sah?\n- Apakah kualitas data telah divalidasi sebelum diproses?\n- Apakah seluruh keputusan sistem dapat dijelaskan logikanya?\n- Apakah pengguna memahami keterbatasan sistem (bukan production-grade)?\n- Apakah mekanisme pengawasan manusia (Human Oversight) terjamin?\n- Apakah prinsip minimisasi dan privasi data (UU PDP No. 27/2022) terpenuhi?\n- Bagaimana penanganan kondisi kegagalan sistem?",
+    "notes": "Checklist ini menjadi lembar verifikasi wajib yang dilampirkan pada laporan akhir mahasiswa."
+  },
+  {
+    "kind": "split",
+    "title": "Project Deliverables Wajib",
+    "body": "Komponen yang wajib dikumpulkan setiap mahasiswa:\n\n### Kode Sumber & Data\n- Repositori kode Python modular, bersih, dan bebas dependensi berbayar.\n- Dataset sintetis dan pengujian unit otomatis (`test_*.py`).\n- Berkas panduan `README.md` dengan instruksi eksekusi riil.\n\n### Laporan Akademik & Presentasi\n- Laporan akhir terstruktur (Problem, Design, Implementation, Testing, Ethics).\n- Slide presentasi Reveal.js untuk demonstrasi hasil.",
+    "notes": "Tegaskan bahwa mahasiswa tidak perlu mengumpulkan berkas binary raksasa atau dokumen bertele-tele; utamakan kualitas dan keringkasan ilmiah."
+  },
+  {
+    "kind": "content",
+    "title": "Rubrik Penilaian (Total 100 Poin)",
+    "body": "Distribusi bobot penilaian Capstone resmi:\n\n- **Problem Formulation & Requirement Analysis** (15 Poin): Kejelasan PEAS & justifikasi AI vs non-AI.\n- **System Design & Technical Approach** (20 Poin): Modularitas arsitektur IPO & skema data.\n- **Implementation & Functional Correctness** (25 Poin): Kode Python bersih, bebas error, runnable.\n- **Testing, Evaluation & Reproducibility** (20 Poin): Unit tests otomatis & expected vs actual.\n- **Responsible AI & Risk Assessment** (10 Poin): 12 Checklist & audit batasan sistem.\n- **Documentation & Presentation** (10 Poin): Laporan akademik & demonstrasi.",
+    "notes": "Jelaskan bahwa proyek yang menggunakan algoritma rumit tidak otomatis mendapat nilai lebih tinggi dari proyek sederhana yang dieksekusi secara sempurna."
+  },
+  {
+    "kind": "case",
+    "title": "Kesalahan Umum Mahasiswa (Common Mistakes)",
+    "body": "Hindari jebakan-jebakan umum dalam pengerjaan Capstone:\n\n- **Overengineering**: Memaksakan model machine learning yang belum diajarkan untuk masalah yang cukup dengan aturan logika.\n- **Data Leakage / Untracked Data**: Menggunakan data tanpa mendokumentasikan aturan pembuatannya.\n- **No Testing**: Menganggap kode benar hanya karena tidak muncul pesan error saat dijalankan sekali.\n- **Black-Box Blindness**: Mengabaikan penjelasan keputusan sistem dan menyerahkan wewenang penuh pada mesin.\n- **Poor Documentation**: Repositori tidak dapat dijalankan oleh orang lain karena instruksi tidak lengkap.",
+    "notes": "Ingatkan mahasiswa agar belajar dari kesalahan mahasiswa tahun-tahun sebelumnya."
+  },
+  {
+    "kind": "summary",
+    "title": "Rangkuman Capstone Level 1",
+    "body": "Intisari pencapaian pembelajaran Capstone AI Foundations:\n\n- **Integritas Rekayasa**: Membuktikan bahwa Anda menguasai perumusan masalah, algoritma simbolik, analisis data, dan etika secara utuh.\n- **Sikap Ilmiah**: Mengakui keterbatasan sistem secara jujur dan transparan jauh lebih mulia daripada mengklaim kesempurnaan palsu.\n- **Karya Terverifikasi**: Menghasilkan prototype mandiri yang berfungsi, teruji secara numerik, dan reproducible.\n- **Landasan Kokoh**: Fondasi Level 1 yang solid adalah modal mutlak untuk menaklukkan Level 2!",
+    "notes": "Beri selamat kepada mahasiswa yang telah menyelesaikan seluruh tahapan Level 1 dengan disiplin tinggi."
+  },
+  {
+    "kind": "content",
+    "title": "Next Level — Machine Learning",
+    "body": "Gerbang menuju Level 2: Machine Learning:\n\n- **Batas Paradigma Simbolik**: Aturan eksplisit manusia tidak lagi mampu menangani jutaan dimensi data yang bising (citra, audio, teks bebas).\n- **Paradigma Pembelajaran Data-Driven**: Komputer belajar mengenali pola dan mengambil keputusan secara induktif langsung dari data pengamatan masa lalu.\n- **Chapter Berikutnya**: **Chapter 11: Introduction to Machine Learning** — Memulai perjalanan dari pemodelan regresi, klasifikasi, hingga evaluasi generalisasi model.",
+    "notes": "Tutup sesi pengarahan dengan antusiasme menyambut materi Machine Learning di Chapter 11."
+  }
+]

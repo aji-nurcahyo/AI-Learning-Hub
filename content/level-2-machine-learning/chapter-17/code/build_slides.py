@@ -1,0 +1,181 @@
+"""Pembangkit Berkas Slide Reveal.js (deck.json) untuk Chapter 17:
+Unsupervised Learning & Clustering Algorithms (32 Slide Terstruktur)
+"""
+
+import json
+import pathlib
+
+slides = [
+    {
+        "kind": "cover",
+        "title": "Unsupervised Learning & Clustering Algorithms",
+        "body": "### Penemuan Pola Laten, Geometri Jarak, Partisi Sentroid, Kepadatan Spasial & Pengelompokan Hirarkis\n\n**Level 2 — Machine Learning | Chapter 17**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+        "notes": "Selamat datang di perkuliahan Chapter 17. Hari ini kita memasuki ranah Unsupervised Learning dengan fokus utama pada algoritma pengelompokan data (clustering)."
+    },
+    {
+        "kind": "content",
+        "title": "Why Unsupervised Learning?",
+        "body": "Mengapa kita membutuhkan pembelajaran tanpa supervisi?\n\n- **Kelangkaan Label**: Di dunia industri nyata, lebih dari 90% data tidak memiliki label ground truth karena mahalnya proses anotasi manual.\n- **Eksplorasi Struktur Intrinsik**: Mengungkap kelompok alami, anomali terisolasi, dan hubungan tak terduga antar-observasi.\n- **Aplikasi Nyata**: Segmentasi pelanggan, kompresi gambar, bioinformatika genetika, pemeliharaan prediktif IoT, dan pendeteksian intrusi jaringan.",
+        "notes": "Tekankan bahwa data mentah melimpah ruah, namun data berlabel sangat mahal dan langka."
+    },
+    {
+        "kind": "content",
+        "title": "Learning Objectives",
+        "body": "Setelah menyelesaikan perkuliahan ini, mahasiswa diharapkan mampu:\n\n- **Membedakan** paradigma Supervised vs Unsupervised Learning secara matematis.\n- **Menjelaskan** pentingnya penskalaan fitur (*feature scaling*) terhadap metrik jarak.\n- **Menerapkan** algoritma K-Means dari dasar (*Lloyd's algorithm*) dan K-Means++.\n- **Mengevaluasi** jumlah klaster optimal $k$ menggunakan Elbow Method dan Silhouette Analysis.\n- **Menjelaskan** mekanisme DBSCAN berbasis kepadatan dan klasifikasi titik (*core, border, noise*).\n- **Menganalisis** Agglomerative Hierarchical Clustering dan membaca visualisasi dendrogram.\n- **Membandingkan** kriteria keterkaitan (*Single, Complete, Average, Ward Linkage*).\n- **Mengukur** kualitas klaster dengan metrik internal (*Silhouette, Davies-Bouldin, Calinski-Harabasz*).",
+        "notes": "Paparkan 8 pilar capaian pembelajaran kognitif terstandarisasi untuk bab ini."
+    },
+    {
+        "kind": "split",
+        "title": "Supervised vs Unsupervised",
+        "body": "Perbedaan mendasar dua paradigma utama machine learning:\n\n### Supervised Learning\n- Input: Pasangan fitur dan label $\\mathcal{D} = \\{(\\mathbf{x}_i, y_i)\\}_{i=1}^N$.\n- Tujuan: Menemukan fungsi pemetaan $f(\\mathbf{x}) \\approx y$.\n- Evaluasi: Membandingkan prediksi $\\hat{y}$ terhadap label aktual $y$ (Akurasi, F1, MSE).\n\n### Unsupervised Learning\n- Input: Kumpulan fitur tanpa label $\\mathcal{D} = \\{\\mathbf{x}_i\\}_{i=1}^N$.\n- Tujuan: Menemukan struktur laten, densitas, atau manifold $p(\\mathbf{x})$.\n- Evaluasi: Metrik kohesi internal dan separasi antar-kelompok tanpa ground truth.",
+        "notes": "Garis bawahi bahwa pada unsupervised learning tidak ada supervisi eksternal yang memberi tahu apakah pengelompokan 'benar' atau 'salah'."
+    },
+    {
+        "kind": "content",
+        "title": "Distance Metrics in Feature Space",
+        "body": "Algoritma clustering berbasis kedekatan geometris sangat bergantung pada metrik jarak:\n\n- **Jarak Euclidean ($L_2$)**:\n  $$d_2(\\mathbf{x}, \\mathbf{z}) = \\sqrt{\\sum_{j=1}^D (x_j - z_j)^2}$$\n  Standar utama K-Means dan Ward Linkage; sensitif terhadap skala dan outlier.\n- **Jarak Manhattan ($L_1$)**:\n  $$d_1(\\mathbf{x}, \\mathbf{z}) = \\sum_{j=1}^D |x_j - z_j|$$\n  Lebih tangguh terhadap outlier pada data grid perkotaan atau sinyal jarang.\n- **Jarak Minkowski ($L_p$)**: Generalisasi $L_1$ dan $L_2$ dengan parameter $p$.",
+        "notes": "Jelaskan bahwa pilihan metrik jarak menentukan bentuk klaster yang diasumsikan (bola hiper vs belah ketupat)."
+    },
+    {
+        "kind": "split",
+        "title": "Necessity of Feature Scaling",
+        "body": "Mengapa standarisasi fitur adalah syarat mutlak dalam clustering?\n\n### Dampak Fitur Skala Besar\n- Misalkan Fitur A bernilai 1.000–5.000 (konsumsi energi) dan Fitur B bernilai 0.1–0.9 (amplitudo getaran).\n- Jarak Euclidean akan 99.9% dikendalikan oleh Fitur A. Fitur B diabaikan secara komputasi.\n\n### Solusi Standardisasi Z-Score\n$$z_j = \\frac{x_j - \\mu_j}{\\sigma_j}$$\n- Mengubah seluruh variabel ke rerata 0 dan deviasi standar 1.\n- Setiap dimensi memiliki bobot geometris yang setara dan adil.",
+        "notes": "Berikan analogi mengukur tinggi badan dalam milimeter vs berat badan dalam ton."
+    },
+    {
+        "kind": "content",
+        "title": "K-Means Fundamentals",
+        "body": "Algoritma pengelompokan berbasis partisi paling populer di dunia:\n\n- **Pencetus**: Stuart Lloyd (1957 / 1982) dan J. MacQueen (1967).\n- **Karakteristik**:\n  - Membagi $N$ sampel data ke dalam tepat $K$ klaster yang saling lepas (*hard partitioning*).\n  - Setiap klaster direpresentasikan oleh satu titik pusat yang disebut **Centroid** (rerata geometris anggota klaster).\n- **Kompleksitas Komputasi**: $\\mathcal{O}(I \\cdot K \\cdot N \\cdot D)$, di mana $I$ adalah jumlah iterasi hingga konvergensi. Sangat efisien dan terukur secara komputasi.",
+        "notes": "K-Means adalah algoritma wajib yang harus dikuasai oleh setiap praktisi data science."
+    },
+    {
+        "kind": "split",
+        "title": "K-Means Objective Function",
+        "body": "Formulasi matematis Within-Cluster Sum of Squares (WCSS):\n\n### Fungsi Biaya / Inersia\n$$J = \\sum_{k=1}^K \\sum_{i \\in C_k} \\|\\mathbf{x}_i - \\boldsymbol{\\mu}_k\\|^2$$\n- $\\boldsymbol{\\mu}_k$ adalah vektor rerata (*centroid*) klaster $k$.\n- $C_k$ adalah himpunan indeks sampel anggota klaster $k$.\n\n### Karakteristik Optimasi\n- Fungsi tujuan bersifat non-konveks (*NP-hard* untuk solusi optimal global).\n- Algoritma Lloyd dijamin konvergen, namun hanya ke **minimum lokal** (*local optimum*).",
+        "notes": "Tunjukkan bahwa inersia selalu menurun atau konstan pada setiap iterasi Lloyd."
+    },
+    {
+        "kind": "content",
+        "title": "Lloyd's Algorithm Iteration",
+        "body": "Dua langkah berulang yang elegan dalam iterasi K-Means:\n\n1. **Inisialisasi**: Pilih $K$ titik awal sebagai sentroid mula-mula $\\{\\boldsymbol{\\mu}_1, \\dots, \\boldsymbol{\\mu}_K\\}$.\n2. **Langkah Penugasan (*Assignment Step*)**:\n   Tugaskan setiap titik data $\\mathbf{x}_i$ ke sentroid terdekat:\n   $$c_i = \\arg\\min_{k} \\|\\mathbf{x}_i - \\boldsymbol{\\mu}_k\\|^2$$\n3. **Langkah Pembaruan (*Update Step*)**:\n   Hitung ulang posisi sentroid sebagai rerata koordinat anggotanya:\n   $$\\boldsymbol{\\mu}_k = \\frac{1}{|C_k|} \\sum_{i \\in C_k} \\mathbf{x}_i$$\n4. **Konvergensi**: Ulangi langkah 2 dan 3 hingga posisi sentroid tidak berubah (*toleransi $\\epsilon$*) atau batas iterasi tercapai.",
+        "notes": "Jelaskan langkah bergantian antara assignment dan update yang intuitif."
+    },
+    {
+        "kind": "split",
+        "title": "Initialization & K-Means++",
+        "body": "Solusi mengatasi jebakan inisialisasi acak (*Random Initialization Trap*):\n\n### Risiko Random Init\n- Inisialisasi serampangan dapat menempatkan dua sentroid di klaster yang sama.\n- Menghasilkan konvergensi sub-optimal dengan inersia tinggi dan batas klaster cacat.\n\n### Inisialisasi K-Means++ (Arthur & Vassilvitskii, 2007)\n1. Pilih sentroid pertama $\\boldsymbol{\\mu}_1$ secara acak seragam dari data.\n2. Untuk sampel lainnya, hitung $D(\\mathbf{x})$: jarak ke sentroid terdekat yang telah dipilih.\n3. Pilih sentroid berikutnya dengan probabilitas proporsional terhadap kuadrat jarak:\n   $$P(\\mathbf{x}) = \\frac{D(\\mathbf{x})^2}{\\sum_{\\mathbf{z}} D(\\mathbf{z})^2}$$\n4. Menjamin sentroid awal saling berjauhan secara spasial!",
+        "notes": "K-Means++ mempercepat konvergensi dan secara teoritis menjamin rasio aproksimasi O(log K)."
+    },
+    {
+        "kind": "content",
+        "title": "Choosing K: The Elbow Method",
+        "body": "Bagaimana menentukan nilai $K$ yang optimal jika tidak ada informasi label?\n\n- **Prinsip**: Menjalankan K-Means untuk rentang nilai $k \\in [1, K_{\\max}]$ dan mencatat inersia (WCSS) masing-masing.\n- **Kurva Inersia**: Semakin besar $k$, inersia pasti semakin turun (mencapai 0 saat $k=N$).\n- **Titik Siku (*Elbow Point*)**: Nilai $k$ di mana laju penurunan inersia melambat secara drastis (*marginal gain* menurun tajam).\n- **Keterbatasan**: Terkadang kurva inersia berbentuk lengkungan mulus tanpa titik siku yang jelas, sehingga membutuhkan konfirmasi metrik lain.",
+        "notes": "Ingatkan mahasiswa bahwa Elbow Method adalah heuristik visual kualitatif, bukan jaminan mutlak."
+    },
+    {
+        "kind": "split",
+        "title": "Silhouette Analysis",
+        "body": "Evaluasi kuantitatif ketat untuk kohesi dan separasi klaster:\n\n### Kohesi Intra-Klaster $a(i)$\nJarak rata-rata sampel $i$ ke semua titik lain dalam klaster yang sama:\n$$a(i) = \\frac{1}{|C_A| - 1} \\sum_{j \\in C_A, j \\neq i} d(i, j)$$\n\n### Separasi Antar-Klaster $b(i)$\nJarak rata-rata sampel $i$ ke semua titik dalam klaster tetangga terdekat:\n$$b(i) = \\min_{B \\neq A} \\frac{1}{|C_B|} \\sum_{j \\in C_B} d(i, j)$$\n\n### Koefisien Silhouette\n$$s(i) = \\frac{b(i) - a(i)}{\\max(a(i), b(i))}, \\quad s(i) \\in [-1, +1]$$",
+        "notes": "Jelaskan makna nilai: +1 klaster sangat solid, 0 berada di perbatasan, -1 salah klaster."
+    },
+    {
+        "kind": "content",
+        "title": "Limitations of K-Means",
+        "body": "Asumsi fundamental yang membatasi kemampuan K-Means:\n\n- **Asumsi Bentuk Klaster**: Hanya optimal untuk klaster berbentuk **sferis hiperbola (cembung / konveks)** dengan ukuran dan kepadatan seragam.\n- **Gagal pada Geometri Kompleks**: Tidak mampu memisahkan bentuk lingkaran konsentris, spiral, atau pita melengkung.\n- **Sensitif Outlier**: Rerata sampel mudah tertarik menjauh akibat satu titik ekstrem.\n- **Wajib Menentukan K di Awal**: Pengguna harus menebak jumlah klaster $K$ terlebih dahulu.",
+        "notes": "Tunjukkan kegagalan K-Means pada manifold non-linier sebagai pengantar ke DBSCAN."
+    },
+    {
+        "kind": "content",
+        "title": "DBSCAN Philosophy",
+        "body": "Density-Based Spatial Clustering of Applications with Noise (Ester et al., 1996):\n\n- **Filosofi Dasar**: Klaster adalah wilayah ruang berdensitas tinggi yang dipisahkan oleh wilayah berdensitas rendah.\n- **Keunggulan Revolusioner**:\n  - **Bentuk Bebas**: Mampu menemukan klaster berbentuk arbitrary (spiral, bulan sabit, memanjang).\n  - **Otomatis Menentukan Klaster**: Tidak perlu menentukan jumlah klaster $K$ di awal.\n  - **Kekebalan Terhadap Derau**: Secara eksplisit mengisolasi titik pencilan sebagai noise / outlier (label `-1`).",
+        "notes": "DBSCAN memenangkan SIGKDD Test of Time Award pada tahun 2014 karena pengaruh praktisnya yang masif."
+    },
+    {
+        "kind": "split",
+        "title": "DBSCAN Parameters & Concepts",
+        "body": "Dua parameter pengendali dan tiga tipologi titik data:\n\n### Dua Hyperparameter Utama\n1. $\\boldsymbol{\\epsilon}$ (*Epsilon*): Radius ketetanggaan spasial di sekitar sampel.\n2. **MinPts** (*Minimum Points*): Jumlah sampel minimum di dalam radius $\\epsilon$.\n\n### Tiga Jenis Titik Data\n- **Core Point**: Memiliki minimal $\\ge \\text{MinPts}$ tetangga dalam radius $\\epsilon$.\n- **Border Point**: Memiliki tetangga $< \\text{MinPts}$, namun berada di dalam radius $\\epsilon$ dari Core Point.\n- **Noise Point**: Bukan Core dan bukan Border (terisolasi di area berdensitas rendah).",
+        "notes": "Definisi ketiga jenis titik ini adalah kunci memahami algoritma penelusuran graf DBSCAN."
+    },
+    {
+        "kind": "content",
+        "title": "DBSCAN Traversal Mechanism",
+        "body": "Mekanisme perambatan keterjangkauan kepadatan (*Density-Reachability*):\n\n1. **Directly Density-Reachability**: Titik $p$ dapat dijangkau langsung dari $q$ jika $q$ adalah Core Point dan $p \\in N_\\epsilon(q)$.\n2. **Density-Reachability**: Terdapat rantai Core Point $p_1, p_2, \\dots, p_n$ yang menghubungkan titik awal ke tujuan.\n3. **Density-Connectivity**: Dua titik $p$ dan $q$ saling terhubung jika keduanya terjangkau dari Core Point $o$ yang sama.\n\n**Aturan Pembentukan**: Satu klaster DBSCAN berisi semua titik yang saling terhubung secara kepadatan (*density-connected*).",
+        "notes": "Bandingkan dengan penelusuran graf Breadth-First Search (BFS) atau Connected Components."
+    },
+    {
+        "kind": "split",
+        "title": "DBSCAN Parameter Tuning",
+        "body": "Heuristik ilmiah untuk memilih nilai Epsilon dan MinPts:\n\n### Menentukan MinPts\n- Heuristik umum: $\\text{MinPts} \\ge 2 \\times D$, di mana $D$ adalah dimensi fitur.\n- Data bersuara derau tinggi membutuhkan MinPts lebih besar (misal 6–10).\n\n### Menentukan $\\epsilon$ dengan k-Distance Graph\n- Hitung jarak setiap sampel ke tetangga ke-k terdekatnya ($k = \\text{MinPts}$).\n- Urutkan jarak $k$-NN dari terkecil ke terbesar.\n- Cari titik belokan tajam (*knee / elbow*) pada kurva $k$-distance sebagai nilai $\\epsilon$ optimal.",
+        "notes": "Jelaskan bahwa grafik k-distance adalah metode standar industri menentukan epsilon DBSCAN."
+    },
+    {
+        "kind": "content",
+        "title": "Hierarchical Clustering",
+        "body": "Pengelompokan bertingkat berbentuk pohon hirarki:\n\n- **Konsep**: Menghasilkan struktur kelompok tersarang (*nested clusters*) pada berbagai skala granularitas tanpa memerlukan penentuan $K$ awal.\n- **Dua Paradigma Utama**:\n  1. **Agglomerative (Bottom-Up)**: Dimulai dari setiap titik sebagai klaster individual, kemudian menggabungkan pasangan terdekat secara rekursif hingga tersisa satu klaster besar.\n  2. **Divisive (Top-Down)**: Dimulai dari satu klaster raksasa berisi seluruh data, kemudian memecahnya secara berulang ke dalam sub-klaster.",
+        "notes": "Agglomerative jauh lebih populer dan praktis digunakan dalam pustaka modern seperti SciPy dan Scikit-learn."
+    },
+    {
+        "kind": "split",
+        "title": "Linkage Criteria",
+        "body": "Metrik penentu jarak antara dua kelompok titik:\n\n### Single Linkage (Jarak Minimum)\n$$d(A, B) = \\min_{\\mathbf{a} \\in A, \\mathbf{b} \\in B} d(\\mathbf{a}, \\mathbf{b})$$\n- Cenderung menghasilkan efek rantai (*chaining effect*) memanjang.\n\n### Complete Linkage (Jarak Maksimum)\n$$d(A, B) = \\max_{\\mathbf{a} \\in A, \\mathbf{b} \\in B} d(\\mathbf{a}, \\mathbf{b})$$\n- Menghasilkan klaster sferis yang rapat dan kompak.\n\n### Average Linkage (Jarak Rerata Pasangan)\n$$d(A, B) = \\frac{1}{|A||B|} \\sum_{\\mathbf{a} \\in A} \\sum_{\\mathbf{b} \\in B} d(\\mathbf{a}, \\mathbf{b})$$\n\n### Ward's Linkage (Minimisasi Varians)\n- Menggabungkan pasangan klaster yang menghasilkan peningkatan varians intra-klaster terkecil (*minimum variance increase*). Sangat populer di industri!",
+        "notes": "Ward Linkage adalah pilihan default terbaik pada data kontinu karena meminimalkan dispersi intra-klaster."
+    },
+    {
+        "kind": "content",
+        "title": "Reading the Dendrogram",
+        "body": "Dendrogram adalah diagram pohon visual representasi proses penggabungan hirarkis:\n\n- **Sumbu Horizontal**: Menampilkan setiap indeks observasi individual atau sub-klaster.\n- **Sumbu Vertikal**: Menunjukkan **jarak disimilaritas** atau ketinggian penggabungan (*merge distance*).\n- **Jarak Penggabungan Panjang**: Garis vertikal yang tinggi menunjukkan lompatan disimilaritas yang besar antar-klaster sebelum digabungkan.\n- **Memotong Pohon (*Cut Threshold*)**: Menarik garis horizontal pada ketinggian tertentu menentukan jumlah klaster diskrit yang terbentuk.",
+        "notes": "Tunjukkan bahwa memotong dendrogram pada ketinggian berbeda memberikan fleksibilitas level granularitas."
+    },
+    {
+        "kind": "split",
+        "title": "Internal Evaluation Metrics",
+        "body": "Evaluasi kualitas pengelompokan tanpa bergantung pada label ground truth:\n\n### Davies-Bouldin Index (DBI)\n- Menghitung rasio keserupaan antara sebaran dalam klaster terhadap jarak antar sentroid:\n  $$R_{ij} = \\frac{s_i + s_j}{d(\\boldsymbol{\\mu}_i, \\boldsymbol{\\mu}_j)}, \\quad DBI = \\frac{1}{K}\\sum_{i=1}^K \\max_{j \\neq i} R_{ij}$$\n- **Semakin KECIL nilai DBI, semakin unggul kualitas klaster**.\n\n### Calinski-Harabasz Index (Variance Ratio)\n- Rasio dispersi antar-klaster terhadap dispersi intra-klaster:\n  $$CH = \\frac{\\text{Tr}(B_K) / (K - 1)}{\\text{Tr}(W_K) / (N - K)}$$\n- **Semakin TINGGI nilai CH, semakin unggul kualitas klaster**.",
+        "notes": "Gunakan DBI dan CH bersama Silhouette untuk triangulasi kualitas evaluasi tanpa label."
+    },
+    {
+        "kind": "content",
+        "title": "External Evaluation Metrics",
+        "body": "Evaluasi pengelompokan saat label ground truth tersedia untuk benchmark ilmiah:\n\n- **Adjusted Rand Index (ARI)**:\n  - Mengukur proporsi pasangan sampel yang dikelompokkan bersama secara konsisten antara prediksi dan label asli.\n  - Menyesuaikan peluang kebetulan (*adjusted for chance*).\n  - Nilai berkisar antara $[-1, +1]$; nilai $1.0$ berarti kecocokan partisi sempurna.\n- **Normalized Mutual Information (NMI)**:\n  - Mengukur reduksi entropi informasi antar dua partisi: $\\text{NMI} \\in [0, 1]$.",
+        "notes": "Tekankan bahwa ARI dan NMI hanya dapat dihitung jika kita memiliki label referensi pengujian."
+    },
+    {
+        "kind": "split",
+        "title": "Algorithm Comparison Matrix",
+        "body": "Matriks perbandingan mendalam tiga algoritma klastering utama:\n\n| Fitur | K-Means | DBSCAN | Agglomerative |\n|---|---|---|---|\n| **Tipe Partisi** | Hard, sferis | Kepadatan arbitrary | Pohon hirarki |\n| **Penentuan K** | Manual di awal | Otomatis | Ditentukan saat *cut* |\n| **Sensitivitas Outlier** | Tinggi | Kebal (Noise label) | Bergantung linkage |\n| **Kompleksitas Waktu** | $\\mathcal{O}(K N D)$ | $\\mathcal{O}(N \\log N)$ | $\\mathcal{O}(N^2)$ hingga $\\mathcal{O}(N^3)$ |\n| **Skalabilitas Data** | Sangat Tinggi ($N > 10^6$) | Sedang ($N < 10^5$) | Terbatas ($N < 50.000$) |",
+        "notes": "Gunakan matriks ini sebagai pedoman utama rekayasa sistem dalam memilih algoritma di produksi."
+    },
+    {
+        "kind": "content",
+        "title": "Algorithm Selection Guide",
+        "body": "Kapan kita memilih salah satu algoritma di industri nyata?\n\n- **Pilih K-Means ketika**:\n  - Skala dataset sangat besar ($N > 100.000$).\n  - Bentuk klaster diasumsikan sferis dan seimbang.\n  - Latensi komputasi menjadi batasan ketat dalam pipeline produksi.\n- **Pilih DBSCAN ketika**:\n  - Klaster memiliki bentuk geometri non-konveks yang rumit.\n  - Data mengandung banyak pencilan/derau yang harus dieliminasi.\n  - Jumlah klaster laten belum diketahui sama sekali.\n- **Pilih Agglomerative ketika**:\n  - Hubungan taksonomi hierarki perlu dipelajari (misal pohon evolusi genomik).\n  - Ukuran dataset berdimensi kecil hingga moderat ($N \\le 10.000$).",
+        "notes": "Bimbing mahasiswa membuat keputusan arsitektural berbasis batasan komputasi dan karakteristik data."
+    },
+    {
+        "kind": "content",
+        "title": "Case Study: Sensor Telemetry",
+        "body": "Hasil eksperimen clustering telemetri 360 sensor nirkabel:\n\n- **Data Input**: 6 dimensi kontinu (daya sinyal, latensi, packet loss, suhu, voltase, energi mAh).\n- **Hasil K-Means (k=3)**: Silhouette $0.5804$, Davies-Bouldin $0.6419$, Calinski-Harabasz $291.8$.\n- **Hasil DBSCAN (eps=1.15, min_samples=6)**: Berhasil mendeteksi **25 node outlier kritis** sebagai noise terisolasi dan 2 klaster inti berkepadatan tinggi.\n- **Hasil Agglomerative (Ward, k=3)**: Silhouette $0.5739$, Davies-Bouldin $0.6548$, konsisten membagi 3 profil degradasi sistem.\n- **Kesimpulan**: K-Means ideal untuk partisi global operasional, sedangkan DBSCAN esensial untuk deteksi insiden anomali.",
+        "notes": "Hubungkan hasil numerik empiris ini langsung dengan kasus dunia nyata."
+    },
+    {
+        "kind": "split",
+        "title": "Common Pitfalls & Traps",
+        "body": "Kesalahan fatal yang sering dilakukan praktisi pemula:\n\n### Melewatkan Feature Scaling\n- Menjalankan K-Means pada data mentah dengan skala berbeda sehingga fitur berorde besar membajak model sepenuhnya.\n\n### Mengandalkan Satu Metrik Tunggal\n- Memilih $K$ hanya berdasarkan Elbow tanpa memvalidasi Silhouette score dan profil diagram sebaran.\n\n### Memaksa DBSCAN pada Densitas Bervariasi\n- DBSCAN standar dengan $\\epsilon$ global gagal mengelompokkan klaster yang memiliki kerapatan kepadatan berbeda jauh.\n\n### Kebocoran Data (*Data Leakage*)\n- Menghitung scaler atau melakukan clustering pada gabungan train-test sekaligus saat merancang pipeline inferensi.",
+        "notes": "Ingatkan bahaya kebocoran informasi dan asumsi naif pada penskalaan fitur."
+    },
+    {
+        "kind": "content",
+        "title": "Summary & Key Takeaways",
+        "body": "Poin-poin inti perkuliahan Chapter 17:\n\n- **Unsupervised Learning** menemukan struktur internal, pola laten, dan densitas tanpa bergantung pada supervisi label eksternal.\n- **Penskalaan Fitur** adalah kewajiban mutlak dalam seluruh algoritma berbasis geometri metrik jarak.\n- **K-Means** efisien dan cepat, namun dibatasi oleh asumsi klaster sferis dan sensitivitas terhadap inisialisasi awal (diatasi oleh K-Means++).\n- **DBSCAN** unggul dalam menemukan klaster arbitrary dan mendeteksi anomali derau melalui parameter $\\epsilon$ dan MinPts.\n- **Agglomerative Clustering** membangun hirarki visual (dendrogram) dengan Ward's linkage sebagai metode minimisasi varians terbaik.\n- **Evaluasi Triangulasi** (Silhouette, Davies-Bouldin, Calinski-Harabasz) wajib digunakan untuk menilai kualitas partisi secara objektif.",
+        "notes": "Tutup perkuliahan dengan merangkum pilar utama yang telah dipelajari mahasiswa hari ini."
+    }
+]
+
+def build_slides():
+    out_path = pathlib.Path(__file__).parent.parent / "slides" / "deck.json"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(slides, f, indent=2, ensure_ascii=False)
+    print(f"Slide deck ({len(slides)} slide) berhasil disimpan ke: {out_path}")
+
+if __name__ == "__main__":
+    build_slides()

@@ -1,0 +1,83 @@
+{
+  "id": 35,
+  "slug": "chapter-35",
+  "levelId": 4,
+  "title": "Reinforcement Learning Fundamentals",
+  "status": "published",
+  "description": "Fondasi Reinforcement Learning berbasis interaksi: Markov Decision Process (MDP), Return terdiskonto, Value Functions, Persamaan Bellman, Dynamic Programming (Value & Policy Iteration), Monte Carlo, TD(0), Q-Learning, Epsilon-Greedy, dasar Policy Gradient REINFORCE, serta desain simulator GridWorld.",
+  "objectives": [
+    "Menjelaskan konsep Reinforcement Learning sebagai paradigma pengambilan keputusan berurutan berbasis interaksi.",
+    "Membedakan Supervised Learning, Unsupervised Learning, dan Reinforcement Learning serta membedakan RL Agent dari LLM Agent.",
+    "Mengidentifikasi elemen inti Agent, Environment, State, Action, Reward, Policy, Episode, dan Trajectory.",
+    "Menjelaskan formulasi matematis Markov Decision Process (S, A, P, R, gamma) dan sifat Markov.",
+    "Menghitung discounted return G_t serta menganalisis pengaruh faktor diskonto gamma terhadap horizon tujuan.",
+    "Menggunakan Persamaan Bellman Expectation untuk mengevaluasi kebijakan tetap V^pi dan Q^pi.",
+    "Menjelaskan Persamaan Bellman Optimality dan sifat non-linier operator maksimum V*.",
+    "Mengimplementasikan algoritma Dynamic Programming Iterative Policy Evaluation, Policy Iteration, dan Value Iteration.",
+    "Menjelaskan perbedaan pendekatan bebas model Monte Carlo dan Temporal-Difference TD(0).",
+    "Mengimplementasikan kontrol off-policy Q-Learning beserta penanganan terminal state yang tepat.",
+    "Menggunakan strategi eksplorasi Epsilon-Greedy dengan peluruhan jadwal dan evaluasi kebijakan serakah murni.",
+    "Menjelaskan penurunan dasar Policy Gradient dan mengimplementasikan algoritma REINFORCE menggunakan PyTorch.",
+    "Mengembangkan simulator GridWorld mandiri menggunakan NumPy untuk skenario deterministik maupun stokastik.",
+    "Mengevaluasi performa kebijakan RL terhadap baseline acak serta mengidentifikasi risiko reward hacking dan keterbatasan RL."
+  ],
+  "prerequisites": [
+    3,
+    12,
+    21,
+    34
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Reinforcement Learning",
+    "MDP",
+    "Q-Learning",
+    "Dynamic Programming",
+    "Policy Gradient"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Sutton & Barto (2018), Reinforcement Learning: An Introduction (2nd Ed.)",
+      "url": "https://mitpress.mit.edu/9780262039246/reinforcement-learning/",
+      "status": "verified"
+    },
+    {
+      "title": "Bellman (1957), Dynamic Programming",
+      "url": "https://press.princeton.edu/books/paperback/9780691146683/dynamic-programming",
+      "status": "verified"
+    },
+    {
+      "title": "Watkins & Dayan (1992), Q-learning, Machine Learning 8(3)",
+      "url": "https://doi.org/10.1007/BF00992698",
+      "status": "verified"
+    },
+    {
+      "title": "Williams (1992), Simple Statistical Gradient-Following Algorithms (REINFORCE)",
+      "url": "https://doi.org/10.1007/BF00992696",
+      "status": "verified"
+    },
+    {
+      "title": "Paszke et al. (2019), PyTorch: An Imperative Style, High-Performance Deep Learning Library",
+      "url": "https://pytorch.org/docs/stable/index.html",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

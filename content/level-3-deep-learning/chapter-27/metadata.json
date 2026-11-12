@@ -1,0 +1,101 @@
+{
+  "id": 27,
+  "slug": "chapter-27",
+  "levelId": 3,
+  "title": "Natural Language Processing Fundamentals",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Natural Language Processing Fundamentals: ruang lingkup bahasa dan komputasi, hierarki data teks dari korpus hingga token, Unicode UTF-8 encoding, pipeline pra-pemrosesan teks adaptif (case folding, pembersihan regex, normalisasi slang/singkatan, pelestarian kata negasi kritis, stemming vs lemmatization), tokenisasi regex dan subword, manajemen kosakata dan token-token khusus (<pad>, <unk>, <bos>, <eos>), padding dan truncation, representasi statistik Bag-of-Words (BoW) dan analisis sparsity, pembobotan analitis TF-IDF dengan formula smoothed Scikit-learn serta normalisasi L2 terverifikasi analitis (deviasi 0.00e+00), penangkapan konteks lokal fitur N-gram dan analisis ledakan kosakata, pipeline klasifikasi teks Scikit-learn (Naive Bayes dan Logistic Regression) pada partisi 3-way bebas kebocoran data (zero data leakage), representasi vektor padat terdistribusi (Word Embeddings), hipotesis distribusi Harris-Firth, matriks tabel embedding dan operasi lookup memori terverifikasi ekuivalen terhadap PyTorch nn.Embedding, geometri ruang semantik dan Cosine Similarity, pemodelan sekuensial temporal dan keterbatasan representasi statis, arsitektur komputasi rekuren Simple RNN (Elman) forward pass terverifikasi ekuivalen numerik (< 1e-6) terhadap PyTorch nn.RNN, algoritma Backpropagation Through Time (BPTT) dan analisis matematis vanishing/exploding gradients, arsitektur gerbang Long Short-Term Memory (LSTM) dengan jalur bebas hambatan Cell State dan 3 gerbang (forget, input, output), arsitektur efisien Gated Recurrent Unit (GRU) dengan Update and Reset gates serta pembuktian penghematan 25% parameter, benchmarking empiris komparasi terstandar Simple RNN vs LSTM vs GRU pada CPU dengan perekaman log JSON, keterbatasan arsitektur rekuren (ketiadaan paralelisasi dan bottleneck konteks statis sebagai jembatan menuju Attention & Transformer Bab 28), serta etika representasi, bias gender/sosial, privasi teks, dan kerangka kerja Responsible NLP.",
+  "objectives": [
+    "Menjelaskan tujuan dan ruang lingkup Natural Language Processing dalam kecerdasan buatan.",
+    "Mengidentifikasi tahapan alur kerja standar NLP dari pra-pemrosesan hingga pemodelan.",
+    "Melakukan pra-pemrosesan teks adaptif mencakup pembersihan regex, normalisasi slang, dan pelestarian kata negasi.",
+    "Menggunakan teknik tokenisasi dan manajemen kosakata dengan penanganan token khusus (<pad>, <unk>, <bos>, <eos>).",
+    "Membandingkan representasi Bag-of-Words dan formulasi analitis pembobotan TF-IDF.",
+    "Menjelaskan konsep representasi vektor padat terdistribusi (Word Embeddings) dan geometri Cosine Similarity.",
+    "Mengembangkan pipeline klasifikasi teks Scikit-learn terisolasi bebas kebocoran data (zero data leakage).",
+    "Menjelaskan prinsip pemodelan sekuensial temporal dan pentingnya urutan kata dalam representasi makna.",
+    "Memahami arsitektur komputasi rekuren Simple RNN dan formulasi Backpropagation Through Time (BPTT).",
+    "Menjelaskan mekanisme gerbang pada arsitektur Long Short-Term Memory (LSTM) dan Gated Recurrent Unit (GRU).",
+    "Memahami permasalahan vanishing gradients dan exploding gradients pada sekuens temporal panjang.",
+    "Membandingkan efisiensi komputasi, jumlah parameter, dan akurasi antara Simple RNN, LSTM, dan GRU.",
+    "Mengevaluasi performa klasifikasi teks menggunakan metrik akurasi, Macro F1, dan analisis galat prediksi.",
+    "Menjelaskan keterbatasan model rekuren, bias algoritmik representasi data, dan pertimbangan Responsible NLP."
+  ],
+  "prerequisites": [
+    26
+  ],
+  "tags": [
+    "Deep Learning",
+    "Natural Language Processing",
+    "NLP",
+    "Text Preprocessing",
+    "Tokenization",
+    "Vocabulary",
+    "Special Tokens",
+    "Padding",
+    "Truncation",
+    "Bag-of-Words",
+    "TF-IDF",
+    "N-gram",
+    "Text Classification",
+    "Naive Bayes",
+    "Logistic Regression",
+    "Zero Data Leakage",
+    "Word Embeddings",
+    "Embedding Lookup",
+    "Cosine Similarity",
+    "Sequence Modeling",
+    "Simple RNN",
+    "BPTT",
+    "Vanishing Gradients",
+    "LSTM",
+    "Cell State",
+    "GRU",
+    "Responsible NLP"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Jurafsky, D., & Martin, J. H. (2024). Speech and Language Processing (3rd ed. draft). Pearson / Stanford University",
+      "url": "https://web.stanford.edu/~jurafsky/slp3/",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning (Chapter 10: Sequence Modeling). MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Hochreiter, S., & Schmidhuber, J. (1997). Long Short-Term Memory. Neural Computation, 9(8), 1735-1780",
+      "url": "https://doi.org/10.1162/neco.1997.9.8.1735",
+      "status": "verified"
+    },
+    {
+      "title": "Cho, K., et al. (2014). Learning Phrase Representations using RNN Encoder-Decoder for Statistical Machine Translation. EMNLP 2014, 1724-1734",
+      "url": "https://doi.org/10.3115/v1/D14-1179",
+      "status": "verified"
+    },
+    {
+      "title": "Manning, C. D., Raghavan, P., & Schütze, H. (2008). Introduction to Information Retrieval (Chapter 6). Cambridge University Press",
+      "url": "https://nlp.stanford.edu/IR-book/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

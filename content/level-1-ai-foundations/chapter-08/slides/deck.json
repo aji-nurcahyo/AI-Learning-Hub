@@ -1,0 +1,176 @@
+[
+  {
+    "kind": "cover",
+    "title": "Data Preparation & Exploratory Analysis",
+    "body": "### Metodologi Pembersihan Data, Rekayasa Fitur & EDA Bebas Kebocoran Data\n\n**Level 1 — AI Foundations | Chapter 08**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di Chapter 08: Data Preparation & Exploratory Analysis. Bab ini membekali mahasiswa dengan disiplin rekayasa persiapan data sebelum masuk ke pemodelan Machine Learning, membuktikan mengapa kualitas data lebih menentukan performa sistem cerdas daripada sekadar pemilihan algoritma."
+  },
+  {
+    "kind": "content",
+    "title": "Prinsip GIGO: Garbage In, Garbage Out",
+    "body": "Model kecerdasan buatan bersifat murni komputasi matematis. Kualitas representasi data menentukan batas atas akurasi model:\n\n- **Keterbatasan Algoritma**: Model secanggih apa pun akan gagal memprediksi jika data latih dipenuhi noise atau bias pengukuran.\n- **Sensitivitas Skala Numerik**: Fitur bernilai ribuan (misal: konsumsi daya dalam Watt) akan mendominasi pembaruan gradien secara semu dibanding fitur bernilai desimal (misal: getaran poros mm/s).\n- **Jebakan Missing Values**: Nilai kosong yang tidak ditangani memicu kesalahan numerik (`NaN / Inf`) pada operasi aljabar linier matriks.\n- **Spurious Correlations**: Data mentah yang kotor membuat model menghafal pola kebetulan semu daripada relasi kausal.",
+    "notes": "Tekankan bahwa data engineering dan data preparation memakan 70-80% waktu nyata seorang praktisi AI di industri."
+  },
+  {
+    "kind": "content",
+    "title": "Capaian Pembelajaran (Learning Objectives)",
+    "body": "Setelah menyelesaikan bab ini secara mendalam, pembelajar diharapkan mampu:\n\n- **Menganalisis** mekanisme kekosongan data (MCAR, MAR, MNAR) dan menerapkan imputasi terkelompok.\n- **Mendeteksi** anomali teks dan duplikasi observasi sensor temporal.\n- **Mengevaluasi** pencilan (outliers) via Tukey IQR dan Z-score dengan mempertimbangkan konteks rekayasa domain.\n- **Mentransformasikan** skala fitur (Min-Max, Standard) dan mereduksi skewness via log-transform.\n- **Mengonversi** fitur kategorikal (Ordinal vs One-Hot) serta menghindari *Dummy Variable Trap*.\n- **Membangun** dashboard visualisasi EDA dan matriks korelasi Pearson secara headless.\n- **Menerapkan** pemisahan train/test yang ketat demi mencegah kebocoran data (*data leakage*).",
+    "notes": "Sampaikan bahwa bab ini menggunakan dataset riil telemetri turbin generator industri (telemetry_raw.csv)."
+  },
+  {
+    "kind": "split",
+    "title": "Model-Centric vs Data-Centric AI",
+    "body": "Pergeseran paradigma modern dalam rekayasa kecerdasan buatan:\n\n### Model-Centric Paradigm\n- Data dianggap sebagai konstanta beku (*benchmark* statis).\n- Fokus rekayasa: mencoba ratusan arsitektur neural atau tuning hyperparameter untuk peningkatan akurasi marjinal 0.2%.\n\n### Data-Centric Paradigm (Modern)\n- Arsitektur model dipertahankan konstan menggunakan algoritma standar yang stabil.\n- Fokus rekayasa: secara sistematis membersihkan data, memperbaiki label, mengimputasi missing values kontekstual, dan menormalkan sebaran fitur.",
+    "notes": "Paradigma Data-Centric yang dipelopori Andrew Ng menunjukkan bahwa perbaikan data memberikan ROI (return on investment) performa yang jauh lebih tinggi di dunia nyata."
+  },
+  {
+    "kind": "content",
+    "title": "Anatomi Anomali Data Mentah Industri",
+    "body": "Data telemetri mentah (`telemetry_raw.csv`, 24 baris x 8 kolom) mengandung cacat nyata:\n\n- **Inkonsistensi Huruf**: Penulisan `'Production'` vs `'production'`, `'Server Room'` vs `'server room'`.\n- **Missing Values**: Pembacaan suhu hilang (`NaN`) pada baris ke-2 dan ke-12, kelembaban hilang pada baris ke-8.\n- **Duplikasi Observasi**: Catatan sensor identik pada indeks 13 untuk `TURB-03`.\n- **Nilai Ekstrim (Pencilan)**: Pembacaan suhu $88.5^\\circ\\text{C}$ pada indeks 10 (jauh melampaui median operasi $35^\\circ\\text{C}$).\n- **Distribusi Miring (*Skewed*)**: Kolom daya listrik `power_kw` memiliki kemiringan positif $+1.39$.",
+    "notes": "Gunakan slide ini untuk menghubungkan langsung teori persiapan data dengan dataset riil laboratorium kita."
+  },
+  {
+    "kind": "content",
+    "title": "Mekanisme Nilai Hilang (Missing Mechanisms)",
+    "body": "Donald Rubin (1976) mengklasifikasikan tiga mekanisme probabilistik missing data:\n\n- **Missing Completely at Random (MCAR)**:\n  Peluang data hilang murni acak, tidak bergantung pada variabel mana pun. Penghapusan baris tidak menimbulkan bias, tetapi mengurangi ukuran sampel.\n- **Missing at Random (MAR)**:\n  Peluang data hilang berkaitan dengan variabel lain yang teramati (misal: sensor di server room lebih sering gagal saat pendingin standby), tetapi tidak bergantung pada nilai yang hilang itu sendiri.\n- **Missing Not at Random (MNAR)**:\n  Peluang data hilang berkaitan langsung dengan nilai itu sendiri (misal: termokopel terbakar dan gagal merekam justru karena suhu turbin $>100^\\circ\\text{C}$).",
+    "notes": "Tekankan bahwa membuang baris data pada kasus MNAR akan menghilangkan bukti kegagalan terpenting dari sistem."
+  },
+  {
+    "kind": "split",
+    "title": "Strategi Penanganan Missing Values",
+    "body": "Memilih pendekatan imputasi yang tepat secara metodologis:\n\n### Penghapusan (Deletion)\n- **Listwise Deletion**: Membuang baris jika ada satu nilai kosong. Hanya aman jika data masif dan murni MCAR.\n- **Pairwise Deletion**: Menghitung korelasi hanya pada pasangan data yang lengkap.\n\n### Imputasi Terkelompok (Group Imputation)\n- Jangan gunakan rata-rata global jika terdapat segmentasi zona!\n- Suhu rata-rata zona *Production* ($43^\\circ\\text{C}$) berbeda drastis dengan *Server Room* ($24^\\circ\\text{C}$).\n- Mengisi median per zona mempertahankan sifat fisik operasional.",
+    "notes": "Jelaskan mengapa global median imputation pada data heterogen merusak profil karakteristik tiap segmen."
+  },
+  {
+    "kind": "code",
+    "title": "Implementasi Group-Based Imputation",
+    "body": "Penerapan imputasi median berbasis kelompok zona menggunakan Pandas:",
+    "code": "import pandas as pd\n\n# Standardisasi nama zona sebelum pengelompokan\ndf['zone'] = df['zone'].astype(str).str.strip().str.title()\n\n# Imputasi suhu berbasis median tiap zona\nimputed_temp = df.groupby('zone')['temperature_c'].transform(\n    lambda s: s.fillna(s.median())\n)\ndf['temperature_c'] = imputed_temp\n\n# Imputasi kelembaban berbasis median zona\nimputed_hum = df.groupby('zone')['humidity_pct'].transform(\n    lambda s: s.fillna(s.median())\n)\ndf['humidity_pct'] = imputed_hum",
+    "notes": "Perhatikan penggunaan method transform() yang mempertahankan bentuk (shape) DataFrame asli setelah operasi agregasi group."
+  },
+  {
+    "kind": "content",
+    "title": "Normalisasi String & Pembersihan Duplikasi",
+    "body": "Teks mentah sering tercemar oleh variasi penulisan spasi dan huruf kapital:\n\n- **Standardisasi String**:\n  - Menghapus spasi awal/akhir (*trailing spaces*): `.str.strip()`\n  - Menyeragamkan kapitalisasi: `.str.title()` atau `.str.upper()`\n  - Mencegah kategori semu ganda pada operasi One-Hot Encoding.\n- **Identifikasi Duplikasi Data**:\n  - *Exact Duplicate*: Seluruh kolom identik akibat glitch re-transmisi paket data TCP/IP sensor.\n  - *Subset Duplicate*: Stempel waktu dan ID sensor sama, tetapi nilai telemetri berfluktuasi.\n  - Menghapus duplikasi dengan mempertahankan entri pertama: `.drop_duplicates(keep='first')`.",
+    "notes": "Ingatkan bahwa string kotor akan memecah kategori menjadi berantakan saat proses grouping maupun encoding."
+  },
+  {
+    "kind": "code",
+    "title": "Deduplikasi dan Pembersihan Teks",
+    "body": "Membersihkan string kategori dan mengeliminasi baris duplikat identik:",
+    "code": "# 1. Normalisasi string pada kolom kategori\ndf['zone'] = df['zone'].astype(str).str.strip().str.title()\ndf['cooling_status'] = (\n    df['cooling_status'].astype(str).str.strip().str.upper()\n)\n\n# 2. Deteksi jumlah baris duplikat identik\nn_duplicates = df.duplicated().sum()\nprint(f\"Duplikat identik terdeteksi: {n_duplicates}\")\n\n# 3. Hapus duplikat dan pertahankan baris pertama\ndf = df.drop_duplicates(keep='first').reset_index(drop=True)",
+    "notes": "Selalu sertakan reset_index(drop=True) setelah menghapus baris duplikat agar indeks urutan baris tetap rapi."
+  },
+  {
+    "kind": "content",
+    "title": "Deteksi Pencilan: Tukey IQR",
+    "body": "Metode non-parametrik John Tukey berbasis Interquartile Range:\n\n- **Rentang Antar-Kuartil (IQR)**:\n  $$\\text{IQR} = Q_3 - Q_1$$\n  Di mana $Q_1$ adalah persentil ke-25 dan $Q_3$ adalah persentil ke-75.\n- **Batas Ambang Pagar Luar (Inner Fences)**:\n  $$\\text{Batas Bawah} = Q_1 - 1.5 \\times \\text{IQR}$$\n  $$\\text{Batas Atas} = Q_3 + 1.5 \\times \\text{IQR}$$\n- **Keunggulan Tukey IQR**:\n  Tangguh (*robust*) terhadap distribusi yang miring karena kuartil dan median tidak terdistorsi oleh nilai-nilai ekstrem.",
+    "notes": "Metode Tukey IQR adalah metode deteksi pencilan paling standar dan aman untuk tahap eksplorasi awal."
+  },
+  {
+    "kind": "content",
+    "title": "Deteksi Pencilan: Pendekatan Z-Score",
+    "body": "Pengukuran deviasi jarak berbasis distribusi normal Gaussian:\n\n- **Formula Skor Standar Z**:\n  $$Z = \\frac{x - \\mu}{\\sigma}$$\n  Di mana $\\mu$ adalah rata-rata populasi dan $\\sigma$ adalah standar deviasi.\n- **Kaidah Empiris Gaussian**:\n  - $68.27\\%$ data berada dalam rentang $[-1, +1]\\sigma$.\n  - $95.45\\%$ data berada dalam rentang $[-2, +2]\\sigma$.\n  - $99.73\\%$ data berada dalam rentang $[-3, +3]\\sigma$.\n- **Kelemahan Z-Score pada Data Kotor**:\n  Satu pencilan yang sangat ekstrem akan mendongkrak $\\mu$ dan memperbesar $\\sigma$, sehingga memperlemah sensitivitas deteksi (*masking effect*).",
+    "notes": "Z-Score mengasumsikan data terdistribusi normal; jika distribusi asimetris atau miring, Tukey IQR jauh lebih direkomendasikan."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus: Noise vs Sinyal Kerusakan Nyata",
+    "body": "Deteksi pencilan suhu $88.5^\\circ\\text{C}$ pada dataset turbin kami:\n\n- **Temuan Statistik**: Batas atas IQR adalah $57.15^\\circ\\text{C}$. Nilai $88.5^\\circ\\text{C}$ diklasifikasikan sebagai outlier ekstrem ($Z = +3.65$).\n- **Investigasi Rekayasa Domain**:\n  - Apakah getaran melonjak? Ya, $3.85\\text{ mm/s}$ (normal $< 0.9\\text{ mm/s}$).\n  - Apakah daya listrik melonjak? Ya, $210.5\\text{ kW}$ (normal $< 125\\text{ kW}$).\n- **Kesimpulan Kritis**:\n  Ini **bukan glitch sensor**, melainkan kejadian nyata *mechanical thermal overload*!\n  *Menghapus baris ini secara buta akan membuat model AI buta terhadap tanda-tanda kerusakan mesin sebelum meledak!*",
+    "notes": "Ini adalah poin pedagogis krusial: data scientist tidak boleh asal drop outlier tanpa berkonsultasi dengan domain engineer."
+  },
+  {
+    "kind": "code",
+    "title": "Winsorization & Capping Outlier",
+    "body": "Membatasi nilai ekstrim pada batas persentil tanpa membuang baris data:",
+    "code": "import numpy as np\n\n# Menghitung persentil ke-5 dan ke-95\np05 = df['temperature_c'].quantile(0.05)\np95 = df['temperature_c'].quantile(0.95)\n\n# Melakukan Winsorization (Capping)\ndf['temp_capped'] = df['temperature_c'].clip(\n    lower=p05, upper=p95\n)\n\nprint(f\"Batas P95 Suhu: {p95:.2f} °C\")\nprint(f\"Suhu Maksimal Sebelum Capping: {df['temperature_c'].max()} °C\")\nprint(f\"Suhu Maksimal Sesudah Capping: {df['temp_capped'].max():.2f} °C\")",
+    "notes": "Capping mempertahankan jumlah observasi total sembari mencegah algoritma berbasis gradien terganggu oleh magnitudo ekstrim."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Penskalaan Fitur Krusial dalam AI?",
+    "body": "Fitur numerik mentah memiliki rentang nilai yang sangat timpang:\n\n- **Daya Listrik**: $45$ hingga $210\\text{ kW}$ (skala ratusan).\n- **Getaran Poros**: $0.12$ hingga $3.85\\text{ mm/s}$ (skala satuan dan desimal).\n\n### Dampak Buruk Tanpa Penskalaan Fitur\n1. **Algoritma Berbasis Jarak (k-NN, SVM, K-Means)**: Jarak Euclidean $\\sqrt{\\sum (x_i - y_i)^2}$ akan didominasi $99.9\\%$ oleh fitur daya listrik; fitur getaran akan terabaikan sepenuhnya.\n2. **Optimasi Gradien (Neural Networks & Logistic Regression)**: Kontur kurva kerugian menjadi sangat lonjong (*elongated ellipse*), memicu osilasi gradien dan konvergensi yang sangat lambat.",
+    "notes": "Jelaskan bahwa penskalaan fitur membuat kontur fungsi rugi menjadi bundar (spherical), sehingga langkah gradien langsung menuju titik minimum."
+  },
+  {
+    "kind": "split",
+    "title": "Min-Max Scaling vs StandardScaler",
+    "body": "Dua metode transformasi skala numerik paling fundamental:\n\n### Min-Max Scaling (Normalisasi)\n- Memetakan nilai ke rentang tertutup seragam $[0, 1]$:\n  $$x_{\\text{norm}} = \\frac{x - x_{\\min}}{x_{\\max} - x_{\\min}}$$\n- Sangat baik jika batas ekstremitas sistem telah diketahui pasti (seperti intensitas piksel $0-255$).\n\n### Standard Scaling (Z-Score)\n- Mentransformasikan nilai sehingga $\\mu = 0$ dan $\\sigma = 1$:\n  $$x_{\\text{std}} = \\frac{x - \\mu}{\\sigma}$$\n- Tidak membatasi interval, menjaga sebaran alami data, dan menjadi pilihan *default* untuk Machine Learning.",
+    "notes": "Bandingkan kelebihan dan kekurangan keduanya, khususnya kerentanan Min-Max Scaling terhadap keberadaan outlier."
+  },
+  {
+    "kind": "content",
+    "title": "Mereduksi Skewness via Transformasi Log",
+    "body": "Banyak fitur di dunia nyata memiliki distribusi miring ke kanan (*positive skewness*):\n\n- **Penyebab Kemiringan**: Terjadinya lonjakan konsumsi daya sesaat menghasilkan ekor panjang (*long tail*) pada histogram.\n- **Dampak pada Model**: Menurunkan linearitas model regresi dan memperlemah korelasi bivariat.\n- **Solusi Matematika: Transformasi Logaritma Natural**:\n  $$y = \\ln(1 + x) \\quad (\\text{fungsi } \\text{np.log1p})$$\n- **Hasil Nyata pada Dataset Kita**:\n  - Skewness awal `power_kw`: $+1.3959$ (sangat miring kanan).\n  - Skewness pasca log-transform: $+0.1829$ (mendekati simetris normal sempurna).",
+    "notes": "Gunakan np.log1p daripada np.log untuk mencegah error fatal log(0) jika terdapat nilai fitur bernilai nol."
+  },
+  {
+    "kind": "code",
+    "title": "Penerapan Transformasi Logaritma",
+    "body": "Menghitung nilai kemiringan (skewness) sebelum dan sesudah transformasi:",
+    "code": "import numpy as np\nfrom scipy import stats\n\n# 1. Hitung skewness fitur daya awal\nskew_raw = stats.skew(df['power_kw'])\n\n# 2. Terapkan transformasi logaritma natural (log1p)\ndf['power_log'] = np.log1p(df['power_kw'])\nskew_log = stats.skew(df['power_log'])\n\nprint(f\"Skewness Sebelum Transformasi: {skew_raw:+.4f}\")\nprint(f\"Skewness Sesudah Transformasi: {skew_log:+.4f}\")\n# Output: Awal +1.3959 -> Menjadi +0.1829 (Normal)",
+    "notes": "Tunjukkan penurunan dramatis nilai skewness mendekati nol sebagai bukti efektivitas transformasi log."
+  },
+  {
+    "kind": "content",
+    "title": "Encoding Kategori: Nominal vs Ordinal",
+    "body": "Variabel teks kategorikal harus dikonversi ke matriks numerik biner:\n\n- **Variabel Ordinal (Memiliki Urutan Hierarkis)**:\n  - Terdapat tingkatan alami antar kategori.\n  - *Contoh*: Status pendinginan turbin:\n    $$\\text{OFF} \\to 0, \\quad \\text{STANDBY} \\to 1, \\quad \\text{ACTIVE} \\to 2$$\n- **Variabel Nominal (Tanpa Urutan Hierarkis)**:\n  - Tidak ada tingkatan derajat antarentitas.\n  - *Contoh*: Lokasi zona operasional (`Production`, `Server Room`, `Warehouse`).\n  - Jika di-encode dengan integer ($0, 1, 2$), model linier akan keliru menganggap Warehouse $2\\times$ lebih tinggi dari Server Room!",
+    "notes": "Jangan pernah mengaplikasikan Label/Ordinal Encoding pada variabel nominal tanpa hierarki urutan."
+  },
+  {
+    "kind": "split",
+    "title": "One-Hot Encoding & Dummy Trap",
+    "body": "Representasi vektor basis ortogonal untuk variabel nominal:\n\n### One-Hot Representation\n- Membentuk $k$ kolom biner baru:\n  - `zone_Production`: $[1, 0, 0]$\n  - `zone_Server Room`: $[0, 1, 0]$\n  - `zone_Warehouse`: $[0, 0, 1]$\n\n### Dummy Variable Trap\n- Jika ada $k$ kolom biner, kolom terakhir selalu merupakan kombinasi linier sempurna dari $k-1$ kolom lainnya:\n  $$\\text{Col}_k = 1 - \\sum_{i=1}^{k-1} \\text{Col}_i$$\n- Memunculkan multikolinearitas sempurna; gunakan `drop_first=True` pada model parametrik linier.",
+    "notes": "Jelaskan bahwa pohon keputusan (Tree-based) kebal terhadap dummy variable trap, tetapi regresi linear OLS akan gagal menginvers matriks kovarians."
+  },
+  {
+    "kind": "code",
+    "title": "Penerapan One-Hot Encoding",
+    "body": "Mengonversi variabel kategori nominal dengan parameter pencegahan jebakan dummy:",
+    "code": "import pandas as pd\n\n# One-Hot Encoding dengan opsi drop_first\ndf_encoded = pd.get_dummies(\n    df,\n    columns=['zone'],\n    drop_first=True,\n    dtype=int\n)\n\n# Kolom yang terbentuk: 'zone_Server Room', 'zone_Warehouse'\n# Kategori 'Production' menjadi reference baseline (0, 0)\nprint(df_encoded.filter(like='zone_').head())",
+    "notes": "Tunjukkan bahwa jika kedua kolom dummy bernilai 0, maka secara otomatis baris tersebut mewakili zona Production."
+  },
+  {
+    "kind": "content",
+    "title": "Exploratory Data Analysis: Taksonomi",
+    "body": "Tiga tingkatan analisis dalam eksplorasi data (*John Tukey, 1977*):\n\n- **Analisis Univariat**:\n  - Memeriksa distribusi satu variabel secara mandiri.\n  - Histogram untuk frekuensi, KDE untuk kurva densitas, Boxplot untuk deteksi median dan rentang kuartil.\n- **Analisis Bivariat**:\n  - Meneliti derajat asosiasi antara sepasang variabel.\n  - Scatter plot (kontinu vs kontinu), Boxplot terkelompok (kategori vs kontinu).\n- **Analisis Multivariat**:\n  - Memeriksa interaksi simultan tiga atau lebih variabel (Pairplot interaktif dan Matriks Korelasi).",
+    "notes": "Tujuan utama EDA bukan membuat grafik indah, melainkan mengungkap hipotesis, kejanggalan, dan struktur laten dari data."
+  },
+  {
+    "kind": "split",
+    "title": "Dashboard Visualisasi EDA Telemetri",
+    "body": "Empat panel analisis visual pada `telemetry_eda_dashboard.png`:\n\n### Panel Distribusi\n- **Subplot 1 (Histogram Suhu)**: Menampilkan sebaran bimodal yang merefleksikan dua kondisi operasional.\n- **Subplot 2 (Boxplot Getaran)**: Mengidentifikasi getaran tinggi di zona produksi vs kondisi tenang di server room.\n\n### Panel Relasi & Agregasi\n- **Subplot 3 (Scatter Daya vs Getaran)**: Tren linear positif yang sangat jelas.\n- **Subplot 4 (Bar Daya per Zona)**: Zona *Production* mendominasi konsumsi energi listrik.",
+    "notes": "Visualisasi multi-panel Matplotlib mode headless 'Agg' memungkinkan ekspor gambar dashboard otomatis di server produksi."
+  },
+  {
+    "kind": "content",
+    "title": "Korelasi Linear Pearson & Interpretasinya",
+    "body": "Koefisien Pearson $r$ mengukur kekuatan hubungan linear dalam rentang $[-1, +1]$:\n\n- **Rumus Matematika**:\n  $$r_{xy} = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}$$\n- **Temuan Matriks Korelasi Telemetri**:\n  - $r(\\text{vibration}, \\text{power}) = +0.8921$: Hubungan positif sangat kuat; kenaikan konsumsi daya memicu getaran tinggi poros turbin.\n  - $r(\\text{temperature}, \\text{vibration}) = +0.8412$: Disipasi panas berbanding lurus dengan getaran mekanis.\n- *Ingat: Korelasi tidak serta-merta membuktikan kausalitas langsung!*",
+    "notes": "Jelaskan bahwa korelasi Pearson hanya mendeteksi relasi linier; jika relasinya non-linier kuadratik, nilai r Pearson bisa mendekati nol meskipun kedua variabel sangat berhubungan."
+  },
+  {
+    "kind": "case",
+    "title": "Bahaya Fatal Data Leakage di Industri",
+    "body": "Kebocoran data terjadi saat informasi data uji merembes ke data latih:\n\n- **Gejala Klasik**:\n  Model AI menunjukkan akurasi fantastis ($99.5\\%$) saat diuji di laboratorium pengembang, tetapi akurasi anjlok drastis ($54.0\\%$) saat dideploy di pabrik nyata!\n- **Penyebab Utama Prapemrosesan**:\n  Menjalankan `StandardScaler().fit_transform(X)` pada **seluruh dataset** sebelum melakukan partisi `train_test_split`.\n- **Dampak Numerik Nyata**:\n  Rata-rata suhu training murni ($34.62^\\circ\\text{C}$) bergeser menjadi ($35.34^\\circ\\text{C}$) akibat bocoran data uji, menghasilkan bias sebesar $0.7167^\\circ\\text{C}$!",
+    "notes": "Kebocoran data adalah salah satu penyebab paling sering mengapa proyek AI gagal saat masuk ke fase produksi komersial."
+  },
+  {
+    "kind": "code",
+    "title": "Pipeline Bebas Kebocoran Data",
+    "body": "Aturan emas: Fit HANYA pada data latih, lalu transform pada data uji:",
+    "code": "from sklearn.model_selection import train_test_split\nfrom sklearn.preprocessing import StandardScaler\n\n# 1. Partisi data terlebih dahulu!\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.3, random_state=42\n)\n\n# 2. Fit HANYA pada data latih\nstrict_scaler = StandardScaler()\nX_train_scaled = strict_scaler.fit_transform(X_train)\n\n# 3. Transformasi data uji dengan parameter latih\nX_test_scaled = strict_scaler.transform(X_test)\n# Parameter mean_ dan var_ murni berasal dari X_train",
+    "notes": "Tunjukkan bahwa X_test tidak pernah menyentuh method .fit(), sehingga distribusi data pengujian tetap murni sebagai data masa depan."
+  },
+  {
+    "kind": "summary",
+    "title": "Checklist Disiplin Data Preparation",
+    "body": "Rangkuman alur kerja profesional sebelum pelatihan model:\n\n1. **Inspeksi & Normalisasi String**: Bersihkan whitespace dan seragamkan kapitalisasi.\n2. **Deduplikasi Cermat**: Hapus entri identik tanpa mengorbankan variasi temporal.\n3. **Imputasi Kontekstual**: Terapkan *group median* berdasarkan zona fisik.\n4. **Audit Outlier**: Tentukan apakah pencilan adalah noise atau kejadian riil kritis.\n5. **Pemisahan Partisi**: Lakukan `train_test_split` sebelum fitting transformasi apa pun.\n6. **Penyekalaan & Encoding**: Terapkan log-transform, StandardScaler, dan One-Hot Encoding secara terisolasi.",
+    "notes": "Tekankan pentingnya checklist ini sebagai SOP (Standard Operating Procedure) bagi setiap engineer data science."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Eksekutif & Roadmap ke Depan",
+    "body": "Pondasi penyiapan data telah kokoh untuk melangkah ke modul etika:\n\n- **Chapter 08 Selesai**: Data mentah industri berhasil diubah menjadi representasi numerik yang bersih, terstandarisasi, dan aman dari bias kebocoran data.\n- **Selanjutnya — Chapter 09**: *AI Ethics, Bias, and Responsible AI*. Kita akan mempelajari bagaimana data yang kita kumpulkan dapat membawa bias historis masyarakat, dan bagaimana membangun sistem cerdas yang adil (*fair*), transparan, akuntabel, serta taat regulasi privasi (UU PDP & GDPR).",
+    "notes": "Tutup sesi presentasi dengan membuka sesi tanya jawab interaktif mengenai studi kasus outlier dan kebocoran data."
+  }
+]

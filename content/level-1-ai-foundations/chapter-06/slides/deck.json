@@ -1,0 +1,159 @@
+[
+  {
+   "kind": "cover",
+   "title": "Probability, Statistics & Linear Algebra for AI",
+   "body": "### Fondasi Kuantitatif & Komputasi Numerik Kecerdasan Buatan\n\n**Level 1 — AI Foundations | Chapter 06**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+   "notes": "Selamat datang di Chapter 06: Probability, Statistics & Linear Algebra for AI. Pada bab ini kita mempelajari empat pilar matematika esensial yang menggerakkan seluruh algoritma kecerdasan buatan: statistik deskriptif, teori probabilitas, aljabar linear, dan kalkulus diferensial."
+  },
+  {
+   "kind": "content",
+   "title": "Mengapa AI Membutuhkan Matematika?",
+   "body": "Komputer memproses seluruh entitas dunia nyata melalui representasi numerik terstruktur:\n\n- **Representasi Data & Model**: Gambar, suara, teks, dan status lingkungan dikodekan dalam bentuk vektor dan matriks berdimensi tinggi.\n- **Pengambilan Keputusan di Bawah Ketidakpastian**: Menggunakan teori probabilitas untuk menangani derau sensor (*sensor noise*) dan data parsial.\n- **Karakterisasi Pola**: Statistik deskriptif merangkum sebaran data dan mendeteksi anomali pengamatan.\n- **Mekanisme Pembelajaran (*Optimization*)**: Kalkulus diferensial memandu penyesuaian bobot parameter model guna meminimalkan kesalahan prediksi.",
+   "notes": "Jelaskan kepada mahasiswa bahwa matematika dalam AI bukanlah teori abstrak tanpa tujuan, melainkan perkakas komputasi praktis untuk menerjemahkan realitas menjadi bilangan dan menemukan parameter optimal."
+  },
+  {
+   "kind": "content",
+   "title": "Capaian Pembelajaran (Learning Objectives)",
+   "body": "Setelah menyelesaikan materi ini, pembelajar diharapkan mampu:\n\n- **Menjelaskan** peran empat pilar matematika (Probabilitas, Statistik, Aljabar Linear, Kalkulus) dalam AI.\n- **Menghitung** ukuran pemusatan, varians sampel/populasi, standar deviasi, dan mendeteksi pencilan.\n- **Menerapkan** aturan probabilitas bersyarat dan Teorema Bayes dalam analisis ketidakpastian.\n- **Mengoperasikan** vektor, dot product, norma, dan perkalian matriks secara tepat.\n- **Menjelaskan** konsep turunan, gradien, fungsi loss MSE, dan algoritma Gradient Descent.",
+   "notes": "Tekankan bahwa bab ini fokus pada pemahaman konsep dan komputasi dasar tanpa ketergantungan pustaka rumit terlebih dahulu agar logika kalkulasi dipahami seutuhnya."
+  },
+  {
+   "kind": "split",
+   "title": "Hierarki Notasi Matematika Dasar",
+   "body": "Standar notasi internasional dalam literatur kecerdasan buatan:\n\n### Skalar & Vektor\n- **Skalar ($s \\in \\mathbb{R}$)**: Bilangan tunggal real, huruf kecil miring (misal: suhu $t = 24.5$).\n- **Vektor ($\\mathbf{v} \\in \\mathbb{R}^n$)**: Kumpulan berurutan skalar 1D, huruf kecil tebal (vektor kolom fitur pengamatan).\n\n### Matriks & Tensor\n- **Matriks ($\\mathbf{M} \\in \\mathbb{R}^{m \\times n}$)**: Tabel 2D angka dengan $m$ baris dan $n$ kolom (tabel data atau bobot layer).\n- **Tensor**: Generalisasi array bern-dimensi (misal: tensor 4D untuk batch citra video).",
+   "notes": "Tunjukkan perbedaan simbolis antara skalar biasa, vektor tebal, dan matriks kapital tebal. Pastikan mahasiswa terbiasa dengan notasi standar ini."
+  },
+  {
+   "kind": "content",
+   "title": "Statistik Deskriptif: Pemusatan Data",
+   "body": "Ukuran pemusatan merangkum titik tengah dari sekelompok nilai pengamatan:\n\n- **Mean (Rata-rata Hitung $\\bar{x}$)**: Jumlah seluruh nilai dibagi ukuran sampel:\n  $$\\bar{x} = \\frac{1}{n} \\sum_{i=1}^n x_i$$\n  *Sangat sensitif terhadap nilai pencilan (outlier) ekstrem.*\n- **Median (Nilai Tengah)**: Nilai yang membagi data terurut menjadi dua bagian seimbang (50% bawah dan 50% atas). Bersifat resisten (*robust*) terhadap outlier.\n- **Modus (Mode)**: Nilai atau kategori yang muncul dengan frekuensi pengamatan terbanyak.",
+   "notes": "Berikan ilustrasi: jika 9 karyawan bergaji 5 juta dan 1 direktur bergaji 100 juta, mean akan melonjak semu ke 14.5 juta, sedangkan median tetap merefleksikan nilai 5 juta."
+  },
+  {
+   "kind": "split",
+   "title": "Varians: Populasi vs Sampel",
+   "body": "Varians mengukur rata-rata penyebaran kuadrat data terhadap nilai rata-ratanya:\n\n### Varians Populasi ($\\sigma^2$)\n- Digunakan jika seluruh data semesta teramati:\n  $$\\sigma^2 = \\frac{1}{N} \\sum_{i=1}^N (x_i - \\mu)^2$$\n\n### Varians Sampel ($s^2$)\n- Wajib menggunakan koreksi Bessel dengan pembagi $(n - 1)$:\n  $$s^2 = \\frac{1}{n - 1} \\sum_{i=1}^n (x_i - \\bar{x})^2$$\n- Mencegah penaksiran varians yang terlalu rendah (*underestimate*).",
+   "notes": "Jelaskan mengapa pembagi n-1 penting pada sampel: karena kita mengukur deviasi terhadap mean sampel (bukan mean populasi sejati), satu derajat kebebasan telah terpakai."
+  },
+  {
+   "kind": "content",
+   "title": "Kuartil & Deteksi Pencilan (Outlier Detection)",
+   "body": "Metode batas dalam Tukey (*Tukey's Fences*) untuk mendeteksi anomali data:\n\n- **Kuartil 1 ($Q_1$)**: Nilai persentil ke-25.\n- **Kuartil 3 ($Q_3$)**: Nilai persentil ke-75.\n- **Interquartile Range (IQR)**: Rentang sebaran 50% data tengah:\n  $$\\text{IQR} = Q_3 - Q_1$$\n- **Ambang Batas Pencilan Wajar**:\n  $$\\text{Batas Bawah} = Q_1 - 1.5 \\times \\text{IQR}$$\n  $$\\text{Batas Atas} = Q_3 + 1.5 \\times \\text{IQR}$$\n- Titik data di luar rentang ini diklasifikasikan sebagai pencilan (*outlier*).",
+   "notes": "Deteksi pencilan adalah tahapan pra-pemrosesan krusial sebelum data dilatihkan pada model AI agar model tidak mempelajari kebisingan."
+  },
+  {
+   "kind": "content",
+   "title": "Fondasi Teori Probabilitas",
+   "body": "Probabilitas mengukur tingkat kepastian terjadinya suatu peristiwa ($0.0 \\le P(E) \\le 1.0$):\n\n- **Ruang Sampel ($S$)**: Himpunan seluruh kemungkinan luaran eksperimen acak.\n- **Kejadian ($E \\subseteq S$)**: Subhimpunan hasil yang menjadi fokus perhatian.\n- **Aturan Komplemen**: Peluang suatu peristiwa tidak terjadi:\n  $$P(A') = 1 - P(A)$$\n- **Aturan Penjumlahan (Gabungan / Union)**:\n  $$P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$$\n  *Mengurangkan irisan agar probabilitas elemen bersama tidak dihitung dua kali.*",
+   "notes": "Gunakan contoh pelemparan dadu atau pengiriman paket data jaringan untuk mengilustrasikan ruang sampel dan aksioma probabilitas Kolmogorov."
+  },
+  {
+   "kind": "split",
+   "title": "Probabilitas Bersyarat & Independensi",
+   "body": "Menilai peluang suatu kejadian berdasarkan informasi kejadian lain:\n\n### Probabilitas Bersyarat\n- Peluang kejadian $A$ jika $B$ telah terjadi:\n  $$P(A|B) = \\frac{P(A \\cap B)}{P(B)}, \\quad P(B) > 0$$\n\n### Independensi Stokastik\n- Dua kejadian $A$ dan $B$ independen jika:\n  $$P(A \\cap B) = P(A) \\times P(B)$$\n  $$\\iff P(A|B) = P(A)$$\n- Mengetahui informasi $B$ tidak mengubah peluang terjadinya $A$.",
+   "notes": "Tekankan perbedaan esensial antara P(A|B) dan P(B|A). Keduanya hampir tidak pernah bernilai sama dalam kasus nyata."
+  },
+  {
+   "kind": "content",
+   "title": "Teorema Bayes & Hukum Probabilitas Total",
+   "body": "Membalik arah pengkondisian probabilitas dengan memanfaatkan bukti yang diobservasi:\n\n$$P(H|E) = \\frac{P(E|H) \\cdot P(H)}{P(E)} = \\frac{P(E|H) \\cdot P(H)}{P(E|H)P(H) + P(E|\\neg H)P(\\neg H)}$$\n\n- **Prior $P(H)$**: Keyakinan probabilitas awal terhadap hipotesis sebelum bukti diperoleh.\n- **Likelihood $P(E|H)$**: Peluang mengamati bukti jika hipotesis benar.\n- **Evidence $P(E)$**: Total probabilitas teramatinya bukti pada semua kondisi.\n- **Posterior $P(H|E)$**: Probabilitas hipotesis yang telah diperbarui setelah bukti diamati.",
+   "notes": "Teorema Bayes adalah fondasi dari Naive Bayes Classifier, Bayesian Networks, filter spam email, dan sistem inferensi robotika probabilistik (SLAM)."
+  },
+  {
+   "kind": "case",
+   "title": "Studi Kasus: Sensor Anomali & Base Rate Fallacy",
+   "body": "### Skenario Deteksi Kebakaran Gedung Pintar\n- Peluang kebakaran (kejadian langka): $P(\\text{Fire}) = 0.01$ (1%).\n- Sensitivitas sensor (*True Positive*): $P(\\text{Alarm}|\\text{Fire}) = 0.95$ (95%).\n- Tingkat alarm palsu (*False Positive*): $P(\\text{Alarm}|\\neg\\text{Fire}) = 0.05$ (5%).\n\n### Hasil Perhitungan Teorema Bayes:\n- Evidensi total: $P(\\text{Alarm}) = (0.95)(0.01) + (0.05)(0.99) = 0.0095 + 0.0495 = 0.0590$.\n- **Posterior**: $P(\\text{Fire}|\\text{Alarm}) = \\frac{0.0095}{0.0590} = 16.10\\%$.\n\n*Meskipun sensor memiliki akurasi 95%, saat alarm berbunyi peluang kebakaran sebenarnya HANYA 16.10%!*",
+   "notes": "Ajak mahasiswa berdiskusi: mengapa peluangnya hanya 16%? Karena jumlah alarm palsu dari 99% kondisi normal jauh lebih banyak daripada alarm sejati dari 1% kebakaran."
+  },
+  {
+   "kind": "content",
+   "title": "Variabel Acak & Nilai Harapan (Expected Value)",
+   "body": "Menghubungkan luaran eksperimen stokastik dengan besaran numerik terukur:\n\n- **Variabel Acak Diskrit ($X$)**: Memetakan luaran eksperimen ke nilai riil terhitung.\n- **Nilai Harapan ($E[X]$)**: Rata-rata teoretis terbobot dari nilai variabel acak:\n  $$E[X] = \\sum_{i} x_i \\cdot P(X = x_i)$$\n- **Distribusi Binomial**: Memodelkan $k$ keberhasilan dari $n$ percobaan independen dengan probabilitas sukses $p$:\n  $$P(X = k) = \\binom{n}{k} p^k (1 - p)^{n - k}$$\n- **Distribusi Normal (Gaussian)**: Kurva lonceng simetris $(\\mu, \\sigma^2)$ yang mendasari asumsi distribusi galat (*noise*) pada model AI.",
+   "notes": "Jelaskan bahwa Expected Value adalah ekspektasi rata-rata jangka panjang. Dalam Reinforcement Learning, fungsi nilai Q-value menghitung Expected Future Reward."
+  },
+  {
+   "kind": "split",
+   "title": "Aljabar Vektor: Operasi Dasar & Norma",
+   "body": "Vektor merepresentasikan titik atau arah fitur data dalam ruang berdimensi $n$:\n\n### Operasi Dasar\n- Penjumlahan element-wise: $\\mathbf{u} + \\mathbf{v} = [u_i + v_i]$.\n- Perkalian skalar: $c\\mathbf{u} = [c \\cdot u_i]$.\n\n### Norma Vektor (Panjang Geometris)\n- **Norma $L_1$ (Manhattan)**: $\\|\\mathbf{v}\\|_1 = \\sum |v_i|$.\n- **Norma $L_2$ (Euclidean)**: $\\|\\mathbf{v}\\|_2 = \\sqrt{\\sum v_i^2}$.\n- **Vektor Satuan (Normalisasi)**: $\\hat{\\mathbf{v}} = \\frac{\\mathbf{v}}{\\|\\mathbf{v}\\|_2}$ (panjang tepat $1.0$).",
+   "notes": "Norma L1 digunakan pada Lasso Regularization untuk memicu sparsity, sedangkan Norma L2 digunakan pada Ridge Regularization dan perhitungan jarak Euclidean."
+  },
+  {
+   "kind": "content",
+   "title": "Dot Product & Cosine Similarity",
+   "body": "Hasil kali titik (*dot product*) mengukur proyeksi dan keselarasan arah dua vektor:\n\n$$\\mathbf{u} \\cdot \\mathbf{v} = \\sum_{i=1}^n u_i v_i = \\|\\mathbf{u}\\|_2 \\|\\mathbf{v}\\|_2 \\cos(\\theta)$$\n\n- **Ortogonalitas**: Jika $\\mathbf{u} \\cdot \\mathbf{v} = 0$, maka $\\theta = 90^\\circ$ (kedua vektor saling tegak lurus / tidak berkorelasi).\n- **Cosine Similarity**: Kemiripan sudut arah tanpa dipengaruhi panjang vektor:\n  $$\\text{Cosine Similarity}(\\mathbf{u}, \\mathbf{v}) = \\frac{\\mathbf{u} \\cdot \\mathbf{v}}{\\|\\mathbf{u}\\|_2 \\|\\mathbf{v}\\|_2} = \\cos(\\theta)$$\n- Nilai berkisar antara $-1.0$ (berlawanan), $0.0$ (ortogonal), hingga $1.0$ (arah identik).",
+   "notes": "Cosine similarity adalah metrik standar pada Natural Language Processing untuk membandingkan kedekatan makna vektor embedding kalimat (misal Sentence Transformers)."
+  },
+  {
+   "kind": "content",
+   "title": "Aljabar Matriks: Representasi & Transposisi",
+   "body": "Matriks adalah tabel terstruktur $m$ baris dan $n$ kolom yang menyimpan dataset atau bobot model:\n\n- **Bentuk (Shape)**: $\\mathbf{A} \\in \\mathbb{R}^{m \\times n}$ ($m$ baris, $n$ kolom).\n- **Transposisi ($\\mathbf{A}^T$)**: Menukar baris menjadi kolom sehingga $(\\mathbf{A}^T)_{ji} = \\mathbf{A}_{ij}$:\n  $$\\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\\\ 5 & 6 \\end{bmatrix}^T = \\begin{bmatrix} 1 & 3 & 5 \\\\ 2 & 4 & 6 \\end{bmatrix}$$\n- Ukuran matriks berubah dari $3 \\times 2$ menjadi $2 \\times 3$.\n- Sifat aljabar: $(\\mathbf{A}^T)^T = \\mathbf{A}$ dan $(\\mathbf{A}\\mathbf{B})^T = \\mathbf{B}^T \\mathbf{A}^T$.",
+   "notes": "Transposisi matriks sering digunakan dalam machine learning untuk mencocokkan dimensi operasi perkalian vektor bobot dengan batch data masukan."
+  },
+  {
+   "kind": "split",
+   "title": "Perkalian Matriks Formal vs Hadamard",
+   "body": "Pembedaan mendasar yang wajib dipahami dalam komputasi AI:\n\n### Perkalian Matriks Formal ($\\mathbf{A}\\mathbf{B}$)\n- Syarat: Kolom $\\mathbf{A}$ = Baris $\\mathbf{B}$ ($(m \\times k) \\times (k \\times n) = (m \\times n)$).\n- Elemen $c_{ij}$ adalah dot product baris $i$ dan kolom $j$.\n- Digunakan pada *Linear Layer / Dense Layer* jaringan saraf.\n\n### Perkalian Hadamard ($\\mathbf{A} \\odot \\mathbf{B}$)\n- Syarat: Dimensi kedua matriks wajib identik ($(m \\times n)$).\n- Perkalian dilakukan elemen demi elemen: $c_{ij} = a_{ij} \\times b_{ij}$.\n- Digunakan pada *gating mechanism* (misal LSTM / GRU).",
+   "notes": "Banyak bug pemula terjadi karena tertukar antara operator np.dot / @ (perkalian matriks) dengan operator * (perkalian Hadamard element-wise)."
+  },
+  {
+   "kind": "content",
+   "title": "Transformasi Linear Geometris",
+   "body": "Perkalian matriks-vektor $\\mathbf{y} = \\mathbf{A}\\mathbf{x}$ memetakan koordinat ruang ke posisi baru:\n\n- Mempertahankan garis lurus dan titik origin $(0, 0)$.\n- **Matriks Rotasi 2D $90^\\circ$ berlawanan arah jarum jam**:\n  $$\\mathbf{R}_{90^\\circ} = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix}$$\n- Jika titik $\\mathbf{p} = [3, 2]^T$ ditransformasikan:\n  $$\\mathbf{p}' = \\begin{bmatrix} 0 & -1 \\\\ 1 & 0 \\end{bmatrix} \\begin{bmatrix} 3 \\\\ 2 \\end{bmatrix} = \\begin{bmatrix} -2 \\\\ 3 \\end{bmatrix}$$\n- Konsep ini menjadi fondasi manipulasi orientasi pada visi komputer dan grafika AI.",
+   "notes": "Tunjukkan bahwa neural network linear layer pada hakikatnya adalah rangkaian transformasi linear geometris (rotasi, scaling, shearing) yang diikuti aktivasi non-linear."
+  },
+  {
+   "kind": "content",
+   "title": "Kalkulus Pengantar: Turunan & Kemiringan",
+   "body": "Turunan pertama mengukur laju perubahan sesaat atau kemiringan garis singgung kurva:\n\n$$f'(x) = \\lim_{h \\to 0} \\frac{f(x + h) - f(x)}{h}$$\n\n- **Aproksimasi Numerik Beda Pusat (*Central Difference*)**:\n  $$f'(x) \\approx \\frac{f(x + h) - f(x - h)}{2h}$$\n- **Makna Tanda Turunan**:\n  - $f'(x) > 0$: Fungsi sedang **menaik** (ke kanan nilai membesar).\n  - $f'(x) < 0$: Fungsi sedang **menurun** (ke kanan nilai mengecil).\n  - $f'(x) = 0$: Titik **stasioner** (kandidat minimum atau maksimum lokal).",
+   "notes": "Hubungkan konsep kemiringan dengan perbukitan: jika kita berdiri di bukit berkemiringan positif, melangkah ke kanan berarti mendaki, melangkah ke kiri berarti menurun."
+  },
+  {
+   "kind": "split",
+   "title": "Turunan Parsial & Vektor Gradien",
+   "body": "Untuk fungsi multivariat $g(x_1, x_2, \\dots, x_n)$:\n\n### Turunan Parsial ($\\frac{\\partial g}{\\partial x_i}$)\n- Mengukur laju perubahan terhadap satu variabel dengan variabel lain diasumsikan konstan.\n\n### Vektor Gradien ($\\nabla g$)\n- Vektor kolom yang memuat seluruh turunan parsial:\n  $$\\nabla g = \\begin{bmatrix} \\frac{\\partial g}{\\partial x_1} \\\\ \\vdots \\\\ \\frac{\\partial g}{\\partial x_n} \\end{bmatrix}$$\n- **Sifat**: Selalu mengarah ke arah peningkatan fungsi paling curam (*steepest ascent*)!",
+   "notes": "Jelaskan bahwa karena gradien mengarah ke kenaikan paling curam, arah sebaliknya (-gradien) pasti merupakan arah penurunan paling curam (steepest descent)."
+  },
+  {
+   "kind": "content",
+   "title": "Fungsi Loss: Mean Squared Error (MSE)",
+   "body": "Fungsi Loss mengukur kuantitas kesalahan prediksi model terhadap target aktual:\n\n- Untuk model regresi linear sederhana $\\hat{y}_i = w \\cdot x_i$:\n  $$L(w) = \\frac{1}{N} \\sum_{i=1}^N (w \\cdot x_i - y_i)^2$$\n- **Turunan Analitis Loss terhadap Bobot $w$**:\n  $$\\frac{\\partial L}{\\partial w} = \\frac{2}{N} \\sum_{i=1}^N x_i (w \\cdot x_i - y_i)$$\n- Nilai gradien ini memberi tahu model apakah bobot $w$ harus ditambah atau dikurangi agar nilai loss mengecil.",
+   "notes": "Ingatkan mahasiswa: MSE diperkenalkan di sini sebagai ilustrasi matematika penerapan kalkulus diferensial, bukan pembahasan mendalam algoritma regresi (Level 2)."
+  },
+  {
+   "kind": "content",
+   "title": "Algoritma Gradient Descent",
+   "body": "Algoritma optimasi iteratif untuk menemukan parameter yang meminimalkan fungsi loss:\n\n$$w_{t+1} = w_t - \\alpha \\cdot \\frac{\\partial L}{\\partial w_t}$$\n\ndi mana $\\alpha > 0$ adalah **Laju Pembelajaran (*Learning Rate*)**.\n\n- Tanda minus menjamin pergerakan ke arah lembah yang berlawanan dari gradien.\n- Langkah pembaruan diulang secara teratur hingga perubahan loss sangat kecil (konvergen) atau batas maksimum iterasi tercapai.",
+   "notes": "Analogikan Gradient Descent seperti orang yang berjalan menuruni gunung berkabut tebal: ia hanya bisa merasakan kemiringan tanah di bawah kakinya untuk melangkah turun."
+  },
+  {
+   "kind": "split",
+   "title": "Dinamika Learning Rate ($\\alpha$)",
+   "body": "Pemilihan nilai $\\alpha$ menentukan keberhasilan konvergensi optimasi model:\n\n### Learning Rate Terlalu Kecil ($\\alpha = 0.001$)\n- Parameter bergerak sangat lambat.\n- Memerlukan waktu komputasi lama dan rawan terhenti dini.\n\n### Learning Rate Ideal ($\\alpha = 0.1$)\n- Parameter melangkah mantap dan mulus menuju titik minimum global.\n\n### Learning Rate Terlalu Besar ($\\alpha = 1.05$)\n- Terjadi *overshooting* (melompati lembah bolak-balik).\n- Nilai loss meledak menjadi divergen (*overflow*).",
+   "notes": "Tunjukkan hasil eksperimen skrip Python: alpha 1.05 menghasilkan loss yang melonjak dari 30 menjadi 441 hanya dalam 15 langkah!"
+  },
+  {
+   "kind": "code",
+   "title": "Implementasi Python: Gradient Descent 1D",
+   "body": "Cuplikan kode optimasi fungsi kuadratik univariat:\n\n```python\ndef f(x):\n    return (x - 3.0) ** 2 + 5.0\n\ndef df(x):\n    return 2.0 * (x - 3.0)\n\nx_curr = -2.0  # Titik awal jauh dari x*=3.0\nalpha = 0.1    # Learning rate\n\nfor step in range(21):\n    loss = f(x_curr)\n    grad = df(x_curr)\n    x_curr = x_curr - (alpha * grad)\n\nprint(f\"Hasil akhir: x = {x_curr:.4f}\")  # Menghasilkan 2.9424\n```",
+   "notes": "Kode ini sangat ringkas namun memuat inti dari seluruh proses optimasi backpropagation pada neural network modern."
+  },
+  {
+   "kind": "case",
+   "title": "Diskusi Kelas: Batasan & Risiko Numerik AI",
+   "body": "### Topik Evaluasi Kritis:\n1. **Underflow & Overflow**: Apa yang terjadi jika perkalian ratusan probabilitas kecil $P(w_1)P(w_2)\\dots P(w_n)$ dihitung tanpa log-transformasi?\n2. **Ketergantungan terhadap Inisialisasi**: Bagaimana jika fungsi loss memiliki banyak minimum lokal (*local minima*) dan saddle points?\n3. **Sensitivitas Skala Data**: Mengapa fitur dengan skala besar (misal gaji 10 juta) mendominasi fitur berskala kecil (misal usia 25 tahun) pada jarak Euclidean jika data tidak dinormalisasi?",
+   "notes": "Gunakan slide ini untuk memicu diskusi kritis mahasiswa mengenai pentingnya log-probability, normalisasi fitur (standardization), dan tantangan non-convex optimization."
+  },
+  {
+   "kind": "summary",
+   "title": "Ringkasan Materi Chapter 06",
+   "body": "Poin-poin kunci pembelajaran fondasi matematika AI:\n\n- **Statistik Deskriptif**: Ukuran pemusatan (mean, median) dan dispersi (varians sampel dengan koreksi Bessel $n-1$, standar deviasi, IQR) merangkum sifat dataset.\n- **Teori Probabilitas**: Teorema Bayes memperbarui keyakinan prior menjadi posterior. Waspadai *Base Rate Fallacy* pada kejadian langka.\n- **Aljabar Linear**: Vektor dan matriks memformat data. Dot product dan cosine similarity mengukur kemiripan arah semantik. Matriks-matriks multiplication $\\neq$ Hadamard product.\n- **Kalkulus & Optimasi**: Gradien menunjukkan arah kenaikan tercuram. Gradient Descent memperbarui bobot parameter ke arah $-\\nabla L$ menuju minimum loss.",
+   "notes": "Tutup sesi presentasi dengan menegaskan bahwa pemahaman matematika yang kuat akan membuat materi Machine Learning di Level 2 menjadi jauh lebih intuitif dan mudah dipahami."
+  },
+  {
+   "kind": "content",
+   "title": "Referensi Akademik & Bacaan Lanjutan",
+   "body": "Sumber pustaka rujukan standar:\n\n1. **Russell, S., & Norvig, P.** (2020). *Artificial Intelligence: A Modern Approach (4th ed.)*. Pearson. (Appendix A: Mathematical Background).\n2. **Deisenroth, M. P., Faisal, A. A., & Ong, C. S.** (2020). *Mathematics for Machine Learning*. Cambridge University Press.\n3. **Strang, G.** (2019). *Linear Algebra and Learning from Data*. Wellesley-Cambridge Press.\n4. **Wasserman, L.** (2004). *All of Statistics: A Concise Course in Statistical Inference*. Springer.\n5. **ACM/IEEE-CS/AAAI.** (2024). *Computer Science Curricula 2023 (CS2023): AI Knowledge Area*. https://csed.acm.org/",
+   "notes": "Arahkan mahasiswa untuk membaca buku Deisenroth dkk (Mathematics for Machine Learning) yang tersedia secara bebas dan legal secara daring sebagai pengayaan mandiri."
+  }
+]
+

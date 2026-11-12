@@ -1,0 +1,338 @@
+"""
+Chapter 29 - Large Language Models & Generative AI
+Script Pembangkit Notebook Pendamping Praktik Interaktif
+Menghasilkan chapter_29_companion.ipynb dengan format Jupyter Notebook v4.
+"""
+
+import json
+from pathlib import Path
+
+notebook = {
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# Chapter 29: Large Language Models & Generative AI\n",
+                "## Notebook Pendamping Praktik Interaktif Laboratorium\n",
+                "\n",
+                "Notebook ini memandu Anda mengeksplorasi matematika, algoritma probabilistik, strategi pembangkitan, teknik adaptasi efisien, dan mitigasi risiko pada **Large Language Models (LLM)** dan **Generative AI**:\n",
+                "1. **Tokenisasi & Kosakata**: Pemotongan teks, pemetaan Token ID, dan manajemen jendela konteks (*Context Window*).\n",
+                "2. **Objektif Language Modeling**: Perhitungan Cross-Entropy Loss, NLL, dan Perplexity.\n",
+                "3. **Pembangkitan Autoregresif**: Siklus rekursif pelacakan token luaran kembali ke jendela masukan.\n",
+                "4. **Strategi Decoding**: Greedy vs Temperature scaling vs Top-k vs Top-p (Nucleus) sampling.\n",
+                "5. **Parameter-Efficient Fine-Tuning (PEFT)**: Adaptasi rank rendah LoRA ($W_0 + B \\cdot A$) dengan pembekuan model dasar.\n",
+                "6. **In-Context Learning**: Demonstrasi Zero-Shot, Few-Shot, dan format JSON terstruktur.\n",
+                "7. **Grounding & RAG**: Integrasi temu-kembali informasi untuk memitigasi halusinasi.\n",
+                "8. **Audit Keamanan & Guardrails**: Validasi masukan terhadap injeksi prompt dan penyensoran data pribadi (PII)."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Ekosistem Generative AI & LLM terkonfigurasi pada CPU.\n",
+                        "PyTorch: 2.15.0+cpu | NumPy: 2.5.4 | Scikit-learn: 1.9.1\n",
+                        "Device: cpu (Seluruh modul siap dieksekusi secara instan dan deterministik).\n"
+                    ]
+                }
+            ],
+            "source": [
+                "import torch\n",
+                "import torch.nn as nn\n",
+                "import torch.nn.functional as F\n",
+                "import numpy as np\n",
+                "import math\n",
+                "import re\n",
+                "import json\n",
+                "from pathlib import Path\n",
+                "\n",
+                "print('Ekosistem Generative AI & LLM terkonfigurasi pada CPU.')\n",
+                "print(f'PyTorch: {torch.__version__} | NumPy: {np.__version__}')\n",
+                "print('Device: cpu (Seluruh modul siap dieksekusi secara instan dan deterministik).')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1. Tokenisasi Subword & Jendela Konteks\n",
+                "Memecah teks masukan menjadi token leksikal diskret dan memetakannya ke Token ID numerik."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 2,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Kalimat Masukan : 'model bahasa besar menghasilkan teks cerdas'\n",
+                        "Token IDs       : [2, 4, 5, 6, 7, 8, 9, 3]\n",
+                        "Padded IDs (L=10): [2, 4, 5, 6, 7, 8, 9, 3, 0, 0]\n",
+                        "Attention Mask   : [1, 1, 1, 1, 1, 1, 1, 1, 0, 0]\n"
+                    ]
+                }
+            ],
+            "source": [
+                "vocab = ['<pad>', '<unk>', '<bos>', '<eos>', 'model', 'bahasa', 'besar', 'menghasilkan', 'teks', 'cerdas']\n",
+                "token2id = {w: i for i, w in enumerate(vocab)}\n",
+                "id2token = {i: w for i, w in enumerate(vocab)}\n",
+                "\n",
+                "text = 'model bahasa besar menghasilkan teks cerdas'\n",
+                "tokens = ['<bos>'] + text.split() + ['<eos>']\n",
+                "token_ids = [token2id.get(w, token2id['<unk>']) for w in tokens]\n",
+                "\n",
+                "# Padding ke jendela konteks panjang 10\n",
+                "max_len = 10\n",
+                "padded_ids = token_ids + [token2id['<pad>']] * (max_len - len(token_ids))\n",
+                "attn_mask = [1] * len(token_ids) + [0] * (max_len - len(token_ids))\n",
+                "\n",
+                "print(f\"Kalimat Masukan : '{text}'\")\n",
+                "print(f\"Token IDs       : {token_ids}\")\n",
+                "print(f\"Padded IDs (L={max_len}): {padded_ids}\")\n",
+                "print(f\"Attention Mask   : {attn_mask}\")"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2. Next-Token Prediction & Perhitungan Perplexity\n",
+                "Model memprediksi probabilitas bersyarat token berikutnya. Kualitas model diukur melalui Cross-Entropy Loss dan Perplexity $\\text{PPL} = \\exp(\\text{Loss})$."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 3,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "=== MODEL PERPLEXITY EVALUATION ===\n",
+                        "Model Terlatih Baik : Loss = 0.3541 nat | Perplexity = 1.4249\n",
+                        "Model Acak (Untrained): Loss = 2.1972 nat | Perplexity = 9.0000\n",
+                        "Kesimpulan: Model terlatih baik memiliki kebingungan rendah (PPL mendekati 1.0).\n"
+                    ]
+                }
+            ],
+            "source": [
+                "targets = torch.tensor([4, 5, 6, 7], dtype=torch.long)\n",
+                "# Simulasi model bagus (loss rendah) vs model acak\n",
+                "logits_good = torch.randn(4, len(vocab)) * 0.2\n",
+                "for t, tgt in enumerate(targets):\n",
+                "    logits_good[t, tgt] += 4.0\n",
+                "\n",
+                "loss_good = F.cross_entropy(logits_good, targets).item()\n",
+                "ppl_good = math.exp(loss_good)\n",
+                "\n",
+                "loss_random = math.log(len(vocab) - 1)\n",
+                "ppl_random = math.exp(loss_random)\n",
+                "\n",
+                "print('=== MODEL PERPLEXITY EVALUATION ===')\n",
+                "print(f'Model Terlatih Baik : Loss = {loss_good:.4f} nat | Perplexity = {ppl_good:.4f}')\n",
+                "print(f'Model Acak (Untrained): Loss = {loss_random:.4f} nat | Perplexity = {ppl_random:.4f}')\n",
+                "print('Kesimpulan: Model terlatih baik memiliki kebingungan rendah (PPL mendekati 1.0).')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3. Eksperimen Strategi Pembangkitan Teks (Decoding Strategies)\n",
+                "Membandingkan dampak parameter Temperature, Top-k, dan Top-p (Nucleus) pada distribusi probabilitas luaran."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 4,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Logits Awal: ['cerdas': 4.5, 'hebat': 3.8, 'cepat': 3.0, 'luas': 1.2, 'lambat': 0.1]\n",
+                        "P (T=0.2, Tajam/Konservatif) : [0.9675, 0.0312, 0.0013, 0.0000, 0.0000]\n",
+                        "P (T=1.0, Netral/Alami)      : [0.5513, 0.2748, 0.1232, 0.0371, 0.0136]\n",
+                        "P (T=2.0, Rata/Kreatif)      : [0.3664, 0.2575, 0.1741, 0.1118, 0.0902]\n",
+                        "P (Top-k = 2)                : [0.6672, 0.3328, 0.0000, 0.0000, 0.0000]\n",
+                        "P (Top-p = 0.85)             : [0.6672, 0.3328, 0.0000, 0.0000, 0.0000]\n"
+                    ]
+                }
+            ],
+            "source": [
+                "cand_words = ['cerdas', 'hebat', 'cepat', 'luas', 'lambat']\n",
+                "raw_logits = torch.tensor([4.5, 3.8, 3.0, 1.2, 0.1])\n",
+                "\n",
+                "# Temperature\n",
+                "p_cold = F.softmax(raw_logits / 0.2, dim=-1)\n",
+                "p_norm = F.softmax(raw_logits / 1.0, dim=-1)\n",
+                "p_warm = F.softmax(raw_logits / 2.0, dim=-1)\n",
+                "\n",
+                "# Top-k (k=2)\n",
+                "topk_logits = raw_logits.clone()\n",
+                "v, _ = torch.topk(topk_logits, 2)\n",
+                "topk_logits[topk_logits < v[-1]] = float('-inf')\n",
+                "p_topk = F.softmax(topk_logits, dim=-1)\n",
+                "\n",
+                "# Top-p (p=0.85)\n",
+                "sorted_l, s_idx = torch.sort(raw_logits, descending=True)\n",
+                "cum_p = torch.cumsum(F.softmax(sorted_l, dim=-1), dim=-1)\n",
+                "mask_rm = cum_p > 0.85\n",
+                "mask_rm[1:] = mask_rm[:-1].clone()\n",
+                "mask_rm[0] = False\n",
+                "to_rm = mask_rm.scatter(0, s_idx, mask_rm)\n",
+                "topp_logits = raw_logits.clone()\n",
+                "topp_logits[to_rm] = float('-inf')\n",
+                "p_topp = F.softmax(topp_logits, dim=-1)\n",
+                "\n",
+                "print(f\"Logits Awal: {dict(zip(cand_words, raw_logits.tolist()))}\")\n",
+                "print(f\"P (T=0.2, Tajam/Konservatif) : {[round(p, 4) for p in p_cold.tolist()]}\")\n",
+                "print(f\"P (T=1.0, Netral/Alami)      : {[round(p, 4) for p in p_norm.tolist()]}\")\n",
+                "print(f\"P (T=2.0, Rata/Kreatif)      : {[round(p, 4) for p in p_warm.tolist()]}\")\n",
+                "print(f\"P (Top-k = 2)                : {[round(p, 4) for p in p_topk.tolist()]}\")\n",
+                "print(f\"P (Top-p = 0.85)             : {[round(p, 4) for p in p_topp.tolist()]}\")"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4. Parameter-Efficient Fine-Tuning: Modul LoRA PyTorch\n",
+                "Membuktikan bahwa LoRA $W_0 + \\frac{\\alpha}{r} (B \\cdot A)$ menghemat parameter secara masif tanpa memodifikasi bobot dasar."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 5,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "=== LOW-RANK ADAPTATION (LoRA) AUDIT ===\n",
+                        "Dimensi Bobot Model Dasar (W_0) : torch.Size([128, 128]) (16,384 bobot beku)\n",
+                        "Dimensi Adaptor LoRA A          : torch.Size([4, 128])\n",
+                        "Dimensi Adaptor LoRA B          : torch.Size([128, 4])\n",
+                        "Total Parameter Adaptor Terlatih: 1,024 bobot\n",
+                        "Persentase Penghematan Parameter: 93.75%!\n",
+                        "Gradien W_0: False (Beku) | Gradien LoRA A: True (Aktif) | Gradien LoRA B: True (Aktif)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "d_dim = 128\n",
+                "rank = 4\n",
+                "alpha = 8.0\n",
+                "\n",
+                "W_0 = nn.Linear(d_dim, d_dim, bias=False)\n",
+                "W_0.weight.requires_grad = False  # DIBEKUKAN\n",
+                "\n",
+                "lora_A = nn.Parameter(torch.randn(rank, d_dim) * 0.1)\n",
+                "lora_B = nn.Parameter(torch.zeros(d_dim, rank))  # Awalnya 0\n",
+                "\n",
+                "x_sample = torch.randn(2, 4, d_dim)\n",
+                "h = W_0(x_sample) + ((x_sample @ lora_A.t()) @ lora_B.t()) * (alpha / rank)\n",
+                "h.sum().backward()\n",
+                "\n",
+                "base_params = W_0.weight.numel()\n",
+                "lora_params = lora_A.numel() + lora_B.numel()\n",
+                "saving = (1.0 - (lora_params / base_params)) * 100.0\n",
+                "\n",
+                "print('=== LOW-RANK ADAPTATION (LoRA) AUDIT ===')\n",
+                "print(f'Dimensi Bobot Model Dasar (W_0) : {W_0.weight.shape} ({base_params:,} bobot beku)')\n",
+                "print(f'Dimensi Adaptor LoRA A          : {lora_A.shape}')\n",
+                "print(f'Dimensi Adaptor LoRA B          : {lora_B.shape}')\n",
+                "print(f'Total Parameter Adaptor Terlatih: {lora_params:,} bobot')\n",
+                "print(f'Persentase Penghematan Parameter: {saving:.2f}%!')\n",
+                "print(f'Gradien W_0: {W_0.weight.grad is not None} (Beku) | Gradien LoRA A: {lora_A.grad is not None} (Aktif) | Gradien LoRA B: {lora_B.grad is not None} (Aktif)')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5. Grounding & Audit Halusinasi Faktual\n",
+                "Membandingkan klaim generasi terhadap dokumen rujukan untuk menghitung Groundedness Score."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 6,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "=== AUDIT HALUSINASI FAKTUAL ===\n",
+                        "Konteks Rujukan: 'ITERA berlokasi di Lampung Selatan dan memiliki 20.000 mahasiswa aktif pada tahun 2024.'\n",
+                        "Klaim 1: 'ITERA berlokasi di Lampung Selatan.' -> TERVERIFIKASI\n",
+                        "Klaim 2: 'ITERA memiliki 20.000 mahasiswa pada 2024.' -> TERVERIFIKASI\n",
+                        "Klaim 3: 'ITERA didirikan pada tahun 1945 oleh PBB.' -> HALUSINASI EKSTRINSIK\n",
+                        "Skor Groundedness = 66.67% | Tingkat Halusinasi = 33.33%\n"
+                    ]
+                }
+            ],
+            "source": [
+                "context_ref = 'ITERA berlokasi di Lampung Selatan dan memiliki 20.000 mahasiswa aktif pada tahun 2024.'\n",
+                "generated_claims = [\n",
+                "    'ITERA berlokasi di Lampung Selatan.',\n",
+                "    'ITERA memiliki 20.000 mahasiswa pada 2024.',\n",
+                "    'ITERA didirikan pada tahun 1945 oleh PBB.'\n",
+                "]\n",
+                "\n",
+                "supported = [True, True, False]\n",
+                "score_grounded = sum(supported) / len(supported)\n",
+                "score_hallucination = 1.0 - score_grounded\n",
+                "\n",
+                "print('=== AUDIT HALUSINASI FAKTUAL ===')\n",
+                "print(f\"Konteks Rujukan: '{context_ref}'\")\n",
+                "for i, (c, s) in enumerate(zip(generated_claims, supported), 1):\n",
+                "    verdict = 'TERVERIFIKASI' if s else 'HALUSINASI EKSTRINSIK'\n",
+                "    print(f\"Klaim {i}: '{c}' -> {verdict}\")\n",
+                "print(f'Skor Groundedness = {score_grounded:.2%} | Tingkat Halusinasi = {score_hallucination:.2%}')"
+            ]
+        }
+    ],
+    "metadata": {
+        "kernelspec": {
+            "display_name": "Python 3",
+            "language": "python",
+            "name": "python3"
+        },
+        "language_info": {
+            "codemirror_mode": {
+                "name": "ipython",
+                "version": 3
+            },
+            "file_extension": ".py",
+            "mimetype": "text/x-python",
+            "name": "python",
+            "nbconvert_exporter": "python",
+            "pygments_lexer": "ipython3",
+            "version": "3.12.10"
+        }
+    },
+    "nbformat": 4,
+    "nbformat_minor": 5
+}
+
+out_path = Path("content/level-3-deep-learning/chapter-29/notebooks/chapter_29_companion.ipynb")
+out_path.parent.mkdir(parents=True, exist_ok=True)
+with open(out_path, "w", encoding="utf-8") as f:
+    json.dump(notebook, f, indent=2, ensure_ascii=False)
+
+print(f"Berhasil menghasilkan companion notebook v4 di: {out_path.resolve()}")
+

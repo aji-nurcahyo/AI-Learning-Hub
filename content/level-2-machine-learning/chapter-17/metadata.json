@@ -1,0 +1,94 @@
+{
+  "id": 17,
+  "slug": "chapter-17",
+  "levelId": 2,
+  "title": "Unsupervised Learning & Clustering",
+  "status": "published",
+  "description": "Modul komprehensif Unsupervised Learning dan Algoritma Clustering: fondasi penemuan pola laten tanpa label terarah, geometri ruang fitur dan metrik jarak (Euclidean, Manhattan, Minkowski), pembuktian kebutuhan mutlak penskalaan fitur, algoritma K-Means dari dasar (Lloyd's algorithm) dan inisialisasi probabilistik K-Means++, penentuan jumlah klaster optimal via Elbow Method dan Silhouette Analysis, keterbatasan asumsi klaster konveks, Density-Based Spatial Clustering (DBSCAN) dengan penanganan titik Core, Border, dan Noise, Hierarchical Agglomerative Clustering dengan perbandingan kriteria keterkaitan (Ward, Complete, Average, Single Linkage) serta visualisasi dendrogram, dan evaluasi klaster tanpa ground truth (Silhouette Score, Davies-Bouldin Index, Calinski-Harabasz Index).",
+  "objectives": [
+    "Membedakan paradigma Supervised vs Unsupervised Learning secara matematis dan konseptual.",
+    "Menjelaskan geometri ruang metrik dan menghitung jarak Euclidean, Manhattan, dan Minkowski.",
+    "Menjelaskan secara empiris kebutuhan mutlak penskalaan fitur (feature scaling) dalam analisis klaster.",
+    "Mengimplementasikan algoritma K-Means dari dasar (Lloyd's algorithm) menggunakan operasi matriks NumPy.",
+    "Menganalisis mekanisme inisialisasi K-Means++ dalam menghindari jebakan minimum lokal sub-optimal.",
+    "Memilih jumlah klaster optimal K menggunakan Elbow Method dan Silhouette Analysis.",
+    "Mengidentifikasi asumsi geometris sferis dan keterbatasan fundamental algoritma K-Means.",
+    "Menjelaskan prinsip kerja DBSCAN berbasis kepadatan spasial serta klasifikasi titik Core, Border, dan Noise.",
+    "Menerapkan metode k-distance graph untuk menentukan hyperparameter epsilon pada DBSCAN.",
+    "Membedakan pendekatan Hierarchical Clustering secara Agglomerative (bottom-up) vs Divisive (top-down).",
+    "Menganalisis pengaruh kriteria keterkaitan (Ward, Complete, Average, Single Linkage) terhadap bentuk klaster.",
+    "Menginterpretasikan struktur pohon dendrogram untuk menentukan partisi kelompok diskrit.",
+    "Mengevaluasi kualitas klastering tanpa ground truth melalui triangulasi metrik Silhouette, Davies-Bouldin, dan Calinski-Harabasz."
+  ],
+  "prerequisites": [
+    16
+  ],
+  "tags": [
+    "Machine Learning",
+    "Unsupervised Learning",
+    "Clustering",
+    "K-Means",
+    "K-Means++",
+    "Lloyd Algorithm",
+    "WCSS",
+    "Elbow Method",
+    "Silhouette Analysis",
+    "DBSCAN",
+    "Density-Based Clustering",
+    "Core Points",
+    "Noise Detection",
+    "Hierarchical Clustering",
+    "Agglomerative Clustering",
+    "Ward Linkage",
+    "Dendrogram",
+    "Davies-Bouldin Index",
+    "Calinski-Harabasz Index",
+    "Scikit-Learn",
+    "SciPy"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Lloyd, S. (1982). Least squares quantization in PCM. IEEE Transactions on Information Theory, 28(2), 129-137",
+      "url": "https://doi.org/10.1109/TIT.1982.1056489",
+      "status": "verified"
+    },
+    {
+      "title": "Arthur, D., & Vassilvitskii, S. (2007). k-means++: The advantages of careful seeding. SODA '07, 1027-1035",
+      "url": "https://dl.acm.org/doi/10.5555/1283383.1283494",
+      "status": "verified"
+    },
+    {
+      "title": "Ester, M., Kriegel, H. P., Sander, J., & Xu, X. (1996). A density-based algorithm for discovering clusters in large spatial databases with noise. KDD-96, 226-231",
+      "url": "https://www.aaai.org/Papers/KDD/1996/KDD96-037.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "Rousseeuw, P. J. (1987). Silhouettes: a graphical aid to the interpretation and validation of cluster analysis. J. Comput. Appl. Math., 20, 53-65",
+      "url": "https://doi.org/10.1016/0377-0427(87)90125-7",
+      "status": "verified"
+    },
+    {
+      "title": "Ward Jr, J. H. (1963). Hierarchical grouping to optimize an objective function. J. Am. Stat. Assoc., 58(301), 236-244",
+      "url": "https://doi.org/10.1080/01621459.1963.10500845",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

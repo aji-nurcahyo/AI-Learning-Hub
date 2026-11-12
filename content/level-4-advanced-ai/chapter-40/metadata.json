@@ -1,0 +1,78 @@
+{
+  "id": 40,
+  "slug": "chapter-40",
+  "levelId": 4,
+  "title": "Advanced AI Capstone Project",
+  "status": "published",
+  "description": "Proyek Penutup Master Curriculum 40 Chapter: perumusan masalah AI lanjutan, arsitektur sistem modular, pencegahan data leakage, perbandingan baseline vs kandidat & profil latensi CPU, error analysis, explainability, validasi keamanan inferensi, pemantauan PSI/KS drift, Risk Register, Model Card, dan pertanggungjawaban akademik.",
+  "objectives": [
+    "Merumuskan advanced AI problem lengkap dengan latar belakang, intended use, prohibited use, dan kriteria sukses kuantitatif.",
+    "Mengidentifikasi kebutuhan fungsional dan nonfungsional sistem AI yang dapat dijalankan pada CPU lokal secara reprodusibel.",
+    "Merancang arsitektur sistem AI modular end-to-end tanpa ketergantungan infrastruktur cloud atau kompleksitas berlebihan.",
+    "Memilih model dan algoritma paling sesuai terhadap karakteristik masalah daripada sekadar memilih model terbesar.",
+    "Menyusun data pipeline bebas kebocoran (zero data leakage) lengkap dengan dokumentasi provenance dan Data Dictionary.",
+    "Mengembangkan prototipe AI terstruktur dalam proyek referensi Intelligent Sensor Monitoring.",
+    "Mengintegrasikan komponen pelatihan, validasi artefak SHA-256, inferensi lokal, dan pemantauan drift dalam satu pipeline.",
+    "Menyusun eksperimen reprodusibel dengan deterministic seed serta suite pengujian unit otomatis.",
+    "Mengevaluasi model dan sistem secara adil menggunakan perbandingan baseline, metrik spesifik tugas, serta error analysis.",
+    "Menghitung penggunaan sumber daya sistem mencakup ukuran bundel artefak dan latensi CPU berulang (Mean, P50, P95).",
+    "Mengimplementasikan kontrol keamanan masukan, Human Escalation fallback, dan pemantauan PSI serta statistik Kolmogorov-Smirnov.",
+    "Mengevaluasi batasan teknis, risiko kegagalan, dan aspek Responsible AI melalui Risk Register serta Model Card.",
+    "Menyusun dokumentasi teknis menyeluruh mencakup panduan reproduksi, notebook, dan laporan eksperimen.",
+    "Mengomunikasikan hasil eksperimen dan mempertanggungjawabkan pilihan arsitektur secara ilmiah dalam presentasi akademik."
+  ],
+  "prerequisites": [
+    36,
+    37,
+    38,
+    39
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Capstone Project",
+    "End-to-End AI Engineering",
+    "Model Evaluation",
+    "Monitoring & Drift",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Sculley et al. (2015), Hidden Technical Debt in Machine Learning Systems",
+      "url": "https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html",
+      "status": "verified"
+    },
+    {
+      "title": "Breck et al. (2017), The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction",
+      "url": "https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/",
+      "status": "verified"
+    },
+    {
+      "title": "NIST (2023), Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "status": "verified"
+    },
+    {
+      "title": "Mitchell et al. (2019), Model Cards for Model Reporting",
+      "url": "https://arxiv.org/abs/1810.03993",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

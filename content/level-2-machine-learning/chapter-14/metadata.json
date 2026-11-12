@@ -1,0 +1,86 @@
+{
+  "id": 14,
+  "slug": "chapter-14",
+  "levelId": 2,
+  "title": "Classification Algorithms",
+  "status": "published",
+  "description": "Modul mendalam algoritma klasifikasi: Logistic Regression, Sigmoid, Decision Boundary, Multiclass (OvR/Multinomial Softmax), Teorema Bayes & Naive Bayes (Gaussian, Multinomial, Bernoulli), matriks konfusi (Accuracy, Precision, Recall, Specificity, F1), kalibrasi threshold, analisis ROC-AUC & PR-AUC, serta mitigasi class imbalance.",
+  "objectives": [
+    "Menjelaskan konsep Classification dalam Supervised Learning.",
+    "Membedakan binary, multiclass, dan multilabel classification.",
+    "Menjelaskan Logistic Regression dan fungsi sigmoid.",
+    "Menginterpretasikan odds ratio dan decision boundary.",
+    "Membedakan One-vs-Rest (OvR) dan One-vs-One (OvO).",
+    "Menjelaskan teorema Bayes dan Naive Bayes.",
+    "Membedakan Gaussian, Multinomial, dan Bernoulli Naive Bayes.",
+    "Menghitung Confusion Matrix: TP, TN, FP, FN.",
+    "Menghitung dan menginterpretasikan Accuracy, Precision, Recall, Specificity, dan F1-Score.",
+    "Menjelaskan threshold calibration dan trade-off Precision-Recall.",
+    "Menginterpretasikan ROC curve dan AUC.",
+    "Mengimplementasikan classification menggunakan Scikit-learn.",
+    "Mengevaluasi class imbalance dan strategi penanganannya.",
+    "Mengevaluasi generalisasi dan keterbatasan model classification."
+  ],
+  "prerequisites": [
+    13
+  ],
+  "tags": [
+    "Machine Learning",
+    "Classification Algorithms",
+    "Logistic Regression",
+    "Sigmoid",
+    "Naive Bayes",
+    "Gaussian NB",
+    "Multinomial NB",
+    "Confusion Matrix",
+    "ROC-AUC",
+    "Precision-Recall",
+    "Class Imbalance",
+    "Scikit-Learn"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Géron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd ed.)",
+      "url": "https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.)",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "Murphy, K. P. (2022). Probabilistic Machine Learning: An Introduction",
+      "url": "https://probml.github.io/pml-book/book1.html",
+      "status": "verified"
+    },
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.)",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "CS2023 (2024), AI Knowledge Area, ACM/IEEE-CS/AAAI Computer Science Curricula",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

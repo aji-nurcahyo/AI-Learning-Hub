@@ -1,0 +1,446 @@
+[
+  {
+    "id": 1,
+    "kind": "cover",
+    "title": "Search Algorithms: Uninformed & Informed Search",
+    "body": "Eksplorasi Ruang Keadaan, Algoritma Pencarian Klasik (BFS, DFS, DLS, IDDFS, UCS), Heuristik, Greedy Best-First, dan Optimasi A*.\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera\nPengampu: Aji Pamungkas Tri Nurcahyo",
+    "notes": "Selamat datang di pertemuan keempat. Hari ini kita membedah algoritma pencarian (Search Algorithms) dari pencarian buta (uninformed) hingga pencarian cerdas berbasis heuristik (informed/A*). Tekankan bahwa algoritma pencarian adalah mekanisme inti di balik perencanaan rute, catur, hingga penalaran logis."
+  },
+  {
+    "id": 2,
+    "kind": "content",
+    "title": "Mengapa Search Algorithms Itu Krusial?",
+    "body": "Algoritma pencarian mengubah masalah keputusan menjadi penelusuran graf sistematis:",
+    "bullets": [
+      "Fondasi Otonomi: Memungkinkan agen cerdas merencanakan urutan tindakan ke masa depan sebelum bertindak.",
+      "Standar Navigasi & Logistik: Menemukan rute terpendek atau termurah pada sistem GPS, game, dan robotika.",
+      "Optimasi Kombinatorik: Menyelesaikan masalah diskret kompleks dengan miliaran kemungkinan status.",
+      "Tolok Ukur Kecerdasan: Menguji trade-off antara keterbatasan komputasi, konsumsi memori, dan optimalitas solusi."
+    ],
+    "notes": "Jelaskan bahwa ketika refleks sederhana tidak cukup, agen harus 'berpikir' dengan cara menyimulasikan masa depan melalui pencarian graf ruang keadaan."
+  },
+  {
+    "id": 3,
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Chapter 04",
+    "body": "Setelah menyelesaikan sesi ini, pembelajar diharapkan mampu:",
+    "bullets": [
+      "Menjelaskan komponen pohon dan graf pencarian (Node, State, Frontier, Explored Set).",
+      "Mengimplementasikan 5 algoritma Uninformed Search: BFS, DFS, DLS, IDDFS, dan UCS.",
+      "Mengimplementasikan 2 algoritma Informed Search: Greedy Best-First dan A* Search.",
+      "Membuktikan syarat Admissibility dan Consistency pada fungsi heuristik.",
+      "Menganalisis kelengkapan, optimalitas, serta kompleksitas waktu dan ruang secara formal.",
+      "Memilih algoritma pencarian yang paling tepat berdasarkan batasan komputasi masalah."
+    ],
+    "notes": "Arahkan fokus mahasiswa pada pemahaman teoretis mengapa suatu algoritma dipilih: kapan memori menjadi kendala utama, dan kapan jaminan biaya minimum menjadi harga mati."
+  },
+  {
+    "id": 4,
+    "kind": "content",
+    "title": "Review Formulasi Masalah Pencarian (Russell & Norvig)",
+    "body": "Setiap algoritma pencarian beroperasi di atas lima komponen formal yang telah didefinisikan:",
+    "bullets": [
+      "1. Initial State (s0): Keadaan awal tempat agen memulai eksplorasi.",
+      "2. Actions (Actions(s)): Himpunan seluruh tindakan legal yang sah dieksekusi dari keadaan s.",
+      "3. Transition Model (Result(s, a)): Fungsi transisi deterministik yang menghasilkan keadaan baru s'.",
+      "4. Goal Test (is_goal(s)): Fungsi penguji boolean penentu ketercapaian tujuan akhir.",
+      "5. Path Cost (c(s, a, s')): Akumulasi biaya langkah di sepanjang lintasan perjalanan."
+    ],
+    "notes": "Ingatkan kembali bahwa kelas SearchProblem yang kita bangun di Chapter 03 digunakan kembali seutuhnya sebagai fondasi seluruh algoritma di Chapter 04 ini."
+  },
+  {
+    "id": 5,
+    "kind": "split",
+    "title": "Search Tree vs Search Graph",
+    "body": "Membedakan struktur masalah fisik dengan struktur eksplorasi algoritma:",
+    "columns": [
+      {
+        "heading": "State Space Graph (Fisik)",
+        "points": [
+          "Konfigurasi dunia nyata dengan simpul unik.",
+          "Umumnya memiliki siklus (loops) bolak-balik.",
+          "Ukuran graf berhingga atau diskret."
+        ]
+      },
+      {
+        "heading": "Search Tree (Pohon Pencarian)",
+        "points": [
+          "Dihasilkan dari ekspansi dinamis jalur pencarian.",
+          "Satu state fisik dapat muncul berkali-kali.",
+          "Rentan infinite loop jika siklus tidak dicegah."
+        ]
+      }
+    ],
+    "notes": "Tekankan perbedaan penting: Kota Sibiu di dunia nyata hanya ada satu, tetapi dalam pohon pencarian, Sibiu dapat muncul di bawah Arad, di bawah Oradea, atau di bawah Fagaras."
+  },
+  {
+    "id": 6,
+    "kind": "content",
+    "title": "Search Node vs Physical State",
+    "body": "Node pencarian adalah struktur data akuntansi internal, bukan keadaan fisik dunia.",
+    "bullets": [
+      "Physical State: Konfigurasi dunia (misal: koordinat grid (2, 3) atau nama kota 'Sibiu').",
+      "Search Node: Struktur data pembungkus yang memuat atribut historis penelusuran:",
+      "  - state: Keadaan fisik yang diwakili oleh simpul ini.",
+      "  - parent: Pointer penunjuk ke simpul induk yang membangkitkannya.",
+      "  - action: Tindakan yang dieksekusi dari simpul induk menuju simpul ini.",
+      "  - path_cost (g): Akumulasi biaya total dari root hingga simpul ini.",
+      "  - depth: Kedalaman simpul di dalam pohon pencarian."
+    ],
+    "notes": "Jelaskan bahwa tanpa pointer parent pada Search Node, algoritma tidak akan pernah bisa merekonstruksi jalur solusi setelah menemukan goal."
+  },
+  {
+    "id": 7,
+    "kind": "content",
+    "title": "Frontier dan Explored Set (Graph Search)",
+    "body": "Dua mekanisme inti yang mengatur alur eksplorasi graf tanpa redundansi:",
+    "bullets": [
+      "Frontier (Open List): Antrean penyimpan simpul daun yang telah digenerate tetapi belum diekspansi.",
+      "Explored Set (Closed List): Himpunan hash-set penyimpan seluruh state yang telah selesai diekspansi.",
+      "Aturan Graph Search: Jika simpul anak sudah berada di Explored Set atau Frontier, ia tidak dimasukkan ulang.",
+      "Pencegahan Siklus: Menjamin algoritma pasti selesai (terminate) pada sembarang graf berhingga."
+    ],
+    "notes": "Pilihan struktur data pada Frontier menentukan perilaku seluruh algoritma: FIFO untuk BFS, LIFO untuk DFS, dan Min-Heap Priority Queue untuk UCS dan A*."
+  },
+  {
+    "id": 8,
+    "kind": "content",
+    "title": "Uninformed vs Informed Search",
+    "body": "Dua mazhab utama strategi penelusuran ruang keadaan:",
+    "bullets": [
+      "Uninformed Search (Pencarian Buta / Blind):",
+      "  - Hanya mengandalkan definisi masalah formal (arah transisi dan biaya langkah).",
+      "  - Tidak memiliki petunjuk tambahan seberapa dekat suatu simpul terhadap tujuan akhir.",
+      "  - Contoh: BFS, DFS, DLS, IDDFS, Uniform-Cost Search (UCS).",
+      "Informed Search (Pencarian Heuristik):",
+      "  - Menggunakan fungsi heuristik h(n) sebagai kompas pemandu arah menuju goal.",
+      "  - Mampu memangkas cabang pencarian secara dramatis.",
+      "  - Contoh: Greedy Best-First Search dan A* Search."
+    ],
+    "notes": "Gunakan analogi labirin: Uninformed search seperti orang buta yang meraba seluruh lorong sistematis; Informed search seperti orang yang membawa kompas yang selalu menunjuk ke arah pintu keluar."
+  },
+  {
+    "id": 9,
+    "kind": "content",
+    "title": "Breadth-First Search (BFS): Prinsip & Antrean FIFO",
+    "body": "BFS mengeksplorasi ruang keadaan lapis demi lapis dari yang terdangkal ke yang terdalam.",
+    "bullets": [
+      "Mekanisme: Menggunakan FIFO Queue (collections.deque). Simpul pertama masuk adalah yang pertama diekspansi.",
+      "Early Goal Test: Uji tujuan dilakukan saat simpul anak digenerate (menghemat ekspansi seluruh cabang level d).",
+      "Karakteristik Unweighted: Menjamin solusi dengan jumlah langkah (hop) paling sedikit.",
+      "Kelemahan Fatal: Kebutuhan memori eksponensial O(b^d). Menyimpan seluruh simpul pada level terdalam."
+    ],
+    "notes": "Tekankan bahwa musuh utama BFS di dunia nyata bukanlah waktu eksekusi CPU, melainkan kehabisan kapasitas memori RAM komputer (Out-Of-Memory)."
+  },
+  {
+    "id": 10,
+    "kind": "code",
+    "title": "BFS Walkthrough: Antrean Lapisan",
+    "body": "Pola ekspansi simpul berurutan lapis demi lapis menggunakan FIFO queue:",
+    "code": "frontier = deque([initial_node])\nexplored = set()\nwhile frontier:\n    node = frontier.popleft()\n    explored.add(node.state)\n    for action in problem.actions(node.state):\n        child = child_node(problem, node, action)\n        if child.state not in explored:\n            if problem.is_goal(child.state):\n                return child.solution()\n            frontier.append(child)",
+    "notes": "Jelaskan bahwa popleft() pada collections.deque di Python berjalan dalam waktu konstan O(1), sangat efisien dibandingkan pop(0) pada list biasa yang memakan waktu O(n)."
+  },
+  {
+    "id": 11,
+    "kind": "content",
+    "title": "Depth-First Search (DFS): Prinsip & LIFO Stack",
+    "body": "DFS mengeksplorasi cabang pohon hingga ke dasar terdalam sebelum melakukan backtracking.",
+    "bullets": [
+      "Mekanisme: Menggunakan LIFO Stack (list Python standar dengan append dan pop).",
+      "Efisiensi Memori: Pada tree search hanya membutuhkan memori linier O(b * m) (jalur aktif root ke daun).",
+      "Kelemahan Teoretis: Tidak lengkap pada ruang keadaan tak berhingga; tidak menjamin optimalitas.",
+      "Perilaku Jalur: Sering kali menemukan rute yang sangat berliku dan mahal sebelum memeriksa cabang pendek di dekat root."
+    ],
+    "notes": "Meskipun DFS tidak optimal, efisiensi memori liniernya sangat berharga jika ruang pencarian sangat dalam namun memiliki banyak solusi."
+  },
+  {
+    "id": 12,
+    "kind": "content",
+    "title": "Depth-Limited Search (DLS): Membatasi Kedalaman",
+    "body": "DLS mengatasi bahaya loop tak berhingga pada DFS dengan memberlakukan batas kedalaman L.",
+    "bullets": [
+      "Depth Limit L: Simpul pada kedalaman L diperlakukan seolah-olah tidak memiliki cabang anak.",
+      "Status CUTOFF: Menandakan bahwa pencarian terpotong batas limit, namun solusi mungkin ada di kedalaman lebih dalam.",
+      "Status FAILURE: Menandakan bahwa seluruh ruang keadaan telah habis dieksplorasi di dalam limit dan goal memang tidak ada.",
+      "Kelemahan: Jika limit L < d (solusi berada lebih dalam), DLS akan gagal menemukan tujuan."
+    ],
+    "notes": "Pembedaan antara CUTOFF dan FAILURE adalah pembeda utama implementasi DLS profesional, karena status CUTOFF menjadi syarat pemicu iterasi pada IDDFS."
+  },
+  {
+    "id": 13,
+    "kind": "content",
+    "title": "Iterative Deepening Search (IDDFS): Solusi Hibrida",
+    "body": "Memadukan kelengkapan dan optimalitas langkah BFS dengan efisiensi memori linier DFS.",
+    "bullets": [
+      "Mekanisme: Menjalankan DLS secara berulang dengan limit yang dinaikkan bertahap: L = 0, 1, 2, 3, ... hingga goal tercapai.",
+      "Efisiensi Memori Sempurna: Hanya memakan memori linier O(b * d), dapat dijalankan pada ruang pencarian raksasa.",
+      "Overhead yang Dapat Diabaikan: Generasi ulang simpul level atas hanya menambah beban komputasi kecil (~11% pada b=10) karena mayoritas simpul selalu berada di daun terbawah O(b^d).",
+      "Algoritma Terbaik: Merupakan pilihan algoritma Uninformed terbaik jika ruang keadaan besar dan kedalaman solusi belum diketahui."
+    ],
+    "notes": "Ingatkan mahasiswa: IDDFS adalah algoritma pencarian buta default yang direkomendasikan Russell & Norvig untuk graf unweighted dengan ruang pencarian besar."
+  },
+  {
+    "id": 14,
+    "kind": "content",
+    "title": "Uniform-Cost Search (UCS / Dijkstra): Optimasi Biaya",
+    "body": "UCS mengeksplorasi ruang keadaan terurut berdasarkan biaya kumulatif minimum g(n).",
+    "bullets": [
+      "Struktur Data: Priority Queue (heapq) diurutkan berdasarkan nilai g(n) terkecil.",
+      "Aturan Krusial 1: Goal test WAJIB dilakukan saat simpul di-pop dari frontier, BUKAN saat digenerate!",
+      "Aturan Krusial 2: Mengelola better path updates jika ditemukan rute baru yang lebih murah ke suatu state.",
+      "Jaminan Optimalitas: Menjamin rute dengan akumulasi biaya numerik terendah sejati pada graf berbobot non-negatif.",
+      "Peta Romania: Menemukan jalur terpendek sejati (Arad -> Sibiu -> R.Vilcea -> Pitesti -> Bucharest = 418 km)."
+    ],
+    "notes": "Tekankan perbedaan vital: BFS meminimalkan jumlah langkah (hop count), sedangkan UCS meminimalkan total biaya matematis (path cost)."
+  },
+  {
+    "id": 15,
+    "kind": "code",
+    "title": "UCS Walkthrough: Pengelolaan Priority Queue",
+    "body": "Implementasi antrean prioritas dengan pelacakan best_cost dan penanganan stale entries:",
+    "code": "frontier = [(0.0, counter, initial_node)]\nbest_cost = {initial_node.state: 0.0}\nwhile frontier:\n    cost, _, current = heapq.heappop(frontier)\n    if current.state in explored: continue\n    if problem.is_goal(current.state): return current\n    explored.add(current.state)\n    for action in problem.actions(current.state):\n        child = problem.result(current.state, action)\n        new_g = current.path_cost + step_cost\n        if child not in best_cost or new_g < best_cost[child]:\n            best_cost[child] = new_g\n            heapq.heappush(frontier, (new_g, counter, child_node))",
+    "notes": "Tunjukkan bahwa stale entries diabaikan dengan aman jika state telah masuk ke explored set."
+  },
+  {
+    "id": 16,
+    "kind": "split",
+    "title": "Perbandingan Spektrum Uninformed Search",
+    "body": "Setiap algoritma pencarian buta memiliki kelebihan dan kekurangan komputasi masing-masing:",
+    "columns": [
+      {
+        "heading": "BFS & IDDFS (Unweighted Optimal)",
+        "points": [
+          "BFS: Optimal langkah, boros memori eksponensial O(b^d).",
+          "IDDFS: Optimal langkah, sangat hemat memori linier O(b*d).",
+          "Cocok untuk: Graf unweighted atau step cost seragam."
+        ]
+      },
+      {
+        "heading": "UCS (Weighted Optimal)",
+        "points": [
+          "UCS: Menjamin biaya kumulatif g(n) terendah sejati.",
+          "Mengeksplorasi kontur lingkaran biaya secara radial.",
+          "Cocok untuk: Graf berbobot (jarak jalan, konsumsi energi)."
+        ]
+      }
+    ],
+    "notes": "Gunakan perbandingan ini untuk menegaskan bahwa jika graf berbobot, BFS tidak lagi menjamin rute terpendek, sehingga UCS atau A* mutlak diperlukan."
+  },
+  {
+    "id": 17,
+    "kind": "content",
+    "title": "Informed Search & Fungsi Heuristik h(n)",
+    "body": "Memanfaatkan estimasi jarak menuju tujuan untuk memandu arah eksplorasi secara cerdas.",
+    "bullets": [
+      "Fungsi Heuristik h(n): Estimasi biaya minimum dari simpul n menuju goal (domain knowledge).",
+      "Sifat Dasar: h(Goal) = 0, dan h(n) >= 0 untuk seluruh simpul n.",
+      "Bukan Jaminan Mutlak: Heuristik adalah perkiraan tebakan terdidik, bukan nilai pasti masa depan.",
+      "Contoh Nyata: Jarak garis lurus udara (Straight-Line Distance) pada peta navigasi jalan raya."
+    ],
+    "notes": "Heuristik berasal dari bahasa Yunani 'heurisko' (menemukan/mencari). Ini adalah kompas yang memberi tahu algoritma ke arah mana pencarian harus diprioritaskan."
+  },
+  {
+    "id": 18,
+    "kind": "content",
+    "title": "Syarat Admissibility (Heuristik yang Dapat Diterima)",
+    "body": "Syarat matematis mutlak agar algoritma A* pada pohon pencarian dijamin menghasilkan solusi optimal.",
+    "bullets": [
+      "Definisi Formal: Heuristik h(n) disebut Admissible jika ia tidak pernah melebih-lebihkan biaya riil minimum menuju tujuan:",
+      "0 <= h(n) <= h*(n), untuk setiap n.",
+      "Prinsip Optimisme: Heuristik admissible selalu bersikap optimis terhadap sisa biaya yang harus ditempuh.",
+      "Konsekuensi: Jika h(n) melebih-lebihkan biaya (overestimate), A* dapat mengabaikan rute optimal sejati dan menghasilkan solusi suboptimal."
+    ],
+    "notes": "Berikan contoh: Jika jarak jalan riil dari Bandung ke Jakarta adalah 150 km, maka estimasi garis lurus 120 km adalah admissible (optimis). Tetapi jika kita mengestimasi 200 km, heuristik menjadi inadmissible."
+  },
+  {
+    "id": 19,
+    "kind": "content",
+    "title": "Syarat Consistency (Ketaksamaan Segitiga)",
+    "body": "Syarat matematis mutlak agar algoritma A* pada graf pencarian dijamin optimal tanpa node reopening.",
+    "bullets": [
+      "Definisi Formal: Untuk setiap simpul n dan setiap tetangga n' via aksi a, berlaku Ketaksamaan Segitiga:",
+      "h(n) <= c(n, a, n') + h(n')",
+      "Monotonik: Nilai f(n) di sepanjang jalur pencarian tidak pernah menurun monotonik.",
+      "Konsistensi Mengimplikasikan Admissibility: Setiap heuristik yang konsisten pasti admissible (jika h(goal)=0).",
+      "Efisiensi Maksimal: Menjamin bahwa ketika simpul di-pop dari frontier, nilai g(n)-nya sudah pasti optimal global."
+    ],
+    "notes": "Jarak garis lurus pada bidang Euclidean selalu memenuhi ketaksamaan segitiga, sehingga secara alami bersifat konsisten."
+  },
+  {
+    "id": 20,
+    "kind": "content",
+    "title": "Greedy Best-First Search: Serakah Mengejar Goal",
+    "body": "Mengevaluasi simpul murni berdasarkan estimasi heuristik ke tujuan: f(n) = h(n).",
+    "bullets": [
+      "Mekanisme: Memilih simpul dengan nilai h(n) terkecil tanpa memedulikan biaya yang telah dihabiskan g(n).",
+      "Keunggulan: Sangat cepat menemukan tujuan pada banyak kasus praktis (jumlah ekspansi node sangat sedikit).",
+      "Kelemahan Fatal: Tidak menjamin kelengkapan maupun optimalitas.",
+      "Kasus Peta Romania: Memilih Arad -> Sibiu -> Fagaras -> Bucharest (450 km) karena h(Fagaras)=176 < h(R.Vilcea)=193, mengabaikan rute optimal 418 km."
+    ],
+    "notes": "Greedy search seperti orang yang langsung berjalan lurus ke arah gedung tujuan, meskipun di depannya ada rawa atau jalan buntu yang membutuhkan putaran mahal."
+  },
+  {
+    "id": 21,
+    "kind": "content",
+    "title": "A* Search: Standar Emas Pencarian Terinformasi",
+    "body": "Menggabungkan evaluasi biaya masa lalu g(n) dan estimasi masa depan h(n).",
+    "bullets": [
+      "Fungsi Evaluasi Baku: f(n) = g(n) + h(n)",
+      "  - g(n): Biaya aktual yang telah ditempuh dari start ke simpul n.",
+      "  - h(n): Estimasi biaya minimum dari simpul n menuju goal.",
+      "  - f(n): Estimasi total biaya termurah dari solusi lengkap yang melalui simpul n.",
+      "Jaminan Teoretis: Lengkap dan Optimal terhadap biaya minimum jika h(n) konsisten pada Graph Search.",
+      "Peta Romania: Berhasil menemukan rute optimal sejati 418 km dengan mengekspansi hanya 6 simpul (UCS mengekspansi 13 simpul)!"
+    ],
+    "notes": "A* adalah salah satu algoritma paling elegan dan paling sering digunakan di industri gim video, robotika otonom, dan navigasi satelit."
+  },
+  {
+    "id": 22,
+    "kind": "content",
+    "title": "Desain Heuristik: Manhattan vs Euclidean Distance",
+    "body": "Pemilihan rumus heuristik harus disesuaikan dengan derajat kebebasan gerak fisik agen:",
+    "bullets": [
+      "Manhattan Distance (L1 Norm): |x1 - x2| + |y1 - y2|",
+      "  - Sangat tepat dan dominan untuk grid pergerakan 4 arah (UP, DOWN, LEFT, RIGHT).",
+      "  - Selalu konsisten dan admissible untuk pergerakan grid ortogonal.",
+      "Euclidean Distance (L2 Norm): sqrt((x1 - x2)^2 + (y1 - y2)^2)",
+      "  - Tepat untuk pergerakan bebas bersudut kontinu atau grid dengan pergerakan diagonal 8 arah.",
+      "  - Selalu admissible karena garis lurus adalah jarak terpendek fisik."
+    ],
+    "notes": "Ingatkan mahasiswa: Heuristik Manhattan pada grid 4 arah mendominasi Euclidean (h_manhattan >= h_euclidean), sehingga A* dengan Manhattan akan mengekspansi simpul lebih sedikit."
+  },
+  {
+    "id": 23,
+    "kind": "split",
+    "title": "Matriks Analisis Kompleksitas 7 Algoritma",
+    "body": "Perbandingan teoretis formal kelengkapan, optimalitas, dan kebutuhan memori:",
+    "columns": [
+      {
+        "heading": "Algoritma Tanpa Informasi (Uninformed)",
+        "points": [
+          "BFS: Complete, Optimal (unweighted), Time O(b^d), Mem O(b^d).",
+          "DFS: Incomplete (tree), Non-optimal, Time O(b^m), Mem O(b*m).",
+          "IDDFS: Complete, Optimal (unweighted), Time O(b^d), Mem O(b*d).",
+          "UCS: Complete, Optimal (weighted cost), Time/Mem O(b^(1 + C*/e))."
+        ]
+      },
+      {
+        "heading": "Algoritma Terinformasi (Informed)",
+        "points": [
+          "Greedy: Incomplete, Non-optimal, Time/Mem O(b^m).",
+          "A*: Complete, Optimal (biaya minimum), Time/Mem O(b^d).",
+          "Kondisi: A* optimal jika h(n) konsisten pada graph search."
+        ]
+      }
+    ],
+    "notes": "Jelaskan bahwa memori tetap menjadi tantangan terbesar A* pada masalah skala masif, yang kelak memicu lahirnya Memory-Bounded A* (SMA* dan IDA*)."
+  },
+  {
+    "id": 24,
+    "kind": "content",
+    "title": "Benchmark Kasus Klasik: Peta Romania (Arad -> Bucharest)",
+    "body": "Benchmark kanonis dunia kecerdasan buatan dari buku Russell & Norvig:",
+    "diagram": [
+      "Arad (Start)",
+      "Sibiu (140 km)",
+      "Rimnicu Vilcea (80 km)",
+      "Pitesti (97 km)",
+      "Bucharest (101 km, Goal Total = 418 km)"
+    ],
+    "bullets": [
+      "Jalur Alternatif Suboptimal: Arad -> Sibiu -> Fagaras -> Bucharest = 450 km.",
+      "Pilihan BFS & Greedy: Memilih jalur Fagaras (450 km) karena jumlah hop lebih sedikit / h lebih kecil.",
+      "Pilihan UCS & A*: Berhasil menemukan rute via Rimnicu Vilcea (418 km) sebagai jalur optimal sejati!"
+    ],
+    "notes": "Tunjukkan diagram ini untuk memperlihatkan bagaimana A* memadukan biaya riil jalan dengan estimasi garis lurus untuk mengambil rute paling hemat."
+  },
+  {
+    "id": 25,
+    "kind": "content",
+    "title": "Hasil Eksperimen Empiris Nyata (Python 3.12.10)",
+    "body": "Bukti pengukuran aktual dari eksekusi skrip compare_search_algorithms.py:",
+    "bullets": [
+      "BFS: Menemukan 3 langkah | Total 450.0 km | Diekspansi 5 node | Waktu 0.058 ms",
+      "DFS: Menemukan 3 langkah | Total 450.0 km | Diekspansi 4 node | Waktu 0.023 ms",
+      "UCS: Menemukan 4 langkah | Total 418.0 km (Optimal!) | Diekspansi 13 node",
+      "Greedy: Menemukan 3 langkah | Total 450.0 km | Diekspansi 4 node (Rakus)",
+      "A*: Menemukan 4 langkah | Total 418.0 km (Optimal!) | Diekspansi HANYA 6 node!",
+      "Kesimpulan: A* menghemat ekspansi simpul lebih dari 50% dibanding UCS dengan jaminan optimalitas yang sama."
+    ],
+    "notes": "Soroti angka ekspansi A* (6 node) vs UCS (13 node). Ini adalah bukti nyata keunggulan dramatis fungsi heuristik dalam memangkas ruang pencarian."
+  },
+  {
+    "id": 26,
+    "kind": "case",
+    "title": "Aktivitas Diskusi (Bagian 1): Skenario Studi Kasus",
+    "body": "Sebuah robot otonom di gudang logistik mencari jalur menuju rak barang melewati rintangan dinamis.",
+    "caseBox": {
+      "title": "Studi Kasus: Robot Navigasi Gudang Pintar",
+      "scenario": "Robot AGV (Automated Guided Vehicle) berada di lantai gudang logistik. Lantai memiliki area lantai licin (biaya langkah 3x lebih besar dibanding lantai beton standar), lorong sempit, dan rak barang. Komputer onboard robot memiliki RAM yang sangat terbatas (microcontroller tertanam).",
+      "options": [
+        "Pilihan A: Menggunakan BFS murni untuk mencari langkah belokan paling sedikit.",
+        "Pilihan B: Menggunakan Uniform-Cost Search (UCS) untuk menghemat konsumsi energi baterai.",
+        "Pilihan C: Menggunakan A* Search dengan Manhattan Distance Heuristic.",
+        "Pilihan D: Menggunakan Iterative Deepening Search (IDDFS) jika memori RAM hampir habis."
+      ]
+    },
+    "notes": "Berikan waktu bagi mahasiswa untuk menelaah karakteristik masalah: ada perbedaan biaya langkah (lantai licin vs beton), kebutuhan rute hemat energi, dan keterbatasan RAM mikrokontroler."
+  },
+  {
+    "id": 27,
+    "kind": "content",
+    "title": "Aktivitas Diskusi (Bagian 2): Pertanyaan Kritis",
+    "body": "Diskusikan dalam kelompok dan berikan analisis teknis terukur untuk tiga pertanyaan ini:",
+    "bullets": [
+      "1. Mengapa rute dengan jumlah belokan langkah paling sedikit (solusi BFS) belum tentu merupakan rute yang paling hemat energi baterai pada kasus ini?",
+      "2. Bagaimana fungsi heuristik Manhattan membantu A* menemukan jalur optimal lebih cepat dibanding UCS?",
+      "3. Jika RAM mikrokontroler robot sangat terbatas sehingga antrean frontier A* kehabisan memori, algoritma alternatif apa yang paling bijak untuk diterapkan?"
+    ],
+    "notes": "Pandu diskusi kelas: 1) BFS mengabaikan bobot lantai licin; 2) Manhattan memandu pencarian ke arah koordinat target; 3) Jika memori habis, gunakan IDA* (Iterative Deepening A*) atau IDDFS."
+  },
+  {
+    "id": 28,
+    "kind": "content",
+    "title": "Katalog Praktik Python Chapter 04",
+    "body": "Delapan skrip runnable mandiri telah disediakan di direktori code/:",
+    "bullets": [
+      "bfs_search.py: Breadth-First Search dengan collections.deque.",
+      "dfs_search.py: Depth-First Search dengan LIFO stack.",
+      "depth_limited_search.py: Depth-Limited Search dengan status CUTOFF vs FAILURE.",
+      "iterative_deepening_search.py: IDDFS dengan iterasi batas bertahap.",
+      "uniform_cost_search.py: UCS dengan heapq dan pelacakan best_cost.",
+      "greedy_best_first_search.py: Greedy Search berbasis f(n) = h(n).",
+      "astar_search.py: A* Search berbasis f(n) = g(n) + h(n).",
+      "compare_search_algorithms.py: Benchmarking komparatif otomatis pada graf & grid."
+    ],
+    "notes": "Ajak mahasiswa membuka terminal dan menjalankan compare_search_algorithms.py serta melihat companion notebook."
+  },
+  {
+    "id": 29,
+    "kind": "summary",
+    "title": "Ringkasan Modul & Poin Kunci",
+    "body": "Prinsip utama yang wajib dipahami dari eksplorasi algoritma pencarian:",
+    "bullets": [
+      "Ruang Keadaan membentuk graf yang dieksplorasi secara sistematis oleh pohon pencarian.",
+      "Frontier menentukan strategi pencarian; Explored Set mencegah perulangan tak berhingga.",
+      "IDDFS adalah algoritma uninformed terbaik untuk unweighted graph berkat memori linier O(b*d).",
+      "UCS menjamin biaya minimum pada graf berbobot positif dengan goal test saat pop.",
+      "Heuristik Admissible & Consistent adalah kunci jaminan optimalitas A* Search.",
+      "A* mendominasi algoritma pencarian optimal lain: tidak ada algoritma optimal berbasis heuristik yang sama yang mengekspansi simpul lebih sedikit dari A*."
+    ],
+    "notes": "Rangkum seluruh capaian pembelajaran Chapter 04. Pastikan mahasiswa siap mengaitkan konsep pencarian ini dengan representasi pengetahuan logika di Chapter 05."
+  },
+  {
+    "id": 30,
+    "kind": "content",
+    "title": "Referensi Akademik & Pratinjau Chapter 05",
+    "body": "Materi sesi ini bersumber dari literatur rujukan primer bereputasi:",
+    "bullets": [
+      "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson. Bab 3.",
+      "Hart, P. E., Nilsson, N. J., & Raphael, B. (1968). A Formal Basis for the Heuristic Determination of Minimum Cost Paths. IEEE Transactions.",
+      "Korf, R. E. (1985). Depth-First Iterative-Deepening. Artificial Intelligence Journal.",
+      "Pratinjau Chapter 05: 'Knowledge Representation & Reasoning' — kita akan mempelajari logika proposisional, First-Order Logic, Forward & Backward Chaining, serta Sistem Pakar!"
+    ],
+    "notes": "Tutup sesi pengajaran dan ingatkan mahasiswa untuk menyelesaikan latihan terstruktur dan tugas mini project di modul bacaan."
+  }
+]

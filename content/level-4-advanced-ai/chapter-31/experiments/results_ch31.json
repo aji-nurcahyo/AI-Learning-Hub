@@ -1,0 +1,117 @@
+{
+  "chapter": 31,
+  "title": "Transfer Learning & Fine-Tuning",
+  "total_scripts": 12,
+  "all_passed": true,
+  "total_runtime_seconds": 62.4355,
+  "scripts": {
+    "transfer_learning_basics.py": {
+      "status": "passed",
+      "duration_seconds": 6.6567,
+      "stdout_snippet": [
+        "",
+        "Kesimpulan: Pada regim data sedikit, representasi terpakai ulang (feature reuse)",
+        "dari source task memberikan priors yang kokoh dan mengurangi risiko overfitting."
+      ]
+    },
+    "pretrained_feature_extraction.py": {
+      "status": "passed",
+      "duration_seconds": 3.8974,
+      "stdout_snippet": [
+        "Kesimpulan: Membekukan bobot (requires_grad = False) TIDAK otomatis membekukan",
+        "perilaku runtime. Backbone wajib disetel ke mode eval() saat feature extraction",
+        "agar inferensi deterministik dan statistik BatchNorm tidak terkontaminasi target task."
+      ]
+    },
+    "freeze_unfreeze_layers.py": {
+      "status": "passed",
+      "duration_seconds": 3.5368,
+      "stdout_snippet": [
+        "Total Parameter      : 7,714",
+        "Parameter Trainable  : 6,498 (84.24%)",
+        "Parameter Frozen     : 1,216 (15.76%)"
+      ]
+    },
+    "linear_probing.py": {
+      "status": "passed",
+      "duration_seconds": 6.6894,
+      "stdout_snippet": [
+        "Test Loss     : 0.0060",
+        "Test Accuracy : 100.00%",
+        "Keuntungan Linear Probing: Sangat cepat, komputasi minimal, dan tidak merusak representasi awal."
+      ]
+    },
+    "partial_fine_tuning.py": {
+      "status": "passed",
+      "duration_seconds": 6.4169,
+      "stdout_snippet": [
+        "",
+        "Kesimpulan: Partial Fine-Tuning mempertahankan fitur fondasi sembari membiarkan",
+        "lapisan atas beradaptasi terhadap domain target secara terkontrol."
+      ]
+    },
+    "full_fine_tuning.py": {
+      "status": "passed",
+      "duration_seconds": 6.8093,
+      "stdout_snippet": [
+        "=================================================================",
+        "Kesimpulan: Full fine-tuning tanpa kendali laju pembelajaran dapat memicu",
+        "Catastrophic Forgetting di mana representasi tugas asal runtuh secara drastis."
+      ]
+    },
+    "domain_shift_demo.py": {
+      "status": "passed",
+      "duration_seconds": 7.0615,
+      "stdout_snippet": [
+        "Kesimpulan: Model yang unggul di domain sumber dapat mengalami keruntuhan",
+        "performa saat menghadapi pergeseran kovariat. Fine-tuning terarah dengan sedikit",
+        "sampel domain target mampu memulihkan batas keputusan model secara signifikan."
+      ]
+    },
+    "negative_transfer_demo.py": {
+      "status": "passed",
+      "duration_seconds": 6.9035,
+      "stdout_snippet": [
+        "Dampak Transfer: -28.75%",
+        "-> Terjadi Negative Transfer! Representasi dari source task merugikan",
+        "   karena fitur relevan target tertindas oleh representasi usang source task."
+      ]
+    },
+    "lora_from_scratch.py": {
+      "status": "passed",
+      "duration_seconds": 0.4805,
+      "stdout_snippet": [
+        "Kesimpulan: Implementasi LoRA scratch membuktikan bahwa komputasi low-rank",
+        "memberikan representasi aljabar yang presisi tanpa pernah mewajibkan pembentukan",
+        "matriks penuh di memori saat proses pelatihan."
+      ]
+    },
+    "lora_parameter_count.py": {
+      "status": "passed",
+      "duration_seconds": 0.1676,
+      "stdout_snippet": [
+        "1. Semakin besar dimensi model dasar, semakin dramatis persentase penghematan LoRA (>99%).",
+        "2. Pada mayoritas tugas klasifikasi dan instruksi, rank r=4 atau r=8 sudah cukup memadai.",
+        "3. Penghematan memori VRAM/RAM berasal dari ketiadaan status optimizer untuk bobot beku."
+      ]
+    },
+    "lora_pytorch_demo.py": {
+      "status": "passed",
+      "duration_seconds": 6.8621,
+      "stdout_snippet": [
+        "",
+        "Kesimpulan: LoRALinear memungkinkan pelatihan hemat memori saat fine-tuning,",
+        "dan dapat digabungkan langsung ke model utama untuk inferensi tanpa overhead komputasi."
+      ]
+    },
+    "fine_tuning_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 6.9541,
+      "stdout_snippet": [
+        "1. Linear Probing sangat efisien (hanya melatih 66 param), namun terbatas jika fitur butuh pergeseran representasi.",
+        "2. LoRA (r=4) mencapai performa kompetitif dengan hanya melatih sebagian kecil parameter (322 param vs 1.506 param).",
+        "3. Full fine-tuning melatih 100% parameter dan memiliki risiko overfitting terbesar pada dataset kecil."
+      ]
+    }
+  }
+}

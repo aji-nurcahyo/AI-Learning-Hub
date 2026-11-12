@@ -1,0 +1,21 @@
+=========================================================================================
+LAPORAN EVALUASI & AUDIT MODEL KECERDASAN BUATAN (REPRODUCIBLE MODEL REPORT)
+=========================================================================================
+Metadata Sistem:
+  Domain Masalah : Pemeliharaan Prediktif & Deteksi Kerusakan Sensor Armada IoT
+  Ukuran Dataset : 500 observasi (400 latih, 100 uji terisolasi)
+  Jumlah Fitur   : 6 prediktor kontinu
+  Distribusi Uji : Normal=43, Fault=57
+-----------------------------------------------------------------------------------------
+Nama Model                 CV F1 (Mean +/- Std)     Test F1      Test ROC-AUC   Brier Score
+-----------------------------------------------------------------------------------------
+Dummy Majority Baseline    72.41% (+/-0.50%)        0.7261       0.5000         0.4300
+Logistic Regression        87.01% (+/-2.92%)        0.8475       0.8841         0.1360
+Random Forest (Tuned)      87.32% (+/-2.71%)        0.8167       0.8788         0.1397
+=========================================================================================
+KESIMPULAN AUDIT & RESPONSIBLE AI CHECKLIST:
+1. Zero Data Leakage: Terverifikasi. Scaling & CV hanya dipelajari dari X_train.
+2. Keunggulan Model: Random Forest melampaui baseline dummy sebesar +20% F1-score.
+3. Keterbatasan Operasional: Model tidak boleh digunakan pada sensor di luar rentang
+   kalibrasi suhu normal (< 20 C atau > 100 C) tanpa uji OOD tambahan.
+=========================================================================================

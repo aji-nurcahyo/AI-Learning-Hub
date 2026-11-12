@@ -1,0 +1,93 @@
+{
+  "chapter": 33,
+  "title": "Retrieval-Augmented Generation",
+  "total_scripts": 14,
+  "total_duration_seconds": 1.87,
+  "all_passed": true,
+  "scripts": {
+    "chunk_overlap_analysis.py": {
+      "status": "passed",
+      "duration_seconds": 0.092,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 33: CHUNK OVERLAP AND SIZE TRADE-OFF ANALYSIS\n===========================================================================\nTarget Document: 'Pengantar Retrieval-Augmented Generation' (Original length: 627 chars)\n\nChun"
+    },
+    "citation_validation.py": {
+      "status": "passed",
+      "duration_seconds": 0.092,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: CITATION & SOURCE ATTRIBUTION VALIDATION\n======================================================================\nCase 1 (Valid Citation):\nText: 'RAG menggabungkan model bahasa dengan basis data eksternal. [Doc: doc_rag"
+    },
+    "context_builder.py": {
+      "status": "passed",
+      "duration_seconds": 0.086,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: CONTEXT CONSTRUCTION & PROMPT PACKING\n======================================================================\nConstructed Grounded Prompt:\n\n<SYSTEM_INSTRUCTION>\nAnda adalah asisten AI akademis. Jawablah pertanyaan HANY"
+    },
+    "dense_retrieval.py": {
+      "status": "passed",
+      "duration_seconds": 0.187,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: DENSE RETRIEVAL WITH THRESHOLD & METADATA FILTERING\n======================================================================\nQuery 1: 'Bagaimana model language mengatasi halusinasi melalui sumber dokumen eksternal?'\n  ["
+    },
+    "document_chunking.py": {
+      "status": "passed",
+      "duration_seconds": 0.089,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: DOCUMENT CHUNKING STRATEGIES\n======================================================================\nSelected document: 'Pengantar Retrieval-Augmented Generation' (627 characters)\n\n[1] Fixed-Size Chunking (size=250, ov"
+    },
+    "document_ingestion.py": {
+      "status": "passed",
+      "duration_seconds": 0.087,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: DOCUMENT INGESTION & PROVENANCE PIPELINE\n======================================================================\nLoaded 20 documents from: D:\\Workstation\\Repo My Corses\\Kecerdasan Buatan\\content\\level-4-advanced-ai\\cha"
+    },
+    "grounded_answer_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.088,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: DETERMINISTIC GROUNDED ANSWER GENERATOR (BASELINE)\n======================================================================\nQuery 1: 'Bagaimana RAG mengatasi keterbatasan knowledge cutoff dan halusinasi?'\nStatus: GROUND"
+    },
+    "hybrid_retrieval.py": {
+      "status": "passed",
+      "duration_seconds": 0.189,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: HYBRID RETRIEVAL VIA RECIPROCAL RANK FUSION (RRF)\n======================================================================\nQuery: 'Perbedaan mekanisme adaptasi RAG dan LoRA pada pembaharuan data'\n\nTop Hybrid Retrieved C"
+    },
+    "rag_evaluation.py": {
+      "status": "passed",
+      "duration_seconds": 0.199,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: COMPREHENSIVE RAG EVALUATION BENCHMARK\n======================================================================\nRunning evaluation over 6 benchmark queries (k=3)...\n\n[q1] 'Apa perbedaan utama antara RAG dan Fine-...'"
+    },
+    "rag_pipeline.py": {
+      "status": "passed",
+      "duration_seconds": 0.212,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: COMPLETE END-TO-END MODULAR RAG PIPELINE\n======================================================================\nUser Query: 'Bagaimana Multi-Head Self-Attention pada arsitektur Transformer memproyeksikan Query, Key, d"
+    },
+    "rag_security_checks.py": {
+      "status": "passed",
+      "duration_seconds": 0.09,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: RAG SECURITY & PROMPT INJECTION DEFENSE\n======================================================================\nScanning 20 ingested documents for adversarial injection payloads...\n\nSafe Documents: 18\nQuarantined Docum"
+    },
+    "rag_vector_index.py": {
+      "status": "passed",
+      "duration_seconds": 0.187,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: RAG VECTOR INDEXING & RETRIEVAL ENGINE\n======================================================================\nIngested 20 documents -> Generated 51 chunks.\nIndexed 51 chunk vectors with dimension d=64.\n\nTest Query: 'B"
+    },
+    "reranking_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.188,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: CROSS-SCORING RERANKING DEMONSTRATION\n======================================================================\nQuery: 'Bagaimana arsitektur YOLO mendeteksi objek secara real-time dengan grid?'\n\n[Before Reranking] Initia"
+    },
+    "sparse_retrieval.py": {
+      "status": "passed",
+      "duration_seconds": 0.09,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 33: SPARSE LEXICAL RETRIEVAL (BM25)\n======================================================================\nQuery: 'Non-Maximum Suppression IoU bounding box YOLO'\n\nTop BM25 Retrieved Results:\n[1] BM25 Score: 15.5921 | ID:"
+    }
+  }
+}

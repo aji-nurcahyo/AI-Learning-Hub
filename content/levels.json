@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "title": "AI Foundations",
+    "folder": "level-1-ai-foundations",
+    "progression": "Understand → Apply",
+    "description": "Membangun cara berpikir AI melalui agent, search, reasoning, matematika, data, dan tanggung jawab."
+  },
+  {
+    "id": 2,
+    "title": "Machine Learning",
+    "folder": "level-2-machine-learning",
+    "progression": "Apply → Evaluate",
+    "description": "Mengembangkan model dari dataset hingga evaluasi yang dapat dipercaya."
+  },
+  {
+    "id": 3,
+    "title": "Deep Learning & Generative AI",
+    "folder": "level-3-deep-learning",
+    "progression": "Apply → Create",
+    "description": "Memahami Neural Network, perception, bahasa, dan generasi konten."
+  },
+  {
+    "id": 4,
+    "title": "Applied & Advanced AI Systems",
+    "folder": "level-4-advanced-ai",
+    "progression": "Create → Evaluate",
+    "description": "Merancang intelligent systems yang terukur, aman, dan dapat dipelihara."
+  }
+]

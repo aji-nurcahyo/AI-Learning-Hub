@@ -1,0 +1,97 @@
+{
+  "id": 21,
+  "slug": "chapter-21",
+  "levelId": 3,
+  "title": "Neural Network Fundamentals",
+  "status": "published",
+  "description": "Modul fundamental arsitektur Jaringan Saraf Tiruan (Neural Network Fundamentals): transisi paradigma dari feature engineering klasik ke representation learning, model matematis neuron buatan McCulloch-Pitts, kombinasi linier terbobot (weighted sum) dan peran parameter bias, Rosenblatt Perceptron dan gerbang logika biner linier, bukti kontradiksi matematis ketidakmampuan Perceptron pada masalah non-linier XOR (Minsky & Papert 1969) serta solusi dekomposisi 2-layer, pembuktian keruntuhan linier (linear collapse) tanpa aktivasi non-linier, taksonomi dan penurunan matematis fungsi aktivasi (Sigmoid, Tanh, ReLU, Leaky ReLU, Softmax), fenomena saturasi gradien dan Dead ReLU, trik stabilitas numerik Softmax subtract-max, topologi Multilayer Perceptron (MLP) dan penghitungan parameter terbobot, Teorema Aproksimasi Universal (Cybenko 1989 & Hornik 1991), alur komputasi propagasi maju (forward propagation) langkah demi langkah terverifikasi (arsitektur 2-3-1), vektorisasi pemrosesan batch dan validasi dimensi tensor, pemilihan lapisan luaran dan fungsi rugi (Mean Squared Error, Binary Cross-Entropy, Categorical Cross-Entropy) dengan stabilisasi pemotongan epsilon, serta batasan jaringan saraf tiruan dan prinsip kecerdasan buatan bertanggung jawab (Responsible AI).",
+  "objectives": [
+    "Menjelaskan konsep Artificial Neural Networks dan perbandingannya dengan neuron biologis.",
+    "Mengidentifikasi hubungan neuron buatan dengan model matematika kombinasi linier terbobot.",
+    "Memahami prinsip kerja Rosenblatt Perceptron dan keterbatasannya pada keterpisahan linier.",
+    "Menjelaskan peran krusial parameter bias dalam memberikan derajat kebebasan batas keputusan.",
+    "Menggunakan berbagai fungsi aktivasi non-linier (Sigmoid, Tanh, ReLU, Leaky ReLU, Softmax).",
+    "Membedakan karakteristik jaringan lapis tunggal (Single-Layer) dan lapis banyak (Multilayer Networks).",
+    "Menjelaskan arsitektur Multilayer Perceptron dan penghitungan total parameter bobot dan bias.",
+    "Melakukan propagasi maju (forward propagation) secara manual maupun tervektorisasi menggunakan matriks.",
+    "Memilih fungsi aktivasi lapisan luaran dan fungsi rugi yang sesuai dengan karakteristik masalah.",
+    "Menjelaskan fungsi rugi Mean Squared Error, Binary Cross-Entropy, dan Categorical Cross-Entropy secara konseptual dan matematis.",
+    "Menghitung forward pass secara manual pada arsitektur 2-3-1 dan memverifikasinya terhadap komputasi matriks.",
+    "Mengimplementasikan engine forward pass jaringan saraf tiruan modular berorientasi objek menggunakan NumPy.",
+    "Mengidentifikasi keterbatasan, kebutuhan data, dan risiko komputasi jaringan saraf tiruan."
+  ],
+  "prerequisites": [
+    20
+  ],
+  "tags": [
+    "Deep Learning",
+    "Neural Network Fundamentals",
+    "Artificial Neuron",
+    "Perceptron",
+    "Multilayer Perceptron",
+    "Linear Separability",
+    "XOR Problem",
+    "Activation Functions",
+    "Sigmoid",
+    "Tanh",
+    "ReLU",
+    "Leaky ReLU",
+    "Softmax",
+    "Numerical Stability",
+    "Forward Propagation",
+    "Vectorization",
+    "Tensor Shapes",
+    "Universal Approximation Theorem",
+    "Loss Functions",
+    "Mean Squared Error",
+    "Binary Cross-Entropy",
+    "Categorical Cross-Entropy",
+    "Representation Learning",
+    "NumPy"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Bishop, C. M. (2006). Pattern Recognition and Machine Learning. Springer",
+      "url": "https://www.microsoft.com/en-us/research/publication/pattern-recognition-and-machine-learning/",
+      "status": "verified"
+    },
+    {
+      "title": "Nielsen, M. A. (2015). Neural Networks and Deep Learning. Determination Press",
+      "url": "https://neuralnetworksanddeeplearning.com/",
+      "status": "verified"
+    },
+    {
+      "title": "Cybenko, G. (1989). Approximation by superpositions of a sigmoidal function. Math. Control Signals Syst., 2(4), 303-314",
+      "url": "https://doi.org/10.1007/BF02551274",
+      "status": "verified"
+    },
+    {
+      "title": "Rosenblatt, F. (1958). The perceptron: A probabilistic model for information storage and organization in the brain. Psychol. Rev., 65(6), 386-408",
+      "url": "https://doi.org/10.1037/h0042519",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

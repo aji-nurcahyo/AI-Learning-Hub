@@ -1,0 +1,242 @@
+"""
+Chapter 26 - Computer Vision Applications
+Script Pembangkit Slide Presentasi Reveal.js (deck.json)
+Menghasilkan 32 slide terstruktur sesuai silabus Section F11.
+"""
+
+import json
+from pathlib import Path
+
+slides = [
+    # 1. Cover
+    {
+        "kind": "cover",
+        "title": "Computer Vision Applications",
+        "body": "### Bab 26: Integrasi Pipeline Visi Komputer, Pengolahan Citra, Segmentasi, Pelacakan Objek, dan Penerapan Bertanggung Jawab\n\n**Artificial Intelligence Learning Hub**  \n*From AI Fundamentals to Intelligent Systems*",
+        "notes": "Selamat datang di perkuliahan Bab 26. Hari ini kita memadukan fondasi CNN (Bab 24) dan Object Detection (Bab 25) ke dalam sistem visi komputer terapan ujung-ke-ujung (End-to-End Computer Vision Pipeline)."
+    },
+    # 2. Computer Vision Applications
+    {
+        "kind": "content",
+        "title": "Bentang Aplikasi Visi Komputer Modern",
+        "body": "Teknologi visi komputer telah mentransformasi berbagai sektor industri utama:\n\n- **Smart Transportation**: Pemantauan arus lalu lintas, sistem tilang elektronik (ETLE), dan pengereman darurat otonom.\n- **Smart Agriculture**: Deteksi kesehatan kanopi daun, estimasi kematangan buah, dan pemilahan gulma otomatis.\n- **Inspeksi Manufaktur**: Deteksi cacat mikro pada permukaan logam, sirkuit PCB, dan kemasan farmasi secara real-time.\n- **Environmental Monitoring**: Analisis citra satelit dan drone untuk memantau deforestasi dan perubahan tutupan lahan.",
+        "notes": "Bahas bagaimana visi komputer tidak lagi sebatas riset akademik, melainkan pilar utama otomatisasi industri modern."
+    },
+    # 3. Learning Objectives
+    {
+        "kind": "content",
+        "title": "Tujuan Pembelajaran Bab 26",
+        "body": "Setelah menyelesaikan sesi ini, Anda diharapkan mampu:\n\n- Mengintegrasikan Image Processing, CNN, dan Object Detection ke dalam satu pipeline utuh.\n- Menjelaskan perbedaan Semantic Segmentation, Instance Segmentation, dan Panoptic Segmentation.\n- Menguasai metrik evaluasi segmentasi tingkat piksel (Mask IoU dan Dice Coefficient).\n- Memahami paradigma Tracking-by-Detection dan mengimplementasikan Centroid Tracking.\n- Membedakan input video FPS dan processing throughput FPS pada komputasi CPU.\n- Mengidentifikasi pergeseran domain (*domain shift*) dan risiko etika privasi visual.",
+        "notes": "Paparkan sasaran pembelajaran dengan jelas agar mahasiswa memahami capaian teori matematis dan keterampilan praktis yang akan dinilai."
+    },
+    # 4. Computer Vision Pipeline
+    {
+        "kind": "content",
+        "title": "Arsitektur Pipeline Visi Komputer Ujung-ke-Ujung",
+        "body": "Sistem visi komputer industri tersusun atas rangkaian tahapan sekuensial terstandar:\n\n```\n[ Sensor Kamera ] ──> [ Akuisisi ] ──> [ Preprocessing ] ──> [ Model AI / CNN ]\n                                              │                     │\n[ Keputusan / Kontrol ] <── [ Visualisasi ] <── [ Tracking ] <── [ Postprocessing ]\n```\n\n- Setiap tahapan memiliki anggaran waktu (*latency budget*) ketat.\n- Kegagalan kualitas pada tahap awal (*Preprocessing*) akan merambat dan merusak akurasi model AI di hilir.",
+        "notes": "Tekankan prinsip GIGO (Garbage In, Garbage Out): preprocessing yang buruk akan merusak akurasi model terbaik sekalipun."
+    },
+    # 5. Image Acquisition
+    {
+        "kind": "content",
+        "title": "Tahap 1: Akuisisi Citra & Karakteristik Sensor",
+        "body": "Citra digital diperoleh melalui sensor optik (CMOS/CCD) yang mengubah foton cahaya menjadi muatan listrik:\n\n- **Faktor Pencahayaan (Illumination)**: Backlight, glare pantulan, dan kondisi malam hari memicu distorsi kontras visual.\n- **Resolusi Spasial**: Resolusi tinggi (4K/1080p) meningkatkan detail tetapi melipatgandakan beban komputasi CPU/GPU secara kuadratik.\n- **Frame Rate (FPS)**: Kamera 30 atau 60 FPS menuntut pemrosesan super cepat di bawah 33 ms per bingkai.",
+        "notes": "Jelaskan bahwa di lingkungan nyata (seperti luar ruangan), pencahayaan tidak pernah statis dan selalu berubah sepanjang hari."
+    },
+    # 6. Image Preprocessing
+    {
+        "kind": "content",
+        "title": "Tahap 2: Prapemrosesan Citra Deterministik",
+        "body": "Prapemrosesan bertujuan membersihkan citra sebelum diumpankan ke model AI:\n\n- **Resizing & Letterboxing**: Menyesuaikan dimensi citra ke resolusi input model (misal $640 \\times 640$) sambil mempertahankan rasio aspek (*aspect ratio*).\n- **Normalisasi Piksel**: Menskalakan intensitas $[0, 255]$ ke interval $[0.0, 1.0]$ atau distribusi nol-terpusat (Z-Score).\n- **Cropping Region of Interest (RoI)**: Memotong area kanvas yang tidak relevan untuk menghemat komputasi.",
+        "notes": "Ingatkan bahaya distorsi aspek rasio: mengubah bentuk mobil persegi panjang menjadi bujur sangkar akan mengecoh filter konvolusi."
+    },
+    # 7. Color Spaces
+    {
+        "kind": "split",
+        "title": "Ruang Warna: RGB vs HSV vs LAB",
+        "body": "**OpenCV BGR & Standar RGB**\n- Kombinasi linier tiga kanal primer.\n- Sensitif terhadap perubahan intensitas cahaya (bayangan mengubah nilai R, G, dan B sekaligus).\n\n**Ruang Warna HSV (Hue, Saturation, Value)**\n- Memisahkan kromatisitas murni (Hue: 0–179) dari kecerahan (Value: 0–255).\n- Sangat tangguh untuk segmentasi berbasis warna di bawah bayangan.",
+        "notes": "Bahas mengapa segmentasi warna di HSV jauh lebih andal daripada mengiris nilai RGB di bawah sinar matahari terbuka."
+    },
+    # 8. Filtering
+    {
+        "kind": "content",
+        "title": "Penapisan Spasial & Peredaman Derau (Denoising)",
+        "body": "Operasi konvolusi kernel 2D untuk menghaluskan dan mereduksi noise:\n\n- **Box Filter (`cv2.blur`)**: Rata-rata sederhana, mengaburkan tepi tajam.\n- **Gaussian Blur (`cv2.GaussianBlur`)**: Pembobotan lonceng distribusi normal, ideal untuk derau acak Gaussian.\n- **Median Filter (`cv2.medianBlur`)**: Mengambil nilai median tetangga; sangat efektif menghapus derau ekstrem *salt-and-pepper* tanpa mengaburkan tepi.\n- **Bilateral Filter (`cv2.bilateralFilter`)**: Menghaluskan permukaan sembari mempertahankan ketajaman garis tepi (*edge-preserving*).",
+        "notes": "Tunjukkan bahwa Median Filter bekerja secara non-linier sehingga tidak menghasilkan nilai rata-rata abu-abu pada noise bintik putih."
+    },
+    # 9. Edge Detection
+    {
+        "kind": "content",
+        "title": "Ekstraksi Garis Tepi (Edge Detection)",
+        "body": "Tepi objek ditandai oleh lonjakan drastis pada turunan pertama intensitas spasial citra:\n\n- **Operator Sobel**: Menghitung gradien horizontal $G_x$ dan vertikal $G_y$.\n  $$\\text{Magnitudo: } G = \\sqrt{G_x^2 + G_y^2}, \\quad \\text{Arah: } \\theta = \\arctan2(G_y, G_x)$$\n- **Canny Edge Detector**: Algoritma optimal multi-tahap:\n  1. Penghalusan Gaussian $\\to$ 2. Gradien Sobel $\\to$ 3. Non-Maximum Suppression tipis 1 piksel $\\to$ 4. Hysteresis Double Thresholding ($T_{\\text{low}}, T_{\\text{high}}$).",
+        "notes": "Jelaskan peran hysteresis thresholding Canny: piksel di antara T_low dan T_high hanya dipertahankan jika terhubung ke tepi kuat."
+    },
+    # 10. Morphological Operations
+    {
+        "kind": "split",
+        "title": "Operasi Morfologi Matematika",
+        "body": "**Erosi & Dilasi**\n- *Erosi ($A \\ominus B$)*: Menyusutkan area putih, membuang bintik derau terisolasi.\n- *Dilasi ($A \\oplus B$)*: Memperluas area putih, menutup lubang kecil internal.\n\n**Opening & Closing**\n- *Opening*: Erosi diikuti Dilasi (membersihkan derau luar tanpa menyusutkan objek utama).\n- *Closing*: Dilasi diikuti Erosi (menutup celah dan retakan internal).",
+        "notes": "Tekankan analogi praktis: Opening menyisir kotoran di luar objek, Closing menambal lubang di dalam objek."
+    },
+    # 11. Segmentation
+    {
+        "kind": "content",
+        "title": "Pengantar Segmentasi Citra (Image Segmentation)",
+        "body": "Jika deteksi objek hanya menghasilkan kotak persegi panjang kasar, segmentasi citra membedah piksel demi piksel:\n\n- Menghasilkan **mask biner** atau peta label tingkat piksel (*pixel-level mask*).\n- Menentukan batas kontur objek secara presisi sesuai bentuk organ, jalan, atau dedaunan nyata.\n- Sangat krusial untuk navigasi robotik (menentukan area jalan yang dapat dilalui / *drivable area*) dan segmentasi medis (tumor/organ).",
+        "notes": "Bahas mengapa kotak bounding box tidak cukup untuk mobil otonom yang harus membedakan belokan jalan melengkung."
+    },
+    # 12. Semantic Segmentation
+    {
+        "kind": "content",
+        "title": "Semantic Segmentation: Klasifikasi Per Piksel",
+        "body": "Semantic Segmentation mengelompokkan setiap piksel citra ke dalam label kategori kelas semantik:\n\n- Seluruh objek dari kelas yang sama diberi label warna identik.\n- **Tidak membedakan identitas instans individual**: Tiga orang yang berdiri bersebelahan akan digabungkan menjadi satu gumpalan mask 'Orang' raksasa yang menyatu.\n- Arsitektur standar: FCN (Fully Convolutional Network), U-Net, DeepLabV3+.",
+        "notes": "Garis bawahi bahwa Semantic Segmentation tidak mengetahui berapa jumlah orang yang ada jika mereka saling bersentuhan."
+    },
+    # 13. Instance Segmentation
+    {
+        "kind": "split",
+        "title": "Instance vs Panoptic Segmentation",
+        "body": "**Instance Segmentation (Mask R-CNN, YOLOv8-Seg)**\n- Membedakan setiap individu entitas secara terpisah (Orang 1, Orang 2, Mobil 1, Mobil 2).\n- Hanya memproses objek diskret (*countable objects* / *things*).\n\n**Panoptic Segmentation**\n- Menyatukan Semantic dan Instance Segmentation dalam satu representasi visual terpadu.\n- Melabeli objek individual (*things*) sekaligus latar kontinu (*stuff*: langit, aspal, rumput).",
+        "notes": "Bahas transisi dari instance segmentation menuju panoptic segmentation sebagai holy grail pemahaman adegan visual."
+    },
+    # 14. Segmentation Masks
+    {
+        "kind": "content",
+        "title": "Representasi Mask Biner & Encoding Run-Length",
+        "body": "Mask segmentasi disimpan dalam matriks 2D berdimensi $(H, W)$:\n\n- Setiap sel bernilai boolean $\{0, 1\}$ atau intensitas $\{0, 255\}$.\n- Format penyimpanan terkompresi: **Run-Length Encoding (RLE)** atau poligon kontur poligonial COCO $[x_1, y_1, x_2, y_2, \\dots, x_n, y_n]$.\n- Mask biner dapat dikalikan secara bitwise terhadap citra asli untuk mengekstrak latar depan (*foreground extraction*).",
+        "notes": "Tunjukkan bahwa menyimpan poligon kontur jauh lebih hemat ruang penyimpanan daripada menyimpan jutaan piksel matriks biner mentah."
+    },
+    # 15. Segmentation Evaluation
+    {
+        "kind": "split",
+        "title": "Evaluasi Segmentasi: Mask IoU dan Dice Score",
+        "body": "**Mask IoU (Jaccard Index)**\n$$\\text{IoU} = \\frac{|M_{\\text{pred}} \\cap M_{\\text{gt}}|}{|M_{\\text{pred}} \\cup M_{\\text{gt}}|}$$\n- Rasio irisan piksel dibagi gabungan piksel.\n\n**Dice Similarity Coefficient (F1)**\n$$\\text{Dice} = \\frac{2 \\times |M_{\\text{pred}} \\cap M_{\\text{gt}}|}{|M_{\\text{pred}}| + |M_{\\text{gt}}|}$$\n- Hubungan Aljabar: $\\text{Dice} = \\frac{2 \\cdot \\text{IoU}}{1 + \\text{IoU}}$.",
+        "notes": "Tekankan bahwa Dice Coefficient selalu bernilai lebih tinggi daripada IoU untuk derajat tumpang tindih yang sama."
+    },
+    # 16. Object Tracking
+    {
+        "kind": "content",
+        "title": "Pengantar Pelacakan Objek Visual (Object Tracking)",
+        "body": "Deteksi objek memproses setiap frame secara independen tanpa mengingat masa lalu. Pelacakan objek menghadirkan **kontinuitas temporal**:\n\n- Menetapkan **ID unik persisten** untuk setiap entitas fisik melintasi waktu (Frame $t, t+1, \\dots, t+N$).\n- Mengestimasi trajektori lintasan gerak, kecepatan, dan arah perpindahan objek.\n- Menangani kasus oklusi sementara (saat objek tertutup tiang atau kendaraan lain selama beberapa frame).",
+        "notes": "Jelaskan perbedaan mendasar: deteksi objek itu amnesia (lupa frame sebelumnya), pelacakan objek itu memiliki memori temporal."
+    },
+    # 17. Tracking-by-Detection
+    {
+        "kind": "content",
+        "title": "Paradigma Tracking-by-Detection",
+        "body": "Standar industri paling dominan dalam pelacakan multi-objek modern (*Multi-Object Tracking* / MOT):\n\n```\nFrame Video ──> [ Detektor Objek (YOLO) ] ──> Kumpulan Bounding Box\n                                                    │\nRiwayat Jejak Objek ──> [ Algoritma Asosiasi Data ] <──┘\n(Kalman Filter / Jarak)             │\n                                    ▼\n                             ID Terbarui & Jejak Baru\n```\n\n- Memisahkan tugas lokalisasi spasial (diserahkan ke detektor) dari tugas asosiasi identitas antar-waktu.",
+        "notes": "Paparkan keuntungan modularitas tracking-by-detection: detektor dan modul tracking dapat dioptimalkan secara terpisah."
+    },
+    # 18. Centroid Tracking
+    {
+        "kind": "content",
+        "title": "Algoritma Centroid Tracking Sederhana",
+        "body": "Pendekatan pelacakan paling ringan dan efisien untuk komputasi CPU:\n\n1. Hitung titik pusat massa (Centroid) $(c_x, c_y)$ dari setiap bounding box deteksi baru.\n2. Hitung matriks jarak Euclidean terhadap seluruh centroid objek yang sedang aktif dilacak.\n3. Lakukan pencocokan terdekat (*greedy matching*).\n4. Perbarui koordinat objek terpasangkan.\n5. Daftarkan deteksi baru yang belum berpasangan sebagai ID baru.\n6. Hapus objek yang hilang lebih dari $N$ frame berturut-turut (*deregistration*).",
+        "notes": "Bimbing mahasiswa memahami algoritma Centroid Tracker yang telah diimplementasikan pada skrip praktikum 8."
+    },
+    # 19. Occlusion and Identity Switch
+    {
+        "kind": "split",
+        "title": "Tantangan: Oklusi & Identity Switch",
+        "body": "**Oklusi (Occlusion)**\n- Objek tertutup sementara oleh rintangan visual.\n- Tracker wajib mempertahankan ID objek selama beberapa frame toleransi (*disappeared buffer*).\n\n**Pertukaran Identitas (Identity Switch)**\n- Terjadi ketika dua objek berpapasan erat dan tracker salah menukar ID keduanya.\n- Mitigasi: Menggabungkan fitur visual Re-Identification (ReID) dengan estimasi gerak Kalman Filter (DeepSORT / ByteTrack).",
+        "notes": "Bahas risiko insiden identity switch pada sistem penegakan hukum tilang otomatis jika plat mobil tertukar."
+    },
+    # 20. Image vs Video Processing
+    {
+        "kind": "content",
+        "title": "Pemrosesan Citra Tunggal vs Aliran Video",
+        "body": "Mengolah video bukan sekadar menjalankan perulangan *for-loop* pada sekumpulan gambar:\n\n- **Korelasi Temporal Kuat**: Frame $t+1$ hampir identik dengan frame $t$; kita dapat memanfaatkan redundansi ini melalui teknik *Frame Skipping / Sampling*.\n- **Manajemen Memori RAM**: Menahan terlalu banyak frame beresolusi tinggi di memori akan memicu galat *Out of Memory (OOM)*; frame wajib dirilis segera setelah diproses.\n- **Buffer Antrean I/O**: Decoding stream RTSP kamera jaringan menuntut thread terpisah agar tidak memblokir thread inferensi AI.",
+        "notes": "Jelaskan kepada mahasiswa pentingnya arsitektur multi-threading produsen-konsumen pada sistem video CCTV real-time."
+    },
+    # 21. FPS and Latency
+    {
+        "kind": "split",
+        "title": "Video FPS vs Processing FPS",
+        "body": "**Input Video FPS**\n- Kecepatan perekaman kamera (misal 30 FPS $\\to$ interval kedatangan frame 33.3 ms).\n- Bersifat tetap dan ditentukan oleh perangkat keras sensor.\n\n**Processing Throughput FPS**\n- Kemampuan perangkat keras CPU/GPU memproses frame ($1000 / T_{\\text{latensi}}$ ms).\n- *Aturan Real-Time*: Processing FPS wajib $\\ge$ Input Video FPS agar tidak terjadi penumpukan antrean (*frame drop*).",
+        "notes": "Klarifikasi kesalahpahaman umum: video 30 FPS tidak otomatis berjalan real-time jika komputer hanya sanggup memproses pada 10 FPS."
+    },
+    # 22. Smart Agriculture
+    {
+        "kind": "case",
+        "title": "Studi Kasus 1: Smart Agriculture",
+        "body": "**Tantangan:**\nPetani kelapa sawit ingin mendeteksi defisiensi nutrisi daun dan gulma invasif secara otomatis menggunakan drone kamera terbang.\n\n**Solusi Visi Komputer:**\n- Mengonversi citra udara ke ruang warna HSV untuk mengisolasi kanopi daun hijau sehat dari tanah cokelat.\n- Menerapkan segmentasi kontur adaptif untuk mengukur rasio tutupan kanopi (*canopy coverage*).\n- *Keterbatasan Ilmiah*: Model deteksi visual tidak dapat menggantikan uji laboratorium kimia tanah; model hanya mendeteksi anomali klorofil daun.",
+        "notes": "Ingatkan mahasiswa untuk bersikap jujur dan tidak mengklaim model visi komputer dapat mendeteksi penyakit dalam tanpa validasi empiris."
+    },
+    # 23. Smart Transportation
+    {
+        "kind": "case",
+        "title": "Studi Kasus 2: Smart Transportation & Traffic Counting",
+        "body": "**Tantangan:**\nPenghitungan volume kendaraan persimpangan jalan kota untuk pengaturan adaptif durasi lampu lalu lintas.\n\n**Solusi Visi Komputer:**\n- Memadukan detektor YOLOv8 Nano dengan algoritma Centroid Tracking.\n- Menetapkan garis batas virtual (*virtual tripwire line*) melintasi marka jalan.\n- Menghitung arah lintasan kendaraan (Masuk vs Keluar) dan menandai status `counted_ids` guna mencegah penghitungan ganda (*double-counting* akibat kemacetan).",
+        "notes": "Bahas bagaimana oklusi akibat truk besar dapat menutupi sepeda motor di sampingnya pada sudut pandang kamera rendah."
+    },
+    # 24. Industrial Inspection
+    {
+        "kind": "case",
+        "title": "Studi Kasus 3: Inspeksi Cacat Manufaktur",
+        "body": "**Tantangan:**\nPabrik komponen otomotif memeriksa retakan mikro pada permukaan cakram rem pada kecepatan produksi 2 komponen per detik.\n\n**Solusi Visi Komputer:**\n- Menggunakan pencahayaan terstruktur (*telecentric lighting*) untuk menonjolkan bayangan retakan.\n- Menerapkan Canny Edge Detector dan Morphological Closing untuk menyambungkan garis patahan mikro.\n- Menghitung luas area defek; jika area retakan $> 15$ piksel, sistem otomatis mengaktifkan pendorong pneumatik penolak produk cacat.",
+        "notes": "Tunjukkan bahwa pada industri manufaktur, kombinasi image processing klasik sering kali jauh lebih cepat dan deterministik daripada model deep learning berat."
+    },
+    # 25. Environmental Monitoring
+    {
+        "kind": "case",
+        "title": "Studi Kasus 4: Pemantauan Lingkungan & Deforestasi",
+        "body": "**Tantangan:**\nKementerian Lingkungan Hidup memantau pembukaan lahan hutan lindung secara berkala menggunakan citra satelit multispektral.\n\n**Solusi Visi Komputer:**\n- Menghitung indeks vegetasi terstandardisasi (NDVI) dari kanal inframerah dan merah.\n- Menerapkan segmentasi perubahan biner (*change detection*) antara citra bulan lalu dan bulan ini.\n- *Keterbatasan*: Tutupan awan tropis dan bayangan bukit sering memicu False Alarm jika tidak ditapis oleh mask kualitas citra.",
+        "notes": "Diskusikan bagaimana anomali cuaca tropis di Indonesia menjadi tantangan nyata dalam analisis citra satelit."
+    },
+    # 26. Domain Shift
+    {
+        "kind": "content",
+        "title": "Tantangan Pergeseran Domain (Domain Shift)",
+        "body": "Model visi komputer yang berkinerja sempurna di laboratorium sering kali anjlok di lapangan:\n\n- **Distribusi Data Berubah**: Model mobil otonom yang dilatih pada musim panas cerah gagal mengenali marka jalan saat hujan lebat atau malam hari.\n- **Perbedaan Karakteristik Sensor**: Mengganti kamera pengawas dari lensa 1080p ke lensa *fisheye* mendistorsi geometri objek secara ekstrem.\n- **Mitigasi Rekayasa**: Terapkan augmentasi data domain luas (hujan artifisial, variasi gamma pencahayaan) dan lakukan pengujian berkala di lapangan nyata.",
+        "notes": "Tekankan bahwa akurasi benchmark dataset benchmark publik bukan jaminan kesiapan operasional lapangan."
+    },
+    # 27. Responsible Computer Vision
+    {
+        "kind": "content",
+        "title": "Etika, Privasi, dan Pengawasan Visual",
+        "body": "Penerapan sistem visi komputer di ruang publik wajib menjunjung tinggi etika insinyur:\n\n- **Perlindungan Data Pribadi (UU PDP No. 27/2022)**: Wajah manusia dan plat nomor kendaraan adalah data pribadi yang dilindungi hukum. Wajib disamarkan jika sistem hanya bertujuan menghitung kepadatan lalu lintas.\n- **Transparansi & Pemberitahuan**: Masyarakat berhak mengetahui jika suatu area diawasi oleh sistem visi komputer cerdas.\n- **Pencegahan Bias Demografis**: Menghindari penerapan algoritma pengenalan wajah biometrik yang memiliki disparitas tingkat kesalahan tinggi pada ras atau gender tertentu.",
+        "notes": "Kaitkan materi dengan UU PDP Indonesia dan regulasi etika AI global agar mahasiswa memahami implikasi hukum pekerjaan mereka."
+    },
+    # 28. Practical Demonstration
+    {
+        "kind": "content",
+        "title": "Demonstrasi Praktik Laboratorium Bab 26",
+        "body": "Seluruh eksperimen mandiri dapat diuji melalui 11 modul skrip terstruktur di `code/`:\n\n1. Pemuatan citra OpenCV dan pembuktian matematis BGR vs RGB.\n2. Segmentasi warna HSV dan peredaman noise dengan Median Filter.\n3. Operator gradien Sobel, Laplacian, dan Canny edge detection.\n4. Aljabar morfologi Erosi, Dilasi, Opening, dan Closing.\n5. Kalkulasi metrik Mask IoU dan Dice Coefficient.\n6. Centroid tracking dan penghitungan objek virtual tripwire.\n7. Pipeline visi komputer ujung-ke-ujung real-time pada CPU.",
+        "notes": "Ajak mahasiswa membuka terminal dan mempersiapkan eksekusi berurutan modul-modul praktik."
+    },
+    # 29. Case Study
+    {
+        "kind": "case",
+        "title": "Studi Kasus Terintegrasi: Sistem Smart Monitoring",
+        "body": "**Skenario:**\nPerancangan sistem monitoring antrean pengunjung gedung pameran menggunakan mini PC hemat daya pada CPU.\n\n**Integrasi Algoritma:**\n1. *Input*: Aliran video 15 FPS resolusi 320x240 piksel.\n2. *Filter*: Gaussian Blur 3x3 untuk membuang getaran noise sensor.\n3. *Segmentasi*: Otsu Thresholding dan Connected Components untuk mengekstrak siluet pengunjung.\n4. *Tracking*: Centroid Tracker mencatat waktu tunggu setiap ID pengunjung.\n5. *Hasil*: Menghasilkan waktu latensi stabil di bawah 33 ms per frame.",
+        "notes": "Bahas bagaimana integrasi metode klasik dan modern dapat menghasilkan sistem yang sangat efisien di perangkat berdaya rendah."
+    },
+    # 30. Discussion
+    {
+        "kind": "split",
+        "title": "Pertanyaan Refleksi & Diskusi Kelas",
+        "body": "**Pertanyaan 1: Kapan Menggunakan Image Processing vs Deep Learning?**\nUntuk mendeteksi pil obat yang pecah di jalur sabuk berjalan pabrik farmasi, kapan Anda memilih thresholding klasik dan kapan Anda memilih CNN?\n\n**Pertanyaan 2: Etika Kamera Publik**\nBagaimana Anda merancang sistem kamera penghitung pejalan kaki di mall yang 100% menjamin privasi pengunjung tanpa menyimpan data identitas biometrik?",
+        "notes": "Fasilitasi diskusi interaktif agar mahasiswa berpikir kritis mengenai trade-off teknologi dan regulasi etis."
+    },
+    # 31. Summary
+    {
+        "kind": "summary",
+        "title": "Rangkuman Pembelajaran Bab 26",
+        "body": "- Visi komputer menggabungkan prapemrosesan deterministik, model AI (CNN/YOLO), dan pascapemrosesan pelacakan.\n- Ruang warna HSV memisahkan warna murni dari intensitas cahaya, sangat tangguh untuk segmentasi.\n- Segmentasi memetakan piksel demi piksel (Semantic vs Instance) dan dievaluasi dengan Mask IoU & Dice Score.\n- Centroid Tracking memungkinkan pelacakan objek temporal kontinu dengan memori ID persisten.\n- Perancangan sistem wajib mempertimbangkan latensi nyata pada perangkat CPU dan mematuhi etika privasi data.",
+        "notes": "Tutup sesi dengan merangkum lima pilar utama sebelum mahasiswa mengerjakan tugas mini project."
+    },
+    # 32. References
+    {
+        "kind": "content",
+        "title": "Referensi Akademik Terverifikasi",
+        "body": "1. **Bradski, G.** (2000). *The OpenCV Library*. Dr. Dobb's Journal of Software Tools. https://opencv.org\n2. **Canny, J.** (1986). *A Computational Approach to Edge Detection*. IEEE TPAMI, 8(6), 679-698.\n3. **He, K., Gkioxari, G., Dollár, P., & Girshick, R.** (2017). *Mask R-CNN*. IEEE ICCV 2017, 2961-2969.\n4. **Bewley, A., et al.** (2016). *Simple Online and Realtime Tracking (SORT)*. IEEE ICIP 2016, 3464-3468.\n5. **ACM / IEEE-CS.** (2024). *Computer Science Curricula 2023 (CS2023): Artificial Intelligence Knowledge Area*. https://csed.acm.org",
+        "notes": "Sampaikan referensi resmi kepada mahasiswa untuk penelusuran literatur akademik lanjutan."
+    }
+]
+
+output_path = Path(__file__).resolve().parent / "deck.json"
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(slides, f, indent=2, ensure_ascii=False)
+
+print(f"Berhasil menghasilkan {len(slides)} slide Reveal.js di: {output_path}")
+

@@ -1,0 +1,80 @@
+{
+  "id": 12,
+  "slug": "chapter-12",
+  "levelId": 2,
+  "title": "ML Workflow, Dataset & Feature Engineering",
+  "status": "published",
+  "description": "Modul komprehensif alur kerja Machine Learning end-to-end, pemisahan dataset bebas kebocoran (leak-free), pra-pemrosesan data heterogen, rekayasa fitur domain, mitigasi ketidakseimbangan kelas, validasi silang, dan Scikit-learn Pipeline.",
+  "objectives": [
+    "Memahami tahapan end-to-end Machine Learning workflow dari perumusan masalah bisnis hingga monitoring model di produksi.",
+    "Membagi dataset menjadi train, validation, dan test set dengan proporsi dan strategi yang tepat (random, stratified, group, time-series).",
+    "Mengidentifikasi dan mencegah berbagai bentuk data leakage (pre-split scaling, leakage pada feature engineering, future data leakage).",
+    "Melakukan pra-pemrosesan data numerik (imputation, standard scaling, min-max scaling, robust scaling) secara metodologis menggunakan data train.",
+    "Melakukan pra-pemrosesan data kategorikal (one-hot encoding, ordinal encoding, target encoding) dengan penanganan kategori baru (unseen categories).",
+    "Mengembangkan fitur baru (domain-specific features, interaction terms, datetime features, aggregations) untuk meningkatkan daya prediktif model.",
+    "Menangani ketidakseimbangan kelas (class imbalance) menggunakan penyesuaian bobot kelas (class weights) dan evaluasi yang tepat tanpa bias.",
+    "Menerapkan teknik validasi silang (k-fold cross-validation, stratified k-fold, group k-fold) untuk estimasi performa generalisasi yang reliabel.",
+    "Membangun pipeline pemrosesan dan pemodelan menggunakan Scikit-learn Pipeline dan ColumnTransformer yang modular dan bebas leakage.",
+    "Mengevaluasi trade-off arsitektur pipeline machine learning dan mendokumentasikan baseline performance secara terstruktur dan terstandarisasi."
+  ],
+  "prerequisites": [
+    11
+  ],
+  "tags": [
+    "Machine Learning",
+    "ML Workflow",
+    "Dataset Splitting",
+    "Feature Engineering",
+    "Data Leakage",
+    "Cross Validation",
+    "Class Imbalance",
+    "Scikit-Learn",
+    "ColumnTransformer",
+    "Pipeline"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Géron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd ed.)",
+      "url": "https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",
+      "status": "verified"
+    },
+    {
+      "title": "Kuhn, M., & Johnson, K. (2019). Feature Engineering and Selection: A Practical Approach for Predictive Models",
+      "url": "https://bookdown.org/max/FES/",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.)",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "Zheng, A., & Casari, A. (2018). Feature Engineering for Machine Learning: Principles and Techniques for Data Scientists",
+      "url": "https://www.oreilly.com/library/view/feature-engineering-for/9781491953235/",
+      "status": "verified"
+    },
+    {
+      "title": "CS2023 (2024), AI Knowledge Area, ACM/IEEE-CS/AAAI Computer Science Curricula",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

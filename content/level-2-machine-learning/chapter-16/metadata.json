@@ -1,0 +1,87 @@
+{
+  "id": 16,
+  "slug": "chapter-16",
+  "levelId": 2,
+  "title": "Support Vector Machines & k-Nearest Neighbors",
+  "status": "published",
+  "description": "Modul mendalam Support Vector Machines (SVM) dan k-Nearest Neighbors (KNN): prinsip Maximum Margin Hyperplane, formulasi Hard-Margin dan Soft-Margin dengan variabel slack dan penalti regularisasi C, trik kernel non-linier (Linear, Polynomial, RBF) dengan tuning parameter gamma, algoritma instance-based KNN dengan metrik jarak Euclidean/Manhattan, analisis nilai k dan skema pembobotan suara, pembuktian kebutuhan mutlak penskalaan fitur (StandardScaler), serta bahaya kutukan dimensi (curse of dimensionality).",
+  "objectives": [
+    "Menjelaskan konsep Support Vector Machines dan prinsip Maximum-Margin Classification.",
+    "Mengidentifikasi hiperbidang pemisah, margin geometris, dan sampel vektor pendukung (support vectors).",
+    "Membedakan formulasi Hard-Margin dan Soft-Margin SVM pada data yang tidak terpisah secara linier.",
+    "Menjelaskan peran parameter regularisasi C dalam mengendalikan trade-off bias-varians dan penalti slack.",
+    "Memahami mekanisme aljabar Kernel Trick tanpa transformasi koordinat berdimensi tinggi eksplisit.",
+    "Menggunakan Linear, Polynomial, dan Gaussian Radial Basis Function (RBF) Kernels secara tepat.",
+    "Menjelaskan konsep k-Nearest Neighbors sebagai algoritma non-parametrik berbasis memori (lazy learning).",
+    "Menghitung jarak antar-sampel menggunakan metrik jarak Euclidean dan Manhattan.",
+    "Menganalisis pengaruh pemilihan parameter k dan metode agregasi suara (majority vs distance-weighted voting).",
+    "Menjelaskan kebutuhan mutlak penskalaan fitur (feature scaling) serta fenomena kutukan dimensi (curse of dimensionality).",
+    "Membandingkan SVM dan KNN berdasarkan akurasi, kapasitas generalisasi, latensi inferensi, dan konsumsi memori.",
+    "Mengimplementasikan dan mengevaluasi kedua model secara komprehensif menggunakan Scikit-learn Pipeline."
+  ],
+  "prerequisites": [
+    15
+  ],
+  "tags": [
+    "Machine Learning",
+    "Support Vector Machines",
+    "k-Nearest Neighbors",
+    "Maximum Margin",
+    "Support Vectors",
+    "Soft-Margin",
+    "Slack Variables",
+    "Kernel Trick",
+    "RBF Kernel",
+    "Distance Metrics",
+    "Euclidean Distance",
+    "Manhattan Distance",
+    "Feature Scaling",
+    "Curse of Dimensionality",
+    "Scikit-Learn"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Cortes, C., & Vapnik, V. (1995). Support-Vector Networks, Machine Learning, 20(3), 273-297",
+      "url": "https://doi.org/10.1007/BF00994018",
+      "status": "verified"
+    },
+    {
+      "title": "Cover, T., & Hart, P. (1967). Nearest Neighbor Pattern Classification, IEEE Transactions on Information Theory",
+      "url": "https://doi.org/10.1109/TIT.1967.1053964",
+      "status": "verified"
+    },
+    {
+      "title": "Vapnik, V. N. (1998). Statistical Learning Theory, John Wiley & Sons",
+      "url": "https://www.wiley.com/en-us/Statistical+Learning+Theory-p-9780471030034",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.)",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "CS2023 (2024), AI Knowledge Area, ACM/IEEE-CS/AAAI Computer Science Curricula",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

@@ -1,0 +1,299 @@
+[
+  {
+    "id": 1,
+    "kind": "cover",
+    "title": "History, Evolution & AI Paradigms",
+    "body": "Dari Dartmouth Workshop hingga Era Foundation Models dan Neuro-Symbolic AI.\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera\nPengampu: Aji Pamungkas Tri Nurcahyo",
+    "notes": "Selamat datang di pertemuan kedua AI Learning Hub. Hari ini kita membedah sejarah, evolusi paradigma, dan dialektika ilmiah yang membentuk lanskap Artificial Intelligence modern. Tekankan bahwa AI bukan teknologi instan satu dekade terakhir, melainkan perjalanan riset selama lebih dari 70 tahun."
+  },
+  {
+    "id": 2,
+    "kind": "content",
+    "title": "Mengapa Sejarah AI Penting Dipelajari?",
+    "body": "Mempelajari evolusi AI bukan sekadar menghafal tahun, melainkan memahami logika di balik pemilihan teknologi.",
+    "bullets": [
+      "Menghindari pengulangan kesalahan metodologis masa lalu (siklus ekspektasi berlebih dan kekecewaan).",
+      "Memahami akar lahirnya paradigma baru sebagai respons langsung terhadap kegagalan paradigma sebelumnya.",
+      "Membantu memilih alat yang tepat: tidak semua masalah membutuhkan deep learning berskala besar.",
+      "Menemukan pola rekonsiliasi keilmuan: sintesis antara penalaran simbolik dan persepsi probabilistik."
+    ],
+    "notes": "Jelaskan kepada mahasiswa fenomena Maslow's Hammer: ketika seseorang hanya memiliki palu, semua hal tampak seperti paku. Memahami sejarah membuat kita bijak memilih alat: kapan cukup menggunakan aturan logika, dan kapan mutlak memerlukan pemelajaran mendalam."
+  },
+  {
+    "id": 3,
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Chapter 02",
+    "body": "Setelah menyelesaikan sesi ini, pembelajar diharapkan mampu:",
+    "bullets": [
+      "Menjelaskan tonggak sejarah utama AI dari masa fondasi hingga era modern.",
+      "Mengidentifikasi karakteristik Symbolic AI, Statistical AI, Machine Learning, dan Deep Learning.",
+      "Menganalisis faktor ilmiah dan sosial penyebab perubahan arah riset dan dua periode AI Winter.",
+      "Membandingkan kekuatan, kelemahan, dan trade-off antarparadigma kecerdasan buatan.",
+      "Menilai relevansi pendekatan hibrida Neuro-Symbolic AI untuk sistem cerdas masa depan."
+    ],
+    "notes": "Arahkan mahasiswa untuk berfokus pada transisi paradigma epistemologis: bagaimana cara sistem memandang dan merepresentasikan pengetahuan dunia."
+  },
+  {
+    "id": 4,
+    "kind": "content",
+    "title": "Fondasi Awal: Logika, Komputasi & Model Saraf",
+    "body": "Sebelum komputer modern tercipta, ide kecerdasan mekanis dibangun di atas tiga pilar intelektual:",
+    "bullets": [
+      "Filsafat Budi & Logika Formal: Silogisme Aristoteles, kalkulus penalaran Thomas Hobbes, dan aljabar logika George Boole.",
+      "Teori Komputabilitas Universal (Alan Turing, 1936): Konsep Turing Machine membuktikan fungsi algoritma apa pun dapat dihitung mesin diskret.",
+      "Neuron Buatan Pertama (McCulloch & Pitts, 1943): Representasi fungsi logika biner (AND, OR, NOT) menggunakan sakelar ambang matematis biologis."
+    ],
+    "notes": "Tekankan bahwa sejak awal abad ke-20, para ilmuwan telah meyakini bahwa proses berpikir manusia memiliki struktur formal yang dapat dimodelkan secara komputasi."
+  },
+  {
+    "id": 5,
+    "kind": "content",
+    "title": "Alan Turing & Pertanyaan Kecerdasan Mesin (1950)",
+    "body": "Paper monumental 'Computing Machinery and Intelligence' mengganti perdebatan filosofis dengan uji empiris.",
+    "bullets": [
+      "The Imitation Game (Turing Test): Menguji kesetaraan perilaku input-output eksternal antara mesin dan manusia melalui percakapan teks terisolasi.",
+      "Pragmatisme Operasional: Mengabaikan perdebatan kesadaran subjektif (consciousness); berfokus pada kapabilitas tindakan cerdas yang dapat diamati.",
+      "Antisipasi Keberatan: Turing telah menjawab kritik teologis, argumen ketidakmampuan matematis, hingga argumen kesadaran (Lady Lovelace Objection)."
+    ],
+    "notes": "Ajak mahasiswa merenungkan: apakah mesin yang lulus Turing Test benar-benar 'berpikir' atau sekadar memanipulasi simbol sintaksis secara cerdik? Hubungkan dengan eksperimen pikiran Chinese Room oleh John Searle."
+  },
+  {
+    "id": 6,
+    "kind": "content",
+    "title": "Dartmouth Workshop 1956: Kelahiran Resmi AI",
+    "body": "Lokakarya musim panas di Dartmouth College meresmikan Artificial Intelligence sebagai cabang ilmu baru.",
+    "bullets": [
+      "Tokoh Penggagas: John McCarthy, Marvin Minsky, Nathaniel Rochester, dan Claude Shannon.",
+      "Konjektur Fundamental: Setiap aspek pemelajaran atau fitur kecerdasan dapat dideskripsikan secara presisi sehingga mesin dapat mensimulasikannya.",
+      "Logic Theorist (Newell & Simon): Program komputer pertama yang membuktikan 38 teorema logika formal Principia Mathematica karya Russell & Whitehead.",
+      "Kelahiran Bahasa Lisp: Bahasa pemrograman manipulasi simbol yang menjadi standar riset AI selama tiga dekade."
+    ],
+    "notes": "Soroti optimisme besar pada era ini. John McCarthy sengaja memilih istilah 'Artificial Intelligence' untuk membedakannya dari bidang Cybernetics yang saat itu terlalu berfokus pada umpan balik sinyal analog."
+  },
+  {
+    "id": 7,
+    "kind": "content",
+    "title": "Symbolic AI & Kaidah Manipulasi Simbol (1956–1970an)",
+    "body": "Paradigma dominan awal meyakini bahwa kecerdasan setara dengan pemrosesan simbol fisik (PSSH).",
+    "bullets": [
+      "Physical Symbol System Hypothesis (Newell & Simon, 1976): Sistem simbol fisik memiliki sarana yang perlu dan cukup untuk tindakan cerdas umum.",
+      "Top-Down Approach: Pengetahuan diabstraksikan menjadi simbol diskret, kaidah logika eksplisit, dan representasi ontologis.",
+      "Problem Solving as Search: Masalah dirumuskan sebagai pencarian jalur optimal di dalam ruang keadaan (state space graph).",
+      "Pencapaian Klasik: General Problem Solver (GPS), ELIZA (pencocokan pola percakapan), dan SHRDLU (penalaran dunia balok spasial)."
+    ],
+    "notes": "Jelaskan bahwa paradigma ini sangat sukses dalam masalah yang terdefinisi rapi (seperti catur atau pembuktian logika), tetapi mulai limbung ketika menghadapi data mentah dunia nyata."
+  },
+  {
+    "id": 8,
+    "kind": "content",
+    "title": "Era Keemasan Sistem Pakar / Expert Systems (1980an)",
+    "body": "Pergeseran strategi dari pencari solusi serbaguna ke sistem berbasis domain keahlian spesifik yang terisolasi.",
+    "bullets": [
+      "Knowledge Is Power (Edward Feigenbaum): Performa tinggi dicapai dari akumulasi pengetahuan domain yang mendalam, bukan algoritma inferensi umum.",
+      "Arsitektur Moduler: Pemisahan tegas antara Knowledge Base (himpunan aturan IF-THEN) dan Inference Engine (forward/backward chaining).",
+      "Komersialisasi Pertama: Sistem DENDRAL (kimia molekuler), MYCIN (diagnosis infeksi darah), dan XCON (konfigurasi mainframe VAX).",
+      "Keuntungan Utama: Transparan, menyediakan Explanation Facility, dan mudah diaudit jalur penalarannya."
+    ],
+    "notes": "Sistem pakar membuktikan bahwa AI dapat bernilai ekonomi ratusan juta dolar bagi korporasi. Namun, sistem ini menuntut biaya pemeliharaan yang sangat tinggi."
+  },
+  {
+    "id": 9,
+    "kind": "content",
+    "title": "Keterbatasan Symbolic AI & Moravec's Paradox",
+    "body": "Ketika dihadapkan pada realitas dunia nyata yang dinamis dan berderau, Symbolic AI menemui jalan buntu.",
+    "bullets": [
+      "Knowledge Acquisition Bottleneck: Menulis manual ribuan aturan dari pakar manusia sangat lambat, mahal, dan rawan konflik logika internal.",
+      "Kerapuhan Sistem (Brittleness): Sistem gagal total seketika (catastrophic failure) saat menerima masukan yang berada di luar cakupan aturan tertulis.",
+      "Moravec's Paradox (1988): Sangat mudah membuat komputer bermain catur tingkat grandmaster, tetapi sangat sulit memberi komputer persepsi visual dan motorik balita berumur 1 tahun.",
+      "Kegagalan Persepsi: Logika simbolik diskret tidak mampu memproses sinyal kontinu berderau (piksel gambar, gelombang suara)."
+    ],
+    "notes": "Moravec's paradox adalah konsep kunci yang wajib dipahami mahasiswa. Penalaran tingkat tinggi baru berevolusi belakangan pada manusia sehingga aturannya sadar/eksplisit, sedangkan persepsi bawah sadar telah berevolusi ratusan juta tahun."
+  },
+  {
+    "id": 10,
+    "kind": "content",
+    "title": "AI Winter: Dua Periode Musim Dingin Riset",
+    "body": "Jurang lebar antara janji yang digelembungkan (hype) dan realitas performa memicu pemotongan dana masif.",
+    "bullets": [
+      "AI Winter I (1974–1980): Terbitnya kritik buku Perceptrons (Minsky & Papert, 1969), laporan pesimistis Lighthill Report (Inggris), dan pemangkasan dana DARPA.",
+      "AI Winter II (1987–1993): Runtuhnya pasar hardware khusus (Lisp Machines) tergilas PC komersial murah; kegagalan target proyek Fifth Generation di Jepang.",
+      "Pola Berulang Siklus Hype: Janji bombastis para pionir -> Ekspektasi publik tidak realistis -> Kegagalan deliveri industri -> Kekecewaan dan penghentian hibah.",
+      "Pelajaran Krusial: Praktisi AI harus selalu jujur dan transparan mengenai batasan teknis sistem yang dikembangkan."
+    ],
+    "notes": "Ingatkan mahasiswa agar tidak mengulang siklus ini pada era Generative AI saat ini. Klaim berlebihan yang tidak terbukti di industri akan selalu diikuti koreksi pasar yang menyakitkan."
+  },
+  {
+    "id": 11,
+    "kind": "content",
+    "title": "Statistical AI & Lahirnya Machine Learning (1990an)",
+    "body": "Pergeseran paradigma: Dari aturan eksplisit buatan manusia beralih ke ekstraksi pola induktif otomatis dari data.",
+    "bullets": [
+      "Pondasi Probabilistik: Menggantikan kepastian benar/salah biner dengan kalkulus ketidakpastian (Teorema Bayes, Markov Models).",
+      "Pendekatan Induktif: Algoritma memelajari fungsi pemetaan dari data pelatihan empiris, bukan menerima aturan siap pakai.",
+      "Kematangan Algoritma Klasik: Support Vector Machines (SVM), Random Forest, dan Gradient Boosting mendominasi pemodelan data terstruktur.",
+      "Standarisasi Metodologi: Pemisahan ketat train/val/test set, validasi silang (cross-validation), dan metrik evaluasi objektif."
+    ],
+    "notes": "Era 1990-an mengembalikan kredibilitas ilmiah AI ke komunitas sains dan teknik karena metode yang diajukan memiliki bukti matematis dan konvergensi statistik yang kokoh."
+  },
+  {
+    "id": 12,
+    "kind": "content",
+    "title": "Trio Katalis AI Modern: Data, Algoritma & Hardware",
+    "body": "Ledakan performa AI modern terjadi berkat konvergensi tiga pendorong utama yang matang secara bersamaan:",
+    "bullets": [
+      "Big Data Skala Masif: Ledakan data internet dan inisiatif dataset kurasi raksasa seperti ImageNet (Fei-Fei Li, 2009; 14 juta citra teranotasi).",
+      "Akselerasi Perangkat Keras: Pemanfaatan Graphic Processing Units (GPU) yang dirancang untuk komputasi tensor dan perkalian matriks paralel masif.",
+      "Terobosan Optimasi Algoritmik: Penemuan fungsi aktivasi non-saturasi ReLU, teknik regularisasi Dropout, dan optimiser adaptif (Adam).",
+      "Koneksionisme Baru: Teori backpropagation lama akhirnya mendapatkan bahan bakar data dan mesin komputasi yang layak."
+    ],
+    "notes": "Gambarkan metafora mobil balap: Backpropagation adalah mesinnya, Big Data adalah bahan bakarnya, dan GPU adalah sirkuit aspalnya. Tanpa salah satu komponen, revolusi Deep Learning tidak akan pernah terjadi."
+  },
+  {
+    "id": 13,
+    "kind": "content",
+    "title": "Kebangkitan Deep Learning & Momen AlexNet (2012)",
+    "body": "Bulan Oktober 2012 menjadi batas pemisah antara era rekayasa fitur manual dan era representasi mendalam.",
+    "bullets": [
+      "Kompetisi ImageNet 2012: AlexNet (Krizhevsky, Sutskever, & Hinton) memenangkan kompetisi dengan margin kesalahan luar biasa (15.3% vs 26.2%).",
+      "End-to-End Representation Learning: Sistem memelajari fitur hierarkis langsung dari piksel mentah ke label kelas tanpa intervensi rekayasa manusia.",
+      "Hierarki Fitur Visual: Lapis awal mendeteksi garis tepi, lapis menengah mengenali tekstur dan sudut, lapis akhir mengenali bagian objek utuh.",
+      "Kematian Rekayasa Fitur Manual: Algoritma deteksi fitur manual seperti SIFT dan HOG tersingkir dari garis depan riset penglihatan komputer."
+    ],
+    "notes": "AlexNet membuktikan secara telak bahwa jaringan saraf konvolusi yang dalam (CNN) jika dilatih dengan data besar dan GPU mampu melampaui teknik terbaik yang dirancang pakar manusia selama puluhan tahun."
+  },
+  {
+    "id": 14,
+    "kind": "content",
+    "title": "Lompatan Representasi: Dari Word2Vec ke ResNet",
+    "body": "Deep Learning merombak domain Computer Vision dan Natural Language Processing dalam waktu singkat.",
+    "bullets": [
+      "Vektor Kata Terdistribusi (Word2Vec, 2013): Merepresentasikan makna semantik kata ke dalam ruang vektor kontinu matematis yang dapat dihitung operasinya.",
+      "ResNet & Arsitektur Super Dalam (2015): Kaiming He et al. memperkenalkan Residual Connections; melatih jaringan hingga 152 lapis dan melampaui akurasi manusia.",
+      "Sequence-to-Sequence & Rekurensi: Penggunaan LSTM dan GRU untuk pemrosesan kalimat dan terjemahan mesin, meski terhambat masalah komputasi sekuensial.",
+      "Kebutuhan Paradigma Baru: Komputasi serial RNN menjadi hambatan utama dalam melatih model pada korpus data teks raksasa internet."
+    ],
+    "notes": "Jelaskan transisi dari representasi simbolik diskret satu-satu (one-hot encoding) menjadi representasi vektor rapat terdistribusi (dense vector embeddings) yang kaya makna semantik."
+  },
+  {
+    "id": 15,
+    "kind": "content",
+    "title": "Revolusi Transformer & Self-Attention (2017)",
+    "body": "Paper 'Attention Is All You Need' (Vaswani et al., 2017) mengubah fondasi pemrosesan informasi sekuensial.",
+    "bullets": [
+      "Menghilangkan Rekurensi: Seluruh token diproses secara paralel penuh, memanfaatkan efisiensi kluster akselerator GPU/TPU modern.",
+      "Mekanisme Self-Attention: Menghitung bobot keterkaitan langsung antarsemua kata dalam dokumen tanpa terhambat jarak posisi kalimat.",
+      "Lompatan Skalabilitas: Mengizinkan model diskalakan hingga ratusan miliar parameter dengan konsumsi data teks korpus terbuka.",
+      "Pondasi Model Bahasa Modern: Melahirkan arsitektur BERT (encoder untuk pemahaman) dan GPT (decoder untuk pembangkitan autoregresif)."
+    ],
+    "notes": "Transformer bukan hanya relevan untuk bahasa, tetapi kini telah menjadi arsitektur komputasi serbaguna untuk citra (Vision Transformer/ViT), audio, struktur molekul biologi (AlphaFold), dan kendali robotika."
+  },
+  {
+    "id": 16,
+    "kind": "content",
+    "title": "Generative AI & Era Foundation Models",
+    "body": "Pergeseran dari model khusus per tugas menuju model fondasi serbaguna yang dilatih secara mandiri.",
+    "bullets": [
+      "Foundation Models (Stanford HAI, 2021): Model raksasa yang dilatih pada skala data masif tanpa label manual (self-supervised learning).",
+      "Pola Pelatihan Dua Tahap: Pre-training skala masif pada teks/kode/gambar web, disusul Alignment (Instruction Fine-Tuning & RLHF).",
+      "Emergent Abilities: Kemampuan penalaran baru (Chain-of-Thought, sintesis kode) yang muncul spontan ketika skala parameter melampaui batas kritis.",
+      "Tantangan Kritis Kontemporer: Halusinasi faktual, keterbatasan verifikasi formal, kebutuhan energi komputasi ekstrem, dan bias data sosial."
+    ],
+    "notes": "Tekankan perbedaan Generative AI dengan Discriminative AI. Jika model diskriminatif memprediksi label P(Y|X), model generatif memodelkan distribusi data bersama P(X) atau menghasilkan urutan konten baru yang realistis."
+  },
+  {
+    "id": 17,
+    "kind": "content",
+    "title": "Pendekatan Hybrid & Neuro-Symbolic AI",
+    "body": "Merekonsiliasi dua tradisi besar AI: memadukan intuisi perseptual dengan ketelitian penalaran logis.",
+    "bullets": [
+      "Kelemahan Model Saraf Murni: Black-box (sulit dijelaskan), rentan halusinasi, dan tidak memberikan jaminan kepatuhan 100% pada aturan hukum.",
+      "Kelemahan Logika Simbolik Murni: Terlalu kaku, tidak tahan derau sinyal fisik, dan memerlukan rekayasa aturan pakar yang sangat mahal.",
+      "Sintesis Neuro-Symbolic: Neural Network menangani persepsi dunia nyata dan ekstrasi fitur; Symbolic Engine menangani verifikasi aturan formal dan inferensi.",
+      "Implementasi Nyata: Retrieval-Augmented Generation (RAG) berbasis Knowledge Graph, pembuktian geometri otomatis (AlphaGeometry), dan sistem kendali otonom bersertifikasi."
+    ],
+    "notes": "Inilah garis depan penelitian AI masa kini. Neuro-Symbolic AI bukan sekadar kompromi, melainkan arsitektur komplementer yang mirip dengan cara otak manusia bekerja: Sistem 1 (cepat, intuitif) dan Sistem 2 (lambat, logis analitis)."
+  },
+  {
+    "id": 18,
+    "kind": "split",
+    "title": "Perbandingan Matriks 4 Paradigma AI",
+    "body": "Setiap paradigma memiliki kekuatan, kelemahan, dan ranah aplikasi optimalnya masing-masing.",
+    "columns": [
+      {
+        "heading": "Symbolic AI & Expert Systems",
+        "points": [
+          "Representasi: Simbol logika eksplisit dan kaidah IF-THEN.",
+          "Sumber: Formalisasi wawancara pakar domain manusia.",
+          "Transparansi: Sangat tinggi (White-box, dapat dilacak).",
+          "Kelemahan: Kerapuhan (brittleness) dan lambat diperbarui.",
+          "Cocok untuk: Audit pajak dan verifikasi hukum tertulis."
+        ]
+      },
+      {
+        "heading": "Deep Learning & Foundation Models",
+        "points": [
+          "Representasi: Bobot tensor berdimensi kontinu sangat tinggi.",
+          "Sumber: Pemelajaran induktif mandiri dari data masif.",
+          "Transparansi: Rendah (Black-box, probabilistik).",
+          "Kelemahan: Rentan halusinasi dan rakus komputasi/data.",
+          "Cocok untuk: Persepsi visual, dialog, dan penerjemahan."
+        ]
+      }
+    ],
+    "notes": "Gunakan slide ini untuk menegaskan bahwa perdebatan 'mana yang lebih unggul' adalah keliru. Pertanyaan yang benar adalah: 'pendekatan mana yang paling sesuai dengan karakteristik dan batasan masalah yang sedang diselesaikan?'"
+  },
+  {
+    "id": 19,
+    "kind": "case",
+    "title": "Aktivitas Diskusi (Bagian 1): Skenario Studi Kasus",
+    "body": "Sebuah badan layanan publik ingin memodernisasi sistem verifikasi administrasi pengajuan izin usaha.",
+    "caseBox": {
+      "title": "Studi Kasus: Sistem Verifikasi Izin Usaha Administratif",
+      "scenario": "Badan pemerintah daerah menerima 50.000 berkas izin usaha per tahun. Aturan legalitas perizinan telah tertuang 100% secara eksplisit dalam undang-undang daerah (misalnya batas permodalan, jenis zona zonasi lahan, dan kelengkapan 5 dokumen wajib). Setiap penolakan izin wajib menyertakan pasal hukum resmi yang sah.",
+      "options": [
+        "Opsi A: Membangun Rule-Based Expert System berbasis kaidah logika proposisional.",
+        "Opsi B: Melatih model Machine Learning klasifikasi dari berkas perizinan masa lalu.",
+        "Opsi C: Menggunakan Large Language Model (Generative AI) untuk membaca dan memutuskan izin secara otonom."
+      ]
+    },
+    "notes": "Paparkan studi kasus ini kepada mahasiswa. Berikan waktu 2 menit bagi mereka untuk membaca karakteristik masalah: aturan 100% legal eksplisit, kebutuhan penjelasan pasal hukum, dan konsekuensi penolakan."
+  },
+  {
+    "id": 20,
+    "kind": "content",
+    "title": "Aktivitas Diskusi (Bagian 2): Pertanyaan Kritis",
+    "body": "Diskusikan dalam kelompok kecil dan jawab tiga pertanyaan evaluasi berikut:",
+    "bullets": [
+      "1. Pendekatan mana yang paling sesuai dengan karakteristik masalah di atas, dan mengapa?",
+      "2. Apa risiko hukum, etika, dan keandalan sistem jika pengembang memaksakan penggunaan LLM (Generative AI) murni untuk memutuskan izin tersebut?",
+      "3. Bagaimana rancangan arsitektur Hybrid (Neuro-Symbolic) yang paling ideal jika pemohon izin mengunggah dokumen pindaian (PDF/gambar) berkas yang tidak terstruktur?"
+    ],
+    "notes": "Pandu diskusi kelas. Jawaban ideal: Opsi A adalah yang paling aman dan patuh hukum untuk verifikasi logis. Namun jika dokumen diunggah dalam format gambar acak, solusi terbaik adalah Hybrid: OCR/Multimodal LLM mengekstraksi data ke JSON terstruktur, lalu Rule Engine mengeksekusi keputusan legal."
+  },
+  {
+    "id": 21,
+    "kind": "summary",
+    "title": "Ringkasan & Pelajaran Berharga Sejarah AI",
+    "body": "Evolusi kecerdasan buatan mengajarkan kebijaksanaan rekayasa sistem bagi praktisi cerdas:",
+    "bullets": [
+      "Sejarah Bukan Garis Lurus: AI berkembang melalui siklus antusiasme, kekecewaan, pergeseran paradigma, dan konvergensi.",
+      "Hype Berlebihan Berbahaya: Menjanjikan kapabilitas yang melampaui batasan metodologis adalah pemicu utama AI Winter.",
+      "Pentingnya Data & Komputasi: Banyak teori hebat masa lalu yang baru terbukti setelah tersedianya Big Data dan akselerator GPU.",
+      "Paradigma Komplementer: Masa depan AI terletak pada integrasi harmonis antara keunggulan persepsi berbasis data dengan ketelitian penalaran logis terstruktur."
+    ],
+    "notes": "Rangkum seluruh poin penting materi hari ini. Pastikan mahasiswa meninggalkan kelas dengan pemahaman komprehensif mengenai peta besar paradigma AI."
+  },
+  {
+    "id": 22,
+    "kind": "content",
+    "title": "Referensi Akademik & Pratinjau Chapter 03",
+    "body": "Materi sesi ini bersumber dari rujukan akademik primer terverifikasi:",
+    "bullets": [
+      "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson.",
+      "Turing, A. M. (1950). Computing Machinery and Intelligence. Mind, 59(236), 433-460.",
+      "McCarthy, J., Minsky, M. L., Rochester, N., & Shannon, C. E. (1955). Dartmouth Workshop Proposal.",
+      "Pratinjau Chapter 03: 'Intelligent Agents & AI Problem Solving' — kita akan mempelajari arsitektur agen cerdas, lingkungan tugas PEAS, dan formulasi pencarian ruang keadaan."
+    ],
+    "notes": "Tutup sesi pengajaran dengan mengarahkan mahasiswa membaca Bab 20 (Latihan) dan Bab 22 (Tugas Mini Project) pada modul bacaan sebelum melangkah ke Chapter 03."
+  }
+]

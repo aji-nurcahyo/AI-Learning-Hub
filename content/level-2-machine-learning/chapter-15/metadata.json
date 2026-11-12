@@ -1,0 +1,85 @@
+{
+  "id": 15,
+  "slug": "chapter-15",
+  "levelId": 2,
+  "title": "Decision Trees & Ensemble Learning",
+  "status": "published",
+  "description": "Modul komprehensif pohon keputusan dan pembelajaran ansambel: pemartisian rekursif, formulasi Shannon Entropy & Gini Impurity, Information Gain, CART, pemangkasan pohon (pre-pruning & cost-complexity post-pruning ccp_alpha), Bagging, Random Forest dengan feature subsampling dan evaluasi Out-of-Bag (OOB), serta boosting sekuensial (AdaBoost & Gradient Boosting).",
+  "objectives": [
+    "Menjelaskan konsep Decision Tree untuk Classification dan Regression.",
+    "Menginterpretasikan root node, decision nodes, branches, dan leaf nodes.",
+    "Menghitung Entropy, Gini Impurity, dan Information Gain.",
+    "Menjelaskan mekanisme splitting pada Decision Tree.",
+    "Memahami CART dan binary splitting.",
+    "Menganalisis overfitting dan pruning.",
+    "Menjelaskan Bagging dan Boosting.",
+    "Mengimplementasikan Decision Tree dan Random Forest.",
+    "Menggunakan AdaBoost dan Gradient Boosting.",
+    "Membandingkan performa ensemble models dengan baseline Decision Tree.",
+    "Mengevaluasi generalization, computational cost, dan interpretability."
+  ],
+  "prerequisites": [
+    14
+  ],
+  "tags": [
+    "Machine Learning",
+    "Decision Trees",
+    "CART",
+    "Entropy",
+    "Gini Impurity",
+    "Information Gain",
+    "Pruning",
+    "Ensemble Learning",
+    "Bagging",
+    "Random Forest",
+    "Out-of-Bag",
+    "AdaBoost",
+    "Gradient Boosting",
+    "Scikit-Learn"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Breiman, L. (2001). Random Forests, Machine Learning, 45(1), 5-32",
+      "url": "https://doi.org/10.1023/A:1010933404324",
+      "status": "verified"
+    },
+    {
+      "title": "Breiman, L., Friedman, J. H., Olshen, R. A., & Stone, C. J. (1984). Classification and Regression Trees, CRC Press",
+      "url": "https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Stone-Olshen/p/book/9780412048418",
+      "status": "verified"
+    },
+    {
+      "title": "Friedman, J. H. (2001). Greedy Function Approximation: A Gradient Boosting Machine, Annals of Statistics",
+      "url": "https://doi.org/10.1214/aos/1013203451",
+      "status": "verified"
+    },
+    {
+      "title": "Hastie, T., Tibshirani, R., & Friedman, J. (2009). The Elements of Statistical Learning (2nd ed.)",
+      "url": "https://hastie.su.domains/ElemStatLearn/",
+      "status": "verified"
+    },
+    {
+      "title": "CS2023 (2024), AI Knowledge Area, ACM/IEEE-CS/AAAI Computer Science Curricula",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

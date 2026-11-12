@@ -1,0 +1,82 @@
+{
+  "id": 9,
+  "slug": "chapter-09",
+  "levelId": 1,
+  "title": "AI Ethics, Bias & Responsible AI",
+  "status": "published",
+  "description": "Prinsip etika kecerdasan buatan, taksonomi bias, metrik keadilan kelompok formal, Teorema Ketidakmungkinan Kleinberg, transparansi keterjelaskan, privasi data UU PDP No. 27/2022 & GDPR, akuntabilitas Human-in-the-Loop, serta penilaian risiko NIST AI RMF.",
+  "objectives": [
+    "Menjelaskan prinsip-prinsip etika kecerdasan buatan serta tanggung jawab moral seorang insinyur sistem cerdas.",
+    "Mengidentifikasi taksonomi bias dalam siklus hidup AI (bias historis, representasi, pengukuran, dan algoritmik).",
+    "Merumuskan definisi matematika metrik keadilan kelompok formal Demographic Parity, Equal Opportunity, dan Equalized Odds.",
+    "Menganalisis Teorema Ketidakmungkinan Keadilan Kleinberg yang membuktikan trade-off tak terhindarkan antar metrik.",
+    "Membedakan antara model kotak putih interpretable dan model kotak hitam explainable serta hak subjek atas penjelasan.",
+    "Mengevaluasi kepatuhan hukum privasi data sistem AI berdasarkan UU PDP No. 27/2022 dan GDPR.",
+    "Mendeteksi kerentanan serangan tautan quasi-identifier dan membuktikan batasan metode pseudonimisasi data.",
+    "Menerapkan mekanisme pengawasan manusia Human-in-the-Loop pada sistem kecerdasan buatan berisiko tinggi.",
+    "Mengidentifikasi risiko-risiko etis kecerdasan buatan generatif termasuk halusinasi faktual, deepfake, dan hak cipta.",
+    "Merancang matriks penilaian risiko dampak sosial dan etika AI berdasarkan kerangka kerja NIST AI RMF 1.0."
+  ],
+  "prerequisites": [
+    8
+  ],
+  "tags": [
+    "AI Foundations",
+    "AI Ethics",
+    "Algorithmic Bias",
+    "Demographic Parity",
+    "Equal Opportunity",
+    "Privacy",
+    "UU PDP",
+    "GDPR",
+    "Accountability",
+    "Human-in-the-Loop",
+    "NIST AI RMF",
+    "Responsible AI"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Barocas, S., Hardt, M., & Narayanan, A. (2023). Fairness and Machine Learning: Limitations and Opportunities. MIT Press.",
+      "url": "https://fairmlbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Kleinberg, J., Mullainathan, S., & Raghavan, M. (2016). Inherent Trade-Offs in the Fair Determination of Risk Scores. ITCS.",
+      "url": "https://arxiv.org/abs/1609.05807",
+      "status": "verified"
+    },
+    {
+      "title": "Sweeney, L. (2000). Simple Demographics Often Identify People Uniquely. Carnegie Mellon University.",
+      "url": "https://dataprivacylab.org/projects/identifiability/paper1.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "National Institute of Standards and Technology (NIST). (2023). Artificial Intelligence Risk Management Framework (AI RMF 1.0).",
+      "url": "https://doi.org/10.6028/NIST.SP.1270",
+      "status": "verified"
+    },
+    {
+      "title": "UNESCO. (2021). Recommendation on the Ethics of Artificial Intelligence. United Nations.",
+      "url": "https://unesdoc.unesco.org/ark:/48223/pf0000381137",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

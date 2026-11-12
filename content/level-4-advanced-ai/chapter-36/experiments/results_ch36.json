@@ -1,0 +1,111 @@
+{
+  "chapter": 36,
+  "title": "MLOps, Model Deployment & Monitoring",
+  "total_scripts": 17,
+  "total_duration_seconds": 33.8,
+  "all_passed": true,
+  "scripts": {
+    "api_client_demo.py": {
+      "status": "passed",
+      "duration_seconds": 5.476,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: LOCAL REST API INTEGRATION TEST SUITE\n===========================================================================\nTarget Localhost Endpoint: http://127.0.0.1:64017\n\n[PASS] GET /health      -> HTTP 200 | Version=v1.0.0\n[PASS] GET /model/info  -> HTTP 200 | Alg=LogisticRegression | LocalOnly=True\n[PASS] POST /pre"
+    },
+    "concept_drift_simulation.py": {
+      "status": "passed",
+      "duration_seconds": 1.801,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: CONCEPT DRIFT VS COVARIATE DATA DRIFT SIMULATION\n===========================================================================\nStream Regime                  | Input PSI (x0)  | Model Accuracy  | Diagnosis\n--------------------------------------------------------------------------------\n1. Stable Baseline"
+    },
+    "data_drift_detection.py": {
+      "status": "passed",
+      "duration_seconds": 0.233,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: STATISTICAL DATA DRIFT DETECTION (PSI & KS TEST)\n===========================================================================\nReference N=500 vs Current N=300 Feature Drift Analysis:\n\nFeature    | Mean Shift   | PSI      | KS Stat D  | KS p-val   | Alert Level\n----------------------------------------------------"
+    },
+    "experiment_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 2.239,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: EXPERIMENT COMPARISON & CANDIDATE SELECTION\n===========================================================================\nLeaderboard for Experiment 'telemetry_benchmark_v1':\n\nRank  | Run ID       | Model & Params                   | Accuracy  | F1       | ROC-AUC\n-------------------------------------------------"
+    },
+    "experiment_tracking.py": {
+      "status": "passed",
+      "duration_seconds": 2.038,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: LOCAL EXPERIMENT TRACKING (SQLITE BACKED)\n===========================================================================\nLogged Run ID   : run_128ea6ed\nExperiment      : telemetry_anomaly_cls\nParameters      : {'model_type': 'logistic_regression', 'C': 1.0, 'seed': 42}\nMetrics         : {'accuracy': 0.8067, 'f1_sc"
+    },
+    "inference_latency.py": {
+      "status": "passed",
+      "duration_seconds": 3.413,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: INFERENCE LATENCY & THROUGHPUT BENCHMARK (CPU / 127.0.0.1)\n===========================================================================\n1. Direct In-Memory Python Inference (N=500, 20 warm-up excluded):\n   Mean: 0.165 ms | P50: 0.161 ms | P95: 0.185 ms | P99: 0.226 ms\n   Throughput: 6043.1 req/s\n\n2. End-to-End L"
+    },
+    "local_model_registry.py": {
+      "status": "passed",
+      "duration_seconds": 2.133,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: EDUCATIONAL LOCAL MODEL REGISTRY\n===========================================================================\n[Governance Gate] Blocked unapproved staging: Promotion to STAGED_LOCAL_SERVING requires explicit human approval.\n\nRegistered Versions for 'telemetry_anomaly_cls':\n- v1.0.0   | LogisticRegression     | S"
+    },
+    "mlops_lifecycle.py": {
+      "status": "passed",
+      "duration_seconds": 0.136,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: END-TO-END MLOPS LIFECYCLE STAGES\n===========================================================================\n[Stage 1] Data Ingestion & Validation\n   Owner          : Data Engineering\n   Artifact Output: Versioned Dataset Snapshot\n   Governance Gate: Schema & Null Checks\n\n[Stage 2] Reproducible Training Pipeli"
+    },
+    "mlops_pipeline_demo.py": {
+      "status": "passed",
+      "duration_seconds": 2.715,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: COMPLETE END-TO-END LOCAL MLOPS PIPELINE\n===========================================================================\n[Stage 1/5] Running leak-free training pipeline...\n            Dataset: telemetry_ds_8777dda63e146c48 | AUC=0.9701 | SHA256=86e0445ddc7b...\n[Stage 2/5] Logging run to SQLite Experiment Tracker..."
+    },
+    "model_artifact_validation.py": {
+      "status": "passed",
+      "duration_seconds": 1.987,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: MODEL ARTIFACT INTEGRITY & SERIALIZATION SECURITY\n===========================================================================\n1. Verifying trusted local artifact...\n   [PASS] Loaded model safely: Pipeline (Checksum verified)\n\n2. Simulating tampered / corrupted artifact detection...\n   [BLOCKED] INTEGRITY VIOLAT"
+    },
+    "model_rollback_simulation.py": {
+      "status": "passed",
+      "duration_seconds": 2.106,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: CONTROLLED MODEL ROLLBACK SIMULATION\n===========================================================================\n[1] Baseline v1.0.0 staged locally (AUC=0.8303).\n[2] Upgraded active local model to v1.1.0.\n\n[3] MONITORING ALERT: Model v1.1.0 rolling accuracy dropped to 68.0% (SLA >= 80%).\n    Recommending rollba"
+    },
+    "model_serving_api.py": {
+      "status": "passed",
+      "duration_seconds": 2.594,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: LOCAL MODEL SERVING REST API (127.0.0.1)\n===========================================================================\nStarted local educational serving API strictly at: http://127.0.0.1:59586\nGET /health     -> {'status': 'healthy', 'bind_host': '127.0.0.1', 'model_version': 'v1.0.0'}\nPOST /predict   -> {'predic"
+    },
+    "model_versioning.py": {
+      "status": "passed",
+      "duration_seconds": 0.112,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: SEMANTIC MODEL VERSIONING & LINEAGE\n===========================================================================\nSemantic Version Progression:\n- Initial Baseline      : v1.0.0\n- Hyperparam/Fix (patch): v1.0.1 (Backward-compatible bug fix)\n- Retrained Data (minor): v1.1.0 (Same input schema, updated weights)\n- Sc"
+    },
+    "monitoring_dashboard.py": {
+      "status": "passed",
+      "duration_seconds": 2.607,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: MLOPS OBSERVABILITY & MONITORING DASHBOARD\n===========================================================================\nWindow          | PSI (x0)   | Accuracy (%)   | Status\n-----------------------------------------------------------------\nW1 (Base)       | 0.0637     | 95.5           | OK\nW2 (Norm)       | 0.0"
+    },
+    "prediction_monitoring.py": {
+      "status": "passed",
+      "duration_seconds": 2.044,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: PREDICTION DRIFT & CONFIDENCE MONITORING\n===========================================================================\n1. Reference Window Prediction Telemetry:\n   - Positive Class Rate : 26.33%\n   - Uncertain Band Ratio: 13.33% (prob in [0.40, 0.60])\n\n2. Live Drifted Stream Prediction Telemetry:\n   - Positive Cl"
+    },
+    "reproducible_training.py": {
+      "status": "passed",
+      "duration_seconds": 2.055,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: REPRODUCIBLE ML TRAINING PIPELINE (ZERO LEAKAGE)\n===========================================================================\nDataset Version : telemetry_ds_8777dda63e146c48 (Train: 900, Test: 300)\nHyperparameters : {'model_type': 'logistic_regression', 'C': 1.0, 'seed': 42}\nTest Metrics    : Accuracy=0.8067, F1"
+    },
+    "request_validation.py": {
+      "status": "passed",
+      "duration_seconds": 0.115,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 36: API REQUEST SCHEMA VALIDATION\n===========================================================================\n[PASS] Valid Payload        -> Accepted (First feature: 0.5)\n[REJECT] Missing Key        -> Blocked cleanly: Missing required key 'features'.\n[REJECT] Wrong Dimension    -> Blocked cleanly: Feature dimensio"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "id": 36,
+  "slug": "chapter-36",
+  "levelId": 4,
+  "title": "MLOps, Model Deployment & Monitoring",
+  "status": "published",
+  "description": "Siklus hidup rekayasa MLOps: pipeline pelatihan reproduktif bebas kebocoran data, experiment tracking, semantic versioning, local model registry berbasis SQLite, validasi keamanan checksum SHA-256, REST API lokal (127.0.0.1), benchmark latensi, deteksi Data Drift vs Concept Drift, serta rollback terkendali.",
+  "objectives": [
+    "Menjelaskan siklus hidup MLOps secara menyeluruh beserta hubungan antara Machine Learning, Software Engineering, dan Operations.",
+    "Membedakan eksperimen notebook pengembangan dari alur kerja produksi terkelola dan memahami batas kesiapan produksi.",
+    "Mengelola pelacakan eksperimen (experiment tracking) berbasis SQLite meliputi parameter, metrik, versi dataset, dan metadata lingkungan.",
+    "Melakukan pemversian model semantik (Semantic Versioning) dan melacak silsilah model (model lineage).",
+    "Menjelaskan fungsi Model Registry beserta tata kelola status siklus yang aman dan persetujuan manusia.",
+    "Membangun pipeline pelatihan reproduktif bebas kebocoran data (zero data leakage) dengan Scikit-learn Pipeline.",
+    "Menggunakan verifikasi kriptografis checksum SHA-256 sebelum deserialisasi artefak model guna mencegah eksekusi kode berbahaya.",
+    "Menjelaskan pola penyajian model batch inference versus online real-time inference.",
+    "Membangun REST API model serving lokal yang mengikat eksklusif pada 127.0.0.1 lengkap dengan endpoint /health, /model/info, /predict, dan /metrics.",
+    "Melakukan validasi skema masukan (input schema validation) yang ketat sebelum memanggil prediksi model.",
+    "Menghitung metrik performa inferensi aktual meliputi latensi rata-rata, P50 Median, P95, P99, dan throughput req/s.",
+    "Menganalisis pergeseran distribusi prediksi (prediction drift) dan pita ketidakpastian probabilitas sebelum label kebenaran tiba.",
+    "Menjelaskan perbedaan fundamental antara Data Drift (PSI & Uji KS pada P(X)) dan Concept Drift (perubahan hubungan P(y|X)).",
+    "Mengidentifikasi peringatan monitoring (monitoring alerts) sekaligus mengantisipasi efek ukuran sampel dan false alarms.",
+    "Menjelaskan strategi retraining berbasis peringatan dan melaksanakan simulasi rollback model yang disetujui manusia.",
+    "Menerapkan prinsip keamanan dan Responsible MLOps meliputi privasi log, integritas artefak, kontrol akses, dan pengawasan manusia."
+  ],
+  "prerequisites": [
+    12,
+    19,
+    30
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "MLOps",
+    "Model Serving",
+    "Model Registry",
+    "Data Drift",
+    "Concept Drift"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Sculley et al. (2015), Hidden Technical Debt in Machine Learning Systems",
+      "url": "https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html",
+      "status": "verified"
+    },
+    {
+      "title": "Zinkevich (2017), Rules of Machine Learning: Best Practices for ML Engineering",
+      "url": "https://developers.google.com/machine-learning/guides/rules-of-ml",
+      "status": "verified"
+    },
+    {
+      "title": "Google Cloud (2021), Practitioners Guide to MLOps",
+      "url": "https://cloud.google.com/resources/mlops-whitepaper",
+      "status": "verified"
+    },
+    {
+      "title": "Gama et al. (2014), A Survey on Concept Drift Adaptation, ACM CSUR",
+      "url": "https://doi.org/10.1145/2523813",
+      "status": "verified"
+    },
+    {
+      "title": "NIST (2023), Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

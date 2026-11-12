@@ -1,0 +1,93 @@
+{
+  "chapter": 34,
+  "title": "AI Agents & Tool Integration",
+  "total_scripts": 14,
+  "total_duration_seconds": 1.28,
+  "all_passed": true,
+  "scripts": {
+    "agent_architecture.py": {
+      "status": "passed",
+      "duration_seconds": 0.083,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: AI AGENT MODULAR ARCHITECTURE\n======================================================================\nGoal: 'Berapa hasil perhitungan 25 * 4 + 10?'\nInitial State: Step 0, Terminated: False\n\n[Cycle 1] Thought: Pengguna"
+    },
+    "agent_evaluation.py": {
+      "status": "passed",
+      "duration_seconds": 0.131,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: COMPREHENSIVE AGENT EVALUATION BENCHMARK\n======================================================================\n\n[GERBANG PERSETUJUAN MANUSIA] Permintaan eksekusi terdeteksi:\n  Tool Berisiko   : 'delete_cache_entry' ("
+    },
+    "agent_state.py": {
+      "status": "passed",
+      "duration_seconds": 0.083,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: AGENT STATE MACHINE & WORKING MEMORY\n======================================================================\nState Awal: INITIALIZED\nState Sekarang: PLANNING\nState Sekarang: EXECUTING_TOOL\nState Sekarang: PLANNING (Ste"
+    },
+    "audit_logging.py": {
+      "status": "passed",
+      "duration_seconds": 0.089,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: STRUCTURED AGENT AUDIT LOGGING\n======================================================================\nLog Record 1 Hash: 0402b5bde3f43d5c... (Prev: GENESIS_BLOCK)\nLog Record 2 Hash: ccb2223bc96334b6... (Prev: 0402b5bd"
+    },
+    "human_approval_gate.py": {
+      "status": "passed",
+      "duration_seconds": 0.088,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: HUMAN APPROVAL GATE DEMONSTRATION\n======================================================================\nCase 1 (Read-Only): Permitted=True | Status=auto_approved\n\n[GERBANG PERSETUJUAN MANUSIA] Permintaan eksekusi ter"
+    },
+    "mcp_concepts_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.085,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: MODEL CONTEXT PROTOCOL (MCP) DEMONSTRATION\n======================================================================\n[1] Memanggil 'tools/list' untuk penemuan alat dinamis...\n    Ditemukan Tool MCP: [get_lecture_schedule"
+    },
+    "permission_manager.py": {
+      "status": "passed",
+      "duration_seconds": 0.082,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: PERMISSION MANAGER & LEAST PRIVILEGE\n======================================================================\n1. Menguji Izin Peran Mahasiswa (STUDENT):\n   Tool 'calculator'        : Authorized=True\n   Tool 'delete_cach"
+    },
+    "planning_loop.py": {
+      "status": "passed",
+      "duration_seconds": 0.097,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: REACT PLANNING & EXECUTION LOOP\n======================================================================\nGoal Pengguna: 'Berapa hasil perhitungan 25 * 4?'\n\nStatus Akhir: SUCCESS (Langkah Total: 2)\n\nAlur Jejak ReAct (Tho"
+    },
+    "safe_agent_workflow.py": {
+      "status": "passed",
+      "duration_seconds": 0.123,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: SAFE AGENT WORKFLOW & UNTRUSTED TOOL DEFENSE\n======================================================================\n1. Benign Output : Safe=True | Data: Hasil pencarian: Transformer menggunakan mekanisme Self-Attentio"
+    },
+    "supervised_agent.py": {
+      "status": "passed",
+      "duration_seconds": 0.093,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: SUPERVISED AI LEARNING ASSISTANT (REFERENCE PROJECT)\n======================================================================\n\nSkenario 1 (Mahasiswa - Pencarian Materi):\nStatus: TERMINATED_SUCCESS | Langkah: 2\nJawaban:"
+    },
+    "tool_calling_demo.py": {
+      "status": "passed",
+      "duration_seconds": 0.081,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: TOOL CALLING EXECUTION LIFECYCLE\n======================================================================\n[1] Executing valid calculator call...\n    Status: SUCCESS | Result: 135.0\n\n[2] Executing invalid search call (mi"
+    },
+    "tool_error_handling.py": {
+      "status": "passed",
+      "duration_seconds": 0.082,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: TOOL ERROR HANDLING & FAULT RECOVERY\n======================================================================\n[Fault 1] Arithmetic Division by Zero:\n  Status: ERROR\n  Error : Execution error: division by zero\n  Hint  :"
+    },
+    "tool_registry.py": {
+      "status": "passed",
+      "duration_seconds": 0.08,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: AGENT TOOL REGISTRY\n======================================================================\nTotal tools terdaftar: 3\n\nDaftar Tool dan Profil Risiko:\n- Tool: [calculator] (READ_ONLY)\n  Deskripsi: Melakukan operasi matem"
+    },
+    "tool_schema_validation.py": {
+      "status": "passed",
+      "duration_seconds": 0.082,
+      "return_code": 0,
+      "stdout_snippet": "======================================================================\nCHAPTER 34: TOOL SCHEMA VALIDATION\n======================================================================\nSchema Parameter untuk Tool 'calculator':\n{'type': 'object', 'properties': {'expression': {'type': 'string', 'description':"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+[
+ {"kind":"cover","title":"Judul dari metadata chapter","body":"Preview template pengajar • Bukan materi chapter yang telah dipublikasikan","notes":"Sampaikan bahwa ini kerangka presentasi, bukan pembelajaran lengkap."},
+ {"kind":"content","title":"Tujuan & alur pembelajaran","body":"Tulis tujuan terukur, prasyarat, dan pertanyaan pemantik. Hubungkan setiap tujuan dengan latihan dan penilaian.","notes":"Gunakan kata kerja menjelaskan, membandingkan, mengimplementasikan, atau mengevaluasi.","diagram":["Masalah","Data","Metode","Evaluasi"]},
+ {"kind":"content","title":"Notasi & model","body":"Contoh visual untuk memeriksa rendering notasi. Ganti dengan konsep yang relevan dan jelaskan setiap simbol.","tex":"\\hat{y} = \\mathbf{w}^{T}\\mathbf{x} + b","notes":"Pisahkan derivasi panjang menjadi beberapa slide."},
+ {"kind":"code","title":"Format contoh Python","body":"Contoh format kode untuk pengajar; tidak mewakili materi chapter. Lampirkan output terverifikasi saat menerbitkan materi.","code":"def predict(x: float, weight: float, bias: float) -> float:\n    \"\"\"Contoh fungsi deterministik untuk layout.\"\"\"\n    return weight * x + bias","notes":"Simpan contoh runnable dalam code/ dan catat versi interpreter."},
+ {"kind":"content","title":"Evaluasi, batasan & referensi","body":"Tambahkan baseline, split dataset, metrik, analisis error, risiko, latihan, dan sumber. Template ini belum memenuhi standar chapter lengkap.","notes":"Periksa lisensi data dan model sebelum publikasi."}
+]

@@ -1,0 +1,95 @@
+{
+  "id": 22,
+  "slug": "chapter-22",
+  "levelId": 3,
+  "title": "Backpropagation & Optimization",
+  "status": "published",
+  "description": "Modul komprehensif algoritma propagasi balik dan optimasi jaringan saraf tiruan (Backpropagation & Optimization): perumusan matematis optimasi fungsi rugi multivariat, aturan rantai kalkulus (chain rule) dan topologi computational graph (graf komputasi DAG), perbandingan tiga paradigma diferensiasi komputasi (finite difference, diferensiasi simbolik, dan automatic differentiation), analisis galat orde O(e^2) beda terpusat vs pembatalan katastrofik presisi mesin, studi kasus worked numerical example propagasi balik manual langkah demi langkah terverifikasi (arsitektur 2-2-1) yang membuktikan penurunan nilai rugi MSE seketika, protokol verifikasi gradient checking dengan batas presisi relative error < 1e-7, taksonomi komparatif varian Gradient Descent (Batch GD, Stochastic GD, Mini-Batch GD), matematika algoritma optimasi tingkat lanjut (Momentum dengan inersia gerak, RMSprop dengan rata-rata bergerak kuadratik gradien, dan Adam Optimizer dengan koreksi bias pada iterasi awal), dinamika pelatihan jaringan dalam beserta fenomena vanishing gradients dan exploding gradients, strategi inisialisasi bobot parameter (Zero Initialization, Standard Normal, Xavier/Glorot untuk Tanh/Sigmoid, dan He/Kaiming untuk ReLU) guna menjaga variansi propagasi sinyal forward dan backward, teknik penstabilan gradient clipping (clipping by value vs clipping by global norm dengan preservasi arah gradien 100%), eksperimen stabilitas laju pembelajaran (learning rate) dan batas Lipschitz, implementasi penuh sistem pelatihan Multilayer Perceptron dari awal (scratch) menggunakan NumPy murni pada dataset non-linier konsentris, serta analisis konsumsi daya komputasi dan tata kelola Responsible AI.",
+  "objectives": [
+    "Menjelaskan konsep propagasi balik (backpropagation) dan peran pentingnya dalam pelatihan jaringan saraf tiruan.",
+    "Menurunkan turunan parsial fungsi rugi terhadap parameter menggunakan aturan rantai multivariat (multivariate chain rule).",
+    "Merepresentasikan ekspresi matematika jaringan saraf dalam bentuk computational graph (graf komputasi).",
+    "Membedakan metode diferensiasi numerik (finite difference), diferensiasi simbolik, dan diferensiasi otomatis (autograd).",
+    "Menghitung propagasi balik secara manual langkah demi langkah pada arsitektur 2-2-1 dan memverifikasi penurunan nilai fungsi rugi.",
+    "Mengimplementasikan teknik gradient checking untuk memvalidasi presisi numerik gradien analitik dengan batas toleransi error relatif.",
+    "Membandingkan karakteristik komputasi dan dinamika konvergensi antara Batch GD, Stochastic GD, dan Mini-Batch GD.",
+    "Menerapkan algoritma optimasi modern tingkat lanjut termasuk Momentum, RMSprop, dan Adam Optimizer dengan koreksi bias.",
+    "Menganalisis fenomena vanishing gradients dan exploding gradients pada jaringan saraf yang sangat dalam.",
+    "Memilih metode inisialisasi bobot yang tepat (Zero, Normal, Xavier/Glorot, He/Kaiming) berdasarkan fungsi aktivasi yang digunakan.",
+    "Menerapkan teknik gradient clipping berbasis global norm untuk mencegah ketidakstabilan numerik.",
+    "Membangun sistem pelatihan jaringan saraf tiruan lapis banyak dari awal (scratch) menggunakan NumPy murni.",
+    "Mengidentifikasi tantangan komputasi, konsumsi daya pelatihan deep learning, dan prinsip Responsible AI."
+  ],
+  "prerequisites": [
+    21
+  ],
+  "tags": [
+    "Deep Learning",
+    "Backpropagation",
+    "Optimization",
+    "Chain Rule",
+    "Computational Graph",
+    "Autograd",
+    "Finite Difference",
+    "Gradient Checking",
+    "Gradient Descent",
+    "Batch Gradient Descent",
+    "Stochastic Gradient Descent",
+    "Mini-Batch Gradient Descent",
+    "Momentum",
+    "RMSprop",
+    "Adam Optimizer",
+    "Vanishing Gradients",
+    "Exploding Gradients",
+    "Weight Initialization",
+    "Xavier Initialization",
+    "He Initialization",
+    "Gradient Clipping",
+    "NumPy"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Rumelhart, D. E., Hinton, G. E., & Williams, R. J. (1986). Learning representations by back-propagating errors. Nature, 323(6088), 533-536",
+      "url": "https://doi.org/10.1038/323533a0",
+      "status": "verified"
+    },
+    {
+      "title": "Kingma, D. P., & Ba, J. (2014). Adam: A Method for Stochastic Optimization. arXiv preprint arXiv:1412.6980",
+      "url": "https://arxiv.org/abs/1412.6980",
+      "status": "verified"
+    },
+    {
+      "title": "Goodfellow, I., Bengio, Y., & Courville, A. (2016). Deep Learning. MIT Press",
+      "url": "https://www.deeplearningbook.org/",
+      "status": "verified"
+    },
+    {
+      "title": "He, K., Zhang, X., Ren, S., & Sun, J. (2015). Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification. Proceedings of the IEEE ICCV, 1026-1034",
+      "url": "https://doi.org/10.1109/ICCV.2015.123",
+      "status": "verified"
+    },
+    {
+      "title": "Glorot, X., & Bengio, Y. (2010). Understanding the difficulty of training deep feedforward neural networks. Proceedings of AISTATS, JMLR W&CP 9:249-256",
+      "url": "https://proceedings.mlr.press/v9/glorot10a.html",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

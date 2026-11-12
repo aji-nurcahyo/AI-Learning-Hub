@@ -1,0 +1,97 @@
+{
+  "id": 19,
+  "slug": "chapter-19",
+  "levelId": 2,
+  "title": "Model Evaluation, Tuning & Explainability",
+  "status": "published",
+  "description": "Modul komprehensif Evaluasi Model, Penyetelan Hyperparameter & Keterpahaman (Explainability): fondasi generalisasi dan pembagian data 3-way bebas kebocoran, benchmark model baseline, metrik evaluasi regresi (MAE, MSE, RMSE, R2, MAPE) dan klasifikasi (Confusion Matrix, Precision, Recall, F1-Score, Specificity, Balanced Accuracy, ROC-AUC vs PR-AUC), analisis biaya asimetris dan kalibrasi ambang keputusan, strategi validasi silang khusus (Stratified K-Fold, Group K-Fold, Time Series Split, Nested Cross-Validation), penelusuran hyperparameter sistematis (GridSearchCV vs RandomizedSearchCV), diagnostik kurva pembelajaran (Learning Curves) dan kurva validasi (Validation Curves), kalibrasi probabilitas (Brier Score, Platt Scaling, Isotonic Regression), model explainability post-hoc (Permutation Feature Importance, Partial Dependence Plots, ICE, ikhtisar SHAP & LIME), analisis kegagalan sistematis (error analysis & false negatives), serta audit disparitas subgrup dan pergeseran data (dataset shift).",
+  "objectives": [
+    "Menjelaskan tujuan evaluasi model, generalisasi, dan bahaya optimisme semu overfitting.",
+    "Memilih metrik evaluasi regresi dan klasifikasi berdasarkan struktur biaya kesalahan asimetris.",
+    "Menerapkan strategi Cross-Validation (Stratified K-Fold, Group K-Fold, Time Series Split) secara benar.",
+    "Membedakan seleksi model dalam validasi dari evaluasi akhir pada test set terisolasi.",
+    "Menjelaskan konsep Nested Cross-Validation untuk mengeliminasi bias optimisme seleksi model.",
+    "Mengimplementasikan penelusuran hyperparameter menggunakan GridSearchCV dan RandomizedSearchCV.",
+    "Menginterpretasikan kurva pembelajaran (learning curves) untuk mendiagnosis bias dan varians.",
+    "Menganalisis kurva validasi (validation curves) untuk menentukan batas kapasitas model optimal.",
+    "Mengevaluasi kalibrasi probabilitas klasifikasi dan menghitung Brier Score.",
+    "Menerapkan metode Permutation Feature Importance untuk mengukur kontribusi fitur pada data uji.",
+    "Menganalisis efek marjinal non-linier menggunakan Partial Dependence Plots (PDP) dan konsep ICE.",
+    "Mengidentifikasi ikhtisar metode atribusi lokal SHAP dan LIME beserta batasan korelasionalnya.",
+    "Melakukan analisis kegagalan model (error analysis) pada kasus False Negative dan disparitas subgrup."
+  ],
+  "prerequisites": [
+    18
+  ],
+  "tags": [
+    "Machine Learning",
+    "Model Evaluation",
+    "Hyperparameter Tuning",
+    "Model Explainability",
+    "Cross-Validation",
+    "Stratified K-Fold",
+    "Group K-Fold",
+    "Time Series Split",
+    "Nested CV",
+    "GridSearchCV",
+    "RandomizedSearchCV",
+    "Learning Curves",
+    "Validation Curves",
+    "Brier Score",
+    "Probability Calibration",
+    "Platt Scaling",
+    "Permutation Importance",
+    "Partial Dependence Plots",
+    "SHAP",
+    "LIME",
+    "Error Analysis",
+    "False Negatives",
+    "Responsible AI",
+    "Scikit-Learn"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Breiman, L. (2001). Random Forests. Machine Learning, 45(1), 5-32",
+      "url": "https://doi.org/10.1023/A:1010933404324",
+      "status": "verified"
+    },
+    {
+      "title": "Bergstra, J., & Bengio, Y. (2012). Random search for hyper-parameter optimization. J. Mach. Learn. Res., 13(Feb), 281-305",
+      "url": "https://www.jmlr.org/papers/v13/bergstra12a.html",
+      "status": "verified"
+    },
+    {
+      "title": "Platt, J. (1999). Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods. Adv. Large Margin Classifiers, 10(3), 61-74",
+      "url": "https://www.cs.colorado.edu/~mozer/Teaching/syllabi/6622/papers/Platt1999.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "Ribeiro, M. T., Singh, S., & Guestrin, C. (2016). 'Why should I trust you?': Explaining the predictions of any classifier. KDD-2016, 1135-1144",
+      "url": "https://doi.org/10.1145/2939672.2939778",
+      "status": "verified"
+    },
+    {
+      "title": "Lundberg, S. M., & Lee, S. I. (2017). A unified approach to interpreting model predictions. NeurIPS 2017, 30, 4765-4774",
+      "url": "https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

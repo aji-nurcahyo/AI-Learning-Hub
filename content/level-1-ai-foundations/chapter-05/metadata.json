@@ -1,0 +1,68 @@
+{
+  "id": 5,
+  "slug": "chapter-05",
+  "levelId": 1,
+  "track": "core",
+  "title": "Knowledge Representation & Reasoning",
+  "subtitle": "Logika Proposisional, First-Order Logic, Mesin Inferensi (Forward & Backward Chaining), dan Sistem Pakar",
+  "status": "published",
+  "description": "Mempelajari formalisasi representasi pengetahuan dalam kecerdasan buatan: logika proposisional, tabel kebenaran, entailment, aturan inferensi (Modus Ponens), pengantar First-Order Logic, mesin inferensi Forward dan Backward Chaining, serta arsitektur sistem pakar berbasis kaidah.",
+  "objectives": [
+    "Menjelaskan peran Knowledge Representation dalam Artificial Intelligence.",
+    "Membedakan facts, rules, knowledge base, dan inference.",
+    "Merepresentasikan pengetahuan sederhana menggunakan Propositional Logic.",
+    "Menjelaskan konsep dasar First-Order Logic.",
+    "Menggunakan aturan inference sederhana.",
+    "Membedakan Forward Chaining dan Backward Chaining.",
+    "Mengimplementasikan Rule-Based Reasoning sederhana.",
+    "Mengidentifikasi keterbatasan symbolic reasoning pada informasi tidak lengkap atau ambigu."
+  ],
+  "prerequisites": [
+    4
+  ],
+  "tags": [
+    "AI Foundations",
+    "Knowledge Representation",
+    "Reasoning",
+    "Propositional Logic",
+    "First-Order Logic",
+    "Forward Chaining",
+    "Backward Chaining",
+    "Expert Systems"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach (4th ed.). Pearson. Bab 7: Logical Agents & Bab 9: Inference in First-Order Logic.",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "Brachman, R., & Levesque, H. (2004). Knowledge Representation and Reasoning. Morgan Kaufmann.",
+      "url": "https://doi.org/10.1016/B978-1-55860-932-7.X5000-4",
+      "status": "verified"
+    },
+    {
+      "title": "ACM/IEEE-CS/AAAI (2024). Computer Science Curricula 2023 (CS2023): AI Knowledge Area.",
+      "url": "https://csed.acm.org/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

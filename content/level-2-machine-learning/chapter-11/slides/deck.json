@@ -1,0 +1,171 @@
+[
+  {
+    "kind": "cover",
+    "title": "Introduction to Machine Learning",
+    "body": "### Konsep Pokok, Paradigma Pembelajaran, Generalisasi & Evaluasi Model\n\n**Level 2 — Machine Learning | Chapter 11**\n\nArtificial Intelligence Learning Hub — Institut Teknologi Sumatera (ITERA)\n*Created & Developed by Aji Pamungkas Tri Nurcahyo*",
+    "notes": "Selamat datang di perkuliahan Chapter 11: Introduction to Machine Learning. Ini adalah gerbang pembuka Level 2, di mana kita bertransisi dari sistem cerdas berbasis aturan manual menuju sistem cerdas yang mampu belajar secara mandiri dari data pengamatan masa lalu."
+  },
+  {
+    "kind": "content",
+    "title": "Why Machine Learning?",
+    "body": "Mengapa kita membutuhkan Machine Learning?\n\n- **Batas Aturan Manual**: Manusia tidak sanggup merumuskan miliaran aturan if-else untuk mengenali wajah, memahami ucapan bahasa alami, atau menyaring transaksi penipuan.\n- **Data Berlimpah**: Era digital menghasilkan aliran data telemetri, transaksi, dan sensor dalam skala masif setiap detiknya.\n- **Adaptasi Dinamis**: Sistem berbasis aturan sulit beradaptasi terhadap perubahan tren; model machine learning dapat dilatih ulang dengan data baru secara otomatis.\n- **Solusi Masalah Rumit**: Menemukan pola asosiasi statistik tersembunyi yang terlalu halus untuk disadari oleh persepsi manusia.",
+    "notes": "Tekankan transisi dari pemrograman imperatif ke paradigma induktif statistik."
+  },
+  {
+    "kind": "content",
+    "title": "Capaian Pembelajaran (Objectives)",
+    "body": "Setelah menyelesaikan bab ini, mahasiswa diharapkan mampu:\n\n- **Menjelaskan** konsep dasar Machine Learning dan perbedaannya dengan sistem berbasis aturan.\n- **Mengidentifikasi** tiga paradigma utama: Supervised, Unsupervised, dan Reinforcement Learning.\n- **Membedakan** peran matriks fitur (X), vektor target (y), parameter, dan prediksi.\n- **Menjelaskan** fase Training, Validation, Testing, dan Inference.\n- **Menganalisis** fenomena generalisasi, underfitting, overfitting, dan Bias-Variance Trade-off.\n- **Mengevaluasi** performa model terhadap Baseline pembanding objektif.\n- **Mendeteksi** bahaya Data Leakage dan menegakkan prinsip Responsible Machine Learning.",
+    "notes": "Tunjukkan bahwa bab ini membangun kerangka berpikir konseptual yang kokoh sebelum kita mempelajari algoritma teknis spesifik di bab-bab berikutnya."
+  },
+  {
+    "kind": "split",
+    "title": "Traditional Programming vs ML",
+    "body": "Perbandingan mendasar dua cara membangun perangkat lunak cerdas:\n\n### Traditional Programming\n- **Masukan**: Data mentah + Aturan logika (*rules*) buatan manusia.\n- **Proses**: Komputer mengeksekusi logika *if-else* secara deterministik.\n- **Keluaran**: Jawaban atau keputusan akhir (*answers*).\n\n### Machine Learning\n- **Masukan**: Data mentah ($X$) + Jawaban benar (*labels* $y$).\n- **Proses**: Komputer mempelajari pola hubungan matematis secara induktif.\n- **Keluaran**: Aturan terbobot atau fungsi prediksi ($f: X \\to y$).",
+    "notes": "Gunakan analogi memasak: cara tradisional memberikan resep pasti; machine learning memberikan bahan dan foto masakan jadi, lalu komputer menyimpulkan resepnya sendiri."
+  },
+  {
+    "kind": "content",
+    "title": "What Is Machine Learning?",
+    "body": "Dua definisi otoritatif dari para pelopor kecerdasan buatan:\n\n- **Arthur Samuel (1959)**:\n  *\"Machine Learning adalah bidang studi yang memberikan komputer kemampuan untuk belajar tanpa diprogram secara eksplisit.\"*\n- **Tom M. Mitchell (1997)**:\n  *\"Sebuah program komputer dikatakan belajar dari pengalaman $E$ berkenaan dengan kelas tugas $T$ dan ukuran kinerja $P$, jika kinerjanya pada tugas $T$, sebagaimana diukur oleh $P$, meningkat seiring dengan pengalaman $E$.\"*\n- **Intisari Formula**:\n  $$\\text{Pengalaman } (E) + \\text{Algoritma Optimasi} \\longrightarrow \\text{Model } (f_\\theta) \\quad [\\text{Kinerja } P \\uparrow]$$",
+    "notes": "Jelaskan definisi Mitchell dengan contoh nyata: tugas pengenalan spam (T), kumpulan email historis (E), dan persentase email yang benar terklasifikasi (P)."
+  },
+  {
+    "kind": "split",
+    "title": "Learning from Data",
+    "body": "Bagaimana komputer benar-benar \"belajar\"?\n\n### Induksi Statistik\n- Komputer tidak memiliki kesadaran manusiawi.\n- Belajar berarti memperbarui angka-angka bobot (*weights*) numerik di dalam fungsi matematis untuk meminimalkan nilai kesalahan (*loss function*).\n\n### Pengalaman Masa Lalu\n- Model merefleksikan distribusi probabilitas dari data historis yang diberikan.\n- Jika data historis bias atau tidak representatif, model akan mempelajari bias tersebut sebagai kebenaran mutlak.",
+    "notes": "Koreksi pemahaman mahasiswa agar tidak memandang AI sebagai kotak ajaib supernatural."
+  },
+  {
+    "kind": "content",
+    "title": "Features dan Labels",
+    "body": "Struktur matriks data standar dalam Machine Learning:\n\n- **Samples ($N$)**: Jumlah baris observasi independen yang diamati.\n- **Features ($X \\in \\mathbb{R}^{N \\times D}$)**: Matriks 2D variabel independen (deskriptor) terukur, seperti jam belajar, rasio kehadiran, atau suhu turbin.\n- **Label / Target ($y \\in \\mathbb{R}^N$)**: Vektor 1D variabel dependen yang ingin diprediksi oleh sistem.\n- **Predictions ($\\hat{y}$)**: Taksiran keluaran yang dihasilkan model: $\\hat{y} = f(X)$.\n- **Model Parameters ($\\theta$)**: Bobot internal model (misal koefisien kemiringan $w$ dan intersep bias $b$) yang dioptimasi selama pelatihan.",
+    "notes": "Tunjukkan keterkaitan representasi ini dengan NumPy 2D array dan Pandas DataFrame dari Bab 07."
+  },
+  {
+    "kind": "content",
+    "title": "Supervised Learning",
+    "body": "Karakteristik pembelajaran terbimbing (Supervised Learning):\n\n- **Prinsip Dasar**: Model dilatih menggunakan dataset yang telah memiliki label jawaban benar: $\\mathcal{D} = \\{(x_1, y_1), \\dots, (x_N, y_N)\\}$.\n- **Analogi Guru**: Seperti siswa yang mengerjakan soal latihan di mana kunci jawaban benar telah tersedia untuk memeriksa kesalahan.\n- **Fungsi Objektif**: Meminimalkan selisih antara tebakan model $\\hat{y}$ dengan label asli $y$ melalui fungsi kerugian (*Loss Function*).\n- **Dua Cabang Utama**: Masalah Regresi dan Masalah Klasifikasi.",
+    "notes": "Jelaskan bahwa supervised learning adalah paradigma paling matang dan paling banyak digunakan di industri saat ini."
+  },
+  {
+    "kind": "split",
+    "title": "Regression and Classification",
+    "body": "Dua tugas pokok dalam Supervised Learning:\n\n### Regresi (Continuous Target)\n- **Keluaran**: Besaran numerik kontinu ($y \\in \\mathbb{R}$).\n- **Pertanyaan**: *\"Berapa banyak?\"* atau *\"Berapa nilainya?\"*\n- **Contoh**: Memprediksi harga rumah, konsumsi daya listrik (Watt), atau sisa masa pakai mesin (*remaining useful life*).\n\n### Klasifikasi (Discrete Target)\n- **Keluaran**: Label kategori diskrit ($y \\in \\{0, 1, \\dots, C-1\\}$).\n- **Pertanyaan**: *\"Termasuk kelompok mana?\"*\n- **Contoh**: Deteksi spam (0 vs 1), diagnosis penyakit, atau klasifikasi sentimen ulasan.",
+    "notes": "Tegaskan perbedaan tipe data target: kontinu pada regresi dan diskrit pada klasifikasi."
+  },
+  {
+    "kind": "content",
+    "title": "Unsupervised Learning",
+    "body": "Karakteristik pembelajaran tak terbimbing (Unsupervised Learning):\n\n- **Prinsip Dasar**: Algoritma hanya diberikan matriks fitur masukan $X$ **tanpa label jawaban** $y$: $\\mathcal{D} = \\{x_1, x_2, \\dots, x_N\\}$.\n- **Analogi Arkeolog**: Menemukan artefak kuno tanpa label sejarah dan mengelompokkannya berdasarkan kemiripan bentuk atau bahan.\n- **Tujuan Utama**: Menemukan struktur laten, densitas probabilitas, atau pola tersembunyi yang secara alami ada di dalam data.\n- **Aplikasi Kunci**: Segmentasi pelanggan, deteksi anomali tanpa label, dan kompresi data.",
+    "notes": "Tekankan bahwa unsupervised learning sangat bernilai karena sebagian besar data dunia nyata tidak memiliki label."
+  },
+  {
+    "kind": "split",
+    "title": "Clustering Concept",
+    "body": "Konsep dasar pengelompokan data tanpa label:\n\n### Prinsip Geometri Jarak\n- Sampel yang berjarak dekat pada ruang fitur $D$-dimensi dikelompokkan ke dalam klaster yang sama.\n- Memaksimalkan kesamaan intra-klaster dan memaksimalkan pemisahan antar-klaster.\n\n### K-Means Clustering\n- Algoritma mempartisi data ke dalam $K$ klaster.\n- Titik pusat (*centroid*) diperbarui secara iteratif hingga konvergen menuju posisi yang stabil.",
+    "notes": "Jelaskan dengan ilustrasi 2D profil energi gedung yang memisah menjadi kelompok lab, kuliah, dan gudang."
+  },
+  {
+    "kind": "content",
+    "title": "Reinforcement Learning",
+    "body": "Karakteristik pembelajaran berbasis penguatan:\n\n- **Interaksi Agen–Lingkungan**: Agen cerdas berada dalam lingkungan dinamis dengan ruang keadaan $\\mathcal{S}$ dan ruang aksi $\\mathcal{A}$.\n- **Sinyal Imbalan (Reward)**: Setelah mengambil aksi $a_t$, agen menerima imbalan numerik $r_{t+1}$ (bisa positif berupa hadiah atau negatif berupa penalti).\n- **Bukan Supervised Learning**: Lingkungan tidak memberitahu aksi mana yang paling benar; agen harus aktif mencoba (*trial-and-error*).\n- **Kebijakan Optimal (Policy $\\pi$)**: Agen belajar strategi tindakan yang memaksimalkan total akumulasi imbalan jangka panjang (*cumulative return*).",
+    "notes": "Ingatkan kembali konsep agen PEAS dari Bab 03 dan tunjukkan kesinambungannya pada Reinforcement Learning."
+  },
+  {
+    "kind": "split",
+    "title": "ML Paradigms Comparison",
+    "body": "Ringkasan perbandingan tiga paradigma utama:\n\n### Data & Bimbingan\n- **Supervised**: Membutuhkan data berpasangan $(X, y)$ dengan label bimbingan eksplisit.\n- **Unsupervised**: Bekerja pada data mandiri $X$ tanpa label sama sekali.\n- **Reinforcement**: Bekerja melalui deret pengalaman interaktif $(s, a, r, s')$.\n\n### Tujuan Pokok\n- **Supervised**: Memetakan masukan ke luaran ($X \\to y$).\n- **Unsupervised**: Menemukan struktur dan representasi data.\n- **Reinforcement**: Memaksimalkan imbalan aksi dinamis.",
+    "notes": "Slide ini menjadi rangkuman komparatif yang sangat baik sebelum mahasiswa memasuki alur kerja teknis."
+  },
+  {
+    "kind": "content",
+    "title": "Machine Learning Workflow",
+    "body": "Tahapan siklus hidup perancangan sistem Machine Learning:\n\n- **1. Problem Formulation**: Merumuskan masalah bisnis/teknis ke dalam paradigma ML yang tepat.\n- **2. Data Collection & Preprocessing**: Menyiapkan matriks fitur bersih dan memisahkan subset evaluasi.\n- **3. Baseline Selection**: Menentukan model acuan paling sederhana sebagai patokan dasar.\n- **4. Model Training**: Menyesuaikan parameter terbobot menggunakan data latih.\n- **5. Validation & Tuning**: Memilih arsitektur terbaik dan menyetel hyperparameter.\n- **6. Testing**: Evaluasi final generalisasi pada data uji yang benar-benar independen.\n- **7. Inference & Monitoring**: Penerapan model pada sistem nyata dengan pemantauan berkelanjutan.",
+    "notes": "Tekankan bahwa pembuatan model ML hanyalah salah satu bagian kecil dari keseluruhan alur kerja rekayasa."
+  },
+  {
+    "kind": "split",
+    "title": "Training Phase",
+    "body": "Proses internal pelatihan parameter model:\n\n### Penyesuaian Bobot Numerik\n- Algoritma memulai dari parameter acak $\\theta$.\n- Model memprediksi luaran $\\hat{y} = f_\\theta(X_{\\text{train}})$ dan menghitung kerugian galat terhadap label asli $y_{\\text{train}}$.\n\n### Optimisasi Gradien\n- Melalui kalkulus turunan parsial, bobot diperbarui ke arah yang menurunkan nilai kerugian (Gradient Descent).\n- Proses berhenti ketika fungsi kerugian mencapai kondisi konvergen.",
+    "notes": "Hubungkan proses fitting ini dengan konsep kalkulus optimasi yang telah dipelajari di Chapter 06."
+  },
+  {
+    "kind": "content",
+    "title": "Validation Phase",
+    "body": "Peran krusial subset validasi dalam pemilihan model:\n\n- **Mencegah Kebocoran Uji**: Kita tidak boleh menyetel hyperparameter model menggunakan data uji akhir (*test set*).\n- **Subset Validasi**: Porsi data (biasanya 10-20%) yang disisihkan dari data latih untuk menguji performa sementara berbagai arsitektur model.\n- **Pemilihan Hyperparameter**: Memilih nilai $k$ terbaik pada $k$-NN, kedalaman pohon pada Decision Tree, atau derajat polinomial.\n- **K-Fold Cross-Validation**: Membagi data latih menjadi $K$ lipatan bergantian untuk estimasi validasi yang lebih stabil.",
+    "notes": "Jelaskan bahwa data validasi berfungsi seperti ujian try-out siswa sebelum menghadapi ujian nasional sesungguhnya."
+  },
+  {
+    "kind": "content",
+    "title": "Testing Phase",
+    "body": "Audit final kemampuan generalisasi model:\n\n- **Independensi Mutlak**: Data uji (*test set*) tidak boleh disentuh sedikit pun selama pelatihan maupun pemilihan model.\n- **Satu Kali Evaluasi**: Model terbaik yang telah dipilih pada fase validasi diuji performanya satu kali pada data uji.\n- **Estimasi Performa Nyata**: Memberikan estimasi yang objektif dan tidak bias mengenai bagaimana model akan berkinerja di dunia nyata.\n- **Bahaya Test Peeking**: Mengubah arsitektur model berulang kali agar nilai tes bagus sama saja dengan menyontek lembar soal ujian!",
+    "notes": "Tanamkan integritas ilmiah bahwa mengutak-atik model berdasarkan performa test set adalah bentuk kecurangan saintifik."
+  },
+  {
+    "kind": "split",
+    "title": "Inference Phase",
+    "body": "Pengoperasian model terlatih di lingkungan produksi:\n\n### Karakteristik Inferensi\n- Model berada dalam kondisi beku (*frozen weights*); parameter $\\theta$ tidak lagi diperbarui.\n- Menerima sampel baru $x_{\\text{new}}$ dan langsung menghasilkan prediksi $\\hat{y} = f_\\theta(x_{\\text{new}})$.\n\n### Komputasi Ringan\n- Fase inferensi jauh lebih cepat daripada fase pelatihan.\n- Dapat dioperasikan secara lokal pada mikrokontroler IoT, perangkat edge, atau ponsel cerdas.",
+    "notes": "Beri contoh aplikasi kamera HP yang mengenali wajah secara instan karena modelnya hanya menjalankan inferensi."
+  },
+  {
+    "kind": "content",
+    "title": "Generalization (Generalisasi)",
+    "body": "Cawan suci dalam rekayasa Machine Learning:\n\n- **Bukan Menghafal Data**: Sistem komputer biasa sangat mahir menyimpan data ke basis data. Jika tujuannya hanya mengingat, kita cukup menggunakan SQL query!\n- **Menangkap Pola Pokok**: Generalisasi adalah kemampuan model untuk mengekstraksi esensi keteraturan data yang mendasari dan mengabaikan fluktuasi acak.\n- **Ujian Nyata**: Kinerja model diukur dari seberapa kecil galatnya pada data masa depan yang belum pernah dilihat saat pelatihan.",
+    "notes": "Tekankan kalimat kunci: 'Tujuan Machine Learning adalah generalisasi, bukan memorisasi'."
+  },
+  {
+    "kind": "split",
+    "title": "Underfitting (High Bias)",
+    "body": "Kondisi di mana model terlalu sederhana:\n\n### Ciri-Ciri Utama\n- Galat pada data latih tinggi (*High Training Error*).\n- Galat pada data uji juga sama-sama tinggi (*High Testing Error*).\n\n### Penyebab & Solusi\n- **Penyebab**: Asumsi model terlalu kaku (misal memaksakan garis lurus linier pada fenomena kurva yang rumit).\n- **Solusi**: Tingkatkan kompleksitas model, tambahkan fitur informatif baru, atau kurangi regularisasi.",
+    "notes": "Ilustrasikan dengan model derajat 1 yang memotong garis melintang pada data bergelombang sinus."
+  },
+  {
+    "kind": "split",
+    "title": "Overfitting (High Variance)",
+    "body": "Kondisi di mana model menghafal derau acak:\n\n### Ciri-Ciri Utama\n- Galat data latih mendekati nol (*Near-Zero Training Error*).\n- Galat data uji meledak sangat tinggi (*High Testing Error*).\n\n### Penyebab & Solusi\n- **Penyebab**: Model terlalu fleksibel/kompleks untuk jumlah data yang tersedia sehingga menghafal derau (*noise*).\n- **Solusi**: Tambahkan sampel data latih, kurangi kompleksitas model, terapkan regularisasi, atau lakukan seleksi fitur.",
+    "notes": "Ingatkan bahwa akurasi latih 100% adalah tanda bahaya (red flag) yang paling sering ditemui pada praktikum pemula."
+  },
+  {
+    "kind": "content",
+    "title": "Bias–Variance Trade-off",
+    "body": "Keseimbangan matematis fundamental dalam pembelajaran mesin:\n\n- **Komponen Total Error**: $\\text{Expected Error} = \\text{Bias}^2 + \\text{Variance} + \\sigma^2$.\n- **Bias Tinggi**: Model kaku, underfit, gagal menangkap pola penting data.\n- **Variance Tinggi**: Model terlalu sensitif terhadap fluktuasi derau acak data latih, overfit.\n- **Titik Optimal (Sweet Spot)**: Kompleksitas model menengah di mana jumlah Bias dan Variance berada pada titik minimum terendah.\n- **Irreducible Error ($\\sigma^2$)**: Batas kesalahan acak bawaan alam yang tidak dapat dihilangkan oleh algoritma secanggih apa pun.",
+    "notes": "Gunakan analogi papan target panahan: Bias adalah meleset dari titik tengah; Variance adalah tembakan yang menyebar ke mana-mana."
+  },
+  {
+    "kind": "case",
+    "title": "Pentingnya Baseline Models",
+    "body": "Mengapa klaim akurasi 95% bisa menjadi kebohongan statistik?\n\n- **Studi Kasus Deteksi Fraud**: 95 transaksi sah (0) dan 5 transaksi penipuan (1).\n- **Model Sepele (Trivial Baseline)**: Selalu menebak \"0\" tanpa melihat data sama sekali.\n- **Akurasi Mentah**: $95.0\\%$! Namun model gagal mendeteksi 100% penipuan.\n- **Pelajaran Penting**:\n  - Jangan pernah mengevaluasi akurasi model dalam ruang hampa.\n  - Selalu bangun baseline sederhana (`DummyClassifier`, `DummyRegressor`, atau aturan manual) sebagai ambang batas minimal kelayakan sistem cerdas Anda.",
+    "notes": "Jelaskan mengapa balanced accuracy dan F1-score menjadi metrik yang wajib digunakan pada kasus ketimpangan kelas."
+  },
+  {
+    "kind": "split",
+    "title": "Data Leakage Introduction",
+    "body": "Dosa terbesar dalam alur kerja rekayasa data:\n\n### Mekanisme Kebocoran\n- Informasi dari data uji merembes ke dalam proses pelatihan model.\n- *Contoh*: Melakukan normalisasi data (fit scaler) sebelum memanggil `train_test_split`.\n\n### Dampak Fatal\n- Model tampak memiliki performa luar biasa di komputer laboratorium pengembang.\n- Namun saat diimplementasikan pada data produksi riil, akurasi anjlok total karena model kehilangan petunjuk bocoran tersebut.",
+    "notes": "Tekankan aturan mutlak: fit preprocessing HANYA dilakukan pada data latih (training fold)."
+  },
+  {
+    "kind": "content",
+    "title": "Responsible Machine Learning",
+    "body": "Tanggung jawab etis dan profesional seorang insinyur sistem cerdas:\n\n- **Keadilan Data (Fairness)**: Memeriksa apakah data latih mendiskriminasi kelompok demografis tertentu.\n- **Transparansi Keterbatasan**: Menyatakan secara jujur domain di mana model tidak dapat bekerja dengan andal.\n- **Kepatuhan Privasi (UU PDP No. 27/2022)**: Menghindari penggunaan data sensitif tanpa izin sah dan menerapkan prinsip minimisasi data.\n- **Pengawasan Manusia (Human Oversight)**: Menyediakan mekanisme sakelar manual pada sistem berisiko tinggi agar keputusan mesin dapat dibatalkan manusia.",
+    "notes": "Hubungkan materi ini secara berkesinambungan dengan Chapter 09 (Responsible AI)."
+  },
+  {
+    "kind": "content",
+    "title": "Diskusi & Refleksi Kritis",
+    "body": "Bahan diskusi interaktif kelas:\n\n- *\"Jika Anda memiliki dataset dengan 50 baris data dan 200 fitur, apakah bijak menggunakan Deep Neural Network dengan 10 juta parameter?\"*\n  *(Jawaban: Tidak, overfitting parah pasti terjadi karena parameter jauh melampaui data).*\n- *\"Mengapa model yang paling akurat di data latih sering kali menjadi model terburuk saat dipakai oleh pengguna di dunia nyata?\"*\n  *(Jawaban: Karena model menghafal derau acak data masa lalu dan gagal melakukan generalisasi).*",
+    "notes": "Gunakan pertanyaan ini untuk menguji intuisi kritis mahasiswa terhadap konsep overfitting."
+  },
+  {
+    "kind": "summary",
+    "title": "Rangkuman Chapter 11",
+    "body": "Poin-poin kunci yang wajib dikuasai dari bab pembuka Level 2:\n\n- **Perubahan Paradigma**: Dari memprogram aturan eksplisit menjadi membiarkan komputer belajar dari data.\n- **Tiga Paradigma**: Supervised (berlabel), Unsupervised (tanpa label), Reinforcement (interaksi & reward).\n- **Fase Pembelajaran**: Training (fit), Validation (tuning), Testing (evaluasi tak bias), dan Inference (produksi).\n- **Tujuan Hakiki**: Mencapai generalisasi optimal dengan menyeimbangkan Bias-Variance Trade-off.\n- **Disiplin Rekayasa**: Wajib membandingkan model terhadap baseline dan menghindari kebocoran data (*data leakage*).",
+    "notes": "Berikan kesimpulan ringkas yang menyatukan seluruh benang merah materi."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi Akademik Terverifikasi",
+    "body": "Rujukan ilmiah primer untuk pembelajaran mandiri mendalam:\n\n- **Russell, S., & Norvig, P.** (2020). *Artificial Intelligence: A Modern Approach* (4th ed.). Pearson.\n- **Mitchell, T. M.** (1997). *Machine Learning*. McGraw-Hill.\n- **Hastie, T., Tibshirani, R., & Friedman, J.** (2009). *The Elements of Statistical Learning* (2nd ed.). Springer.\n- **Goodfellow, I., Bengio, Y., & Courville, A.** (2016). *Deep Learning*. MIT Press.\n- **ACM / IEEE-CS / AAAI**. (2024). *Computer Science Curricula 2023 (CS2023): AI Knowledge Area*.",
+    "notes": "Dorong mahasiswa membaca buku teks klasik Mitchell dan Russell-Norvig untuk memperdalam dasar matematika pembelajaran mesin."
+  }
+]
+

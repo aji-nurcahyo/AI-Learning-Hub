@@ -1,0 +1,84 @@
+{
+  "id": 37,
+  "slug": "chapter-37",
+  "levelId": 4,
+  "title": "Edge AI & Model Optimization",
+  "status": "published",
+  "description": "Optimasi model jaringan saraf dan Edge AI: profiling parameter dan latensi CPU, matematika kuantisasi FP32-ke-INT8, Post-Training Dynamic & Static Quantization, Quantization-Aware Training (QAT), Unstructured vs Structured Pruning, Knowledge Distillation Teacher-Student, serta keterbatasan SRAM/Flash mikrokontroler.",
+  "objectives": [
+    "Menjelaskan konsep Edge AI dan manfaat pemrosesan on-device terhadap latensi real-time, privasi data, serta ketangguhan offline.",
+    "Membedakan karakteristik operasional cloud inference dibandingkan on-device edge inference.",
+    "Mengidentifikasi keterbatasan memori SRAM, penyimpanan Flash, frekuensi CPU, dan anggaran daya pada perangkat edge.",
+    "Menghitung jumlah parameter, ukuran artefak .pt di disk, alokasi memori puncak, dan latensi CPU berulang (Mean, P50, P95).",
+    "Menjelaskan strategi Model Compression serta trade-off antara ukuran model, kecepatan inferensi, dan akurasi.",
+    "Memahami representasi bilangan FP32, FP16, dan INT8 serta risiko kemunculan galat kuantisasi.",
+    "Mengimplementasikan Post-Training Dynamic Quantization pada PyTorch CPU menggunakan backend onednn.",
+    "Menjelaskan alur Post-Training Static Quantization dengan penyisipan stub dan dataset kalibrasi representatif.",
+    "Mengimplementasikan L1 magnitude-based Weight Pruning beserta evaluasi rasio kejarangan dan fine-tuning pemulihan.",
+    "Membedakan dampak fisik Structured Pruning versus Unstructured Pruning terhadap ukuran berkas disk dan kecepatan CPU.",
+    "Menjelaskan konsep Knowledge Distillation, soft targets, Temperature Scaling, dan penskalaan T^2 KL Divergence.",
+    "Mengimplementasikan demonstrasi Knowledge Distillation Teacher beku membimbing arsitektur Student yang jauh lebih ramping.",
+    "Membandingkan secara empiris akurasi, latensi, ukuran artefak, dan rasio kompresi lintas FP32, INT8, Pruned, dan Distilled.",
+    "Menjelaskan batas portabilitas perangkat keras serta perbedaan antara simulasi CPU PC dan eksekusi silikon embedded nyata.",
+    "Mengidentifikasi risiko degradasi akurasi model serta jebakan benchmark satu pengukuran tanpa warm-up.",
+    "Menyusun laporan komparatif optimasi model Edge AI yang jujur, terukur, dan dapat direproduksi 100% pada CPU."
+  ],
+  "prerequisites": [
+    23,
+    24,
+    36
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Edge AI",
+    "Model Compression",
+    "Quantization",
+    "Weight Pruning",
+    "Knowledge Distillation"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Hinton, Vinyals & Dean (2015), Distilling the Knowledge in a Neural Network",
+      "url": "https://arxiv.org/abs/1503.02531",
+      "status": "verified"
+    },
+    {
+      "title": "Jacob et al. (2018), Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference",
+      "url": "https://doi.org/10.1109/CVPR.2018.00286",
+      "status": "verified"
+    },
+    {
+      "title": "Han, Mao & Dally (2016), Deep Compression: Compressing Deep Neural Networks with Pruning, Trained Quantization and Huffman Coding",
+      "url": "https://arxiv.org/abs/1510.00149",
+      "status": "verified"
+    },
+    {
+      "title": "Warden & Situnayake (2019), TinyML: Machine Learning with TensorFlow Lite on Arduino and Ultra-Low-Power Microcontrollers",
+      "url": "https://www.oreilly.com/library/view/tinyml/9781492052036/",
+      "status": "verified"
+    },
+    {
+      "title": "PyTorch Team (2024), PyTorch Quantization & Pruning Documentation",
+      "url": "https://pytorch.org/docs/stable/quantization.html",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

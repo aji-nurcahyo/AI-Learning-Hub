@@ -1,0 +1,94 @@
+{
+  "id": 20,
+  "slug": "chapter-20",
+  "levelId": 2,
+  "title": "Machine Learning Capstone",
+  "status": "published",
+  "description": "Proyek akhir terintegrasi Level 2 Machine Learning (Machine Learning Capstone): integrasi menyeluruh siklus hidup rekayasa pembelajaran mesin mulai dari formulasi masalah bisnis dan fungsi biaya finansial, penetapan baseline acuan (Dummy & Simple Logistic Regression), isolasi data uji (untouched test set) tanpa kebocoran informasi (zero data leakage), rekayasa fitur domain fisik kompresor industri berbasis rasio termal-tekanan dan indeks energi getaran, perbandingan 4 keluarga model kandidat Level 2 (Logistic Regression, Support Vector Machine RBF, Random Forest, Gradient Boosting) via 5-Fold Stratified Cross-Validation, optimasi hyperparameter sistematis (GridSearchCV), evaluasi menyeluruh pada data uji terisolasi (Akurasi 93.33%, Recall 95.77%, F1 0.9444, ROC-AUC 0.9859), analisis galat (error analysis) dan simulasi penyesuaian ambang batas (cost-sensitive threshold tuning) yang menghemat risiko kerugian sebesar 61.25%, transparansi penalaran model (Permutation Feature Importance & Partial Dependence Plots), serta audit keadilan armada mesin (subgroup fairness) dan penyusunan Model Card standar tata kelola Responsible AI.",
+  "objectives": [
+    "Merumuskan masalah bisnis dan batas operasional ke dalam spesifikasi teknis pembelajaran mesin yang terukur.",
+    "Membangun pipeline prapemrosesan bebas kebocoran data terintegrasi Scikit-Learn Pipeline.",
+    "Mengevaluasi model baseline acuan sebagai batas bawah performa minimum sistem.",
+    "Membandingkan kandidat model pembelajaran mesin dari spektrum linier, kernel margin, dan ensemble.",
+    "Menerapkan optimasi hyperparameter model ensemble menggunakan validasi silang berulang.",
+    "Mengevaluasi performa generalisasi model pada untouched test set terisolasi.",
+    "Menganalisis galat prediksi dan mengoptimalkan ambang batas klasifikasi berbasis trade-off biaya finansial.",
+    "Menginterpretasikan penalaran model menggunakan teknik permutation feature importance dan partial dependence plots.",
+    "Mengidentifikasi potensi disparitas performa model antar subkelompok unit mesin operasional.",
+    "Merancang dokumen Model Card komprehensif yang memuat batasan aman dan panduan tata kelola etis.",
+    "Mengintegrasikan seluruh tahapan rekayasa machine learning ke dalam alur kerja yang modular dan reproducible.",
+    "Mengomunikasikan hasil eksperimen dan rekomendasi teknis secara profesional kepada pemangku kepentingan."
+  ],
+  "prerequisites": [
+    19
+  ],
+  "tags": [
+    "Machine Learning",
+    "Machine Learning Capstone",
+    "Predictive Maintenance",
+    "Industrial IoT",
+    "Data Leakage Prevention",
+    "Feature Engineering",
+    "Model Baseline",
+    "Logistic Regression",
+    "Support Vector Machines",
+    "Random Forest",
+    "Gradient Boosting",
+    "Stratified Cross-Validation",
+    "GridSearchCV",
+    "Untouched Test Set",
+    "Confusion Matrix",
+    "Cost-Sensitive Classification",
+    "Threshold Tuning",
+    "Permutation Importance",
+    "Partial Dependence Plots",
+    "Responsible AI",
+    "Subgroup Fairness",
+    "Model Card"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Pedregosa, F., et al. (2011). Scikit-learn: Machine Learning in Python. J. Mach. Learn. Res., 12, 2825-2830",
+      "url": "https://scikit-learn.org/",
+      "status": "verified"
+    },
+    {
+      "title": "Mitchell, M., et al. (2019). Model Cards for Model Reporting. Proceedings of FAT* '19, 220-229",
+      "url": "https://arxiv.org/abs/1810.03993",
+      "status": "verified"
+    },
+    {
+      "title": "Sculley, D., et al. (2015). Hidden Technical Debt in Machine Learning Systems. NeurIPS 2015",
+      "url": "https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "ISO 10816: Mechanical vibration - Evaluation of machine vibration by measurements on non-rotating parts",
+      "url": "https://www.iso.org/standard/27641.html",
+      "status": "verified"
+    },
+    {
+      "title": "Géron, A. (2022). Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd Edition). O'Reilly Media",
+      "url": "https://www.oreilly.com/library/view/hands-on-machine-learning/9781098125967/",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

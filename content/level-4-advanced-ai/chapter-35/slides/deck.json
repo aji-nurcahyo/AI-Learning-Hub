@@ -1,0 +1,224 @@
+[
+  {
+    "kind": "cover",
+    "title": "Reinforcement Learning Fundamentals",
+    "body": "Pembelajaran Berbasis Interaksi, Markov Decision Process, Dynamic Programming, Q-Learning, dan Dasar Policy Gradient\n\n**Artificial Intelligence Learning Hub — Level 4 (Chapter 35)**\n*Aji Pamungkas Tri Nurcahyo — Institut Teknologi Sumatera*",
+    "notes": "Selamat datang di Chapter 35 AI Learning Hub. Bab ini membahas fondasi teoretis dan algoritmik Reinforcement Learning (RL) secara lengkap, mulai dari formalisme MDP hingga pengendalian agen di lingkungan GridWorld."
+  },
+  {
+    "kind": "content",
+    "title": "Mengapa Reinforcement Learning?",
+    "body": "- **Belajar dari Konsekuensi:** Manusia dan hewan tidak mempelajari kemampuan berjalan atau bermain catur dari ribuan label jawaban eksak, melainkan dari interaksi langsung dengan dunia.\n- **Sequential Decision Making:** Keputusan saat ini memengaruhi situasi masa depan (*delayed consequences*).\n- **Tidak Ada Supervisor Eksplisit:** Tidak ada label 'jawaban benar' di setiap langkah; agen hanya menerima sinyal angka (*reward*).",
+    "notes": "Soroti bahwa RL berbeda fundamental dari Supervised Learning karena agen harus menemukan serangkaian keputusan optimal untuk memaksimalkan total imbalan jangka panjang."
+  },
+  {
+    "kind": "content",
+    "title": "Tujuan Pembelajaran Bab 35",
+    "body": "1. **Membedakan** Reinforcement Learning dari Supervised dan Unsupervised Learning.\n2. **Merumuskan** masalah sekuensial sebagai Markov Decision Process (MDP).\n3. **Menghitung** *discounted return* $G_t$ dan *value functions* ($V^\\pi, Q^\\pi$).\n4. **Menerapkan** persamaan Bellman dan Dynamic Programming (*Policy/Value Iteration*).\n5. **Mengimplementasikan** kontrol *off-policy* Q-Learning dan *policy gradient* REINFORCE.\n6. **Mengevaluasi** performa agen RL pada lingkungan GridWorld.",
+    "notes": "Jelaskan alur bab yang mengalir dari konsep dasar interaksi, metode berbasis model (DP), metode bebas model (MC, TD, Q-Learning), hingga metode berbasis gradien kebijakan."
+  },
+  {
+    "kind": "split",
+    "title": "RL vs Supervised vs Unsupervised Learning",
+    "body": "- **Supervised Learning:** Memetakan $X \\to y$ menggunakan data berlabel statis berdistribusi i.i.d.\n- **Unsupervised Learning:** Menemukan struktur pola tersembunyi atau klaster dalam data $X$ tanpa label.\n- **Reinforcement Learning:** Agen aktif memilih aksi yang mengubah distribusi data (*non-i.i.d.*), menerima sinyal *reward* tertunda, dan menyeimbangkan *exploration vs exploitation*.",
+    "notes": "Tekankan konsep data non-i.i.d. pada RL: aksi yang dipilih agen menentukan observasi apa yang akan ditemui berikutnya."
+  },
+  {
+    "kind": "content",
+    "title": "Siklus Interaksi Agent–Environment",
+    "body": "```\n+------------------+    Action (A_t)    +---------------------+\n|                  | -----------------> |                     |\n|      AGENT       |                    |     ENVIRONMENT     |\n|  (Pengambil Aksi)| <----------------- | (Dunia / Simulator) |\n+------------------+  State (S_{t+1})   +---------------------+\n                      & Reward (R_{t+1})\n```\n\n- Berbeda dari Agen LLM (Bab 34) yang merencanakan pemanggilan API berbasis teks, **Agen RL** mengoptimalkan kebijakan numerik melalui *trial-and-error* berulang.",
+    "notes": "Gunakan kesempatan ini untuk meluruskan perbedaan antara agen tool-calling LLM di Bab 34 dan agen RL di Bab 35."
+  },
+  {
+    "kind": "content",
+    "title": "Elemen Inti: State, Action, dan Reward",
+    "body": "- **State ($S_t$):** Representasi matematis kondisi lingkungan pada waktu $t$ (misal: posisi koordinat $(r, c)$ dalam GridWorld).\n- **Action ($A_t$):** Pilihan langkah yang dapat diambil agen (misal: `UP`, `RIGHT`, `DOWN`, `LEFT`).\n- **Reward ($R_{t+1}$):** Sinyal skalar umpan balik instan dari lingkungan. **Reward Hypothesis:** Seluruh sasaran agen dapat dirumuskan sebagai maksimasi nilai ekspektasi jumlah *reward* kumulatif.",
+    "notes": "Reward adalah bahasa komunikasi tunggal antara perancang masalah dan agen RL."
+  },
+  {
+    "kind": "content",
+    "title": "Policy, Episode, dan Trajectory",
+    "body": "- **Policy ($\\pi$):** Pemetaan strategi perilaku agen dari *state* ke *action*.\n  - *Deterministik:* $a = \\pi(s)$\n  - *Stokastik:* $\\pi(a \\mid s) = P(A_t = a \\mid S_t = s)$\n- **Trajectory ($\\tau$):** Urutan lengkap pengalaman: $(S_0, A_0, R_1, S_1, A_1, R_2, \\dots)$.\n- **Episode:** Satu babak penuh dari kondisi awal (*start state*) hingga mencapai kondisi akhir (*terminal state* atau batas langkah).",
+    "notes": "Tugas yang berakhir di terminal state disebut episodic tasks; tugas tanpa akhir disebut continuing tasks."
+  },
+  {
+    "kind": "content",
+    "title": "Sifat Markov (Markov Property)",
+    "body": "- Sebuah *state* $S_t$ memenuhi **Markov Property** jika dan hanya jika masa depan bersifat independen secara bersyarat terhadap masa lalu apabila kondisi saat ini diketahui:\n$$P(S_{t+1} = s' \\mid S_t, A_t, S_{t-1}, A_{t-1}, \\dots) = P(S_{t+1} = s' \\mid S_t, A_t)$$\n- Artinya: *State* $S_t$ telah merangkum seluruh informasi historis yang relevan untuk memprediksi transisi berikutnya.",
+    "notes": "Markov property adalah asumsi fundamental yang menyederhanakan formulasi matematis RL agar tidak perlu menyimpan riwayat tak terbatas."
+  },
+  {
+    "kind": "content",
+    "title": "Markov Decision Process (MDP)",
+    "body": "- Formulasi matematis resmi lingkungan RL sebagai tuple lima elemen:\n$$\\mathcal{M} = (\\mathcal{S}, \\mathcal{A}, P, R, \\gamma)$$\n  - $\\mathcal{S}$: Himpunan *state*.\n  - $\\mathcal{A}$: Himpunan *action*.\n  - $P(s' \\mid s, a)$: Probabilitas transisi ke *state* $s'$.\n  - $R(s, a, s')$: Fungsi imbalan ekspektasi.\n  - $\\gamma \\in [0, 1]$: Faktor diskonto (*discount factor*).",
+    "notes": "Pastikan mahasiswa menghafal kelima elemen tuple MDP karena seluruh algoritma DP dan TD dibangun di atas definisi ini."
+  },
+  {
+    "kind": "split",
+    "title": "Transisi Deterministik vs Stokastik",
+    "body": "- **Deterministik (`slip_prob = 0.0`):** Mengambil aksi `RIGHT` dari $(0,0)$ dijamin 100% berpindah ke $(0,1)$.\n- **Stokastik (`slip_prob = 0.2`):** Lingkungan bersifat licin (*slippery*). Agen bermaksud bergerak `RIGHT` ($P=0.8$), tetapi dapat terpeleset ke arah tegak lurus `UP` ($P=0.1$) atau `DOWN` ($P=0.1$).\n- Syarat aksioma probabilitas wajib terpenuhi: $\\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) = 1.0$.",
+    "notes": "Transisi stokastik merepresentasikan ketidakpastian dunia nyata seperti hembusan angin pada drone atau slip roda pada robot fisik."
+  },
+  {
+    "kind": "content",
+    "title": "Discounted Return (G_t)",
+    "body": "- **Return ($G_t$):** Total imbalan terdiskonto mulai dari langkah waktu $t$ hingga akhir episode $T$:\n$$G_t = R_{t+1} + \\gamma R_{t+2} + \\gamma^2 R_{t+3} + \\dots = \\sum_{k=0}^{T-t-1} \\gamma^k R_{t+k+1}$$\n- Struktur rekursif fundamental:\n$$G_t = R_{t+1} + \\gamma G_{t+1}$$",
+    "notes": "Struktur rekursif ini memungkinkan kita menghitung return secara efisien dari belakang episode dan mendasari persamaan Bellman."
+  },
+  {
+    "kind": "content",
+    "title": "Pengaruh Faktor Diskonto (Gamma)",
+    "body": "- **$\\gamma = 0$ (*Myopic*):** Agen berpandangan sangat pendek; hanya memedulikan imbalan langsung $R_{t+1}$ dan mengabaikan masa depan.\n- **$\\gamma \\to 1$ (*Far-sighted*):** Agen menghargai imbalan jangka panjang hampir setara dengan imbalan instan.\n- **Trade-off Kritis:** Nilai $\\gamma$ besar TIDAK selalu lebih baik. Pada lingkungan panjang yang penuh derau stokastik, $\\gamma$ terlalu mendekati 1 memperbesar varians estimasi return dan memperlambat konvergensi.",
+    "notes": "Berikan contoh numerik: dengan reward goal +10 pada 5 langkah ke depan, gamma=0.5 menyisakan 0.31, sedangkan gamma=0.9 menyisakan 5.90."
+  },
+  {
+    "kind": "content",
+    "title": "Value Functions: V(s) dan Q(s, a)",
+    "body": "- **State-Value Function $V^\\pi(s)$:** Ekspektasi return jika agen mulai di *state* $s$ lalu mengikuti kebijakan $\\pi$:\n$$V^\\pi(s) = \\mathbb{E}_\\pi [G_t \\mid S_t = s]$$\n- **Action-Value Function $Q^\\pi(s, a)$:** Ekspektasi return jika mulai di $s$, mengambil aksi $a$, lalu mengikuti $\\pi$:\n$$Q^\\pi(s, a) = \\mathbb{E}_\\pi [G_t \\mid S_t = s, A_t = a]$$\n- Hubungan identitas: $V^\\pi(s) = \\sum_{a \\in \\mathcal{A}} \\pi(a \\mid s) Q^\\pi(s, a)$.",
+    "notes": "Q-function sangat berguna dalam pembelajaran bebas model karena memungkinkan agen memilih aksi terbaik langsung via argmax_a Q(s, a)."
+  },
+  {
+    "kind": "content",
+    "title": "Bellman Expectation Equation",
+    "body": "- Menguraikan nilai *state* saat ini sebagai rata-rata tertimbang nilai langkah berikutnya untuk sebuah kebijakan tetap $\\pi$:\n$$V^\\pi(s) = \\sum_{a \\in \\mathcal{A}} \\pi(a \\mid s) \\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) \\left[ R(s, a, s') + \\gamma V^\\pi(s') \\right]$$\n- Persamaan ini berbentuk sistem persamaan linier yang mengevaluasi **kualitas kebijakan $\\pi$ saat ini**.",
+    "notes": "Tekankan bahwa Bellman Expectation memiliki rata-rata berbobot pi(a|s), bukan operator maksimum."
+  },
+  {
+    "kind": "content",
+    "title": "Bellman Optimality Equation",
+    "body": "- Nilai optimal $V^*(s)$ menyamakan nilai *state* dengan nilai **aksi terbaik** (*max*), bukan rata-rata kebijakan:\n$$V^*(s) = \\max_{a \\in \\mathcal{A}} \\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) \\left[ R(s, a, s') + \\gamma V^*(s') \\right]$$\n- Untuk Action-Value optimal $Q^*(s, a)$:\n$$Q^*(s, a) = \\sum_{s' \\in \\mathcal{S}} P(s' \\mid s, a) \\left[ R(s, a, s') + \\gamma \\max_{a'} Q^*(s', a') \\right]$$",
+    "notes": "Operator max membuat persamaan optimilitas Bellman bersifat non-linier dan diselesaikan secara iteratif melalui Value Iteration."
+  },
+  {
+    "kind": "content",
+    "title": "Dynamic Programming (Model-Based RL)",
+    "body": "- **Prasyarat Ketat:** Dynamic Programming (DP) **mewajibkan model lingkungan diketahui lengkap** ($P(s' \\mid s, a)$ dan $R$).\n- Memanfaatkan sifat rekursif Bellman dan teknik *bootstrapping* (memperbarui estimasi berdasarkan estimasi lain).\n- Dua algoritme utama DP: **Policy Iteration** dan **Value Iteration**.",
+    "notes": "Jelaskan bahwa DP adalah referensi teoretis emas (*gold standard*), namun sering tidak dapat dipakai jika transisi dunia nyata tidak diketahui."
+  },
+  {
+    "kind": "content",
+    "title": "Iterative Policy Evaluation",
+    "body": "- Menghitung $V^\\pi(s)$ untuk kebijakan $\\pi$ tertentu secara berulang mulai dari $V_0(s) = 0$:\n$$V_{k+1}(s) \\leftarrow \\sum_a \\pi(a \\mid s) \\sum_{s'} P(s' \\mid s, a) [R + \\gamma V_k(s')]$$\n- Berhenti saat perubahan nilai terbesar antar-iterasi lebih kecil dari ambang batas $\\theta$:\n$$\\Delta = \\max_{s \\in \\mathcal{S}} |V_{k+1}(s) - V_k(s)| < \\theta$$",
+    "notes": "Pada simulasi GridWorld 4x4, Iterative Policy Evaluation dengan uniform policy konvergen dalam sekitar 45 iterasi dengan theta=1e-5."
+  },
+  {
+    "kind": "split",
+    "title": "Policy Iteration",
+    "body": "- Terdiri atas dua fase bergantian hingga kebijakan stabil:\n  1. **Policy Evaluation:** Hitung $V^{\\pi_k}(s)$ hingga konvergen.\n  2. **Policy Improvement:** Perbaiki kebijakan secara serakah (*greedy*):\n     $$\\pi_{k+1}(s) = \\arg\\max_a Q^{\\pi_k}(s, a)$$\n- Dijamin oleh **Policy Improvement Theorem** selalu menemukan kebijakan optimal dalam jumlah langkah iterasi luar yang sangat sedikit.",
+    "notes": "Pada GridWorld 4x4, Policy Iteration hanya butuh 4-5 iterasi perbaikan luar untuk mencapai kebijakan optimal persis."
+  },
+  {
+    "kind": "content",
+    "title": "Value Iteration",
+    "body": "- Menggabungkan penyapuan evaluasi dan perbaikan langsung menggunakan **Bellman Optimality Backup** pada setiap iterasi:\n$$V_{k+1}(s) \\leftarrow \\max_{a} \\sum_{s'} P(s' \\mid s, a) [R + \\gamma V_k(s')]$$\n- Setelah $V^*$ konvergen, kebijakan optimal diekstraksi dalam satu langkah terakhir:\n$$\\pi^*(s) = \\arg\\max_{a} \\sum_{s'} P(s' \\mid s, a) [R + \\gamma V^*(s')]$$",
+    "notes": "Value Iteration sering lebih efisien karena tidak perlu menunggu Policy Evaluation konvergen penuh pada setiap perubahan kebijakan."
+  },
+  {
+    "kind": "content",
+    "title": "Model-Free RL: Monte Carlo Prediction",
+    "body": "- Bagaimana jika probabilitas transisi $P(s' \\mid s, a)$ **tidak diketahui**?\n- **Monte Carlo (MC):** Belajar murni dari sampel trajektori pengalaman lengkap hingga episode selesai.\n- Menghitung return aktual $G_t$, lalu memperbarui nilai secara inkremental:\n$$V(S_t) \\leftarrow V(S_t) + \\alpha [G_t - V(S_t)]$$\n- **Karakteristik:** Tidak bias (*unbiased*), namun memiliki **varians tinggi** dan hanya dapat dipakai pada *episodic tasks*.",
+    "notes": "Kelemahan utama MC adalah agen harus menunggu hingga akhir episode sebelum dapat melakukan pembaruan nilai apa pun."
+  },
+  {
+    "kind": "split",
+    "title": "Temporal-Difference Learning: TD(0)",
+    "body": "- **TD(0):** Menggabungkan ide sampling Monte Carlo dan *bootstrapping* Dynamic Programming.\n- Memperbarui estimasi pada **setiap langkah** tanpa menunggu episode berakhir:\n$$V(S_t) \\leftarrow V(S_t) + \\alpha [\\underbrace{R_{t+1} + \\gamma V(S_{t+1})}_{\\text{TD Target}} - V(S_t)]$$\n- **Komparasi:** TD memiliki **varians lebih rendah** dari MC dan bekerja pada tugas berkelanjutan, namun memiliki bias awal dari tebakan $V(S_{t+1})$.",
+    "notes": "Jangan mengklaim satu metode selalu unggul. MC lebih aman saat Markov property dilanggar, sementara TD lebih cepat dan efisien data saat Markov berlaku."
+  },
+  {
+    "kind": "content",
+    "title": "Kontrol Bebas Model: Q-Learning",
+    "body": "- **Q-Learning** (Watkins, 1989) adalah algoritme kontrol **Off-Policy TD**:\n$$Q(S_t, A_t) \\leftarrow Q(S_t, A_t) + \\alpha \\left[ R_{t+1} + \\gamma \\max_{a'} Q(S_{t+1}, a') - Q(S_t, A_t) \\right]$$\n- **Mengapa Off-Policy?** Kebijakan pengumpul data (*behavior policy*, misalnya $\\epsilon$-greedy) berbeda dari kebijakan target yang dipelajari (*target policy*, selalu serakah $\\max_{a'}$).\n- **Aturan Terminal:** Jika $S_{t+1}$ adalah *terminal state*, maka nilai $\\max_{a'} Q(S_{t+1}, a') = 0$.",
+    "notes": "Penanganan terminal state ini sangat kritis. Kesalahan umum pemula adalah lupa menolkan next_max_q saat mencapai Goal atau Hazard."
+  },
+  {
+    "kind": "code",
+    "title": "Worked Example Numerik Q-Learning",
+    "body": "```python\n# Contoh perhitungan manual satu langkah pembaruan Q-Learning\nold_q = 2.0        # Q(s=0, a=RIGHT)\nr = -0.1           # Imbalan langkah\nmax_next_q = 5.0   # max_a' Q(s'=1, a') dari state non-terminal\nalpha = 0.2; gamma = 0.9\n\ntd_target = r + gamma * max_next_q  # -0.1 + 0.9*5.0 = 4.40\ntd_error  = td_target - old_q       # 4.40 - 2.00 = 2.40\nnew_q     = old_q + alpha * td_error# 2.00 + 0.2*2.40 = 2.48\n```",
+    "notes": "Tunjukkan kepada mahasiswa bahwa selisih TD Error (2.40) mendorong nilai Q lama (2.00) bergerak mendekati estimasi target (4.40) sebesar learning rate 20%."
+  },
+  {
+    "kind": "content",
+    "title": "Dilema Exploration vs Exploitation",
+    "body": "- **Exploitation (Eksploitasi):** Memilih aksi terbaik berdasarkan pengetahuan Q-Table saat ini guna memaksimalkan imbalan jangka pendek.\n- **Exploration (Eksplorasi):** Mencoba aksi acak baru yang belum diketahui nilainya demi menemukan rute yang mungkin jauh lebih optimal.\n- Jika agen murni serakah sejak awal ($\\epsilon = 0$), agen berisiko **konvergensi prematur** pada rute suboptimal.",
+    "notes": "Analogi restoran favorit (exploitation) vs mencoba restoran baru yang baru dibuka (exploration)."
+  },
+  {
+    "kind": "split",
+    "title": "Strategi Epsilon-Greedy & Peluruhan",
+    "body": "- Dengan probabilitas $\\epsilon$, pilih aksi acak; dengan probabilitas $1 - \\epsilon$, pilih $\\arg\\max_a Q(s, a)$.\n- **Epsilon Decay:** Mulai dengan eksplorasi tinggi ($\\epsilon_0 = 1.0$) lalu turunkan bertahap menuju $\\epsilon_{\\min} = 0.05$.\n- **Kebijakan Pelatihan vs Evaluasi:** Saat **evaluasi akhir**, matikan seluruh keacakan ($\\epsilon = 0.0$) agar pengukuran kinerja murni mencerminkan kebijakan hasil belajar.",
+    "notes": "Pemisahan ketat antara epsilon training dan epsilon=0 evaluation wajib ditekankan agar grafik uji tidak tercemari aksi acak."
+  },
+  {
+    "kind": "content",
+    "title": "Simulator GridWorld Mandiri",
+    "body": "```\n+---+---+---+---+\n| S | . | . | . |   S = Start State (0,0)\n+---+---+---+---+   G = Goal Terminal (+10.0)\n| . | # | . | X |   X = Hazard Terminal (-5.0)\n+---+---+---+---+   # = Wall / Obstacle\n| . | . | # | . |   Step Reward = -0.1\n+---+---+---+---+   slip_prob = 0.0 (Det) / 0.1 (Stoch)\n| . | . | . | G |\n+---+---+---+---+\n```",
+    "notes": "Simulator GridWorld kita bangun 100% mandiri memakai NumPy tanpa dependensi Gym eksternal yang berat, mendukung transisi deterministik maupun stokastik."
+  },
+  {
+    "kind": "content",
+    "title": "Visualisasi Q-Table & Kebijakan Optimal",
+    "body": "- Hasil pelatihan Q-Learning selama 800 episode pada GridWorld 4x4 menghasilkan nilai $Q(s, a)$ yang memancar mundur dari posisi Goal $(3,3)$.\n- Peta arah optimal menghindari dinding `#` di $(1,1), (2,2)$ serta jebakan `X` di $(1,3)$:\n```\n  | → | → | ↓ | ← |\n  | ↓ | # | ↓ | X |\n  | ↓ | ← | # | ↓ |\n  | → | → | → | G |\n```",
+    "notes": "Lihat bagaimana di posisi (0,2), agen diarahkan ke bawah atau menghindar ke kiri di (0,3) agar tidak terpeleset ke Hazard (1,3)."
+  },
+  {
+    "kind": "split",
+    "title": "Value-Based vs Policy-Based Methods",
+    "body": "- **Value-Based (Q-Learning):** Mempelajari fungsi nilai $Q(s, a)$; kebijakan bersifat implisit lewat $\\arg\\max_a$. Sulit diterapkan pada ruang aksi kontinu.\n- **Policy-Based (Policy Gradient):** Langsung mengoptimalkan parameter $\\theta$ kebijakan stokastik $\\pi_\\theta(a \\mid s)$ menggunakan pendakian gradien terhadap objektif $J(\\theta) = \\mathbb{E}[G_0]$.",
+    "notes": "Policy Gradient membuka pintu menuju kontrol robotika kontinu dan penyelarasan LLM (RLHF)."
+  },
+  {
+    "kind": "content",
+    "title": "Algoritme REINFORCE (Policy Gradient)",
+    "body": "- Menggunakan *Log-Probability Trick* ($\nabla_\\theta \\pi_\\theta = \\pi_\\theta \\nabla_\\theta \\log \\pi_\\theta$):\n$$\\nabla_\\theta J(\\theta) = \\mathbb{E}_{\\tau \\sim \\pi_\\theta} \\left[ \\sum_{t=0}^{T-1} \\nabla_\\theta \\log \\pi_\\theta(A_t \\mid S_t) (G_t - b) \\right]$$\n- **Baseline ($b$):** Mengurangi rata-rata return berjalan (*running baseline*) untuk menekan varians tinggi gradien tanpa menimbulkan bias.",
+    "notes": "Di PyTorch, meminimalkan loss = -sum(log_prob * advantage) identik dengan memaksimalkan ekspektasi return."
+  },
+  {
+    "kind": "content",
+    "title": "Desain Reward & Masalah Reward Hacking",
+    "body": "- **Sparse vs Dense Rewards:** *Sparse* hanya memberi sinyal di akhir tujuan (sulit dieksplorasi); *Dense / Reward Shaping* memberi petunjuk langkah antara.\n- **Reward Hacking:** Agen menemukan celah matematis mengeksploitasi imbalan tanpa menyelesaikan misi yang dimaksud manusia.\n  - *Contoh Klasik:* Robot pembersih terus menjatuhkan debu agar mendapat poin menyedot debu berulang kali!",
+    "notes": "Perancang reward harus berhati-hati: jangan memberi imbalan untuk aksi antara yang bisa diputar dalam siklus berulang."
+  },
+  {
+    "kind": "content",
+    "title": "Pengayaan: Reward Modeling & Human Feedback",
+    "body": "- Pada tugas kompleks (seperti menilai kualitas ringkasan teks atau etika percakapan), sulit menulis fungsi `reward(state, action)` secara manual.\n- **Reward Modeling:** Melatih jaringan saraf terpisah dari data preferensi perbandingan manusia (*human preferences*) untuk memprediksi sinyal imbalan.\n- *Catatan Ruang Lingkup:* Bab ini mengenalkan konsepnya; alur RLHF penuh dipelajari pada domain Alignment Lanjut.",
+    "notes": "Bedakan tegas antara hand-crafted reward function (seperti +10 di GridWorld) dengan learned reward model dari preferensi manusia."
+  },
+  {
+    "kind": "content",
+    "title": "Evaluasi Performa Kebijakan RL (Hasil Aktual)",
+    "body": "Evaluasi 50 episode stokastik identik (`slip_prob = 0.1`, `max_steps = 40`):\n\n| Paradigma Kebijakan | Success Rate | Avg Return | Avg Steps |\n| :--- | :---: | :---: | :---: |\n| **1. Uniform Random (Baseline)** | 20.0% | -2.950 | 24.22 |\n| **2. Value Iteration (DP Ref)** | **100.0%** | **9.456** | **6.44** |\n| **3. Q-Learning (Model-Free)** | **100.0%** | **9.456** | **6.44** |\n| **4. REINFORCE (PyTorch PG)** | **100.0%** | **9.446** | **6.54** |",
+    "notes": "Angka-angka ini berasal dari simulasi aktual yang dapat direproduksi di script rl_policy_comparison.py."
+  },
+  {
+    "kind": "code",
+    "title": "Demonstrasi Kode Python: Q-Learning & REINFORCE",
+    "body": "```python\n# Melatih dan mengevaluasi Q-Learning pada GridWorld\nfrom gridworld_environment import GridWorld\nfrom q_learning import train_q_learning, evaluate_greedy_policy\n\nenv = GridWorld(rows=4, cols=4, slip_prob=0.1, seed=42)\nQ, history = train_q_learning(env, num_episodes=800)\nmetrics = evaluate_greedy_policy(env, Q, n_eval=20)\n\nprint(f\"Success Rate: {metrics['success_rate']*100:.1f}%\")\nprint(f\"Avg Return  : {metrics['avg_return']:.3f}\")\n```",
+    "notes": "Seluruh kode sumber tersedia di direktori code/ dan berjalan dalam 1-2 detik di CPU."
+  },
+  {
+    "kind": "case",
+    "title": "Studi Kasus Mini Project: Custom GridWorld",
+    "body": "- **Tugas Mini Project Bab 35:** *Training an RL Agent in a Custom GridWorld.*\n- Mahasiswa merancang peta GridWorld 5x5 baru dengan hambatan terowongan dan bahaya dinamis, memformalkan tuple MDP, membuat baseline acak, membandingkan Value Iteration vs Q-Learning, serta mendiagnosis kegagalan jika reward shaping salah dirancang.",
+    "notes": "Rubrik 100 poin menilai desain lingkungan (20), formulasi matematika (20), implementasi algoritma (30), evaluasi (20), dan dokumentasi (10)."
+  },
+  {
+    "kind": "content",
+    "title": "Keterbatasan Fundamental RL",
+    "body": "- **Sample Inefficiency:** Membutuhkan ribuan hingga jutaan episode interaksi dibandingkan pembelajaran manusia.\n- **Sensitivitas Hyperparameter:** Perubahan kecil pada learning rate $\\alpha$, jadwal $\\epsilon$, atau seed dapat mengubah konvergensi.\n- **Sim-to-Real Gap:** Kebijakan yang optimal di simulator sering gagal di dunia fisik akibat dinamika gesekan atau keterlambatan sensor yang tidak dimodelkan.",
+    "notes": "Pemahaman keterbatasan RL sangat penting agar praktisi tidak menerapkan RL pada masalah yang sebenarnya lebih mudah diselesaikan oleh optimasi klasik atau Supervised Learning."
+  },
+  {
+    "kind": "summary",
+    "title": "Ringkasan Bab 35",
+    "body": "- **Reinforcement Learning** menyelesaikan pengambilan keputusan berurutan berbasis interaksi dan maksimasi *discounted return*.\n- **MDP** memodelkan dinamika dunia melalui tuple $(\\mathcal{S}, \\mathcal{A}, P, R, \\gamma)$.\n- **Dynamic Programming** (*Value/Policy Iteration*) menemukan solusi eksak bila model $P$ diketahui.\n- **Q-Learning** dan **REINFORCE** belajar bebas model (*model-free*) murni dari pengalaman interaksi.",
+    "notes": "Bab berikutnya (Chapter 36) akan membawa model AI dari eksperimen laboratorium menuju siklus hidup produksi melalui MLOps."
+  },
+  {
+    "kind": "content",
+    "title": "Referensi Akademik Terverifikasi",
+    "body": "1. **Sutton, R. S., & Barto, A. G. (2018).** *Reinforcement Learning: An Introduction (2nd Ed.).* MIT Press.\n2. **Bellman, R. (1957).** *Dynamic Programming.* Princeton University Press.\n3. **Watkins, C., & Dayan, P. (1992).** *Q-learning.* Machine Learning, 8(3), 279–292.\n4. **Williams, R. J. (1992).** *Simple statistical gradient-following algorithms for connectionist reinforcement learning (REINFORCE).* Machine Learning, 8(3), 229–256.\n5. **Paszke, A., et al. (2019).** *PyTorch: An Imperative Style, High-Performance Deep Learning Library.* NeurIPS 2019.",
+    "notes": "Seluruh referensi merupakan literatur kanonik paling berpengaruh dalam sejarah Reinforcement Learning."
+  }
+]

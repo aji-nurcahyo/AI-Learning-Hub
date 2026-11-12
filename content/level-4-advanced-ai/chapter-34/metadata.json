@@ -1,0 +1,80 @@
+{
+  "id": 34,
+  "slug": "chapter-34",
+  "levelId": 4,
+  "title": "AI Agents & Tool Integration",
+  "status": "published",
+  "description": "Arsitektur lengkap AI Agents: dekomposisi tujuan, siklus ReAct, skema alat JSON Schema, validasi masukan, tata kelola persetujuan manusia, Model Context Protocol (MCP), dan jejak audit kriptografis.",
+  "objectives": [
+    "Menjelaskan spektrum perbedaan konseptual antara Chatbot pasif, Workflow deterministik, dan Autonomous AI Agent.",
+    "Memahami arsitektur modular agen cerdas yang memisahkan model penalaran dari pengendali eksekusi alat.",
+    "Menjelaskan prinsip dasar pemanggilan alat (tool calling) dan batas pemisah antara model bahasa dan lingkungan host.",
+    "Merancang skema alat deklaratif terstandar menggunakan format JSON Schema lengkap dengan batasan tipe data.",
+    "Mengimplementasikan validasi skema masukan dan penanganan eksepsi saat eksekusi alat berlangsung.",
+    "Menggunakan manajemen status Finite State Machine (FSM) dan memori kerja terikat anggaran langkah.",
+    "Memahami siklus penalaran dan tindakan ReAct (Thought -> Action -> Observation) untuk dekomposisi tujuan multi-langkah.",
+    "Mengenali spesifikasi Model Context Protocol (MCP) sebagai standar terbuka integrasi alat dan sumber daya berbasis JSON-RPC 2.0.",
+    "Mengelola batasan izin berbasis peran (RBAC) dan menerapkan prinsip hak akses terendah (least privilege).",
+    "Mengimplementasikan gerbang persetujuan manusia (human approval gate) untuk menangguhkan aksi berisiko tinggi.",
+    "Memitigasi eksekusi liar, perulangan tak hingga, dan penanganan penolakan otorisasi secara anggun.",
+    "Menggunakan jejak audit kriptografis berantai SHA-256 untuk observabilitas dan akuntabilitas sistem.",
+    "Mengevaluasi tingkat keberhasilan penyelesaian tugas agen (task success rate) dan akurasi seleksi alat secara kuantitatif.",
+    "Membangun purwarupa supervised AI agent mandiri yang aman dan dapat direproduksi 100% pada CPU."
+  ],
+  "prerequisites": [
+    33
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "AI Agents",
+    "Tool Integration",
+    "ReAct",
+    "Model Context Protocol",
+    "AI Safety"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Yao et al. (2022), ReAct: Synergizing Reasoning and Acting in Language Models",
+      "url": "https://arxiv.org/abs/2210.03629",
+      "status": "verified"
+    },
+    {
+      "title": "Schick et al. (2023), Toolformer: Language Models Can Teach Themselves to Use Tools",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/d842425e40e79ad3ab0173acbfa50c4f-Abstract-Conference.html",
+      "status": "verified"
+    },
+    {
+      "title": "Anthropic (2024), Model Context Protocol (MCP) Specification",
+      "url": "https://modelcontextprotocol.io",
+      "status": "verified"
+    },
+    {
+      "title": "Russell & Norvig (2020), Artificial Intelligence: A Modern Approach (4th Edition)",
+      "url": "https://aima.cs.berkeley.edu/",
+      "status": "verified"
+    },
+    {
+      "title": "NIST (2023), Artificial Intelligence Risk Management Framework (AI RMF 1.0)",
+      "url": "https://doi.org/10.6028/NIST.AI.100-1",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "id": 38,
+  "slug": "chapter-38",
+  "levelId": 4,
+  "title": "Multimodal AI Systems",
+  "status": "published",
+  "description": "Sistem AI Multimodal: fondasi sinergi lintas modalitas, representasi citra-teks terpadu, perbandingan Early Fusion vs Late Fusion vs Cross-Attention, ketahanan terhadap missing modality, pelatihan kontrastif Symmetric InfoNCE (CLIP-style Dual Encoder), serta evaluasi bidirectional cross-modal retrieval di CPU.",
+  "objectives": [
+    "Menjelaskan konsep Multimodal AI dan alasan mengapa model unimodal terpisah gagal menangkap interaksi sinergis lintas modalitas.",
+    "Mengimplementasikan generator pasangan citra-teks sintetis terkendali dengan pemisahan ketat data latih dan uji.",
+    "Membangun encoder citra ringan untuk peta fitur spasial maupun vektor global serta encoder teks berbasis masked mean-pooling.",
+    "Membandingkan secara empiris arsitektur Early Fusion, Late Fusion, dan Intermediate Cross-Attention Fusion.",
+    "Menganalisis ketahanan berbagai arsitektur fusi terhadap skenario hilangnya salah satu modalitas saat inferensi.",
+    "Menghitung secara manual mekanisme Scaled Dot-Product Cross-Attention dengan query teks terhadap key-value patch citra.",
+    "Memahami proyeksi ruang laten bersama, normalisasi L2 di hipersfer satuan, dan fenomena Modality Gap.",
+    "Menghitung dan memverifikasi Symmetric InfoNCE Contrastive Loss secara matematis maupun dengan PyTorch.",
+    "Mengidentifikasi masalah false negatives dalam mini-batch kontrastif dan menerapkan strategi unique-concept batch sampling.",
+    "Mengimplementasikan arsitektur Miniature Dual Encoder bergaya CLIP serta mengaudit konvergensi dan margin kesamaan positif-negatif.",
+    "Mengevaluasi sistem Image-to-Text dan Text-to-Image Retrieval pada data tak terlihat menggunakan Recall@k, Precision@k, dan Median Rank.",
+    "Menginterpretasikan matriks kesamaan kosinus lintas modalitas untuk mendeteksi keselarasan semantik dan kedekatan konsep.",
+    "Membedakan sistem simulator Visual Question Answering berbasis aturan deterministik dari model VLM generatif dunia nyata.",
+    "Mengidentifikasi tantangan rekayasa multimodal seperti sinkronisasi waktu, modalitas dominan, dan batasan generalisasi korpus tertutup."
+  ],
+  "prerequisites": [
+    24,
+    27,
+    28,
+    32
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Multimodal AI",
+    "Cross-Attention",
+    "Contrastive Learning",
+    "CLIP Dual Encoder",
+    "Cross-Modal Retrieval"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Baltrusaitis, Ahuja & Morency (2019), Multimodal Machine Learning: A Survey and Taxonomy",
+      "url": "https://arxiv.org/abs/1705.09406",
+      "status": "verified"
+    },
+    {
+      "title": "Radford et al. (2021), Learning Transferable Visual Models From Natural Language Supervision (CLIP)",
+      "url": "https://arxiv.org/abs/2103.00020",
+      "status": "verified"
+    },
+    {
+      "title": "Vaswani et al. (2017), Attention Is All You Need",
+      "url": "https://arxiv.org/abs/1706.03762",
+      "status": "verified"
+    },
+    {
+      "title": "Li et al. (2022), BLIP: Bootstrapping Language-Image Pre-training",
+      "url": "https://arxiv.org/abs/2201.12086",
+      "status": "verified"
+    },
+    {
+      "title": "Antol et al. (2015), VQA: Visual Question Answering",
+      "url": "https://arxiv.org/abs/1505.00468",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

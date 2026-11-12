@@ -1,0 +1,115 @@
+[
+  {
+    "id": "computer-vision",
+    "title": "Computer Vision",
+    "topics": [
+      "Image processing",
+      "CNN",
+      "Object detection",
+      "YOLO",
+      "Image segmentation",
+      "Video analysis",
+      "Vision model optimization"
+    ],
+    "chapters": [
+      24,
+      25,
+      26,
+      31,
+      37
+    ],
+    "description": "Jalur pilihan untuk menerapkan AI pada bidang Computer Vision. Topik spesialisasi masih dalam tahap perencanaan.",
+    "status": "coming-soon"
+  },
+  {
+    "id": "nlp-llm",
+    "title": "NLP, LLM & Generative AI",
+    "topics": [
+      "Text preprocessing",
+      "Embeddings",
+      "Transformers",
+      "LLM inference",
+      "Prompt engineering",
+      "Fine-tuning",
+      "RAG",
+      "AI agents"
+    ],
+    "chapters": [
+      27,
+      28,
+      29,
+      31,
+      32,
+      33,
+      34
+    ],
+    "description": "Jalur pilihan untuk menerapkan AI pada bidang NLP, LLM & Generative AI. Topik spesialisasi masih dalam tahap perencanaan.",
+    "status": "coming-soon"
+  },
+  {
+    "id": "aiot-edge",
+    "title": "AIoT & Edge AI",
+    "topics": [
+      "Sensor data processing",
+      "Time-series models",
+      "TinyML concepts",
+      "Model quantization",
+      "ONNX",
+      "Edge inference",
+      "Hardware deployment"
+    ],
+    "chapters": [
+      8,
+      19,
+      36,
+      37
+    ],
+    "description": "Jalur pilihan untuk menerapkan AI pada bidang AIoT & Edge AI. Topik spesialisasi masih dalam tahap perencanaan.",
+    "status": "coming-soon"
+  },
+  {
+    "id": "telecommunications",
+    "title": "AI for Telecommunications",
+    "topics": [
+      "Network data analytics",
+      "Signal classification",
+      "Traffic prediction",
+      "Wireless network optimization",
+      "Anomaly detection",
+      "Spectrum sensing",
+      "Intelligent communication systems"
+    ],
+    "chapters": [
+      8,
+      14,
+      17,
+      35,
+      37
+    ],
+    "description": "Jalur pilihan untuk menerapkan AI pada bidang AI for Telecommunications. Topik spesialisasi masih dalam tahap perencanaan.",
+    "status": "coming-soon"
+  },
+  {
+    "id": "robotics",
+    "title": "Robotics & Intelligent Systems",
+    "topics": [
+      "Intelligent agents",
+      "Search and planning",
+      "State estimation",
+      "Reinforcement learning",
+      "Perception",
+      "Sensor fusion",
+      "Autonomous systems"
+    ],
+    "chapters": [
+      3,
+      4,
+      5,
+      26,
+      35,
+      38
+    ],
+    "description": "Jalur pilihan untuk menerapkan AI pada bidang Robotics & Intelligent Systems. Topik spesialisasi masih dalam tahap perencanaan.",
+    "status": "coming-soon"
+  }
+]

@@ -1,0 +1,105 @@
+{
+  "chapter": 37,
+  "title": "Edge AI & Model Optimization",
+  "total_scripts": 16,
+  "total_duration_seconds": 116.05,
+  "all_passed": true,
+  "scripts": {
+    "dynamic_quantization.py": {
+      "status": "passed",
+      "duration_seconds": 8.241,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: PYTORCH DYNAMIC QUANTIZATION (FP32 -> INT8)\n===========================================================================\nActive PyTorch Quantization Engine: onednn\nNote: Weights are stored in qint8; activations are dynamically quantized at runtime.\n\nMetric                    | FP32 Baseline      | Dynamic INT8\n-----------------------------------------------------------------\nArtifact Size (.pt KB)    | 183.94"
+    },
+    "edge_ai_foundations.py": {
+      "status": "passed",
+      "duration_seconds": 7.385,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: EDGE AI FOUNDATIONS & BASELINE MODEL\n===========================================================================\nBaseline Task: 4-Class Industrial/IoT Sensor Anomaly Classification (16 features)\n- Architecture : Linear(16->256->128->64->4) = 45,764 parameters\n- Train Acc    : 99.56% (N=1800)\n- Test Acc     : 92.33% (N=600)\n\nCloud Inference vs On-Device Edge Inference Trade-off:\n- Cloud Inference   : High comp"
+    },
+    "edge_hardware_constraints.py": {
+      "status": "passed",
+      "duration_seconds": 0.148,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: SIMULATED EDGE HARDWARE CONSTRAINT ASSESSMENT\n===========================================================================\n\nModel Profile: FP32 Teacher (45.9K params) (Raw Weights=179.5 KB, Tensor Arena=4.0 KB)\n  - ARM Cortex-M7 (TinyML)    : SIMULATED FIT (RAM 124.0/256 KB, Flash 379.5/1024 KB)\n  - ESP32-S3 (No PSRAM)       : SIMULATED FIT (RAM 224.0/512 KB, Flash 379.5/4096 KB)\n  - Raspberry Pi 4 (SBC)"
+    },
+    "fp32_int8_quantization_math.py": {
+      "status": "passed",
+      "duration_seconds": 0.23,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: FP32 TO INT8 QUANTIZATION MATHEMATICS WORKED EXAMPLE\n===========================================================================\nOriginal FP32 Tensor (24 bytes): [-0.5   0.    0.25  1.2   2.54  4.  ]\n\n[1] SYMMETRIC QUANTIZATION (Range [-127, 127], z=0):\n    Scale (s)         : 0.031496  | Zero Point (z): 0\n    Quantized INT8 (q): [-16, 0, 8, 38, 81, 127] (6 bytes = 4x memory reduction)\n    Dequantized x_hat :"
+    },
+    "inference_latency_benchmark.py": {
+      "status": "passed",
+      "duration_seconds": 10.166,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: REPEATED CPU INFERENCE LATENCY BENCHMARK\n===========================================================================\nHardware Context: Windows-11-10.0.26300-SP0 | Logical CPUs: 32 | PyTorch 2.15.0+cpu\n\nSingle-Sample (Batch=1) Latency across 3x400 trials (after 50 warm-up):\nModel Variant                | Mean +- Std (ms)   | P50 (ms)   | P95 (ms)   | Throughput\n-------------------------------------------------"
+    },
+    "knowledge_distillation.py": {
+      "status": "passed",
+      "duration_seconds": 9.606,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: KNOWLEDGE DISTILLATION (TEACHER -> COMPACT STUDENT)\n===========================================================================\n1. Worked Example: Temperature Scaling on Teacher Logits [4.0, 2.0, 0.5, -1.0]:\n   - T = 1.0 (Sharp) : [0.853, 0.1154, 0.0258, 0.0057]\n   - T = 3.0 (Soft)  : [0.4966, 0.255, 0.1546, 0.0938]\n   Insight: T=3.0 elevates class 1 similarity (0.114 -> 0.258), conveying inter-class\n   'dark"
+    },
+    "magnitude_pruning.py": {
+      "status": "passed",
+      "duration_seconds": 8.216,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: UNSTRUCTURED MAGNITUDE PRUNING & DENSE STORAGE REALITY\n===========================================================================\nBaseline Dense Model    : Sparsity =  0.00% | Acc = 92.33% | Size = 183.94 KB | Lat = 0.0592 ms\n70% Unstructured Pruned : Sparsity = 70.00% | Acc = 87.17% (Zero-shot post-prune)\nPruned + 5-Epoch FT     : Sparsity = 70.00% | Acc = 89.17% | Size = 183.94 KB | Lat = 0.0527 ms\n\nCritic"
+    },
+    "model_profiling.py": {
+      "status": "passed",
+      "duration_seconds": 8.172,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: BASELINE FP32 MODEL PROFILING ON CPU\n===========================================================================\nHardware & Runtime Context:\n- OS / Platform   : Windows-11-10.0.26300-SP0\n- Logical CPUs    : 32 | PyTorch Threads: 16\n- PyTorch Version : 2.15.0+cpu\n\nBaseline Model Footprint & Latency:\n- Parameter Count       : 45,764\n- Raw FP32 Weight RAM   : 178.77 KB (4 bytes/param)\n- Serialized .pt Size   : 1"
+    },
+    "model_size_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 8.746,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: MODEL ARTIFACT SIZE & COMPRESSION RATIO AUDIT\n===========================================================================\nModel Variant                  | Raw .pt (KB)   | Ratio vs Base  | Gzipped (KB)\n---------------------------------------------------------------------------\n1. FP32 Baseline               | 183.94         | 1.00         x | 167.99\n2. Dynamic INT8                | 52.63          | 3.49"
+    },
+    "optimization_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 10.342,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: UNIFIED EDGE OPTIMIZATION STRATEGY COMPARISON\n===========================================================================\nStrategy           | Acc (%)  | Size (KB)  | Mean Lat (ms)  | P95 (ms)\n----------------------------------------------------------------------\nFP32 Baseline      | 92.33    | 183.94     | 0.0642         | 0.0893\nDynamic INT8       | 92.17    | 52.63      | 0.5123         | 0.7350\nStatic INT"
+    },
+    "pruning_sparsity_analysis.py": {
+      "status": "passed",
+      "duration_seconds": 8.257,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: PRUNING SPARSITY VS ACCURACY SENSITIVITY CURVE\n===========================================================================\nTarget Sparsity  | Actual %   | Zero-Shot Acc   | Post-FT Acc\n--------------------------------------------------------------\n0%               | 0.00%      | 92.33         % | 92.33%\n30             % | 30.00    % | 92.50         % | 92.50%\n50             % | 50.00    % | 90.33         % |"
+    },
+    "quantization_error.py": {
+      "status": "passed",
+      "duration_seconds": 0.27,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: QUANTIZATION ERROR & PER-CHANNEL VS PER-TENSOR ANALYSIS\n===========================================================================\n1. Impact of Distribution & Outliers (Per-Tensor Symmetric INT8):\n   Uniform [-1, 1]            | Scale: 0.00776 | MSE: 5.619e-06 | SQNR: 47.57 dB\n   Gaussian (std=0.3)         | Scale: 0.00686 | MSE: 3.844e-06 | SQNR: 43.68 dB\n   Gaussian + Outlier (15.0)  | Scale: 0.11811 | MSE"
+    },
+    "quantization_evaluation.py": {
+      "status": "passed",
+      "duration_seconds": 8.453,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: QUANTIZATION FIDELITY & LOGIT DEVIATION AUDIT\n===========================================================================\nTest Evaluation (N=600 samples):\n\nModel Variant        | Accuracy   | Agreement vs FP32  | Logit MAE  | Cosine Sim\n------------------------------------------------------------------------------\nFP32 Baseline        | 92.33    % | 100.00% (Ref)      | 0.00000    | 1.000000\nDynamic INT8"
+    },
+    "static_quantization_demo.py": {
+      "status": "passed",
+      "duration_seconds": 10.012,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: POST-TRAINING STATIC QUANTIZATION WITH CALIBRATION\n===========================================================================\nCalibration Protocol: Observed activation ranges on 250 representative training samples.\nMetric                    | FP32 Baseline      | Static INT8 (Calib)\n--------------------------------------------------------------------\nArtifact Size (.pt KB)    | 183.94             | 62.70 (2."
+    },
+    "structured_pruning_demo.py": {
+      "status": "passed",
+      "duration_seconds": 8.824,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: STRUCTURED PRUNING (PHYSICAL ARCHITECTURE COMPRESSION)\n===========================================================================\nBaseline (16->256->128->64->4)   : Params = 45,764 | Size = 183.94 KB | Acc = 92.33% | Lat = 0.0503 ms\nStructured Pruned (Zero-Shot)    : Params = 12,644 | Acc = 73.00%\nStructured Pruned + 10-Epoch FT  : Params = 12,644 | Size = 54.57 KB | Acc = 89.67% | Lat = 0.0453 ms\n\nGenuine P"
+    },
+    "teacher_student_comparison.py": {
+      "status": "passed",
+      "duration_seconds": 8.98,
+      "return_code": 0,
+      "stdout_snippet": "===========================================================================\nCHAPTER 37: TEACHER VS STUDENT BENCHMARK COMPARISON\n===========================================================================\nModel Variant          | Params     | Size (KB)  | Test Acc   | Mean Lat (ms)\n---------------------------------------------------------------------------\nTeacher (FP32 Large)   | 45,764     | 183.94     | 92.33    % | 0.0572\nStudent (Scratch)      | 1,140      | 8.82       | 91.33    % | 0.0392"
+    }
+  }
+}

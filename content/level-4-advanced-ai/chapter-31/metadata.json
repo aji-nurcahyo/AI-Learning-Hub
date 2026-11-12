@@ -1,0 +1,94 @@
+{
+  "id": 31,
+  "slug": "chapter-31",
+  "levelId": 4,
+  "title": "Transfer Learning & Fine-Tuning",
+  "status": "published",
+  "description": "Modul komprehensif implementasi Transfer Learning & Fine-Tuning pada Level 4 Applied & Advanced AI Systems: perbedaan fundamental pelatihan dari awal (training from scratch) versus pemanfaatan bobot pra-terlatih (pretrained models), perumusan Source Task, Target Task, Source Domain, dan Target Domain, mekanisme ekstraksi fitur (Feature Extraction) dan Linear Probing dengan pembekuan parameter (param.requires_grad = False), analisis kritis mode runtime model.train() versus model.eval() pada lapisan Dropout dan BatchNorm, spektrum strategi adaptasi mencakup Partial Fine-Tuning dengan progressive unfreezing dan differential learning rates (optimizer parameter groups) hingga Full Fine-Tuning, analisis risiko catastrophic forgetting dan mitigasinya via laju pembelajaran konservatif serta regularisasi weight decay, pergeseran domain (Domain Shift, Covariate Shift, Label Distribution Shift), identifikasi dan pencegahan transfer negatif (Negative Transfer), konsep dan urgensi Parameter-Efficient Fine-Tuning (PEFT), landasan matematis Low-Rank Adaptation (LoRA: W' = W_0 + alpha/r * B*A) dengan inisialisasi asimetris A Gaussian dan B nol mutlak, faktor penskalaan alpha/r, pembuktian efisiensi parameter >95% dan penghematan memori optimizer, perancangan modul kustom LoRALinear di PyTorch pada CPU, penggabungan bobot (zero-latency weight merging) untuk deployment produksi, komparasi empiris terstandarisasi 5 paradigma adaptasi model, serta panduan proyek mini dan rubrik 100 poin.",
+  "objectives": [
+    "Menjelaskan konsep dasar Transfer Learning dan keuntungan pemanfaatan model pra-terlatih.",
+    "Membedakan paradigma pelatihan dari awal (training from scratch) versus adaptasi model pra-terlatih.",
+    "Menerapkan teknik ekstraksi fitur (Feature Extraction) dan Linear Probing menggunakan pembekuan bobot backbone.",
+    "Mengidentifikasi distingsi operasional kritis mode train() versus eval() pada lapisan Dropout dan BatchNorm.",
+    "Mengimplementasikan Partial Fine-Tuning dengan progressive unfreezing dan differential learning rates.",
+    "Menganalisis fenomena catastrophic forgetting pada Full Fine-Tuning dan menerapkan strategi mitigasi konservatif.",
+    "Mendeteksi dampak pergeseran domain (Domain Shift dan Covariate Shift) terhadap batas keputusan model.",
+    "Mengevaluasi kondisi terjadinya transfer negatif (Negative Transfer) dan membandingkannya terhadap model scratch.",
+    "Menjelaskan konsep Parameter-Efficient Fine-Tuning (PEFT) dan batasan memori optimizer pada model besar.",
+    "Menurunkan formulasi matematis Low-Rank Adaptation (LoRA), inisialisasi matriks, dan faktor penskalaan alpha/r.",
+    "Membangun modul kustom LoRALinear di PyTorch dengan verifikasi aliran gradien hanya pada adaptor rank rendah.",
+    "Menerapkan teknik penggabungan bobot (weight merging) untuk inferensi produksi dengan latensi nol.",
+    "Membandingkan efisiensi komputasi, penggunaan parameter, dan akurasi lintas lima paradigma adaptasi model.",
+    "Merancang alur kerja adaptasi model teruji dan tereproduksi untuk skenario rekayasa kecerdasan buatan terapan."
+  ],
+  "prerequisites": [
+    30
+  ],
+  "tags": [
+    "Applied & Advanced AI Systems",
+    "Transfer Learning",
+    "Fine-Tuning",
+    "Pretrained Models",
+    "Feature Extraction",
+    "Linear Probing",
+    "Layer Freezing",
+    "Progressive Unfreezing",
+    "Differential Learning Rates",
+    "Catastrophic Forgetting",
+    "Domain Shift",
+    "Covariate Shift",
+    "Negative Transfer",
+    "PEFT",
+    "Parameter-Efficient Fine-Tuning",
+    "LoRA",
+    "Low-Rank Adaptation",
+    "Weight Merging",
+    "PyTorch",
+    "Model Adaptation"
+  ],
+  "resources": {
+    "reading": {
+      "status": "available",
+      "path": "index.md"
+    },
+    "slides": {
+      "status": "available",
+      "path": "slides/deck.json"
+    },
+    "practice": {
+      "status": "available",
+      "path": "practice.md"
+    }
+  },
+  "references": [
+    {
+      "title": "Hu, E. J., et al. (2021). LoRA: Low-Rank Adaptation of Large Language Models. ICLR 2022",
+      "url": "https://arxiv.org/abs/2106.09685",
+      "status": "verified"
+    },
+    {
+      "title": "Yosinski, J., et al. (2014). How transferable are features in deep neural networks? NeurIPS 2014",
+      "url": "https://proceedings.neurips.cc/paper/2014/file/375c71349b295fbe2dcdca9206f20a06-Paper.pdf",
+      "status": "verified"
+    },
+    {
+      "title": "Pan, S. J., & Yang, Q. (2010). A Survey on Transfer Learning. IEEE TKDE",
+      "url": "https://doi.org/10.1109/TKDE.2009.191",
+      "status": "verified"
+    },
+    {
+      "title": "He, K., et al. (2016). Deep Residual Learning for Image Recognition. CVPR 2016",
+      "url": "https://arxiv.org/abs/1512.03385",
+      "status": "verified"
+    },
+    {
+      "title": "Howard, J., & Ruder, S. (2018). Universal Language Model Fine-tuning for Text Classification. ACL 2018",
+      "url": "https://arxiv.org/abs/1801.06146",
+      "status": "verified"
+    }
+  ],
+  "validation": {
+    "reviewed": true,
+    "executionVerified": true
+  }
+}

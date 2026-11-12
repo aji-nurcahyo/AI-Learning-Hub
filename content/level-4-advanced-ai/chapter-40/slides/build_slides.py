@@ -1,0 +1,220 @@
+"""Generates slides/deck.json (32 slides) for Chapter 40: Advanced AI Capstone Project."""
+
+import json
+import os
+
+
+def make_slides():
+    slides = [
+        {
+            "kind": "cover",
+            "title": "Chapter 40: Advanced AI Capstone Project",
+            "body": "Penutup Resmi Master Curriculum 40 Chapters — Artificial Intelligence Learning Hub\nCreated & Developed by Aji Pamungkas Tri Nurcahyo (Institut Teknologi Sumatera)",
+            "notes": "Selamat datang di Chapter 40, penutup resmi Master Curriculum Level 1 hingga Level 4 AI Learning Hub."
+        },
+        {
+            "kind": "content",
+            "title": "Penyelesaian Master Curriculum 40 Chapter",
+            "body": "Capstone menyatukan kompetensi lintas 4 level:\n- **Level 1 (Ch 01–10):** Fondasi AI, Pencarian, Matematika, Data & Etika.\n- **Level 2 (Ch 11–20):** Machine Learning Klasik, Evaluasi & Explainability.\n- **Level 3 (Ch 21–30):** Deep Learning, PyTorch, CNN, YOLO, NLP & LLM.\n- **Level 4 (Ch 31–40):** Transfer Learning, Vector Search, RAG, Agents, RL, MLOps, Edge, Multimodal & Safety.",
+            "diagram": ["L1 Foundations", "L2 Machine Learning", "L3 Deep Learning", "L4 Applied AI"],
+            "notes": "Tekankan bahwa Capstone tidak mewajibkan seluruh teknik dipakai sekaligus, melainkan memilih arsitektur terbaik sesuai masalah."
+        },
+        {
+            "kind": "content",
+            "title": "Tujuan Pembelajaran Capstone",
+            "body": "Mahasiswa mampu:\n- Merumuskan masalah AI yang spesifik beserta persyaratan fungsional & nonfungsional.\n- Merancang arsitektur sistem end-to-end dengan pencegahan *data leakage*.\n- Membangun prototipe tervalidasi dengan perbandingan baseline dan analisis error.\n- Melengkapi proyek dengan pemantauan drift, pengendalian keamanan, Model Card, serta presentasi ilmiah.",
+            "notes": "Soroti tuntutan kedewasaan rekayasa: akuntabilitas teknis dan kejujuran atas batasan sistem."
+        },
+        {
+            "kind": "content",
+            "title": "Ikhtisar & Prinsip Rekayasa Capstone",
+            "body": "- **Problem-First, Not Model-First:** Pilih algoritma paling efektif bagi kasus, bukan sekadar model terbesar.\n- **CPU-First & Reproducible:** Dapat dijalankan dan diuji pada lingkungan lokal tanpa mewajibkan GPU atau cloud berbayar.\n- **Engineering Discipline:** Meliputi baseline, logging, resource profiling, unit tests, serta Responsible AI.",
+            "notes": "Sampaikan kebijakan ketat evaluasi: rubrik tidak memberi skor ekstra hanya karena memakai framework rumit."
+        },
+        {
+            "kind": "content",
+            "title": "Stage 1: Problem Formulation",
+            "body": "Rumusan masalah yang solid memuat:\n- Latar belakang & celah operasional yang ingin dijawab.\n- Pernyataan masalah (*Problem Statement*) dan pertanyaan penelitian.\n- **Intended Use** (siapa pengguna & cakupan legal) serta **Prohibited Use**.\n- Kriteria sukses kuantitatif (F1, Recall@k, Return RL, atau latensi P95).",
+            "notes": "Jelaskan perbedaan tujuan bisnis dengan metrik optimasi algoritmik."
+        },
+        {
+            "kind": "split",
+            "title": "Delapan Opsi Tema Capstone Project (1/2)",
+            "body": "1. **Edge AI Intelligent Monitoring:** Model ringan sensor telemetry dengan profiling ukuran & latensi.\n2. **RAG-Based Academic Assistant:** Penelusuran tergrounding + sitasi + pertahanan *indirect injection*.\n3. **Supervised Tool-Using AI Agent:** Pemanggilan alat aman dengan *Human Approval Gate*.\n\n---\n\n4. **Multimodal Sensor–Image Intelligence:** Fusi visi & telemetri + uji hilang modalitas.\n*(Mahasiswa juga boleh mengajukan topik khusus atas persetujuan pengajar.)*",
+            "notes": "Pastikan opsi yang memerlukan hardware fisik atau LLM eksternal memiliki jalur simulasi CPU deterministik."
+        },
+        {
+            "kind": "split",
+            "title": "Delapan Opsi Tema Capstone Project (2/2)",
+            "body": "5. **CV for Smart Agriculture:** CNN/YOLO + optimasi ringan & penafian uji lapangan nyata.\n6. **Intelligent Wireless Network Analytics:** Analisis telemetri jaringan (bedakan tegas SNR vs SINR!).\n\n---\n\n7. **Responsible AI Evaluation Platform:** Audit bias, Risk Register, dan Model Card.\n8. **RL for Resource Allocation:** Simulasi MDP/Q-Learning tanpa kontrol jaringan produksi tanpa izin.",
+            "notes": "Tekankan poin kejujuran ilmiah pada masing-masing opsi: jangan menyamakan metrik SNR vs SINR atau klaim lapangan tanpa uji lapangan."
+        },
+        {
+            "kind": "content",
+            "title": "Stage 2: Dataset, Provenance & Data Dictionary",
+            "body": "- Dokumentasikan asal data (*provenance*) serta lisensi (dataset sintetis terkendali atau berlisensi terbuka).\n- Susun **Data Dictionary** berisi nama fitur, satuan fisik, rata-rata nominal, dan rentang nilai legal.\n- Audit kualitas data, rasio kelas, dan jaminan nol data pribadi tak berizin.",
+            "notes": "Contoh konkret dapat dilihat pada `data/sensor_data_dictionary.json` di proyek referensi Chapter 40."
+        },
+        {
+            "kind": "content",
+            "title": "Arsitektur Sistem Capstone (Reference Architecture)",
+            "body": "Pipeline modular lokal tanpa ketergantungan microservices rumit:\n1. Lapisan Data & *Zero-Leakage Splitter*\n2. *Baseline & Candidate Model Trainer*\n3. Penyimpanan Artefak bertanda **SHA-256**\n4. *Validated Inference Guard* + *Human Escalation* + *PSI/KS Drift Monitor*",
+            "diagram": ["Data & Split", "Train & SHA-256", "Validated Inference", "Drift & Risk Card"],
+            "notes": "Tekankan pentingnya kejelasan komponen arsitektur sehingga tiap tahap mudah diuji secara independen."
+        },
+        {
+            "kind": "content",
+            "title": "Pemilihan Model & Justifikasi Algoritma",
+            "body": "- Bandingkan kandidat lintas kompleksitas: model linear (`LogisticRegression`), ansambel pohon (`RandomForest`), hingga jaringan saraf (`MLPClassifier`).\n- Pertimbangkan tiga sumbu sekaligus: **Kinerja Prediktif** vs **Latensi/Memori** vs **Interpretabilitas**.\n- Hindari memaksakan akurasi untuk RL atau sistem generatif; gunakan metrik tugas yang tepat.",
+            "notes": "Arahkan mahasiswa menjustifikasi pemilihan model lewat tabel komparasi empiris, bukan selera pribadi."
+        },
+        {
+            "kind": "content",
+            "title": "Wajib: Baseline Comparison",
+            "body": "- Setiap Capstone **wajib** memiliki baseline sederhana yang dapat dijelaskan.\n- Untuk klasifikasi: `DummyClassifier(most_frequent)` + model linear sederhana (`LogisticRegression`).\n- Baseline membuktikan bahwa arsitektur kompleks benar-benar memberikan peningkatan nilai nyata.",
+            "notes": "Tanpa baseline, angka akurasi atau F1 tidak memiliki titik jangkar pembanding yang bermakna."
+        },
+        {
+            "kind": "code",
+            "title": "Data Pipeline Anti-Kebocoran (Zero Leakage)",
+            "body": "Pecah Test Set dan Validation Set lebih dulu sebelum melakukan `StandardScaler.fit()` pada Training Set saja.",
+            "code": "X_dev, X_test_raw, y_dev, y_test = train_test_split(\n    X, y, test_size=0.20, random_state=42, stratify=y)\nX_train_raw, X_val_raw, y_train, y_val = train_test_split(\n    X_dev, y_dev, test_size=0.25, random_state=42, stratify=y_dev)\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train_raw)\nX_val = scaler.transform(X_val_raw)\nX_test = scaler.transform(X_test_raw)",
+            "notes": "Kebocoran scaler sebelum split adalah salah satu kesalahan paling sering terjadi pada proyek mahasiswa."
+        },
+        {
+            "kind": "content",
+            "title": "Stage 4: Implementasi Modular & Konfigurasi",
+            "body": "- Pisahkan konfigurasi terpusat (`config.py`) dari kode pemrosesan data, pelatihan, inferensi, dan pengujian.\n- Dokumentasikan *seed* deterministik (`seed=42`) dan versi pustaka.\n- Sertakan suite uji unit (`test_capstone_suite.py`) guna memverifikasi skema masukan dan properti statistik.",
+            "notes": "Kode terstruktur memudahkan dosen penguji mereproduksi eksperimen hanya lewat satu perintah eksekusi."
+        },
+        {
+            "kind": "content",
+            "title": "Integrasi End-to-End Pipeline",
+            "body": "- Hubungkan seluruh komponen dalam orkestrator utama (`run_capstone_pipeline.py`).\n- Pastikan integrasi kontrak data antar modul konsisten (urutan fitur, tipe numpy float64, dan penanganan error aman).\n- Simpan ringkasan metrik eksekusi akhir ke berkas JSON terverifikasi.",
+            "notes": "Tunjukkan bagaimana komponen dari Chapter 19, 36, 37, dan 39 berkolaborasi dalam satu proyek terpadu."
+        },
+        {
+            "kind": "content",
+            "title": "Evaluasi Model pada Held-Out Test Set",
+            "body": "- Seleksi kandidat dilakukan **hanya** pada Validation Set.\n- Held-out Test Set (`N=300`) dibuka satu kali pada tahap akhir.\n- Laporkan multi-metrik relevan (`Accuracy`, `Precision`, `Recall`, `F1-Score`, `ROC-AUC`) bersama matriks kebingungan.",
+            "notes": "Tegaskan disiplin pemisahan validation dan testing sesuai TECHNICAL_LANGUAGE_GUIDE.md."
+        },
+        {
+            "kind": "content",
+            "title": "Evaluasi Sistem Menyeluruh & Analisis Error",
+            "body": "- Periksa sampel prediksi yang salah (*False Negatives* vs *False Positives*) beserta nilai sensor fisiknya.\n- Gunakan *Permutation Feature Importance* untuk memvalidasi apakah sinyal pendorong model masuk akal secara domain (misal: `vibration_rms` dan `temperature_c`).",
+            "notes": "Error analysis bukan sekadar menempelkan confusion matrix, melainkan memahami kapan dan mengapa model keliru."
+        },
+        {
+            "kind": "content",
+            "title": "Benchmark Latensi CPU & Penggunaan Sumber Daya",
+            "body": "- Ukur waktu inferensi berulang sesudah *warm-up* (Mean, P50, P95 ms).\n- Catat ukuran bundel model (`.pkl`) dan waktu pelatihan di CPU lokal.\n- Pastikan angka kinerja realistis sesuai anggaran aplikasi tanpa klaim berlebihan.",
+            "notes": "Merujuk teknik benchmark Chapter 36 dan 37 agar metrik waktu bebas bias cold-start tunggal."
+        },
+        {
+            "kind": "content",
+            "title": "Reproducibility & Artifact Integrity",
+            "body": "- Kunci seluruh pengacakan melalui `seed=42` sehingga hasil eksperimen dapat diulang identik.\n- Verifikasi integritas checksum **SHA-256** (`capstone_model_sha256.txt`) sebelum melakukan deserialisasi `pickle.loads()` untuk mencegah eksekusi artefak termodifikasi.",
+            "notes": "Re-use langsung pola keamanan deserialisasi dari Chapter 36."
+        },
+        {
+            "kind": "content",
+            "title": "Kontrol Keamanan Input & Human Escalation",
+            "body": "- Terapkan fungsi penolak muatan cacat (`NaN`, `Inf`, `bool` tersamar, di luar rentang Data Dictionary).\n- Ketika input ditolak atau probabilitas keyakinan di bawah ambang (`confidence < 0.65`), sistem wajib memicu `human_escalation = True` alih-alih memberi keputusan otonom.",
+            "notes": "Tegaskan sinergi antara validasi data keras dan prinsip Human-in-the-Loop."
+        },
+        {
+            "kind": "content",
+            "title": "Responsible AI & Pemantauan Drift",
+            "body": "- Simulasikan pemantauan aliran telemetri pasca-pelatihan memakai **Population Stability Index (PSI)** dan statistik **Kolmogorov-Smirnov**.\n- Bila `Max PSI > 0.25` (contohnya kenaikan suhu `+9.5C` & getaran `+1.1 mm/s`), sistem otomatis menaikkan `drift_alert = True` untuk peninjauan ulang manusia.",
+            "notes": "Drift monitoring menandai awal siklus hidup MLOps berulang setelah model selesai dilatih."
+        },
+        {
+            "kind": "content",
+            "title": "Capstone Risk Register & Model Card",
+            "body": "- Wajib melampirkan **Risk Register** (likelihood, severity, kontrol mitigasi, residual score) terpetakan ke **NIST AI RMF 1.0**.\n- Wajib menerbitkan **Model Card** berisi metrik uji, *prohibited use*, dan pernyataan tegas bahwa artefak akademik **bukan** sertifikasi keselamatan industri.",
+            "notes": "Pastikan proyek mahasiswa selalu membawa dokumen Model Card lengkap."
+        },
+        {
+            "kind": "content",
+            "title": "Proyek Referensi: Intelligent Sensor Monitoring",
+            "body": "Implementasi lengkap tersedia di `chapter-40/code/`:\n- Dataset sintetis motor `1.500` sampel $\\times$ `6` fitur (`temp, vibration, current, acoustic, rpm_dev, ripple`).\n- Membandingkan `Dummy`, `LogisticRegression`, `RandomForest`, dan `MLPClassifier` secara transparan di CPU.",
+            "notes": "Arahkan mahasiswa mempelajari implementasi ini sebagai templat struktur proyek yang bersih dan teruji."
+        },
+        {
+            "kind": "code",
+            "title": "Hasil Pengujian & Verifikasi Proyek Referensi",
+            "body": "Eksekusi `run_capstone_pipeline.py` & `test_capstone_suite.py` terverifikasi otomatis.",
+            "code": "python content/level-4-advanced-ai/chapter-40/code/run_capstone_pipeline.py\npython content/level-4-advanced-ai/chapter-40/code/test_capstone_suite.py\n# Zero leakage split, SHA-256 match, schema rejection & PSI drift alert verified!",
+            "notes": "Seluruh hasil angka sebenarnya dicatat ke `experiments/capstone_report_metrics.json` dan dijelaskan di modul baca."
+        },
+        {
+            "kind": "content",
+            "title": "Analisis Kegagalan & Batasan Proyek Referensi",
+            "body": "- Kesalahan pada held-out test set umumnya terjadi di dekat batas keputusan ketika noise Gaussian menutupi sinyal anomali lemah.\n- **Batasan Nyata:** Telemetri Gaussian terstruktur tidak mewakili kompleksitas getaran mesin industri nyata dengan beban berubah-ubah atau gangguan elektromagnetik.",
+            "notes": "Penulisan jujur mengenai error cases adalah indikator kematangan akademik."
+        },
+        {
+            "kind": "content",
+            "title": "7 Milestone Proyek Capstone",
+            "body": "1. **Proposal:** Masalah, tujuan & metrik.\n2. **Dataset & Architecture:** Provenance, data dictionary & diagram.\n3. **Initial Prototype:** Baseline & pipeline data anti-leakage.\n4. **System Integration:** Model terlatih, checksum & API/inferensi lokal.\n5. **Testing & Evaluation:** Unit tests, benchmark CPU, error analysis & drift.\n6. **Final Documentation:** Laporan teknis, Risk Register & Model Card.\n7. **Final Presentation:** Demo langsung & pertanggungjawaban keputusan.",
+            "notes": "Gunakan 7 milestone ini sebagai jadwal kontrol dosen pembimbing maupun tim mahasiswa."
+        },
+        {
+            "kind": "content",
+            "title": "Daftar Deliverables Wajib Capstone",
+            "body": "- Source code modular & konfigurasi deterministik.\n- Notebook eksplorasi & evaluasi terstruktur.\n- Suite unit test lolos (`unittest` / `pytest`).\n- Data Dictionary, Risk Register, & Model Card lengkap.\n- Laporan teknis & slide presentasi akademik.",
+            "notes": "Pastikan seluruh artefak berada dalam struktur direktori rapi agar mudah diaudit."
+        },
+        {
+            "kind": "split",
+            "title": "Rubrik Penilaian Capstone (Total 100 Poin)",
+            "body": "- **Problem Formulation & Requirements:** 15 poin\n- **Dataset & System Architecture:** 15 poin\n- **Model / Algorithm Implementation:** 25 poin\n\n---\n\n- **Evaluation & Experimental Analysis:** 20 poin\n- **Security & Responsible AI:** 15 poin\n- **Documentation & Presentation:** 10 poin",
+            "notes": "Tekankan bahwa rubrik ini adil untuk semua tipe proyek (ML, DL, RAG, Agent, Multimodal, RL, maupun Edge AI)."
+        },
+        {
+            "kind": "content",
+            "title": "Panduan Presentasi & Pertahanan Teknis",
+            "body": "- Fokuskan 60% waktu presentasi pada perumusan masalah, arsitektur, evaluasi komparatif, analisis kegagalan, dan kontrol Responsible AI.\n- Siapkan jawaban berbasis bukti data untuk pertanyaan tentang pilihan algoritma, pencegahan kebocoran data, serta batas kegagalan model.",
+            "notes": "Latih mahasiswa mempresentasikan keterbatasan secara proaktif sebelum ditanya penguji."
+        },
+        {
+            "kind": "content",
+            "title": "Kesalahan Umum yang Harus Dihindari",
+            "body": "- Melakukan normalisasi/SMOTE sebelum memecah *test split* (*data leakage*).\n- Tidak menyertakan baseline pembanding atau melaporkan akurasi pada RL/generatif.\n- Menggunakan skor evaluasi satu run tanpa seed tetap.\n- Mengklaim prototipe kampus telah *siap produksi* atau *tersertifikasi aman*.",
+            "notes": "Daftar anti-pattern ini meringkas pelajaran dari seluruh 39 chapter sebelumnya."
+        },
+        {
+            "kind": "content",
+            "title": "Standar Ilmiah Proyek Akademik",
+            "body": "Setiap klaim harus didukung:\n- Protokol evaluasi & pemecahan data yang jelas.\n- Metrik tepat sesuai jenis tugas AI.\n- Perbandingan baseline yang adil.\n- Analisis error, profil biaya sumber daya, penilaian risiko, dan sitasi akurat.",
+            "notes": "Inilah standar minimal yang membedakan rekayasa AI ilmiah dari sekadar demo skrip."
+        },
+        {
+            "kind": "content",
+            "title": "Penutup: Peta Perjalanan 40 Chapter & Langkah Lanjut",
+            "body": "Selamat telah menuntaskan seluruh **40 Chapter Master Curriculum AI Learning Hub**!\nJalur lanjutan pasca kurikulum:\n- Riset terapan lintas track (**CV, NLP/LLM, Robotics/RL, MLOps/Edge, Responsible AI**).\n- Kolaborasi *open-source* bereprodusibilitas tinggi.\n- Pengabdian dan pengembangan solusi AI tepercaya bagi industri dan masyarakat Indonesia.",
+            "notes": "Berikan apresiasi kepada mahasiswa yang telah menuntaskan perjalanan panjang dari AI Foundations hingga Capstone."
+        },
+        {
+            "kind": "content",
+            "title": "Referensi Akademik Capstone",
+            "body": "1. Sculley, D. et al. (2015). *Hidden Technical Debt in Machine Learning Systems*. https://papers.nips.cc/paper/2015/hash/86df7dcfd896fcaf2674f757a2463eba-Abstract.html\n2. Breck, E. et al. (2017). *The ML Test Score: A Rubric for ML Production Readiness*. https://research.google/pubs/the-ml-test-score-a-rubric-for-ml-production-readiness-and-technical-debt-reduction/\n3. NIST (2023). *AI Risk Management Framework (AI RMF 1.0)*. https://doi.org/10.6028/NIST.AI.100-1\n4. Mitchell, M. et al. (2019). *Model Cards for Model Reporting*. https://arxiv.org/abs/1810.03993",
+            "notes": "Referensi inti tentang rekayasa sistem ML tepercaya dan dokumentasi model."
+        }
+    ]
+
+    assert 24 <= len(slides) <= 32
+    for i, s in enumerate(slides):
+        assert len(s["body"]) <= 1000, f"Slide {i} body too long: {len(s['body'])}"
+        if "code" in s:
+            assert len(s["code"].split("\n")) <= 18, f"Slide {i} code too long"
+
+    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "deck.json")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(slides, f, indent=2, ensure_ascii=False)
+    print(f"Generated {len(slides)} slides at {out_path}")
+
+
+if __name__ == "__main__":
+    make_slides()

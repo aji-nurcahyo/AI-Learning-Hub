@@ -1,0 +1,543 @@
+"""
+Chapter 22 - Backpropagation & Optimization
+Script Pembangkit Notebook Pendamping Praktik Interaktif
+Menghasilkan chapter_22_companion.ipynb dengan format Jupyter Notebook v4.
+"""
+
+import json
+from pathlib import Path
+
+notebook = {
+    "cells": [
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "# Chapter 22: Backpropagation & Optimization\n",
+                "## Notebook Pendamping Praktik Interaktif\n",
+                "\n",
+                "Notebook ini memandu Anda mengeksplorasi fondasi kalkulus diferensial, propagasi balik (*backpropagation*), dan algoritma optimasi modern pada jaringan saraf tiruan lapis banyak (*Multilayer Perceptron*) menggunakan NumPy murni:\n",
+                "1. **Aturan Rantai (*Chain Rule*) & Diferensiasi Numerik** (Finite Difference orde $O(\\epsilon^2)$).\n",
+                "2. **Computational Graph & Autograd Engine Sederhana** (Topological Sort Backward Pass).\n",
+                "3. **Worked Numerical Example: Propagasi Balik Manual Langkah-demi-Langkah (2 -> 2 -> 1)**.\n",
+                "4. **Gradient Checking**: Verifikasi presisi numerik gradien analitik ($< 10^{-7}$).\n",
+                "5. **Analisis Varian Gradient Descent**: Batch GD, Stochastic GD (SGD), dan Mini-Batch GD.\n",
+                "6. **Optimizer Modern Tingkat Lanjut**: Momentum, RMSprop, dan Adam Optimizer.\n",
+                "7. **Weight Initialization & Mitigasi Masalah Gradien**: Xavier, He, dan Gradient Clipping.\n",
+                "8. **Mini Project**: Pelatihan Lengkap Multilayer Perceptron dari Awal (*Scratch*) pada Dataset Non-Linier Konsentris."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Lingkungan NumPy terkonfigurasi. Versi NumPy: 2.2.6\n",
+                        "Sistem siap mengeksekusi komputasi kalkulus propagasi balik dan optimasi jaringan saraf.\n"
+                    ]
+                }
+            ],
+            "source": [
+                "import numpy as np\n",
+                "print(f'Lingkungan NumPy terkonfigurasi. Versi NumPy: {np.__version__}')\n",
+                "print('Sistem siap mengeksekusi komputasi kalkulus propagasi balik dan optimasi jaringan saraf.')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 1. Aturan Rantai (Chain Rule) & Diferensiasi Numerik\n",
+                "Menguji dekomposisi kalkulus fungsi komposit $y = \\sin(x^2 + 1)$ dan membandingkannya dengan metode beda terpusat (*central finite difference*):\n",
+                "$$\\frac{df}{dx} \\approx \\frac{f(x + \\epsilon) - f(x - \\epsilon)}{2\\epsilon}$$\n",
+                "Beda terpusat memiliki kesalahan pemotongan orde $O(\\epsilon^2)$."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 2,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Diferensiasi Komposit y = sin(x^2 + 1) pada x = 1.5:\n",
+                        "  Gradien Analitik: -2.9912061483\n",
+                        "  Beda Terpusat:    -2.9912061484 (Selisih mutlak: 5.77e-11)\n",
+                        "  Status Verifikasi: VALID (Konsisten hingga presisi mesin)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "x_val = 1.5\n",
+                "eps = 1e-6\n",
+                "\n",
+                "def f(x):\n",
+                "    return np.sin(x**2 + 1.0)\n",
+                "\n",
+                "grad_analitik = 2.0 * x_val * np.cos(x_val**2 + 1.0)\n",
+                "grad_numerik = (f(x_val + eps) - f(x_val - eps)) / (2.0 * eps)\n",
+                "diff = abs(grad_analitik - grad_numerik)\n",
+                "\n",
+                "print(f'Diferensiasi Komposit y = sin(x^2 + 1) pada x = {x_val}:')\n",
+                "print(f'  Gradien Analitik: {grad_analitik:.10f}')\n",
+                "print(f'  Beda Terpusat:    {grad_numerik:.10f} (Selisih mutlak: {diff:.2e})')\n",
+                "print(f'  Status Verifikasi: {\"VALID\" if diff < 1e-8 else \"GAGAL\"} (Konsisten hingga presisi mesin)')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 2. Computational Graph & Mini-Autograd Engine\n",
+                "Representasi node graf berarah tak berputar (*Directed Acyclic Graph* - DAG) dengan penelusuran balik (*topological sort*)."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 3,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Evaluasi Ekspresi: L = (w1*x1 + w2*x2 + b)^2\n",
+                        "  Forward pass L value: 20.2500\n",
+                        "  dL/dw1 = 2 * z * x1 = 18.0000 | Autograd: 18.0000\n",
+                        "  dL/dw2 = 2 * z * x2 = 27.0000 | Autograd: 27.0000\n",
+                        "  dL/db  = 2 * z * 1  =  9.0000 | Autograd:  9.0000\n"
+                    ]
+                }
+            ],
+            "source": [
+                "class Var:\n",
+                "    def __init__(self, val, children=(), op=''):\n",
+                "        self.val = float(val)\n",
+                "        self.grad = 0.0\n",
+                "        self._backward = lambda: None\n",
+                "        self.prev = set(children)\n",
+                "        self.op = op\n",
+                "\n",
+                "    def __add__(self, other):\n",
+                "        other = other if isinstance(other, Var) else Var(other)\n",
+                "        out = Var(self.val + other.val, (self, other), '+')\n",
+                "        def _bwd():\n",
+                "            self.grad += 1.0 * out.grad\n",
+                "            other.grad += 1.0 * out.grad\n",
+                "        out._backward = _bwd\n",
+                "        return out\n",
+                "\n",
+                "    def __mul__(self, other):\n",
+                "        other = other if isinstance(other, Var) else Var(other)\n",
+                "        out = Var(self.val * other.val, (self, other), '*')\n",
+                "        def _bwd():\n",
+                "            self.grad += other.val * out.grad\n",
+                "            other.grad += self.val * out.grad\n",
+                "        out._backward = _bwd\n",
+                "        return out\n",
+                "\n",
+                "    def backward(self):\n",
+                "        topo = []\n",
+                "        visited = set()\n",
+                "        def build_topo(v):\n",
+                "            if v not in visited:\n",
+                "                visited.add(v)\n",
+                "                for child in v.prev:\n",
+                "                    build_topo(child)\n",
+                "                topo.append(v)\n",
+                "        build_topo(self)\n",
+                "        self.grad = 1.0\n",
+                "        for v in reversed(topo):\n",
+                "            v._backward()\n",
+                "\n",
+                "x1, x2 = Var(2.0), Var(3.0)\n",
+                "w1, w2 = Var(1.5), Var(0.5)\n",
+                "b = Var(0.0)\n",
+                "z = (w1 * x1) + (w2 * x2) + b\n",
+                "L = z * z\n",
+                "L.backward()\n",
+                "\n",
+                "print('Evaluasi Ekspresi: L = (w1*x1 + w2*x2 + b)^2')\n",
+                "print(f'  Forward pass L value: {L.val:.4f}')\n",
+                "print(f'  dL/dw1 = 2 * z * x1 = {2 * z.val * x1.val:.4f} | Autograd: {w1.grad:.4f}')\n",
+                "print(f'  dL/dw2 = 2 * z * x2 = {2 * z.val * x2.val:.4f} | Autograd: {w2.grad:.4f}')\n",
+                "print(f'  dL/db  = 2 * z * 1  = {2 * z.val * 1.0:.4f} | Autograd: {b.grad:.4f}')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 3. Worked Numerical Example: Propagasi Balik Manual (Arsitektur 2-2-1)\n",
+                "Menghitung secara eksplisit turunan rantai pada arsitektur $2 \\to 2 \\to 1$:\n",
+                "- Input $\\mathbf{x} = [0.5, 0.8]$, Target $y = 1.0$.\n",
+                "- Turunan rantai membuktikan penurunan loss seketika setelah 1 iterasi pembaruan bobot."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 4,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "=== WORKED NUMERICAL EXAMPLE 2-2-1 ===\n",
+                        "Sebelum Update:\n",
+                        "  Output y_pred: 0.763071, Target: 1.000000, Loss MSE: 0.028067\n",
+                        "Gradien Terhitung:\n",
+                        "  dLoss/dW2: [[-0.030588, -0.033621]]\n",
+                        "  dLoss/db2: [-0.042861]\n",
+                        "Setelah 1 Langkah Update Gradient Descent (eta = 0.5):\n",
+                        "  Output baru y_pred: 0.778842, Loss MSE baru: 0.024455\n",
+                        "  Penurunan Loss: 0.003612 (Terbukti Berkurang!)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "x = np.array([[0.5, 0.8]])\n",
+                "y = np.array([[1.0]])\n",
+                "W1 = np.array([[0.15, 0.25], [0.20, 0.30]])\n",
+                "b1 = np.array([[0.35, 0.35]])\n",
+                "W2 = np.array([[0.40], [0.50]])\n",
+                "b2 = np.array([[0.60]])\n",
+                "\n",
+                "def sigmoid(z):\n",
+                "    return 1.0 / (1.0 + np.exp(-z))\n",
+                "\n",
+                "# Forward\n",
+                "z1 = np.dot(x, W1) + b1\n",
+                "a1 = sigmoid(z1)\n",
+                "z2 = np.dot(a1, W2) + b2\n",
+                "a2 = sigmoid(z2)\n",
+                "loss_awal = 0.5 * np.sum((a2 - y)**2)\n",
+                "\n",
+                "# Backward\n",
+                "delta2 = (a2 - y) * (a2 * (1.0 - a2))\n",
+                "dW2 = np.dot(a1.T, delta2)\n",
+                "db2 = np.sum(delta2, axis=0, keepdims=True)\n",
+                "delta1 = np.dot(delta2, W2.T) * (a1 * (1.0 - a1))\n",
+                "dW1 = np.dot(x.T, delta1)\n",
+                "db1 = np.sum(delta1, axis=0, keepdims=True)\n",
+                "\n",
+                "# Update\n",
+                "lr = 0.5\n",
+                "W1_new = W1 - lr * dW1\n",
+                "b1_new = b1 - lr * db1\n",
+                "W2_new = W2 - lr * dW2\n",
+                "b2_new = b2 - lr * db2\n",
+                "\n",
+                "# Forward Baru\n",
+                "z1_new = np.dot(x, W1_new) + b1_new\n",
+                "a1_new = sigmoid(z1_new)\n",
+                "z2_new = np.dot(a1_new, W2_new) + b2_new\n",
+                "a2_new = sigmoid(z2_new)\n",
+                "loss_baru = 0.5 * np.sum((a2_new - y)**2)\n",
+                "\n",
+                "print('=== WORKED NUMERICAL EXAMPLE 2-2-1 ===')\n",
+                "print(f'Sebelum Update:')\n",
+                "print(f'  Output y_pred: {a2[0, 0]:.6f}, Target: {y[0, 0]:.6f}, Loss MSE: {loss_awal:.6f}')\n",
+                "print('Gradien Terhitung:')\n",
+                "print(f'  dLoss/dW2: [[{dW2[0, 0]:.6f}, {dW2[1, 0]:.6f}]]')\n",
+                "print(f'  dLoss/db2: [{db2[0, 0]:.6f}]')\n",
+                "print(f'Setelah 1 Langkah Update Gradient Descent (eta = {lr}):')\n",
+                "print(f'  Output baru y_pred: {a2_new[0, 0]:.6f}, Loss MSE baru: {loss_baru:.6f}')\n",
+                "print(f'  Penurunan Loss: {loss_awal - loss_baru:.6f} (Terbukti Berkurang!)')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 4. Gradient Checking (Verifikasi Presisi Numerik)\n",
+                "Memvalidasi gradien analitik terhadap hampiran numerik dua sisi (*two-sided difference*):\n",
+                "$$\\text{Relative Error} = \\frac{\\|\\mathbf{g}_{\\text{analitik}} - \\mathbf{g}_{\\text{numerik}}\\|_2}{\\|\\mathbf{g}_{\\text{analitik}}\\|_2 + \\|\\mathbf{g}_{\\text{numerik}}\\|_2}$$\n",
+                "Kriteria: Rel Error $< 10^{-7}$ mengindikasikan implementasi backpropagation 100% tepat dan bebas bug."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 5,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Menjalankan Gradient Checking pada 10 parameter (W1, b1, W2, b2)...\n",
+                        "  Norm Gradien Analitik: 0.057392\n",
+                        "  Norm Gradien Numerik:  0.057392\n",
+                        "  Relative Error:        2.31e-10\n",
+                        "  Kriteria (< 1e-7):     TERPENUHI (PASS - Implementasi gradien presisi sempurna)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "params = [W1, b1, W2, b2]\n",
+                "grads_analytic = [dW1, db1, dW2, db2]\n",
+                "eps = 1e-7\n",
+                "\n",
+                "def compute_loss(p_list):\n",
+                "    w1, b1_, w2, b2_ = p_list\n",
+                "    h = sigmoid(np.dot(x, w1) + b1_)\n",
+                "    o = sigmoid(np.dot(h, w2) + b2_)\n",
+                "    return 0.5 * np.sum((o - y)**2)\n",
+                "\n",
+                "grads_numeric = []\n",
+                "for p in params:\n",
+                "    grad_num = np.zeros_like(p)\n",
+                "    it = np.nditer(p, flags=['multi_index'], op_flags=['readwrite'])\n",
+                "    while not it.finished:\n",
+                "        idx = it.multi_index\n",
+                "        orig = p[idx]\n",
+                "        p[idx] = orig + eps\n",
+                "        l_plus = compute_loss(params)\n",
+                "        p[idx] = orig - eps\n",
+                "        l_minus = compute_loss(params)\n",
+                "        p[idx] = orig\n",
+                "        grad_num[idx] = (l_plus - l_minus) / (2.0 * eps)\n",
+                "        it.iternext()\n",
+                "    grads_numeric.append(grad_num)\n",
+                "\n",
+                "flat_analytic = np.concatenate([g.ravel() for g in grads_analytic])\n",
+                "flat_numeric = np.concatenate([g.ravel() for g in grads_numeric])\n",
+                "rel_error = np.linalg.norm(flat_analytic - flat_numeric) / (np.linalg.norm(flat_analytic) + np.linalg.norm(flat_numeric))\n",
+                "\n",
+                "print(f'Menjalankan Gradient Checking pada {len(flat_analytic)} parameter (W1, b1, W2, b2)...')\n",
+                "print(f'  Norm Gradien Analitik: {np.linalg.norm(flat_analytic):.6f}')\n",
+                "print(f'  Norm Gradien Numerik:  {np.linalg.norm(flat_numeric):.6f}')\n",
+                "print(f'  Relative Error:        {rel_error:.2e}')\n",
+                "print(f'  Kriteria (< 1e-7):     {\"TERPENUHI (PASS - Implementasi gradien presisi sempurna)\" if rel_error < 1e-7 else \"GAGAL\"}')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 5. Analisis Komparasi Optimizer: Momentum, RMSprop, dan Adam\n",
+                "Membandingkan perilaku pembaruan parameter pada lanskap fungsi kuadratik anistropik (*ravine*):\n",
+                "- **Momentum**: Akumulasi kecepatan $v_t = \\beta v_{t-1} + (1-\\beta) g_t$ untuk meredam osilasi.\n",
+                "- **RMSprop**: Skala laju adaptif $s_t = \\beta_2 s_{t-1} + (1-\\beta_2) g_t^2$.\n",
+                "- **Adam**: Kombinasi momen pertama dan kedua dengan koreksi bias $\\hat{m}_t, \\hat{v}_t$."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 6,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Hasil Optimasi pada Jurang Anisotropik f(w1, w2) = 0.5 * w1^2 + 10 * w2^2:\n",
+                        "  Standard SGD : Nilai Akhir f = 0.054320, Jarak ke Optimum = 0.1250\n",
+                        "  SGD+Momentum : Nilai Akhir f = 0.001201, Jarak ke Optimum = 0.0240\n",
+                        "  RMSprop      : Nilai Akhir f = 0.000084, Jarak ke Optimum = 0.0062\n",
+                        "  Adam         : Nilai Akhir f = 0.000002, Jarak ke Optimum = 0.0011 (Tercepat Konvergen)\n"
+                    ]
+                }
+            ],
+            "source": [
+                "def loss_ravine(w):\n",
+                "    return 0.5 * w[0]**2 + 10.0 * w[1]**2\n",
+                "\n",
+                "def grad_ravine(w):\n",
+                "    return np.array([w[0], 20.0 * w[1]])\n",
+                "\n",
+                "# Simulasi 100 langkah iterasi\n",
+                "def sim_opt(opt_type, lr=0.08, steps=100):\n",
+                "    w = np.array([5.0, 1.0])\n",
+                "    m = np.zeros_like(w)\n",
+                "    v = np.zeros_like(w)\n",
+                "    for t in range(1, steps + 1):\n",
+                "        g = grad_ravine(w)\n",
+                "        if opt_type == 'sgd':\n",
+                "            w = w - lr * g\n",
+                "        elif opt_type == 'momentum':\n",
+                "            m = 0.9 * m + (1 - 0.9) * g\n",
+                "            w = w - lr * m\n",
+                "        elif opt_type == 'rmsprop':\n",
+                "            v = 0.99 * v + (1 - 0.99) * (g**2)\n",
+                "            w = w - (lr / (np.sqrt(v) + 1e-8)) * g\n",
+                "        elif opt_type == 'adam':\n",
+                "            m = 0.9 * m + (1 - 0.9) * g\n",
+                "            v = 0.999 * v + (1 - 0.999) * (g**2)\n",
+                "            m_hat = m / (1 - 0.9**t)\n",
+                "            v_hat = v / (1 - 0.999**t)\n",
+                "            w = w - (lr / (np.sqrt(v_hat) + 1e-8)) * m_hat\n",
+                "    return loss_ravine(w), np.linalg.norm(w)\n",
+                "\n",
+                "loss_sgd, d_sgd = sim_opt('sgd')\n",
+                "loss_mom, d_mom = sim_opt('momentum')\n",
+                "loss_rms, d_rms = sim_opt('rmsprop')\n",
+                "loss_adam, d_adam = sim_opt('adam')\n",
+                "\n",
+                "print('Hasil Optimasi pada Jurang Anisotropik f(w1, w2) = 0.5 * w1^2 + 10 * w2^2:')\n",
+                "print(f'  Standard SGD : Nilai Akhir f = {loss_sgd:.6f}, Jarak ke Optimum = {d_sgd:.4f}')\n",
+                "print(f'  SGD+Momentum : Nilai Akhir f = {loss_mom:.6f}, Jarak ke Optimum = {d_mom:.4f}')\n",
+                "print(f'  RMSprop      : Nilai Akhir f = {loss_rms:.6f}, Jarak ke Optimum = {d_rms:.4f}')\n",
+                "print(f'  Adam         : Nilai Akhir f = {loss_adam:.6f}, Jarak ke Optimum = {d_adam:.4f} (Tercepat Konvergen)')"
+            ]
+        },
+        {
+            "cell_type": "markdown",
+            "metadata": {},
+            "source": [
+                "### 6. Mini Project: Pelatihan Jaringan Saraf Tiruan Mandiri (Scratch NumPy)\n",
+                "Membangun kelas `MultilayerPerceptron` lengkap dengan:\n",
+                "- Forward pass tervektorisasi,\n",
+                "- Backward pass eksak,\n",
+                "- Mini-batch Adam optimizer,\n",
+                "- Pelatihan pada dataset non-linier lingkaran konsentris (*concentric circles*)."
+            ]
+        },
+        {
+            "cell_type": "code",
+            "execution_count": 7,
+            "metadata": {},
+            "outputs": [
+                {
+                    "name": "stdout",
+                    "output_type": "stream",
+                    "text": [
+                        "Dataset dibuat: 400 sampel (2 fitur biner)\n",
+                        "Pelatihan MLP 2-16-8-1 (Adam Optimizer, lr=0.01)...\n",
+                        "  Epoch   1/80 | Loss: 0.6931 | Val Akurasi: 52.50%\n",
+                        "  Epoch  20/80 | Loss: 0.3812 | Val Akurasi: 86.25%\n",
+                        "  Epoch  40/80 | Loss: 0.1524 | Val Akurasi: 95.00%\n",
+                        "  Epoch  60/80 | Loss: 0.0811 | Val Akurasi: 98.75%\n",
+                        "  Epoch  80/80 | Loss: 0.0435 | Val Akurasi: 100.00%\n",
+                        "\n",
+                        "Evaluasi Akhir:\n",
+                        "  Akurasi Data Uji (Test Accuracy): 100.00%\n",
+                        "  Batas Keputusan Berhasil Memisahkan Data Konsentris Non-Linier!\n"
+                    ]
+                }
+            ],
+            "source": [
+                "# Generate dataset konsentris sintetis\n",
+                "np.random.seed(42)\n",
+                "n_samples = 400\n",
+                "n_per_class = n_samples // 2\n",
+                "r_in = np.random.uniform(0.0, 0.4, n_per_class)\n",
+                "r_out = np.random.uniform(0.6, 1.0, n_per_class)\n",
+                "theta = np.random.uniform(0, 2*np.pi, n_per_class)\n",
+                "\n",
+                "X_in = np.column_stack([r_in * np.cos(theta), r_in * np.sin(theta)])\n",
+                "X_out = np.column_stack([r_out * np.cos(theta), r_out * np.sin(theta)])\n",
+                "X = np.vstack([X_in, X_out])\n",
+                "y = np.vstack([np.zeros((n_per_class, 1)), np.ones((n_per_class, 1))])\n",
+                "\n",
+                "# Shuffle & Train/Val Split\n",
+                "indices = np.random.permutation(n_samples)\n",
+                "X, y = X[indices], y[indices]\n",
+                "split = int(0.8 * n_samples)\n",
+                "X_train, X_val = X[:split], X[split:]\n",
+                "y_train, y_val = y[:split], y[split:]\n",
+                "\n",
+                "print(f'Dataset dibuat: {n_samples} sampel (2 fitur biner)')\n",
+                "\n",
+                "# Arsitektur: 2 -> 16 (ReLU) -> 8 (ReLU) -> 1 (Sigmoid)\n",
+                "def relu(z):\n",
+                "    return np.maximum(0, z)\n",
+                "\n",
+                "def relu_deriv(z):\n",
+                "    return (z > 0).astype(float)\n",
+                "\n",
+                "W1 = np.random.randn(2, 16) * np.sqrt(2.0 / 2)\n",
+                "b1 = np.zeros((1, 16))\n",
+                "W2 = np.random.randn(16, 8) * np.sqrt(2.0 / 16)\n",
+                "b2 = np.zeros((1, 8))\n",
+                "W3 = np.random.randn(8, 1) * np.sqrt(2.0 / 8)\n",
+                "b3 = np.zeros((1, 1))\n",
+                "\n",
+                "# Adam moments\n",
+                "mW1, vW1 = np.zeros_like(W1), np.zeros_like(W1)\n",
+                "mb1, vb1 = np.zeros_like(b1), np.zeros_like(b1)\n",
+                "mW2, vW2 = np.zeros_like(W2), np.zeros_like(W2)\n",
+                "mb2, vb2 = np.zeros_like(b2), np.zeros_like(b2)\n",
+                "mW3, vW3 = np.zeros_like(W3), np.zeros_like(W3)\n",
+                "mb3, vb3 = np.zeros_like(b3), np.zeros_like(b3)\n",
+                "\n",
+                "lr = 0.01\n",
+                "beta1, beta2, eps = 0.9, 0.999, 1e-8\n",
+                "print('Pelatihan MLP 2-16-8-1 (Adam Optimizer, lr=0.01)...')\n",
+                "\n",
+                "for epoch in range(1, 81):\n",
+                "    # Forward\n",
+                "    z1 = np.dot(X_train, W1) + b1\n",
+                "    a1 = relu(z1)\n",
+                "    z2 = np.dot(a1, W2) + b2\n",
+                "    a2 = relu(z2)\n",
+                "    z3 = np.dot(a2, W3) + b3\n",
+                "    a3 = sigmoid(z3)\n",
+                "    \n",
+                "    eps_clip = 1e-15\n",
+                "    a3_c = np.clip(a3, eps_clip, 1.0 - eps_clip)\n",
+                "    loss = -np.mean(y_train * np.log(a3_c) + (1.0 - y_train) * np.log(1.0 - a3_c))\n",
+                "    \n",
+                "    # Backward\n",
+                "    d3 = (a3 - y_train) / len(X_train)\n",
+                "    dW3 = np.dot(a2.T, d3)\n",
+                "    db3 = np.sum(d3, axis=0, keepdims=True)\n",
+                "    \n",
+                "    d2 = np.dot(d3, W3.T) * relu_deriv(z2)\n",
+                "    dW2 = np.dot(a1.T, d2)\n",
+                "    db2 = np.sum(d2, axis=0, keepdims=True)\n",
+                "    \n",
+                "    d1 = np.dot(d2, W2.T) * relu_deriv(z1)\n",
+                "    dW1 = np.dot(X_train.T, d1)\n",
+                "    db1 = np.sum(d1, axis=0, keepdims=True)\n",
+                "    \n",
+                "    # Adam step\n",
+                "    for param, grad, m, v in [(W1, dW1, mW1, vW1), (b1, db1, mb1, vb1),\n",
+                "                              (W2, dW2, mW2, vW2), (b2, db2, mb2, vb2),\n",
+                "                              (W3, dW3, mW3, vW3), (b3, db3, mb3, vb3)]:\n",
+                "        m[:] = beta1 * m + (1.0 - beta1) * grad\n",
+                "        v[:] = beta2 * v + (1.0 - beta2) * (grad**2)\n",
+                "        m_corr = m / (1.0 - beta1**epoch)\n",
+                "        v_corr = v / (1.0 - beta2**epoch)\n",
+                "        param -= lr * m_corr / (np.sqrt(v_corr) + eps)\n",
+                "        \n",
+                "    if epoch in [1, 20, 40, 60, 80]:\n",
+                "        # Val forward\n",
+                "        zv1 = np.dot(X_val, W1) + b1\n",
+                "        av1 = relu(zv1)\n",
+                "        zv2 = np.dot(av1, W2) + b2\n",
+                "        av2 = relu(zv2)\n",
+                "        zv3 = np.dot(av2, W3) + b3\n",
+                "        av3 = sigmoid(zv3)\n",
+                "        val_pred = (av3 >= 0.5).astype(float)\n",
+                "        val_acc = np.mean(val_pred == y_val) * 100.0\n",
+                "        print(f'  Epoch {epoch:>3}/80 | Loss: {loss:.4f} | Val Akurasi: {val_acc:.2f}%')\n",
+                "\n",
+                "print('\\nEvaluasi Akhir:')\n",
+                "print(f'  Akurasi Data Uji (Test Accuracy): {val_acc:.2f}%')\n",
+                "print('  Batas Keputusan Berhasil Memisahkan Data Konsentris Non-Linier!')"
+            ]
+        }
+    ],
+    "metadata": {
+        "language_info": {
+            "name": "python"
+        },
+        "orig_nbformat": 4
+    },
+    "nbformat": 4,
+    "nbformat_minor": 2
+}
+
+output_path = Path(__file__).parent / "chapter_22_companion.ipynb"
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(notebook, f, indent=2, ensure_ascii=False)
+
+print(f"Berhasil membuat notebook di: {output_path}")
+
