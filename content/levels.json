@@ -3,28 +3,28 @@
     "id": 1,
     "title": "AI Foundations",
     "folder": "level-1-ai-foundations",
-    "progression": "Understand → Apply",
-    "description": "Membangun cara berpikir AI melalui agent, search, reasoning, matematika, data, dan tanggung jawab."
+    "progression": "Konsep Dasar → Pemodelan Awal",
+    "description": "Dasar sistem cerdas, algoritma pencarian, penalaran logika, matematika AI, pengolahan data, serta etika AI."
   },
   {
     "id": 2,
     "title": "Machine Learning",
     "folder": "level-2-machine-learning",
-    "progression": "Apply → Evaluate",
-    "description": "Mengembangkan model dari dataset hingga evaluasi yang dapat dipercaya."
+    "progression": "Pemodelan Data → Evaluasi",
+    "description": "Membangun, menyetel, dan mengevaluasi model prediktif serta unsupervised learning dari dataset nyata."
   },
   {
     "id": 3,
     "title": "Deep Learning & Generative AI",
     "folder": "level-3-deep-learning",
-    "progression": "Apply → Create",
-    "description": "Memahami Neural Network, perception, bahasa, dan generasi konten."
+    "progression": "Arsitektur Neural → Generasi",
+    "description": "Arsitektur Neural Network, optimasi, PyTorch, computer vision, NLP, Transformer, dan Generative AI."
   },
   {
     "id": 4,
     "title": "Applied & Advanced AI Systems",
     "folder": "level-4-advanced-ai",
-    "progression": "Create → Evaluate",
-    "description": "Merancang intelligent systems yang terukur, aman, dan dapat dipelihara."
+    "progression": "Integrasi → Tata Kelola Sistem",
+    "description": "Fine-tuning, vector search, RAG, AI agents, Reinforcement Learning, MLOps, Edge AI, Multimodal, dan tata kelola sistem AI."
   }
 ]

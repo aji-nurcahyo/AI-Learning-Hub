@@ -59,9 +59,12 @@ const representativeRoutes = [
   { name: 'track-nlp-llm-practice', hash: '#track/nlp-llm/practice' },
   { name: 'track-computer-vision-capstone', hash: '#track/computer-vision/capstone' },
   { name: 'track-robotics-capstone', hash: '#track/robotics/capstone' },
+  { name: 'getting-started-gs01', hash: '#getting-started/gs-01' },
+  { name: 'getting-started-gs04', hash: '#getting-started/gs-04' },
+  { name: 'getting-started-gs08', hash: '#getting-started/gs-08' },
 ];
 
-const shotTargets = new Set(['homepage', 'chapter-27', 'track-telecommunications', 'slide-28']);
+const shotTargets = new Set(['homepage', 'chapter-27', 'track-telecommunications', 'slide-28', 'getting-started-gs04']);
 
 const viewports = [
   { name: 'desktop', width: 1440, height: 900, mobile: false },
@@ -256,7 +259,7 @@ try {
       // For mobile/tablet check key subset; for desktop check all representative routes
       const routesToCheck = vp.name === 'desktop'
         ? representativeRoutes
-        : representativeRoutes.filter(r => ['homepage', 'chapter-27', 'chapter-27-read', 'slide-28', 'track-telecommunications', 'track-robotics-capstone'].includes(r.name));
+        : representativeRoutes.filter(r => ['homepage', 'chapter-27', 'chapter-27-read', 'slide-28', 'track-telecommunications', 'track-robotics-capstone', 'getting-started-gs04'].includes(r.name));
 
       for (const r of routesToCheck) {
         curCtx = `${theme}/${vp.name}/${r.hash}`;

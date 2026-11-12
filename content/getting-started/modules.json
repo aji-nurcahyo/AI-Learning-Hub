@@ -2,48 +2,56 @@
   {
     "id": "gs-01",
     "number": "GS-01",
+    "group": "Persiapan",
     "title": "Memilih Learning Environment",
     "description": "Perbandingan local development environment vs Google Colab, jalur pemula, serta peran CPU dan GPU."
   },
   {
     "id": "gs-02",
     "number": "GS-02",
+    "group": "Persiapan",
     "title": "Python Installation & Verification",
     "description": "Instalasi Python versi stabil yang kompatibel, langkah Windows, macOS/Linux, dan perintah verifikasi."
   },
   {
     "id": "gs-03",
     "number": "GS-03",
+    "group": "Persiapan",
     "title": "VS Code & Python Development",
     "description": "Pengaturan Visual Studio Code, Python extension, pemilihan interpreter, dan eksekusi script."
   },
   {
     "id": "gs-04",
     "number": "GS-04",
+    "group": "Konfigurasi",
     "title": "Virtual Environment & Package Management",
     "description": "Isolasi proyek dengan venv, pip, requirements.txt, lintas OS tanpa melanggar kebijakan keamanan."
   },
   {
     "id": "gs-05",
     "number": "GS-05",
+    "group": "Konfigurasi",
     "title": "Jupyter Notebook, JupyterLab & Google Colab",
     "description": "Siklus hidup kernel, state eksekusi sel, upload/download Colab, dan sifat runtime sementara."
   },
   {
     "id": "gs-06",
     "number": "GS-06",
+    "group": "Konfigurasi",
     "title": "Scientific Python Setup",
     "description": "Instalasi dan uji impor NumPy, Pandas, Matplotlib, dan Scikit-learn untuk komputasi data dasar."
   },
   {
     "id": "gs-07",
     "number": "GS-07",
+    "group": "Pengembangan AI",
     "title": "PyTorch, CPU/GPU & CUDA",
     "description": "Panduan instalasi PyTorch CPU sebagai fondasi, verifikasi device, dan klarifikasi driver vs CUDA runtime."
   },
   {
     "id": "gs-08",
     "number": "GS-08",
+    "group": "Pengembangan AI",
     "title": "Project Structure, Dataset Management & Troubleshooting",
     "description": "Tata kelola folder proyek AI, keamanan data dan API key, serta solusi error umum (ModuleNotFoundError, kernel mismatch)."
   }

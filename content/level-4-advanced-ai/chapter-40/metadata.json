@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Advanced AI Capstone Project",
   "status": "published",
-  "description": "Tutup perjalanan Master Curriculum 40 Chapter dengan merancang dan menguji proyek akhir rekayasa AI end-to-end berstandar ilmiah. Anda mempraktikkan proyek referensi CPU lengkap mulai perumusan masalah, pencegahan data leakage, pembandingan baseline, analisis error, pemantauan drift, hingga Risk Register dan Model Card.",
+  "description": "Integrasikan materi seluruh level melalui proyek akhir rekayasa AI secara end-to-end, mencakup perumusan masalah, pencegahan data leakage, pembandingan baseline, analisis error, pemantauan drift, hingga Risk Register dan Model Card.",
   "objectives": [
     "Merumuskan advanced AI problem lengkap dengan latar belakang, intended use, prohibited use, dan kriteria sukses kuantitatif.",
     "Mengidentifikasi kebutuhan fungsional dan nonfungsional sistem AI yang dapat dijalankan pada CPU lokal secara reprodusibel.",

@@ -606,3 +606,36 @@ test('no user-facing Reveal.js label exists in frontend presentation cards', () 
   assert.equal(/Reveal\.js/i.test(mainTsx), false);
 });
 
+test('Phase 24 DESIGN.md, audit report, and UI anti-slop hygiene checks pass', () => {
+  const designMd = readFileSync(new URL('../DESIGN.md', import.meta.url), 'utf8');
+  const auditMd = readFileSync(new URL('../anti-slop/audit-001-2026-11-12.md', import.meta.url), 'utf8');
+  const mainTsx = readFileSync(new URL('../src/main.tsx', import.meta.url), 'utf8');
+  assert.ok(designMd.includes('Modern Academic Learning Library'));
+  assert.ok(designMd.includes('Dial: ENERGY 2 / RHYTHM 3 / MOTION 1'));
+  assert.ok(auditMd.includes('Mode: `AFTER`'));
+  assert.equal(/🖨️/.test(mainTsx), false);
+  assert.equal(/—/.test(mainTsx), false);
+});
+
+test('Getting Started modules config is data-driven with valid groups GS-01..GS-08', () => {
+  const gsModules = JSON.parse(readFileSync(new URL('../content/getting-started/modules.json', import.meta.url), 'utf8'));
+  assert.equal(gsModules.length, 8);
+  assert.deepEqual(gsModules.map(m => m.number), ['GS-01', 'GS-02', 'GS-03', 'GS-04', 'GS-05', 'GS-06', 'GS-07', 'GS-08']);
+  assert.deepEqual(gsModules.map(m => m.group), [
+    'Persiapan', 'Persiapan', 'Persiapan',
+    'Konfigurasi', 'Konfigurasi', 'Konfigurasi',
+    'Pengembangan AI', 'Pengembangan AI',
+  ]);
+  for (const m of gsModules) {
+    assert.ok(readFileSync(new URL(`../content/getting-started/${m.id}.md`, import.meta.url), 'utf8').trim().length > 100);
+  }
+});
+
+test('Public UI copy uses natural Indonesian without internal authoring leaks', () => {
+  const copyTs = readFileSync(new URL('../src/copy.ts', import.meta.url), 'utf8');
+  const mainTsx = readFileSync(new URL('../src/main.tsx', import.meta.url), 'utf8');
+  assert.ok(copyTs.includes('Pengembang AI Learning Hub'));
+  assert.equal(/istilah teknis English yang lazim|berakses terbuka untuk pembelajaran/i.test(copyTs + mainTsx), false);
+  assert.equal(/Reveal\.js|Anti-Slop|\bSSOT\b|single source of truth/i.test(copyTs + mainTsx), false);
+});
+

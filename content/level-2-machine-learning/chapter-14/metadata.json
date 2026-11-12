@@ -4,7 +4,7 @@
   "levelId": 2,
   "title": "Classification Algorithms",
   "status": "published",
-  "description": "Kuasai pemodelan masalah klasifikasi kategori dari prediksi biner hingga multikelas. Chapter ini membedah Logistic Regression dengan fungsi sigmoid, batas keputusan linear, Naive Bayes berbasis Teorema Bayes, serta audit matriks kebingungan dan kurva ROC-AUC.",
+  "description": "Pelajari pemodelan klasifikasi kategori dari biner hingga multikelas, meliputi Logistic Regression, fungsi sigmoid, batas keputusan linear, Naive Bayes, matriks kebingungan, serta kurva ROC-AUC.",
   "objectives": [
     "Menjelaskan konsep Classification dalam Supervised Learning.",
     "Membedakan binary, multiclass, dan multilabel classification.",

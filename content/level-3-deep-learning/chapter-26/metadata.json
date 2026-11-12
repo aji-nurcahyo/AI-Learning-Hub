@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Computer Vision Applications",
   "status": "published",
-  "description": "Eksplorasi beragam penerapan nyata Computer Vision di luar klasifikasi gambar statis. Chapter ini mencakup ruang warna RGB/HSV/LAB, filter spasial peredam derau, deteksi tepi Canny, pengantar segmentasi citra, pelacakan objek spasio-temporal, hingga etika privasi penglihatan komputer.",
+  "description": "Pelajari penerapan Computer Vision di luar klasifikasi gambar statis, mencakup ruang warna RGB/HSV/LAB, filter spasial peredam derau, deteksi tepi Canny, segmentasi citra, pelacakan objek, dan etika privasi.",
   "objectives": [
     "Membedakan spektrum tugas Computer Vision: klasifikasi, deteksi objek, segmentasi semantik, segmentasi instans, dan pelacakan video.",
     "Merepresentasikan struktur citra digital dalam memori matriks piksel dan membedakan format BGR terhadap RGB.",

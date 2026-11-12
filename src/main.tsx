@@ -15,6 +15,9 @@ import {
 import {parseRoute} from './routes';
 import {ThemeSelect,usePreferences} from './deck-shell/preferences';
 import {templateSlides,type SlideData} from './decks/registry';
+import {Icon} from './ui/Icon';
+import {LessonSidebarNav} from './components/LessonSidebarNav';
+import {SITE_COPY} from './copy';
 const Reading=lazy(()=>import('./components/Reading').then(m=>({default:m.Reading})));
 import '@fontsource-variable/google-sans-flex';
 import '@fontsource-variable/google-sans-code';
@@ -36,8 +39,7 @@ function ChapterCards({items}:{items:Chapter[]}){
             <h3>{c.title}</h3>
             <p>{c.description}</p>
           </div>
-          <span className="status-pill">{c.status==='published'?'Tersedia':'Coming Soon'}</span>
-          <span aria-hidden="true">↗</span>
+          <span className="status-pill">{c.status==='published'?SITE_COPY.homeSections.statusPublished:SITE_COPY.homeSections.statusComingSoon}</span>
         </a>
       ))}
     </div>
@@ -54,35 +56,34 @@ function Browser(){
     <section id="curriculum">
       <div className="section-heading">
         <div>
-          <div className="eyebrow">PETA PEMBELAJARAN</div>
-          <h2>40 chapter. Satu fondasi yang kuat.</h2>
+          <h2>{SITE_COPY.homeSections.catalogHeading}</h2>
         </div>
-        <p>Pilih topik sesuai kebutuhan. Semua materi yang diterbitkan terbuka untuk siapa saja.</p>
+        <p>{SITE_COPY.homeSections.catalogLead}</p>
       </div>
       <div className="filters">
         <label>
-          Cari chapter
-          <input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search, Neural Network, RAG…"/>
+          {SITE_COPY.homeSections.searchLabel}
+          <input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder={SITE_COPY.homeSections.searchPlaceholder}/>
         </label>
         <label>
-          Level
+          {SITE_COPY.homeSections.levelFilterLabel}
           <select value={level} onChange={e=>setLevel(e.target.value)}>
-            <option value="all">Semua level</option>
+            <option value="all">{SITE_COPY.homeSections.allLevelsOption}</option>
             {levels.map(l=><option key={l.id} value={l.id}>{l.id} · {l.title}</option>)}
           </select>
         </label>
         <label>
-          Ketersediaan
+          {SITE_COPY.homeSections.statusFilterLabel}
           <select value={status} onChange={e=>setStatus(e.target.value)}>
-            <option value="all">Semua status</option>
-            <option value="published">Tersedia</option>
-            <option value="coming-soon">Coming Soon</option>
+            <option value="all">{SITE_COPY.homeSections.allStatusesOption}</option>
+            <option value="published">{SITE_COPY.homeSections.statusPublished}</option>
+            <option value="coming-soon">{SITE_COPY.homeSections.statusComingSoon}</option>
           </select>
         </label>
       </div>
       <p aria-live="polite">{filtered.length} chapter ditemukan</p>
       <ChapterCards items={filtered}/>
-      {!filtered.length&&<div className="notice">Belum ada chapter yang sesuai. Coba kata kunci lain atau ubah filter.</div>}
+      {!filtered.length&&<div className="notice">{SITE_COPY.homeSections.emptySearch}</div>}
     </section>
   );
 }
@@ -92,62 +93,68 @@ function Home(){
     <>
       <section className="ai-hero">
         <div>
-          <div className="eyebrow">TERBUKA UNTUK BELAJAR · DIRANCANG UNTUK BERKARYA</div>
-          <h1>Artificial Intelligence<br/><em>Learning Hub</em></h1>
-          <h2>From AI Fundamentals to Intelligent Systems</h2>
-          <p>Jelajahi Artificial Intelligence, Machine Learning, Deep Learning, dan Generative AI melalui kurikulum terstruktur 40 chapter serta lima jalur spesialisasi terapan.</p>
+          <h1>{SITE_COPY.hero.titlePrefix}<br/><em>{SITE_COPY.hero.titleEmphasis}</em></h1>
+          <h2 className="hero-subtitle">{SITE_COPY.hero.subtitle}</h2>
+          <p>{SITE_COPY.hero.description}</p>
           <div className="hero-cta-group">
-            <a className="button primary button-lg" href="#curriculum">Jelajahi kurikulum ↗</a>
-            <a className="button subtle button-lg" href="#tracks">Jalur spesialisasi ↗</a>
-            <a className="button subtle button-lg" href="#getting-started">Getting Started ↗</a>
+            <a className="button primary button-lg" href="#curriculum">{SITE_COPY.hero.primaryCta}</a>
+            <a className="button subtle button-lg" href="#tracks">{SITE_COPY.hero.tracksCta}</a>
+            <a className="button subtle button-lg" href="#getting-started">{SITE_COPY.hero.gettingStartedCta}</a>
           </div>
           <div className="hero-facts">
-            <span><b>08</b> Modul setup</span>
-            <span><b>04</b> Level kompetensi</span>
-            <span><b>40</b> Chapter tersedia</span>
-            <span><b>05</b> Jalur spesialisasi</span>
+            <span><b>{String(gettingStartedModules.length).padStart(2,'0')}</b> {SITE_COPY.hero.facts[0].label}</span>
+            <span><b>{String(levels.length).padStart(2,'0')}</b> {SITE_COPY.hero.facts[1].label}</span>
+            <span><b>{String(chapters.length).padStart(2,'0')}</b> {SITE_COPY.hero.facts[2].label}</span>
+            <span><b>{String(tracks.length).padStart(2,'0')}</b> {SITE_COPY.hero.facts[3].label}</span>
           </div>
         </div>
         <div className="network-art" aria-hidden="true">
-          <svg viewBox="0 0 420 420">
-            <defs>
-              <radialGradient id="glow">
-                <stop stopColor="currentColor" stopOpacity=".22"/>
-                <stop offset="1" stopColor="currentColor" stopOpacity="0"/>
-              </radialGradient>
-            </defs>
-            <circle cx="210" cy="210" r="205" fill="url(#glow)"/>
-            {[95,150,195].map(r=><circle key={r} cx="210" cy="210" r={r} fill="none" stroke="currentColor" opacity=".18"/>)}
-            {[0,1,2,3].flatMap(a=>[0,1,2,3].map(b=><path key={`${a}-${b}`} d={`M 100 ${90+a*80} L 210 ${70+b*90} L 320 ${90+a*80}`} fill="none" stroke="currentColor" opacity=".24"/>))}
-            {[100,210,320].flatMap((x,a)=>[0,1,2,3].map(b=><circle key={`${x}-${b}`} cx={x} cy={(a===1?70:90)+b*(a===1?90:80)} r={a===1?10:7} fill="var(--primary)"/>))}
+          <svg viewBox="0 0 400 320" width="400" height="320">
+            {[
+              {y:20,lvl:'L1',label:'AI Foundations',range:'01-10'},
+              {y:82,lvl:'L2',label:'Machine Learning',range:'11-20'},
+              {y:144,lvl:'L3',label:'Deep Learning & GenAI',range:'21-30'},
+              {y:206,lvl:'L4',label:'Applied AI Systems',range:'31-40'}
+            ].map((row,idx)=>(
+              <g key={row.lvl}>
+                <rect x="24" y={row.y} width="352" height="46" rx="8" fill="var(--surface2)" stroke="var(--line)" strokeWidth="1"/>
+                <rect x="34" y={row.y+10} width="36" height="26" rx="5" fill="var(--primary-soft)"/>
+                <text x="52" y={row.y+27} textAnchor="middle" fontSize="12" fontWeight="700" fontFamily="var(--font-mono)" fill="var(--primary)">{row.lvl}</text>
+                <text x="84" y={row.y+27} fontSize="13.5" fontWeight="600" fill="var(--ink)">{row.label}</text>
+                <text x="362" y={row.y+27} textAnchor="end" fontSize="12" fontFamily="var(--font-mono)" fill="var(--muted)">{row.range}</text>
+                {idx<3&&<line x1="200" y1={row.y+46} x2="200" y2={row.y+62} stroke="var(--line-strong)" strokeWidth="1.5"/>}
+              </g>
+            ))}
+            <line x1="200" y1="252" x2="200" y2="268" stroke="var(--primary)" strokeWidth="1.5"/>
+            <rect x="24" y="268" width="352" height="36" rx="8" fill="var(--primary-soft)" stroke="var(--primary)" strokeWidth="1"/>
+            <text x="200" y="290" textAnchor="middle" fontSize="12.5" fontWeight="600" fill="var(--primary)">{SITE_COPY.hero.diagramFooter}</text>
           </svg>
-          <span>UNDERSTAND → APPLY → CREATE</span>
+          <span className="network-art-caption">{SITE_COPY.hero.diagramCaption}</span>
         </div>
       </section>
 
       <div className="notice">
-        <strong>Master Curriculum 40 Chapter &amp; Lima Jalur Spesialisasi Aktif.</strong> Sebelum memulai praktik kode Python, siapkan environment lokal melalui panduan <a href="#getting-started">Getting Started</a>.
+        <strong>{SITE_COPY.hero.prepNoticeLabel}</strong> {SITE_COPY.hero.prepNoticeText} <a href="#getting-started">{SITE_COPY.hero.prepNoticeLink}</a>.
       </div>
 
       <section>
         <div className="section-heading">
           <div>
-            <div className="eyebrow">KURIKULUM BERJENJANG</div>
-            <h2>Dari konsep ke sistem nyata.</h2>
+            <h2>{SITE_COPY.homeSections.levelsHeading}</h2>
           </div>
-          <p>Empat level untuk membangun kompetensi. Prasyarat adalah rekomendasi, bukan batas akses.</p>
+          <p>{SITE_COPY.homeSections.levelsLead}</p>
         </div>
         <div className="ai-level-grid">
           {levels.map(l=>(
             <a className={`level-card level-${l.id}`} key={l.id} href={`#level/${l.id}`}>
               <div className="level-card-top">
                 <span className="level-badge">LEVEL {l.id}</span>
-                <span>{String((l.id-1)*10+1).padStart(2,'0')}—{l.id*10}</span>
+                <span>Chapter {String((l.id-1)*10+1).padStart(2,'0')}–{l.id*10}</span>
               </div>
               <h3>{l.title}</h3>
               <p>{l.description}</p>
               <small>{l.progression}</small>
-              <span className="card-link">Lihat 10 chapter →</span>
+              <span className="card-link">{SITE_COPY.homeSections.levelCta}</span>
             </a>
           ))}
         </div>
@@ -158,10 +165,9 @@ function Home(){
       <section id="tracks">
         <div className="section-heading">
           <div>
-            <div className="eyebrow">PILIH ARAH PENERAPAN</div>
-            <h2>Lima jalur spesialisasi.</h2>
+            <h2>{SITE_COPY.homeSections.tracksHeading}</h2>
           </div>
-          <p>Jalur pilihan dengan roadmap chapter, laboratorium terapan, dan capstone proyek; bukan level wajib.</p>
+          <p>{SITE_COPY.homeSections.tracksLead}</p>
         </div>
         <div className="ai-track-grid">
           {tracks.map((t,i)=>{
@@ -170,12 +176,12 @@ function Home(){
             return (
               <a className="track-card" key={t.id} href={`#track/${t.id}`}>
                 <div className="level-card-top">
-                  <span className="track-letter">{letter}</span>
-                  <span className="status-pill">{available ? 'Tersedia' : 'Coming Soon'}</span>
+                  <span className="track-letter">Track {letter}</span>
+                  <span className="track-meta-count">{available ? `${t.chapters.length} chapter` : SITE_COPY.homeSections.statusComingSoon}</span>
                 </div>
                 <h3>{t.title}</h3>
                 <p>{t.topics.slice(0,3).join(' · ')}</p>
-                <span className="card-link">{available ? 'Jelajahi Jalur →' : 'Lihat rencana →'}</span>
+                <span className="card-link">{available ? SITE_COPY.homeSections.trackCtaAvailable : SITE_COPY.homeSections.trackCtaPlanned}</span>
               </a>
             );
           })}
@@ -184,11 +190,10 @@ function Home(){
 
       <section className="about-strip">
         <div>
-          <div className="eyebrow">BELAJAR DENGAN LANDASAN YANG JELAS</div>
-          <h2>Terbuka, terstruktur, bertanggung jawab.</h2>
-          <p>Adaptasi mandiri dengan rujukan CS2023, UNESCO, NIST AI RMF, dan Google ML Crash Course.</p>
+          <h2>{SITE_COPY.homeSections.aboutHeading}</h2>
+          <p>{SITE_COPY.homeSections.aboutBody}</p>
         </div>
-        <a className="button subtle" href="#about">Standar &amp; pengembang →</a>
+        <a className="button subtle" href="#about">{SITE_COPY.homeSections.aboutCta}</a>
       </section>
     </>
   );
@@ -203,27 +208,25 @@ function GettingStartedPage({activeSlug}:{activeSlug?:string}){
 
   return (
     <>
-      <div className="page-title">
-        <span className="eyebrow">PANDUAN PERSIAPAN LINGKUNGAN · 08 MODUL</span>
-        <h1>Getting Started</h1>
-        <p>Panduan teknis langkah demi langkah untuk mempersiapkan Python, virtual environment, VS Code, pustaka data science, PyTorch, dan struktur proyek AI.</p>
+      <div className="page-title gs-page-header">
+        <span className="eyebrow">{SITE_COPY.gettingStarted.eyebrowPrefix} · {String(gettingStartedModules.length).padStart(2,'0')} MODUL</span>
+        <h1>{SITE_COPY.gettingStarted.heading}</h1>
+        <p>{SITE_COPY.gettingStarted.lead}</p>
       </div>
 
-      <nav className="gs-nav" aria-label="Daftar modul Getting Started">
-        {gettingStartedModules.map(m=>(
-          <a
-            key={m.id}
-            href={`#getting-started/${m.id}`}
-            className={`gs-pill ${m.id===current.id?'active':''}`}
-            title={m.title}
-          >
-            {m.number}: {m.title}
-          </a>
-        ))}
-      </nav>
-
-      <Suspense fallback={<p>Memuat modul Getting Started…</p>}>
-        <Reading text={content}/>
+      <Suspense fallback={<p>{SITE_COPY.gettingStarted.loading}</p>}>
+        <Reading
+          text={content}
+          className="gs-reading-grid"
+          sidebarTop={
+            <LessonSidebarNav
+              items={gettingStartedModules}
+              activeId={current.id}
+              hrefFor={m => `#getting-started/${m.id}`}
+              navLabel={SITE_COPY.gettingStarted.navLabel}
+            />
+          }
+        />
       </Suspense>
 
       <nav className="chapter-nav" aria-label="Navigasi antar modul Getting Started">
@@ -279,72 +282,68 @@ function ChapterPage({chapter:c,view}:{chapter:Chapter;view?:string}){
       {isReadingView && c.resources.reading?.status === 'available' ? (
         <>
           <div className="reading-toolbar">
-            <a href={`#chapter/${c.id}`}>← Kembali ke ikhtisar chapter</a>
-            <button type="button" onClick={() => window.print()} title="Cetak modul atau simpan sebagai PDF">
-              🖨️ Cetak modul (PDF)
+            <a href={`#chapter/${c.id}`}>← {SITE_COPY.chapter.backToList}</a>
+            <button type="button" onClick={() => window.print()} title={SITE_COPY.chapter.printModule}>
+              <Icon name="print" size={16} /> <span>{SITE_COPY.chapter.printModule}</span>
             </button>
           </div>
-          <Suspense fallback={<p>Memuat modul pembelajaran…</p>}>
+          <Suspense fallback={<p>{SITE_COPY.chapter.loadingReading}</p>}>
             <Reading text={resourceText(c, 'reading')} />
           </Suspense>
         </>
       ) : isPracticeView && c.resources.practice?.status === 'available' ? (
         <>
           <div className="reading-toolbar">
-            <a href={`#chapter/${c.id}`}>← Kembali ke ikhtisar chapter</a>
-            <button type="button" onClick={() => window.print()} title="Cetak panduan praktik atau simpan sebagai PDF">
-              🖨️ Cetak panduan praktik (PDF)
+            <a href={`#chapter/${c.id}`}>← {SITE_COPY.chapter.backToList}</a>
+            <button type="button" onClick={() => window.print()} title={SITE_COPY.chapter.printPractice}>
+              <Icon name="print" size={16} /> <span>{SITE_COPY.chapter.printPractice}</span>
             </button>
           </div>
-          <Suspense fallback={<p>Memuat panduan praktik…</p>}>
+          <Suspense fallback={<p>{SITE_COPY.chapter.loadingPractice}</p>}>
             <Reading text={resourceText(c, 'practice')} />
           </Suspense>
         </>
       ) : (
         <>
-          {c.status === 'coming-soon' ? (
-            <div className="notice">
-              <strong>Materi Sedang Dipersiapkan.</strong> Rencana pembelajaran dan prasyarat tertera di bawah. Modul lengkap, slide perkuliahan, dan panduan praktik akan diterbitkan setelah peninjauan akademik selesai.
-            </div>
-          ) : (
-            <div className="notice">
-              <strong>Materi Pembelajaran Lengkap Tersedia.</strong> Pilih salah satu dari tiga pintu akses utama di bawah untuk membaca teori lengkap di Modul, membuka Slide Perkuliahan, atau menjalankan Praktik Python &amp; Notebook.
+          {c.status === 'coming-soon' && (
+            <div className="notice notice-pending">
+              <strong>{SITE_COPY.chapter.comingSoonLabel}</strong> {SITE_COPY.chapter.comingSoonBody}
             </div>
           )}
 
           <div className="chapter-details">
             <section>
-              <h2>Yang akan dipelajari</h2>
+              <h2>{SITE_COPY.chapter.highlightsHeading}</h2>
               <ul>{learningHighlights.map(item=><li key={item}>{item}</li>)}</ul>
             </section>
-            <section>
-              <h2>Prasyarat yang disarankan</h2>
+            <section className="prereq-panel">
+              <h2>{SITE_COPY.chapter.prereqHeading}</h2>
               {c.prerequisites.length ? c.prerequisites.map(id => {
                 const pre = chapters.find(x => x.id === id);
                 return (
                   <p key={id}>
-                    <a href={`#chapter/${id}`}>Chapter {String(id).padStart(2,'0')} — {pre?.title}</a>
+                    <a href={`#chapter/${id}`}>Chapter {String(id).padStart(2,'0')}: {pre?.title}</a>
                   </p>
                 );
-              }) : <p>Literasi komputer dan rasa ingin tahu tentang AI.</p>}
-              <small>Seluruh chapter tetap dapat diakses bebas.</small>
+              }) : <p>{SITE_COPY.chapter.prereqDefault}</p>}
+              <small>{SITE_COPY.chapter.prereqNote}</small>
             </section>
           </div>
 
           {c.status === 'published' && (
             <>
-              <h2>Akses materi pembelajaran</h2>
+              <h2>{SITE_COPY.chapter.accessHeading}</h2>
               <div className="chapter-action-grid">
                 {c.resources.reading?.status === 'available' && (
-                  <div className="chapter-action-card">
+                  <div className="chapter-action-card primary-pillar">
                     <div className="action-card-header">
-                      <span className="action-card-kicker">Materi Lengkap</span>
-                      <h3>Modul Pembelajaran</h3>
-                      <p>Penjelasan konseptual menyeluruh, formulasi matematis, tujuan pembelajaran lengkap, latihan bertingkat, mini project, dan rubrik 100 poin.</p>
+                      <span className="action-card-kicker">{SITE_COPY.chapter.resources.reading.kicker}</span>
+                      <h3>{SITE_COPY.chapter.resources.reading.title}</h3>
+                      <p>{SITE_COPY.chapter.resources.reading.description}</p>
                     </div>
                     <div className="action-card-footer">
-                      <a className="action-btn" href={`#chapter/${c.id}/read`}>Baca modul →</a>
-                      <a className="action-sub-btn" href={`#chapter/${c.id}/task`}>Buka tugas</a>
+                      <a className="action-btn primary-action" href={`#chapter/${c.id}/read`}>{SITE_COPY.chapter.resources.reading.primaryAction}</a>
+                      <a className="action-sub-btn" href={`#chapter/${c.id}/task`}>{SITE_COPY.chapter.resources.reading.secondaryAction}</a>
                     </div>
                   </div>
                 )}
@@ -352,13 +351,13 @@ function ChapterPage({chapter:c,view}:{chapter:Chapter;view?:string}){
                 {c.resources.slides?.status === 'available' && (
                   <div className="chapter-action-card">
                     <div className="action-card-header">
-                      <span className="action-card-kicker">Presentasi Kuliah</span>
-                      <h3>Slide Perkuliahan</h3>
-                      <p>Materi presentasi visual yang merangkum konsep utama, diagram, contoh perhitungan, dan studi kasus untuk mendukung pembelajaran.</p>
+                      <span className="action-card-kicker">{SITE_COPY.chapter.resources.slides.kicker}</span>
+                      <h3>{SITE_COPY.chapter.resources.slides.title}</h3>
+                      <p>{SITE_COPY.chapter.resources.slides.description}</p>
                     </div>
                     <div className="action-card-footer">
-                      <a className="action-btn" href={`#chapter/${c.id}/slides`}>Buka slide →</a>
-                      <a className="action-sub-btn" href={`${base}#chapter/${c.id}/slides?print-pdf`} target="_blank" rel="noreferrer">Cetak PDF</a>
+                      <a className="action-btn" href={`#chapter/${c.id}/slides`}>{SITE_COPY.chapter.resources.slides.primaryAction}</a>
+                      <a className="action-sub-btn" href={`${base}#chapter/${c.id}/slides?print-pdf`} target="_blank" rel="noreferrer">{SITE_COPY.chapter.resources.slides.secondaryAction}</a>
                     </div>
                   </div>
                 )}
@@ -366,13 +365,13 @@ function ChapterPage({chapter:c,view}:{chapter:Chapter;view?:string}){
                 {c.resources.practice?.status === 'available' && (
                   <div className="chapter-action-card">
                     <div className="action-card-header">
-                      <span className="action-card-kicker">Laboratorium &amp; Kode</span>
-                      <h3>Praktik &amp; Notebook</h3>
-                      <p>Contoh skrip Python runnable mandiri, companion notebook interaktif (.ipynb), panduan eksekusi lokal di CPU, serta verifikasi output aktual.</p>
+                      <span className="action-card-kicker">{SITE_COPY.chapter.resources.practice.kicker}</span>
+                      <h3>{SITE_COPY.chapter.resources.practice.title}</h3>
+                      <p>{SITE_COPY.chapter.resources.practice.description}</p>
                     </div>
                     <div className="action-card-footer">
-                      <a className="action-btn" href={`#chapter/${c.id}/practice`}>Buka praktik →</a>
-                      <a className="action-sub-btn" href={chapterNotebookUrl(c, base)} download>Unduh .ipynb</a>
+                      <a className="action-btn" href={`#chapter/${c.id}/practice`}>{SITE_COPY.chapter.resources.practice.primaryAction}</a>
+                      <a className="action-sub-btn" href={chapterNotebookUrl(c, base)} download>{SITE_COPY.chapter.resources.practice.secondaryAction}</a>
                     </div>
                   </div>
                 )}
@@ -380,14 +379,16 @@ function ChapterPage({chapter:c,view}:{chapter:Chapter;view?:string}){
             </>
           )}
 
-          <h2>Rujukan</h2>
-          {c.references.map(r=><p key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.title} ↗</a> · {r.status==='planned'?'Rujukan rencana':'Rujukan terverifikasi'}</p>)}
+          <h2>{SITE_COPY.chapter.referencesHeading}</h2>
+          {c.references.map(r=><p key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.title} ↗</a>{r.status==='planned'?' (Rujukan rencana)':''}</p>)}
 
-          <details>
-            <summary>Untuk pengajar: template presentasi</summary>
-            <p>Preview kerangka teknis untuk chapter ini. Bukan slide pembelajaran yang selesai.</p>
-            <a className="button subtle" href={`#chapter/${c.id}/template`}>Buka preview template</a>
-          </details>
+          {c.resources.slides?.status !== 'available' && (
+            <details>
+              <summary>Untuk pengajar: kerangka presentasi</summary>
+              <p>Kerangka awal slide perkuliahan untuk chapter yang sedang disusun.</p>
+              <a className="button subtle" href={`#chapter/${c.id}/template`}>Lihat kerangka slide</a>
+            </details>
+          )}
         </>
       )}
 
@@ -410,7 +411,7 @@ function RoadmapStageCard({title,ids}:{title:string;ids:number[]}){
           return (
             <div className="roadmap-chapter-item" key={id}>
               <div>
-                <a href={`#chapter/${ch.id}`}><strong>Chapter {String(ch.id).padStart(2,'0')} — {ch.title}</strong></a>
+                <a href={`#chapter/${ch.id}`}><strong>Chapter {String(ch.id).padStart(2,'0')}: {ch.title}</strong></a>
                 <p>{ch.description}</p>
               </div>
               <div className="roadmap-quick-links">
@@ -437,14 +438,14 @@ function TrackPage({id,view}:{id:string;view?:'practice'|'capstone'}){
   return (
     <>
       <div className="track-breadcrumb">
-        <a href="#tracks">← Semua jalur spesialisasi</a>
+        <a href="#tracks">← {SITE_COPY.tracks.backToAll}</a>
         <span>·</span>
-        <a href="#curriculum">Kembali ke Master Curriculum ↗</a>
+        <a href="#curriculum">{SITE_COPY.tracks.backToCurriculum}</a>
       </div>
 
       <div className="page-title">
         <span className="eyebrow">
-          TRACK {detail.code} · JALUR SPESIALISASI · {detail.status === 'published' ? 'TERSEDIA' : 'COMING SOON'}
+          TRACK {detail.code} · JALUR SPESIALISASI · {detail.status === 'published' ? 'TERSEDIA' : 'SEGERA HADIR'}
         </span>
         <h1>{detail.title}</h1>
         <p>{detail.shortDescription}</p>
@@ -452,13 +453,13 @@ function TrackPage({id,view}:{id:string;view?:'practice'|'capstone'}){
 
       <nav className="gs-nav" aria-label="Navigasi bagian jalur spesialisasi">
         <a href={`#track/${detail.id}`} className={`gs-pill ${activeView==='overview'?'active':''}`}>
-          Overview &amp; Roadmap
+          {SITE_COPY.tracks.tabs.overview}
         </a>
         <a href={`#track/${detail.id}/practice`} className={`gs-pill ${activeView==='practice'?'active':''}`}>
-          Applied Labs ({detail.labs.length})
+          {SITE_COPY.tracks.tabs.practiceLabel} ({detail.labs.length})
         </a>
         <a href={`#track/${detail.id}/capstone`} className={`gs-pill ${activeView==='capstone'?'active':''}`}>
-          Capstone &amp; Rubrik ({detail.capstone.rubricTotal} Poin)
+          {SITE_COPY.tracks.tabs.capstoneLabel} ({detail.capstone.rubricTotal} Poin)
         </a>
       </nav>
 
@@ -466,47 +467,47 @@ function TrackPage({id,view}:{id:string;view?:'practice'|'capstone'}){
         <>
           <div className="chapter-details">
             <section>
-              <h2>Capaian pembelajaran jalur</h2>
+              <h2>{SITE_COPY.tracks.outcomesHeading}</h2>
               <ul>{detail.learningOutcomes.map(o => <li key={o}>{o}</li>)}</ul>
             </section>
-            <section>
-              <h2>Prasyarat yang disarankan</h2>
+            <section className="prereq-panel">
+              <h2>{SITE_COPY.chapter.prereqHeading}</h2>
               {detail.prerequisites.map(cid => {
                 const pre = chapters.find(x => x.id === cid);
                 return pre ? (
-                  <p key={cid}><a href={`#chapter/${cid}`}>Chapter {String(cid).padStart(2,'0')} — {pre.title}</a></p>
+                  <p key={cid}><a href={`#chapter/${cid}`}>Chapter {String(cid).padStart(2,'0')}: {pre.title}</a></p>
                 ) : null;
               })}
-              <small>Jalur spesialisasi bersifat pilihan (opsional), bukan mekanisme penguncian akses.</small>
+              <small>{SITE_COPY.tracks.prereqNote}</small>
             </section>
           </div>
 
-          <h2>Roadmap pembelajaran terkurasi</h2>
+          <h2>{SITE_COPY.tracks.roadmapHeading}</h2>
           <div className="track-roadmap-grid">
-            <RoadmapStageCard title="1. Foundation Chapters" ids={detail.roadmap.foundation} />
-            <RoadmapStageCard title="2. Core Specialization Chapters" ids={detail.roadmap.core} />
-            <RoadmapStageCard title="3. Supporting Advanced Chapters" ids={detail.roadmap.advanced} />
+            <RoadmapStageCard title={SITE_COPY.tracks.roadmapStages.foundation} ids={detail.roadmap.foundation} />
+            <RoadmapStageCard title={SITE_COPY.tracks.roadmapStages.core} ids={detail.roadmap.core} />
+            <RoadmapStageCard title={SITE_COPY.tracks.roadmapStages.advanced} ids={detail.roadmap.advanced} />
           </div>
 
           <div className="chapter-action-grid">
-            <div className="chapter-action-card">
+            <div className="chapter-action-card primary-pillar">
               <div className="action-card-header">
-                <span className="action-card-kicker">Praktikum Terapan</span>
-                <h3>Applied Laboratories</h3>
-                <p>{detail.labs.length} aktivitas laboratorium berbasis CPU lokal memadukan skrip chapter terkait dan kode domain track.</p>
+                <span className="action-card-kicker">{SITE_COPY.tracks.practiceCard.kicker}</span>
+                <h3>{SITE_COPY.tracks.practiceCard.title}</h3>
+                <p>{detail.labs.length} panduan praktikum pemrograman menggunakan skrip latihan terkait jalur spesialisasi.</p>
               </div>
               <div className="action-card-footer">
-                <a className="action-btn" href={`#track/${detail.id}/practice`}>Buka panduan lab →</a>
+                <a className="action-btn primary-action" href={`#track/${detail.id}/practice`}>{SITE_COPY.tracks.practiceCard.cta}</a>
               </div>
             </div>
             <div className="chapter-action-card">
               <div className="action-card-header">
-                <span className="action-card-kicker">Proyek Puncak Jalur</span>
+                <span className="action-card-kicker">{SITE_COPY.tracks.capstoneCard.kicker}</span>
                 <h3>{detail.capstone.title}</h3>
                 <p>{detail.capstone.summary}</p>
               </div>
               <div className="action-card-footer">
-                <a className="action-btn" href={`#track/${detail.id}/capstone`}>Buka capstone &amp; rubrik →</a>
+                <a className="action-btn" href={`#track/${detail.id}/capstone`}>{SITE_COPY.tracks.capstoneCard.cta}</a>
               </div>
             </div>
           </div>
@@ -515,16 +516,16 @@ function TrackPage({id,view}:{id:string;view?:'practice'|'capstone'}){
 
       {activeView === 'practice' && (
         <section>
-          <h2>Daftar Applied Laboratories</h2>
+          <h2>{SITE_COPY.tracks.labsHeading}</h2>
           <div className="lab-grid">
             {detail.labs.map((lab, idx) => (
               <div className="resource-card" key={lab.title}>
-                <span className="action-card-kicker">Lab {idx + 1} · Referensi Ch {String(lab.chapterId).padStart(2,'0')}</span>
+                <span className="action-card-kicker">Praktikum {idx + 1} · Chapter {String(lab.chapterId).padStart(2,'0')}</span>
                 <strong>{lab.title}</strong>
                 <div className="lab-script-list">
                   {lab.scriptPaths.map(sp => <code className="inline-code" key={sp}>{sp}</code>)}
                 </div>
-                <a href={`#chapter/${lab.chapterId}/practice`}>Buka praktik Chapter {String(lab.chapterId).padStart(2,'0')} →</a>
+                <a href={`#chapter/${lab.chapterId}/practice`}>{SITE_COPY.tracks.openChapterPractice} {String(lab.chapterId).padStart(2,'0')}</a>
               </div>
             ))}
           </div>
@@ -532,16 +533,16 @@ function TrackPage({id,view}:{id:string;view?:'practice'|'capstone'}){
       )}
 
       {bodyMd && (
-        <Suspense fallback={<p>Memuat materi jalur spesialisasi…</p>}>
+        <Suspense fallback={<p>{SITE_COPY.tracks.loading}</p>}>
           <Reading text={bodyMd} />
         </Suspense>
       )}
 
       {activeView === 'overview' && detail.references.length > 0 && (
         <section>
-          <h2>Rujukan jalur</h2>
+          <h2>{SITE_COPY.tracks.referencesHeading}</h2>
           {detail.references.map(r => (
-            <p key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.title} ↗</a> · Rujukan terverifikasi</p>
+            <p key={r.url}><a href={r.url} target="_blank" rel="noreferrer">{r.title} ↗</a></p>
           ))}
         </section>
       )}
@@ -553,19 +554,19 @@ function About(){
   return (
     <>
       <div className="page-title">
-        <div className="eyebrow">TENTANG PLATFORM</div>
-        <h1>AI Learning Hub</h1>
-        <p>From AI Fundamentals to Intelligent Systems</p>
+        <div className="eyebrow">{SITE_COPY.about.eyebrow}</div>
+        <h1>{SITE_COPY.brandName}</h1>
+        <p>{SITE_COPY.brandTagline}</p>
       </div>
       <section className="about-strip">
         <div>
-          <h2>Aji Pamungkas Tri Nurcahyo</h2>
-          <p>Creator &amp; Developer · Institut Teknologi Sumatera</p>
-          <p>Perpustakaan modul digital berakses terbuka untuk pembelajaran universitas dan mandiri. Materi berbahasa Indonesia dengan istilah teknis English yang lazim.</p>
+          <h2>{SITE_COPY.author}</h2>
+          <p>{SITE_COPY.about.roleLine}</p>
+          <p>{SITE_COPY.about.bio}</p>
         </div>
       </section>
-      <h2>Landasan kurikulum</h2>
-      <p>Struktur 40 chapter merupakan adaptasi mandiri, bukan reproduksi resmi atau sertifikasi ACM, IEEE-CS, AAAI, UNESCO, NIST, maupun Google.</p>
+      <h2>{SITE_COPY.about.curriculumHeading}</h2>
+      <p>{SITE_COPY.about.curriculumNote}</p>
       <div className="resource-grid">
         {[
           ['CS2023','https://csed.acm.org/'],
@@ -576,15 +577,15 @@ function About(){
           <a className="resource-card" key={url} href={url} target="_blank" rel="noreferrer">{title} ↗</a>
         ))}
       </div>
-      <h2>Dokumentasi pengajar &amp; pemeliharaan</h2>
+      <h2>{SITE_COPY.about.docsHeading}</h2>
       <div className="resource-grid">
-        {['CURRICULUM_STANDARD','REFERENCE_MAPPING','LICENSE_REGISTER','CONTENT_AUDIT','CONTENT_MAINTENANCE_GUIDE','THEME_AND_ACCESSIBILITY_GUIDE','DEVELOPMENT_PLAN','CHAPTER_TEMPLATE','ADDING_CHAPTER','TECHNICAL_LANGUAGE_GUIDE'].map(d=>(
-          <a className="resource-card" key={d} href={`${base}docs/${d}.md`}>{d.replaceAll('_',' ')} ↓</a>
+        {SITE_COPY.about.docsItems.map(d=>(
+          <a className="resource-card" key={d.key} href={`${base}docs/${d.key}.md`}>{d.label} ↓</a>
         ))}
       </div>
-      <h2>Atribusi perangkat lunak</h2>
-      <p>Fondasi teknis diadaptasi dari proyek referensi dan komponen upstream. Identitas pengembang platform tidak menghapus hak cipta penulis software asal.</p>
-      <a href={`${base}LICENSE.upstream`}>Pemberitahuan lisensi MIT upstream</a>
+      <h2>{SITE_COPY.about.attributionHeading}</h2>
+      <p>{SITE_COPY.about.attributionNote}</p>
+      <a href={`${base}LICENSE.upstream`}>{SITE_COPY.about.attributionLink}</a>
     </>
   );
 }
@@ -637,11 +638,11 @@ function App(){
 
   return (
     <>
-      <a className="skip-link" href="#main" onClick={e=>{e.preventDefault();document.getElementById('main')?.focus();}}>Lewati ke konten</a>
+      <a className="skip-link" href="#main" onClick={e=>{e.preventDefault();document.getElementById('main')?.focus();}}>{SITE_COPY.skipLink}</a>
       <header className="site-header">
         <a className="brand-hub" href="#">
-          <span className="brand-hub-logo">ai_</span>
-          <span className="brand-hub-name">AI Learning Hub</span>
+          <span className="brand-hub-logo" aria-hidden="true">ai_</span>
+          <span className="brand-hub-name">{SITE_COPY.brandName}</span>
         </a>
         <nav className="hub-nav-links" aria-label="Navigasi utama">
           <a href="#curriculum">Kurikulum</a>
@@ -654,10 +655,10 @@ function App(){
       </header>
       <main className="ai-main" id="main" tabIndex={-1}>{content}</main>
       <footer className="site-footer">
-        <strong>AI Learning Hub</strong>
-        <p>From AI Fundamentals to Intelligent Systems</p>
-        <p>Aji Pamungkas Tri Nurcahyo · Institut Teknologi Sumatera</p>
-        <a href={`${base}LICENSE.upstream`}>Lisensi upstream</a> · <a href="#about">Standar &amp; atribusi</a>
+        <strong>{SITE_COPY.brandName}</strong>
+        <p>{SITE_COPY.brandTagline}</p>
+        <p>{SITE_COPY.author} · {SITE_COPY.institution}</p>
+        <a href={`${base}LICENSE.upstream`}>{SITE_COPY.footer.licenseLink}</a> · <a href="#about">{SITE_COPY.footer.aboutLink}</a>
       </footer>
     </>
   );
@@ -666,9 +667,9 @@ function App(){
 function Missing(){
   return (
     <div className="page-title">
-      <h1>Halaman tidak ditemukan</h1>
-      <p>Periksa alamat atau kembali ke kurikulum.</p>
-      <a href="#">Kembali ke beranda →</a>
+      <h1>{SITE_COPY.notFound.heading}</h1>
+      <p>{SITE_COPY.notFound.description}</p>
+      <a href="#">{SITE_COPY.notFound.backCta}</a>
     </div>
   );
 }

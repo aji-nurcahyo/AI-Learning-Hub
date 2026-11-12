@@ -115,6 +115,31 @@ export function validateAll(){
  for(const t of tracks)errors.push(...validateTrack(t,chapters));
  const forbidden=/Python Learning Hub|Pengantar Komputasi|Pengenalan Komputasi|\bAlpro\b|Program Studi Teknik Telekomunikasi|Fakultas Teknologi Industri|Pertemuan\s+\d/i;
  for(const f of [...walk(resolve(root,'src')),...files])if(forbidden.test(readFileSync(f,'utf8')))errors.push(`Old branding: ${relative(root,f)}`);
+ // Audit public UI copy and overview metadata for internal implementation leaks or hype filler.
+ const forbiddenUiCopy=/Reveal\.js|single source of truth|\bSSOT\b|Anti-?Slop|istilah teknis English yang lazim|bahasa Indonesia dengan istilah|technical language guideline|WCAG audit|publication guard|automated QA|buka potensi|tingkatkan perjalanan|era digital|pengalaman pembelajaran modern|revolusioner/i;
+ const uiCopyTargets=[
+  resolve(root,'src/copy.ts'),
+  resolve(root,'content/levels.json'),
+  resolve(root,'content/getting-started/modules.json'),
+  resolve(root,'content/specializations/tracks.json'),
+  ...files,
+ ];
+ for(const target of uiCopyTargets){
+  if(!existsSync(target))continue;
+  const raw=readFileSync(target,'utf8');
+  if(target.endsWith('.json')){
+   const parsed=JSON.parse(raw);
+   const list=Array.isArray(parsed)?parsed:[parsed];
+   for(const item of list){
+    const text=[item?.description,item?.progression,item?.shortDescription].filter(Boolean).join(' ');
+    if(forbiddenUiCopy.test(text))errors.push(`UI/overview copy leak in ${relative(root,target)}: ${text.slice(0,80)}`);
+   }
+  }else if(forbiddenUiCopy.test(raw)){
+   errors.push(`UI copy leak in ${relative(root,target)}`);
+  }
+ }
+ const mainTsxRaw=readFileSync(resolve(root,'src/main.tsx'),'utf8');
+ if(forbiddenUiCopy.test(mainTsxRaw))errors.push('UI copy leak in src/main.tsx');
  for(const name of ['CURRICULUM_STANDARD','REFERENCE_MAPPING','LICENSE_REGISTER','CONTENT_AUDIT','CONTENT_MAINTENANCE_GUIDE','THEME_AND_ACCESSIBILITY_GUIDE','DEVELOPMENT_PLAN','CHAPTER_TEMPLATE','ADDING_CHAPTER','TECHNICAL_LANGUAGE_GUIDE'])if(!existsSync(resolve(root,`docs/${name}.md`)))errors.push(`Missing docs/${name}.md`);
  const template=JSON.parse(readFileSync(resolve(root,'content/templates/slides.json'),'utf8'));
  if(template.length<5||!template.some(s=>s.code)||!template.some(s=>s.tex)||!template.every(s=>s.notes))errors.push('Template capabilities incomplete');

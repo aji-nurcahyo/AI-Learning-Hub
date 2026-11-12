@@ -63,32 +63,46 @@ export function renderInline(text: string): ReactNode {
   return tokens.map((token, idx) => renderToken(token, idx));
 }
 
-export function Reading({ text }: { text: string }) {
+export function Reading({
+  text,
+  sidebarTop,
+  className = '',
+}: {
+  text: string;
+  sidebarTop?: ReactNode;
+  className?: string;
+}) {
   const { blocks, toc } = parseMarkdownBlocks(text);
 
   return (
-    <div className="reading-grid">
-      <aside className="reading-toc" aria-label="Daftar isi modul">
-        <h2>Daftar isi</h2>
-        <nav>
-          {toc.map(item => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              className={`toc-level-${item.level}`}
-              onClick={e => {
-                e.preventDefault();
-                const el = document.getElementById(item.id);
-                if (el) {
-                  el.scrollIntoView({ behavior: 'smooth' });
-                  window.history.replaceState(null, '', `#${item.id}`);
-                }
-              }}
-            >
-              {item.text}
-            </a>
-          ))}
-        </nav>
+    <div className={`reading-grid ${className}`.trim()}>
+      <aside className="reading-toc" aria-label="Navigasi dan daftar isi modul">
+        {sidebarTop}
+        {sidebarTop && toc.length > 0 && <hr className="reading-toc-divider" />}
+        {toc.length > 0 && (
+          <>
+            <h2>Daftar isi</h2>
+            <nav>
+              {toc.map(item => (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  className={`toc-level-${item.level}`}
+                  onClick={e => {
+                    e.preventDefault();
+                    const el = document.getElementById(item.id);
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                      window.history.replaceState(null, '', `#${item.id}`);
+                    }
+                  }}
+                >
+                  {item.text}
+                </a>
+              ))}
+            </nav>
+          </>
+        )}
       </aside>
 
       <article className="reading-article">

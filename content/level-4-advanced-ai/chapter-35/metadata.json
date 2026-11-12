@@ -4,7 +4,7 @@
   "levelId": 4,
   "title": "Reinforcement Learning Fundamentals",
   "status": "published",
-  "description": "Kuasai paradigma Reinforcement Learning di mana agen belajar mengambil keputusan berurutan optimal melalui sinyal imbalan dari lingkungan. Chapter ini memformulasikan Markov Decision Process, Persamaan Bellman, Value/Policy Iteration, Q-Learning, jadwal eksplorasi, serta pengantar Policy Gradient REINFORCE.",
+  "description": "Pelajari paradigma Reinforcement Learning saat agen mengambil keputusan berurutan melalui sinyal imbalan, mencakup Markov Decision Process, Persamaan Bellman, Value/Policy Iteration, Q-Learning, strategi eksplorasi, serta Policy Gradient REINFORCE.",
   "objectives": [
     "Menjelaskan konsep Reinforcement Learning sebagai paradigma pengambilan keputusan berurutan berbasis interaksi.",
     "Membedakan Supervised Learning, Unsupervised Learning, dan Reinforcement Learning serta membedakan RL Agent dari LLM Agent.",

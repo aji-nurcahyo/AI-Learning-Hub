@@ -1,6 +1,6 @@
 # Audit Konten dan Validasi Sistem
 
-Tanggal Audit Terakhir: 12 November 2026 (Phase 23 — Global Light/Dark Theme Refinement, WCAG 2.2 AA Contrast & Automated Theme QA).
+Tanggal Audit Terakhir: 12 November 2026 (Phase 24 — Anti-Slop Design Refinement, DESIGN.md & Academic UI/UX Quality Gate).
 
 ## 1. Arsitektur Tiga Pilar & Penyederhanaan UI
 - **Penyederhanaan Halaman Chapter**:
@@ -211,18 +211,22 @@ Tanggal Audit Terakhir: 12 November 2026 (Phase 23 — Global Light/Dark Theme R
   - Seluruh 40 chapter memiliki `description` ringkas (`19–42` kata, `<= 65` kata) dan `4–6` `highlights` (*"Yang akan dipelajari"*), tautan unduh `.ipynb` dinamis per chapter, pembersihan label publik **Reveal.js** menjadi **Slide Perkuliahan**, panduan [`CONTENT_MAINTENANCE_GUIDE.md`](./CONTENT_MAINTENANCE_GUIDE.md), dan CI non-deploying `.github/workflows/ci.yml`.
 - **Audit Tema Global Light/Dark & Aksesibilitas WCAG 2.2 AA (Phase 23)**:
   - Penyatuan definisi *semantic design tokens* Light, Dark, dan Auto pada [`src/theme/styles.css`](../src/theme/styles.css), penghapusan `:root` override pada `ai.css`, perbaikan `.brand-hub-logo` (`1.05:1` -> `10.64:1` Light / `5.47:1` Dark), perbaikan `.slide-number` (`2.96:1` -> `16.3:1` Light / `13.74:1` Dark), penyesuaian `--shiki-token-comment` (`#475569`, AA >= 4.5:1), perbaikan overflow tablet `768x1024` pada `.reading-grid`, dukungan `--chart-bg` untuk grafik PNG statis, serta penyusunan [`THEME_AND_ACCESSIBILITY_GUIDE.md`](./THEME_AND_ACCESSIBILITY_GUIDE.md) dan skrip audit otomatis [`scripts/test-theme.mjs`](../scripts/test-theme.mjs).
+- **Anti-Slop Design Refinement (Phase 24)**:
+  - Penyusunan arah visual formal [`DESIGN.md`](../DESIGN.md) (*Modern Academic Learning Library*, `Dial: ENERGY 2 / RHYTHM 3 / MOTION 1`) dan audit bernomor [`anti-slop/audit-001-2026-11-12.md`](../anti-slop/audit-001-2026-11-12.md); penggantian SVG glow orb hero menjadi skema struktur kurikulum 4 Level -> 5 Jalur Spesialisasi; pembersihan panah dekoratif berlebih, emoji tombol cetak (`🖨️` -> `<Icon name="print" />`), em-dash antarmuka, stripe dekoratif `.notice`/`.cover-meta-card`, dan efek blur header; standarisasi radius 3 tingkat (`6px`/`10px`/`14px`), ukuran baca `72ch` pada modul panjang, hirarki prasyarat vs capaian chapter, serta target sentuh `>= 44px` pada mobile.
+- **Getting Started Sidebar & Global User-Facing Copywriting Refinement**:
+  - Konfigurasi pengelompokan data-driven pada [`modules.json`](../content/getting-started/modules.json) (`Persiapan` GS-01..03, `Konfigurasi` GS-04..06, `Pengembangan AI` GS-07..08), komponen reusable [`LessonSidebarNav.tsx`](../src/components/LessonSidebarNav.tsx) (sticky grouped sidebar di desktop, panel lipat aksesibel di tablet/mobile), serta pemusatan & pembersihan copywriting antarmuka pengguna melalui [`src/copy.ts`](../src/copy.ts) dan validasi otomatis pada [`scripts/validate.mjs`](../scripts/validate.mjs).
 
 ## 3. Hasil Pengujian Menyeluruh & Audit Matriks Chapter 01–40
 
 | Perintah Pengujian / Audit | Status | Catatan Verifikasi Aktual |
 |---|---|---|
 | `npm run check:content` | **PASS** | Validasi 40 chapter (`40/40 published`, `description <= 65 kata`, `4–6 highlights`), 4 level, **5/5 active tracks**, 191 referensi `https://` chapter + 15 referensi track, balanced fences, clean headings, & seluruh `1,194` slide. |
-| `npm test` | **PASS** | **56/56 uji unit lulus** (Router, track sub-views `#track/:id/{practice,capstone}`, validasi track roadmap & lab paths, penghilangan label publik `Reveal.js`, serta audit publikasi Chapters 01–40). |
+| `npm test` | **PASS** | **59/59 uji unit lulus** (Router, track sub-views `#track/:id/{practice,capstone}`, validasi track roadmap & lab paths, penghilangan label publik `Reveal.js`, audit publikasi Chapters 01–40, higiene Anti-Slop/`DESIGN.md`, Getting Started data-driven groups, dan copywriting guard). |
 | `npm run typecheck` | **PASS** | TypeScript compiler 0 errors (`tsc --noEmit`). |
 | `npm run lint` | **PASS** | ESLint 0 errors, 0 warnings pada seluruh berkas `src/`. |
 | `npm run build` | **PASS** | Vite production bundle terkompilasi ke `dist/` + `check-build.mjs` PASS. |
-| `npm run test:http` | **PASS** | HTTP preview server memverifikasi seluruh entri statis, dokumentasi (termasuk `THEME_AND_ACCESSIBILITY_GUIDE.md`), 5/5 active tracks, dan 40/40 published chapters (HTTP 200). |
-| `npm run test:theme` | **PASS** | Headless Edge CDP melintasi **66 kombinasi matrix** (`2` tema x `3` viewport `1440x900`/`768x1024`/`390x844`) + **sweep 40 chapter** + audit `35` slide Ch 28: **`0` confirmed contrast failures** (turun dari `40`), **`0` potential failures**, **`0` overflow** (turun dari `2`), **`0` KaTeX errors**, **`0` JS errors**, persistensi tema `localStorage` & pencarian terverifikasi. |
+| `npm run test:http` | **PASS** | HTTP preview server memverifikasi seluruh entri statis, dokumentasi (termasuk `THEME_AND_ACCESSIBILITY_GUIDE.md`), 5/5 active tracks, dan 40/40 published chapters (**354 URL unik HTTP 200**). |
+| `npm run test:theme` | **PASS** | Headless Edge CDP melintasi **76 kombinasi matrix** (`2` tema x `3` viewport `1440x900`/`768x1024`/`390x844`, termasuk Getting Started `gs-01`/`gs-04`/`gs-08`) + **sweep 40 chapter** + audit `35` slide Ch 28: **`0` confirmed contrast failures**, **`0` potential failures**, **`0` overflow**, **`0` KaTeX errors**, **`0` JS errors**. |
 | `Python Execution (Ch 39–40 & Tracks A–E)` | **PASS** | Ch 39 (`15/15`, `9.47s`), Ch 40 (`11/11` termasuk `4/4 unittest`, `23.61s`), dan 5/5 Track domain lab scripts (`cv_track_pipeline_demo.py`, `nlp_grounded_qa_lab.py`, `aiot_sensor_edge_lab.py`, `wireless_quality_lab.py`, `robotics_navigation_lab.py`) **PASS**. |
 | `Catalog Python & Notebook (Ch 01–40)` | **PARTIAL NOTE** | Total `442` skrip Python chapter (+ 5 track lab scripts = `447` skrip) & `39` companion notebooks `nbformat v4` (**36/39** memiliki stored outputs; `chapter_03`–`05` v4 valid tanpa stored cell outputs). |
 | `Browser QA (Headless Edge CDP)` | **PASS** | Terverifikasi pada desktop `1440x900`, tablet `768x1024`, dan mobile `390x844` melintasi Homepage, Chapter 01/27/28/35/37/38/39/40 Overviews/Read/Slides/Practice, & seluruh 5 Track A–E (`/overview`, `/practice`, `/capstone`): **`0` browser errors**. |

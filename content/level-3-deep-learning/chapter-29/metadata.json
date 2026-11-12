@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Large Language Models & Generative AI",
   "status": "published",
-  "description": "Selami cara kerja Large Language Models (LLM) serta paradigma Generative AI secara teknis dan realistis. Pembahasan meliputi tokenisasi subword, next-token prediction, strategi decoding (temperature, top-k, top-p), Instruction Tuning & Alignment, Prompt Engineering, serta batasan halusinasi.",
+  "description": "Pelajari cara kerja Large Language Models (LLM) dan Generative AI, mencakup tokenisasi subword, next-token prediction, strategi decoding (temperature, top-k, top-p), Instruction Tuning, Prompt Engineering, serta batasan halusinasi.",
   "objectives": [
     "Menjelaskan konsep dasar Generative AI dan perbedaan pemodelan generatif versus diskriminatif.",
     "Menggunakan teknik tokenisasi subword dan pemetaan Token ID untuk pengelolaan jendela konteks.",

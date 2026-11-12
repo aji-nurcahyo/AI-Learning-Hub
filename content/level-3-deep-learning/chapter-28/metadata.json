@@ -4,7 +4,7 @@
   "levelId": 3,
   "title": "Attention & Transformer Architecture",
   "status": "published",
-  "description": "Kuasai arsitektur Transformer yang merevolusi pemodelan sekuens paralel dalam AI modern. Anda akan menurunkan Scaled Dot-Product Attention (Query, Key, Value), Multi-Head Attention, Positional Encoding, serta perbedaan blok Encoder, Decoder, dan arsitektur Encoder-Decoder.",
+  "description": "Pelajari arsitektur Transformer dan mekanisme atensi untuk pemodelan sekuens paralel, mencakup Scaled Dot-Product Attention (Query, Key, Value), Multi-Head Attention, Positional Encoding, serta struktur blok Encoder dan Decoder.",
   "objectives": [
     "Menjelaskan keterbatasan fundamental komputasi serial rekuren dan motivasi paradigma all-to-all attention.",
     "Merumuskan konsep aljabar linier Query, Key, dan Value sebagai sistem temu-kembali informasi representasi.",
