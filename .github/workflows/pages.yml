@@ -1,5 +1,8 @@
 name: Validate and publish AI Learning Hub
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 permissions:
   contents: read
