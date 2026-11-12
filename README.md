@@ -6,7 +6,7 @@ Platform terbuka berbahasa Indonesia untuk Artificial Intelligence, Machine Lear
 
 Creator & Developer: **Aji Pamungkas Tri Nurcahyo** · **Institut Teknologi Sumatera**.
 
-Tahap awal: empat level, 40 chapter Coming Soon, lima track overview, template presentasi dan pipeline konten. Tidak ada akun, tracking progres, unlocking, ranking atau sertifikat. Template tidak dianggap materi chapter selesai.
+Kurikulum lengkap: empat level pembelajaran (40 chapter akademik terbit), lima specialization tracks, Getting Started guides, slide presentasi interaktif, serta latihan komputasi dan notebook.
 
 ## Menjalankan
 
@@ -50,6 +50,9 @@ npm run build
 
 URL: https://USERNAME.github.io/ai-learning-hub/#chapter/13 . Hash routing mendukung refresh nested view; slides: #chapter/13/slides; template: #chapter/13/template; print: ?print-pdf=#chapter/13/template. Root hosting: VITE_BASE_PATH=/ .
 
-Workflow .github/workflows/pages.yml berjalan hanya melalui workflow_dispatch, memvalidasi lalu menyiapkan artifact dan deploy jika kelak dijalankan pemilik. Aktifkan GitHub Pages → GitHub Actions setelah repository sendiri dibuat. Tidak ada remote yang disalin/diubah dan tidak ada push/deployment selama implementasi ini.
+Workflow `.github/workflows/pages.yml` divalidasi dan dideploy melalui GitHub Actions (`workflow_dispatch`). Aktifkan deployment melalui GitHub Pages → GitHub Actions pada repository GitHub.
 
-Lihat docs/ADDING_CHAPTER.md, docs/CONTENT_AUDIT.md dan docs/DEVELOPMENT_PLAN.md untuk pemeliharaan, hasil tes aktual, batasan, dan roadmap.
+Lihat `docs/ADDING_CHAPTER.md`, `docs/CONTENT_AUDIT.md`, `DESIGN.md`, dan `docs/DEVELOPMENT_PLAN.md` untuk pemeliharaan, panduan desain, dan referensi akademik.
+
+
+
